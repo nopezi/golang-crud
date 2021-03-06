@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"github.com/dipeshdulal/clean-gin/lib"
-	"github.com/dipeshdulal/clean-gin/models"
+	"clean-gin-template/lib"
+	"clean-gin-template/models"
+
 	"gorm.io/gorm"
 )
 
@@ -48,6 +49,11 @@ func (r UserRepository) Update(user models.User) (models.User, error) {
 // GetOne gets ont user
 func (r UserRepository) GetOne(id uint) (user models.User, err error) {
 	return user, r.db.DB.Where("id = ?", id).First(&user).Error
+}
+
+// GetOne gets user by email
+func (r UserRepository) GetUserByEmail(email *string) (user models.User, err error) {
+	return user, r.db.DB.Where("email = ?", email).First(&user).Error
 }
 
 // Delete deletes the row of data

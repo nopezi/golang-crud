@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dipeshdulal/clean-gin/api/services"
-	"github.com/dipeshdulal/clean-gin/lib"
+	"clean-gin-template/api/services"
+	"clean-gin-template/lib"
 	"github.com/gin-gonic/gin"
 )
 

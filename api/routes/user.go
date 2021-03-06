@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/dipeshdulal/clean-gin/api/controllers"
-	"github.com/dipeshdulal/clean-gin/api/middlewares"
-	"github.com/dipeshdulal/clean-gin/lib"
+	"clean-gin-template/api/controllers"
+	"clean-gin-template/api/middlewares"
+	"clean-gin-template/lib"
 )
 
 // UserRoutes struct

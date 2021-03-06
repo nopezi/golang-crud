@@ -1,9 +1,10 @@
 package services
 
 import (
-	"github.com/dipeshdulal/clean-gin/api/repository"
-	"github.com/dipeshdulal/clean-gin/lib"
-	"github.com/dipeshdulal/clean-gin/models"
+	"clean-gin-template/api/repository"
+	"clean-gin-template/lib"
+	"clean-gin-template/models"
+
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
@@ -31,6 +32,12 @@ func (s UserService) WithTrx(trxHandle *gorm.DB) UserService {
 // GetOneUser gets one user
 func (s UserService) GetOneUser(id uint) (models.User, error) {
 	user, err := s.repository.GetOne(id)
+	return user, err
+}
+
+// GetOneUser gets one user
+func (s UserService) GetOneUserEmail(email *string) (models.User, error) {
+	user, err := s.repository.GetUserByEmail(email)
 	return user, err
 }
 

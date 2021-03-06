@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/dipeshdulal/clean-gin/api/controllers"
-	"github.com/dipeshdulal/clean-gin/lib"
+	"clean-gin-template/api/controllers"
+	"clean-gin-template/lib"
 )
 
 // AuthRoutes struct

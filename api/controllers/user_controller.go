@@ -3,11 +3,11 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	"clean-gin-template/api/services"
+	"clean-gin-template/constants"
+	"clean-gin-template/lib"
+	"clean-gin-template/models"
 
-	"github.com/dipeshdulal/clean-gin/api/services"
-	"github.com/dipeshdulal/clean-gin/constants"
-	"github.com/dipeshdulal/clean-gin/lib"
-	"github.com/dipeshdulal/clean-gin/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
