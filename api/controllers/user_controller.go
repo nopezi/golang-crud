@@ -68,7 +68,7 @@ func (u UserController) SaveUser(c *gin.Context) {
 	user := models.User{}
 	trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.Bind(&user); err != nil {
 		u.logger.Zap.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -84,13 +84,6 @@ func (u UserController) SaveUser(c *gin.Context) {
 		return
 	}
 
-	if err := u.service.WithTrx(trxHandle).CreateUser(user); err != nil {
-		u.logger.Zap.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
 
 	c.JSON(200, gin.H{"data": "user created"})
 }
@@ -99,10 +92,11 @@ func (u UserController) SaveUser(c *gin.Context) {
 func (u UserController) SaveUserWOTrx(c *gin.Context) {
 	user := models.User{}
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	
+	if err := c.Bind(&user); err != nil {
 		u.logger.Zap.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+			"error bind JSON": err.Error(),
 		})
 		return
 	}
@@ -115,13 +109,6 @@ func (u UserController) SaveUserWOTrx(c *gin.Context) {
 		return
 	}
 
-	if err := u.service.CreateUser(user); err != nil {
-		u.logger.Zap.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
 
 	c.JSON(200, gin.H{"data": "user created"})
 }
@@ -131,7 +118,7 @@ func (u UserController) UpdateUser(c *gin.Context) {
 	user := models.User{}
 	paramID := c.Param("id")
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.Bind(&user); err != nil {
 		u.logger.Zap.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
