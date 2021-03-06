@@ -1,4 +1,4 @@
-.env
+vendor
 server.log
 clean-gin
 __debug_bin
