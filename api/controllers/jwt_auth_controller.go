@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	"clean-gin-template/api/services"
-	"clean-gin-template/lib"
-	"clean-gin-template/models"
+	"eform-gateway/api/services"
+	"eform-gateway/lib"
+	"eform-gateway/models"
 
 	"golang.org/x/crypto/bcrypt"
 	"github.com/gin-gonic/gin"

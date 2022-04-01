@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"clean-gin-template/lib"
-	"clean-gin-template/models"
+	"eform-gateway/lib"
+	"eform-gateway/models"
 
 	"gorm.io/gorm"
 )

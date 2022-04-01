@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"clean-gin-template/lib"
+	"eform-gateway/lib"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 

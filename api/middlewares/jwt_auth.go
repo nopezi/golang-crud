@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"clean-gin-template/api/services"
-	"clean-gin-template/lib"
+	"eform-gateway/api/services"
+	"eform-gateway/lib"
 	"github.com/gin-gonic/gin"
 )
 

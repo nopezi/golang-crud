@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"clean-gin-template/api/controllers"
-	"clean-gin-template/lib"
+	"eform-gateway/api/controllers"
+	"eform-gateway/lib"
 )
 
 // AuthRoutes struct

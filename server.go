@@ -1,7 +1,7 @@
 package main
 
 import (
-	"clean-gin-template/bootstrap"
+	"eform-gateway/bootstrap"
 	"github.com/joho/godotenv"
 	"go.uber.org/fx"
 	_ "github.com/go-sql-driver/mysql"

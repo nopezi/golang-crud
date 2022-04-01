@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"clean-gin-template/api/controllers"
-	"clean-gin-template/api/middlewares"
-	"clean-gin-template/lib"
+	"eform-gateway/api/controllers"
+	"eform-gateway/api/middlewares"
+	"eform-gateway/lib"
 )
 
 // UserRoutes struct

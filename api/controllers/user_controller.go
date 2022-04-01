@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"clean-gin-template/api/services"
-	"clean-gin-template/constants"
-	"clean-gin-template/lib"
-	"clean-gin-template/models"
+	"eform-gateway/api/services"
+	"eform-gateway/constants"
+	"eform-gateway/lib"
+	"eform-gateway/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

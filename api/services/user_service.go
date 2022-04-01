@@ -1,9 +1,9 @@
 package services
 
 import (
-	"clean-gin-template/api/repository"
-	"clean-gin-template/lib"
-	"clean-gin-template/models"
+	"eform-gateway/api/repository"
+	"eform-gateway/lib"
+	"eform-gateway/models"
 
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

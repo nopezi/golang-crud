@@ -3,12 +3,12 @@ package bootstrap
 import (
 	"context"
 
-	"clean-gin-template/api/controllers"
-	"clean-gin-template/api/middlewares"
-	"clean-gin-template/api/repository"
-	"clean-gin-template/api/routes"
-	"clean-gin-template/api/services"
-	"clean-gin-template/lib"
+	"eform-gateway/api/controllers"
+	"eform-gateway/api/middlewares"
+	"eform-gateway/api/repository"
+	"eform-gateway/api/routes"
+	"eform-gateway/api/services"
+	"eform-gateway/lib"
 	"go.uber.org/fx"
 )
 

@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	"clean-gin-template/constants"
-	"clean-gin-template/lib"
+	"eform-gateway/constants"
+	"eform-gateway/lib"
 	"github.com/gin-gonic/gin"
 )
 

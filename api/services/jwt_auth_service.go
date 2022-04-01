@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"clean-gin-template/lib"
-	"clean-gin-template/models"
+	"eform-gateway/lib"
+	"eform-gateway/models"
 
 	"github.com/dgrijalva/jwt-go"
 )
