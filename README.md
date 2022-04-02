@@ -41,3 +41,13 @@ Trying to implement clean architecture with gin framework.
 - [x] Authentication (JWT)
 - [x] Migration
 - [x] Dockerize Application with Debugging Support Enabled. Debugger runs at `5002`. Vs code configuration is at `.vscode/launch.json` which will attach debugger to remote application.
+
+
+### Eform Gateway Checklist
+- [ ] CreateTransaction
+- [ ] UpdateToExecuted
+- [ ] Inquiry search by reference number
+- [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
+
+### Elasticsearch Reference
+http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
