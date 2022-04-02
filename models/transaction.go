@@ -2,12 +2,12 @@ package models
 
 // User model
 type Transaction struct {
-	Appname       string `json:"appname"`
-	Object        string `json:"object"`
-	Prefix        string `json:"prefix"`
-	ExpiredDate   string `json:"expiredDate"`
+	Appname       string `json:"appname" binding:"required"`
+	Object        string `json:"object" binding:"required"`
+	Prefix        string `json:"prefix" binding:"required"`
+	ExpiredDate   string `json:"expiredDate" binding:"required"`
 	ReferenceCode string `json:"referenceCode"`
-	Status        string `json:"status"`
+	Status        string `json:"status" binding:"required"`
 }
 
 // TableName gives table name of model

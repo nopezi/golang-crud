@@ -4,7 +4,6 @@ import (
 	"eform-gateway/api/services"
 	"eform-gateway/lib"
 	"eform-gateway/models"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -62,13 +61,12 @@ func NewTransactionController(TransactionService services.TransactionService, lo
 
 // SaveTransaction saves the Transaction
 func (u TransactionController) SaveTransaction(c *gin.Context) {
+	referenceCode := ""
 	Transaction := models.Transaction{}
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), referenceCode)
 		return
 	}
 
@@ -76,17 +74,11 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), referenceCode)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"responseCode":  "00",
-		"responseDesc":  "Insert data Berhasil",
-		"referenceCode": referenceCode,
-	})
+	lib.ReturnToJson(c, 200, "00", "Insert data berhasil", referenceCode)
 }
 
 // // SaveTransactionWOTrx saves the Transaction without transaction for comparision
