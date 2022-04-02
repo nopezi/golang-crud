@@ -9,6 +9,7 @@ import (
 	"eform-gateway/api/routes"
 	"eform-gateway/api/services"
 	"eform-gateway/lib"
+
 	"go.uber.org/fx"
 )
 
@@ -31,9 +32,11 @@ func bootstrap(
 	logger lib.Logger,
 	middlewares middlewares.Middlewares,
 	database lib.Database,
+	elastic lib.Elasticsearch,
 ) {
 	conn, _ := database.DB.DB()
 
+	// fmt.Println("conn2.Index=>>>>>>>>.", elastic)
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			logger.Zap.Info("Starting Application")
@@ -42,6 +45,7 @@ func bootstrap(
 			logger.Zap.Info("---------------------")
 
 			conn.SetMaxOpenConns(10)
+
 			go func() {
 				middlewares.Setup()
 				routes.Setup()

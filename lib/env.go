@@ -13,6 +13,9 @@ type Env struct {
 	DBPort      string
 	DBName      string
 	JWTSecret   string
+	DBEUsername string
+	DBEPassword string
+	DBEHost     string
 }
 
 // NewEnv creates a new environment
@@ -35,4 +38,8 @@ func (env *Env) LoadEnv() {
 	env.DBName = os.Getenv("DBName")
 
 	env.JWTSecret = os.Getenv("JWTSecret")
+
+	env.DBEUsername = os.Getenv("DBEUsername")
+	env.DBEPassword = os.Getenv("DBEPassword")
+	env.DBEHost = os.Getenv("DBEHost")
 }
