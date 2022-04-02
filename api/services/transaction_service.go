@@ -45,9 +45,20 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 // }
 
 // CreateTransaction call to create the Transaction
-func (s TransactionService) CreateTransaction(Transaction models.Transaction) error {
-	err := s.repository.Save(Transaction)
-	return err
+func (s TransactionService) CreateTransaction(Transaction models.Transaction) (string, error) {
+	refCode := lib.GenerateReferenceNumber()
+	transaction := models.Transaction{
+		Appname:       Transaction.Appname,
+		Object:        Transaction.Object,
+		Prefix:        Transaction.Prefix,
+		ExpiredDate:   Transaction.ExpiredDate,
+		ReferenceCode: refCode,
+		Status:        Transaction.Status,
+	}
+
+	referenceCode, err := s.repository.Save(transaction)
+
+	return referenceCode, err
 }
 
 // // UpdateTransaction updates the Transaction

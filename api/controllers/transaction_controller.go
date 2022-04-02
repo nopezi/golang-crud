@@ -72,7 +72,9 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 		return
 	}
 
-	if err := u.service.CreateTransaction(Transaction); err != nil {
+	referenceCode, err := u.service.CreateTransaction(Transaction)
+
+	if err != nil {
 		u.logger.Zap.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -80,7 +82,11 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"data": "Transaction created"})
+	c.JSON(200, gin.H{
+		"responseCode":  "00",
+		"responseDesc":  "Insert data Berhasil",
+		"referenceCode": referenceCode,
+	})
 }
 
 // // SaveTransactionWOTrx saves the Transaction without transaction for comparision

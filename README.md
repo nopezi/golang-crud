@@ -44,10 +44,41 @@ Trying to implement clean architecture with gin framework.
 
 
 ### Eform Gateway Checklist
-- [ ] CreateTransaction
+- [x] CreateTransaction
 - [ ] UpdateToExecuted
 - [ ] Inquiry search by reference number
+      - inquery where reference_code and status = Open
 - [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
 
+### Feature Eform
+- index elastic, 
+  - logs
+  - transaction
+    - appname, object, prefix, expired date, reference_code, status
+        - status 
+            - Open,
+            - Expired 
+            - Executed
+### Response Code
+- 00 Inquiry Berhasil
+      	$result->responseCode = '00';
+				$result->responseDesc = 'Inquiry data berhasil.';
+				$result->responseData = $getdata->result();
+
+- 02 Data Tidak Ditemukan
+      	$result->responseCode = '02';
+				$result->responseDesc = 'Data tidak ditemukan.';
+				$result->responseData = array();
+
+- 04 exc: + Message Error
+      $result->responseCode = '04';
+			$result->responseDesc = 'exc:' . $e->getMessage();
+      $result->responseData = array();
+- 97
+    responseCode' => '97', 'responseDesc' => 'Unknown Request Method[' . $datapost->requestMethod . ']', responseCode' => '97', 'responseDesc' => 'Unknown Request Method);
+- 98 
+  responseCode' => '99', 'responseDesc' => 'Access Forbidden', 'responseData' => array()
+  responseCode' => '98', 'responseDesc' => 'Request Method Undefined', 'responseData' => array()
 ### Elasticsearch Reference
 http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
+https://github.com/codenoid/golang-elasticsearch-crud

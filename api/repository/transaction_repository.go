@@ -34,10 +34,10 @@ func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) Tran
 // }
 
 // Save Transaction
-func (r TransactionRepository) Save(Transaction models.Transaction) error {
+func (r TransactionRepository) Save(Transaction models.Transaction) (referenceCode string, err error) {
 	bdy, err := json.Marshal(Transaction)
 	if err != nil {
-		return fmt.Errorf("insert: marshall: %w", err)
+		return "", fmt.Errorf("insert: marshall: %w", err)
 	}
 
 	// res, err := p.elastic.client.Create()
@@ -52,15 +52,15 @@ func (r TransactionRepository) Save(Transaction models.Transaction) error {
 
 	res, err := req.Do(ctx, r.elastic.Client)
 	if err != nil {
-		return fmt.Errorf("insert: request: %w", err)
+		return "", fmt.Errorf("insert: request: %w", err)
 	}
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return fmt.Errorf("insert: response: %s", res.String())
+		return "", fmt.Errorf("insert: response: %s", res.String())
 	}
 
-	return nil
+	return Transaction.ReferenceCode, err
 }
 
 // // Update updates Transaction
