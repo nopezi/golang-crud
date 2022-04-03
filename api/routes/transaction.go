@@ -23,6 +23,7 @@ func (s TransactionRoutes) Setup() {
 		// api.GET("/Transaction/:id", s.TransactionController.GetOneTransaction)
 		api.POST("/create", s.TransactionController.SaveTransaction)
 		api.POST("/updateToExecute", s.TransactionController.UpdateTransaction)
+		api.POST("/inquiry", s.TransactionController.InquiryTransaction)
 		// api.POST("/Transaction-no-trx", s.TransactionController.SaveTransactionWOTrx)
 		// api.DELETE("/Transaction/:id", s.TransactionController.DeleteTransaction)
 	}

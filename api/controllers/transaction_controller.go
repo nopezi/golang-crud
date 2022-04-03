@@ -102,6 +102,27 @@ func (u TransactionController) UpdateTransaction(c *gin.Context) {
 	lib.ReturnToJson(c, 200, "00", "Update data berhasil", response)
 }
 
+// UpdateTransaction updates Transaction
+func (u TransactionController) InquiryTransaction(c *gin.Context) {
+	Transaction := requests.InquiryRequest{}
+
+	if err := c.Bind(&Transaction); err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), "")
+		return
+	}
+
+	response, err := u.service.InquiryTransaction(Transaction)
+
+	if err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), response)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "00", "Inquiry data berhasil", response)
+}
+
 // // SaveTransactionWOTrx saves the Transaction without transaction for comparision
 // func (u TransactionController) SaveTransactionWOTrx(c *gin.Context) {
 // 	Transaction := models.Transaction{}

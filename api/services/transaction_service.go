@@ -5,6 +5,7 @@ import (
 	"eform-gateway/lib"
 	"eform-gateway/models"
 	"eform-gateway/requests"
+	"eform-gateway/responses"
 	"fmt"
 )
 
@@ -80,6 +81,22 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 	response, err = s.repository.Update(transaction)
 
 	return response, err
+}
+
+// UpdateTransaction updates the Transaction
+func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.TransactionResponse, err error) {
+	Transaction := s.repository.InquiryTransaction(request)
+	fmt.Println("from service:= ", Transaction)
+	transaction := responses.TransactionResponse{
+		Appname:       Transaction.Appname,
+		Object:        Transaction.Object,
+		Prefix:        Transaction.Prefix,
+		ExpiredDate:   Transaction.ExpiredDate,
+		ReferenceCode: Transaction.ReferenceCode,
+		Status:        Transaction.Status,
+	}
+
+	return transaction, err
 }
 
 // // DeleteTransaction deletes the Transaction

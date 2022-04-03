@@ -45,9 +45,10 @@ Trying to implement clean architecture with gin framework.
 
 ### Eform Gateway Checklist
 - [x] CreateTransaction
-- [ ] UpdateToExecuted
-- [ ] Inquiry search by reference number
+- [x] UpdateToExecuted
+- [x] Inquiry search by reference number
       - inquery where reference_code and status = Open
+      - Note : querynya baru by ref_code, belum and status = open
 - [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
 
 ### Feature Eform
