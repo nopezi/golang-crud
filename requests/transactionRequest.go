@@ -8,3 +8,7 @@ type TransactionRequest struct {
 	ReferenceCode string `json:"referenceCode"`
 	Status        string `json:"status"`
 }
+
+type UpdateRequest struct {
+	ReferenceCode string `json:"referenceCode"`
+}

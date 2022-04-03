@@ -4,6 +4,8 @@ import (
 	"eform-gateway/api/repository"
 	"eform-gateway/lib"
 	"eform-gateway/models"
+	"eform-gateway/requests"
+	"fmt"
 )
 
 // TransactionService service layer
@@ -45,9 +47,9 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 // }
 
 // CreateTransaction call to create the Transaction
-func (s TransactionService) CreateTransaction(Transaction models.Transaction) (string, error) {
+func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (string, error) {
 	refCode := lib.GenerateReferenceNumber()
-	transaction := models.Transaction{
+	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
 		Object:        Transaction.Object,
 		Prefix:        Transaction.Prefix,
@@ -61,21 +63,24 @@ func (s TransactionService) CreateTransaction(Transaction models.Transaction) (s
 	return referenceCode, err
 }
 
-// // UpdateTransaction updates the Transaction
-// func (s TransactionService) UpdateTransaction(id uint, Transaction models.Transaction) error {
+// UpdateTransaction updates the Transaction
+func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (response bool, err error) {
+	Transaction := s.repository.MatchSearch(params.ReferenceCode)
+	fmt.Println("from service:= ", Transaction)
+	transaction := models.Transaction{
+		Id:            Transaction.Id,
+		Appname:       Transaction.Appname,
+		Object:        Transaction.Object,
+		Prefix:        Transaction.Prefix,
+		ExpiredDate:   Transaction.ExpiredDate,
+		ReferenceCode: Transaction.ReferenceCode,
+		Status:        "Executed",
+	}
 
-// 	TransactionDB, err := s.GetOneTransaction(id)
-// 	if err != nil {
-// 		return err
-// 	}
+	response, err = s.repository.Update(transaction)
 
-// 	copier.Copy(&TransactionDB, &Transaction)
-
-// 	TransactionDB.ID = id
-
-// 	_, err = s.repository.Update(TransactionDB)
-// 	return err
-// }
+	return response, err
+}
 
 // // DeleteTransaction deletes the Transaction
 // func (s TransactionService) DeleteTransaction(id uint) error {

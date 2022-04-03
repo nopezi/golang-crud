@@ -2,6 +2,7 @@ package models
 
 // User model
 type Transaction struct {
+	Id            string
 	Appname       string `json:"appname" binding:"required"`
 	Object        string `json:"object" binding:"required"`
 	Prefix        string `json:"prefix" binding:"required"`

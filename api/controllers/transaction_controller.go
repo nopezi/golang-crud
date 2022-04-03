@@ -3,7 +3,7 @@ package controllers
 import (
 	"eform-gateway/api/services"
 	"eform-gateway/lib"
-	"eform-gateway/models"
+	"eform-gateway/requests"
 
 	"github.com/gin-gonic/gin"
 )
@@ -62,7 +62,7 @@ func NewTransactionController(TransactionService services.TransactionService, lo
 // SaveTransaction saves the Transaction
 func (u TransactionController) SaveTransaction(c *gin.Context) {
 	referenceCode := ""
-	Transaction := models.Transaction{}
+	Transaction := requests.TransactionRequest{}
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
@@ -79,6 +79,27 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 	}
 
 	lib.ReturnToJson(c, 200, "00", "Insert data berhasil", referenceCode)
+}
+
+// UpdateTransaction updates Transaction
+func (u TransactionController) UpdateTransaction(c *gin.Context) {
+	Transaction := requests.UpdateRequest{}
+	var response bool
+	if err := c.Bind(&Transaction); err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), response)
+		return
+	}
+
+	response, err := u.service.UpdateTransaction(Transaction)
+
+	if err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), response)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "00", "Update data berhasil", response)
 }
 
 // // SaveTransactionWOTrx saves the Transaction without transaction for comparision
@@ -102,39 +123,6 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 // 	}
 
 // 	c.JSON(200, gin.H{"data": "Transaction created"})
-// }
-
-// // UpdateTransaction updates Transaction
-// func (u TransactionController) UpdateTransaction(c *gin.Context) {
-// 	Transaction := models.Transaction{}
-// 	paramID := c.Param("id")
-
-// 	if err := c.Bind(&Transaction); err != nil {
-// 		u.logger.Zap.Error(err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	id, err := strconv.Atoi(paramID)
-// 	if err != nil {
-// 		u.logger.Zap.Error(err)
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err,
-// 		})
-// 		return
-// 	}
-
-// 	if err := u.service.UpdateTransaction(uint(id), Transaction); err != nil {
-// 		u.logger.Zap.Error(err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	c.JSON(200, gin.H{"data": "Transaction updated"})
 // }
 
 // // DeleteTransaction deletes Transaction

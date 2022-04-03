@@ -16,14 +16,14 @@ type TransactionRoutes struct {
 // Setup Transaction routes
 func (s TransactionRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/api")
+	api := s.handler.Gin.Group("/api/transaction")
 	// .Use(s.authMiddleware.Handler())
 	{
 		// api.GET("/Transaction", s.TransactionController.GetTransaction)
 		// api.GET("/Transaction/:id", s.TransactionController.GetOneTransaction)
-		api.POST("/transaction", s.TransactionController.SaveTransaction)
+		api.POST("/create", s.TransactionController.SaveTransaction)
+		api.POST("/updateToExecute", s.TransactionController.UpdateTransaction)
 		// api.POST("/Transaction-no-trx", s.TransactionController.SaveTransactionWOTrx)
-		// api.POST("/Transaction/:id", s.TransactionController.UpdateTransaction)
 		// api.DELETE("/Transaction/:id", s.TransactionController.DeleteTransaction)
 	}
 }
