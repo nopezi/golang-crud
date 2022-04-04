@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 	"time"
 
@@ -30,11 +31,6 @@ func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) Tran
 		timeout: time.Second * 10,
 	}
 }
-
-// // GetAll gets all Transactions
-// func (r TransactionRepository) GetAll() (Transactions []models.Transaction, err error) {
-// 	return Transactions, r.db.DB.Find(&Transactions).Error
-// }
 
 // Save Transaction
 func (r TransactionRepository) Save(Transaction requests.TransactionRequest) (referenceCode string, err error) {
@@ -80,14 +76,15 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (string, e
 		Status:        Transaction.Status,
 	}
 
+	// Create data
 	bdy, err := json.Marshal(transaction)
 	if err != nil {
 		return "", fmt.Errorf("insert: marshall: %w", err)
 	}
 
-	req := esapi.UpdateRequest{
-		Index:      Transaction.IndexName(),
-		DocumentID: Transaction.Id,
+	req := esapi.CreateRequest{
+		Index:      Transaction.IndexTransactionExecuted(),
+		DocumentID: lib.UUID(false),
 		Body:       bytes.NewReader([]byte(fmt.Sprintf(`{"doc":%s}`, bdy))),
 	}
 
@@ -104,46 +101,24 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (string, e
 		return "", fmt.Errorf("insert: response: %s", res.String())
 	}
 
-	return Transaction.ReferenceCode, err
-}
-
-// Update updates Transaction
-// UpdateToExecuted
-func (r TransactionRepository) Inquiry(Transaction models.Transaction) (bool, error) {
-	transaction := requests.TransactionRequest{
-		Appname:       Transaction.Appname,
-		Data:          Transaction.Data,
-		Prefix:        Transaction.Prefix,
-		ExpiredDate:   Transaction.ExpiredDate,
-		ReferenceCode: Transaction.ReferenceCode,
-		Status:        Transaction.Status,
-	}
-
-	bdy, err := json.Marshal(transaction)
-	if err != nil {
-		return false, fmt.Errorf("insert: marshall: %w", err)
-	}
-
-	req := esapi.UpdateRequest{
+	// Delete by Id
+	reqDelete := esapi.DeleteRequest{
 		Index:      Transaction.IndexName(),
 		DocumentID: Transaction.Id,
-		Body:       bytes.NewReader([]byte(fmt.Sprintf(`{"doc":%s}`, bdy))),
+		// Body:       bytes.NewReader([]byte(fmt.Sprintf(`{"doc":%s}`, bdy))),
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
-	defer cancel()
-
-	res, err := req.Do(ctx, r.elastic.Client)
+	resDelete, err := reqDelete.Do(ctx, r.elastic.Client)
 	if err != nil {
-		return false, fmt.Errorf("insert: request: %w", err)
+		return "", fmt.Errorf("insert: request: %w", err)
 	}
-	defer res.Body.Close()
+	defer resDelete.Body.Close()
 
 	if res.IsError() {
-		return false, fmt.Errorf("insert: response: %s", res.String())
+		return "", fmt.Errorf("insert: response: %s", res.String())
 	}
 
-	return true, err
+	return transaction.ReferenceCode, err
 }
 
 func (r TransactionRepository) MatchSearch(param string) (transaction models.Transaction) {
@@ -230,12 +205,13 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 	return transaction
 }
 
-func (r TransactionRepository) InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction) {
+func (r TransactionRepository) InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction, notFound bool) {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
 			"match": map[string]interface{}{
 				"referenceCode": request.ReferenceCode,
+				// "status":        "Open",
 			},
 		},
 	}
@@ -284,7 +260,9 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 	)
 
 	// Print the ID and document source for each hit.
-	for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
+	fmt.Println("hits =>", dataTrx["hits"].(map[string]interface{})["hits"])
+	hits := dataTrx["hits"].(map[string]interface{})["hits"]
+	for _, hit := range hits.([]interface{}) {
 		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 		log.Println(strings.Repeat("=>", 37))
 		source := hit.(map[string]interface{})["_source"]
@@ -307,26 +285,22 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 			Status:        status.(string),
 		}
 
-		// fmt.Println(transaction)
 		log.Println(strings.Repeat("=>", 37))
 	}
 
-	return transaction
+	hitsLen := reflect.ValueOf(hits)
+	if hitsLen.Len() == 0 {
+		transaction = models.Transaction{
+			Id:            "",
+			Appname:       "",
+			Data:          models.Data{},
+			Prefix:        "",
+			ExpiredDate:   "",
+			ReferenceCode: "",
+			Status:        "",
+		}
+		return transaction, false
+	}
+
+	return transaction, true
 }
-
-// // GetOne gets ont Transaction
-// - [ ] Inquiry search by reference number
-//       - inquery where reference_code and status = Open
-// func (r TransactionRepository) GetOne(id uint) (Transaction models.Transaction, err error) {
-// 	return Transaction, r.db.DB.Where("id = ?", id).First(&Transaction).Error
-// }
-
-// // GetOne gets Transaction by email
-// func (r TransactionRepository) GetTransactionByEmail(email *string) (Transaction models.Transaction, err error) {
-// 	return Transaction, r.db.DB.Where("email = ?", email).First(&Transaction).Error
-// }
-
-// // Delete deletes the row of data
-// func (r TransactionRepository) Delete(id uint) error {
-// 	return r.db.DB.Where("id = ?", id).Delete(&models.Transaction{}).Error
-// }

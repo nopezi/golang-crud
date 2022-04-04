@@ -17,3 +17,11 @@ type Data map[string]interface{}
 func (u Transaction) IndexName() string {
 	return "transactions"
 }
+
+func (u Transaction) IndexTransactionExecuted() string {
+	return "transaction_executeds"
+}
+
+func (u Transaction) IndexTransactionExpired() string {
+	return "transaction_expireds"
+}

@@ -23,30 +23,6 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 	}
 }
 
-// // WithTrx delegates transaction to repository database
-// func (s TransactionService) WithTrx(trxHandle *gorm.DB) TransactionService {
-// 	s.repository = s.repository.WithTrx(trxHandle)
-// 	return s
-// }
-
-// // GetOneTransaction gets one Transaction
-// func (s TransactionService) GetOneTransaction(id uint) (models.Transaction, error) {
-// 	Transaction, err := s.repository.GetOne(id)
-// 	return Transaction, err
-// }
-
-// // GetOneTransaction gets one Transaction
-// func (s TransactionService) GetOneTransactionEmail(email *string) (models.Transaction, error) {
-// 	Transaction, err := s.repository.GetTransactionByEmail(email)
-// 	return Transaction, err
-// }
-
-// // GetAllTransaction get all the Transaction
-// func (s TransactionService) GetAllTransaction() ([]models.Transaction, error) {
-// 	Transactions, err := s.repository.GetAll()
-// 	return Transactions, err
-// }
-
 // CreateTransaction call to create the Transaction
 func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (responses.TransactionCreateResponse, error) {
 	refCode := lib.GenerateReferenceNumber()
@@ -91,14 +67,9 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 }
 
 // UpdateTransaction updates the Transaction
-func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.Data, err error) {
-	Transaction := s.repository.InquiryTransaction(request)
+func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.Data, status bool, err error) {
+	Transaction, status := s.repository.InquiryTransaction(request)
 	fmt.Println("from service:= ", Transaction)
 
-	return Transaction.Data, err
+	return Transaction.Data, status, err
 }
-
-// // DeleteTransaction deletes the Transaction
-// func (s TransactionService) DeleteTransaction(id uint) error {
-// 	return s.repository.Delete(id)
-// }

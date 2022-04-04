@@ -45,11 +45,26 @@ Trying to implement clean architecture with gin framework.
 
 ### Eform Gateway Checklist
 - [x] CreateTransaction
+      - Insert:
+        - validasi prefix misal harus 5 huruf, validasi date format yyyy-mm-dd
+      - fields request body
+        - appname
+        - data 
+          - datanya bentuk json dari request
+        - prefix
+        - expired date
+
 - [x] UpdateToExecuted
+      - create index transactionExecuteds and remove index transactions
 - [x] Inquiry search by reference number
       - inquery where reference_code and status = Open
-      - Note : querynya baru by ref_code, belum and status = open
+      - Note : 
+      - [x] querynya baru by ref_code,
 - [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
+      - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
+- [ ] Create TDD testing random refcode loop sejuta
+- [ ] Cronjob reset counter_transactions when transaction open expired by date_expired
+      - remove index counter_transactions
 
 ### Feature Eform
 - index elastic, 
@@ -83,3 +98,4 @@ Trying to implement clean architecture with gin framework.
 ### Elasticsearch Reference
 http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
 https://github.com/codenoid/golang-elasticsearch-crud
+
