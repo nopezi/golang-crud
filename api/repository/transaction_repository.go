@@ -69,11 +69,12 @@ func (r TransactionRepository) Save(Transaction requests.TransactionRequest) (re
 
 // Update updates Transaction
 // UpdateToExecuted
-func (r TransactionRepository) Update(Transaction models.Transaction) (bool, error) {
+func (r TransactionRepository) Update(Transaction models.Transaction) (string, error) {
+
 	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
-		Object:        Transaction.Object,
 		Prefix:        Transaction.Prefix,
+		Data:          Transaction.Data,
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
 		Status:        Transaction.Status,
@@ -81,7 +82,7 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (bool, err
 
 	bdy, err := json.Marshal(transaction)
 	if err != nil {
-		return false, fmt.Errorf("insert: marshall: %w", err)
+		return "", fmt.Errorf("insert: marshall: %w", err)
 	}
 
 	req := esapi.UpdateRequest{
@@ -95,15 +96,15 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (bool, err
 
 	res, err := req.Do(ctx, r.elastic.Client)
 	if err != nil {
-		return false, fmt.Errorf("insert: request: %w", err)
+		return "", fmt.Errorf("insert: request: %w", err)
 	}
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return false, fmt.Errorf("insert: response: %s", res.String())
+		return "", fmt.Errorf("insert: response: %s", res.String())
 	}
 
-	return true, err
+	return Transaction.ReferenceCode, err
 }
 
 // Update updates Transaction
@@ -111,7 +112,7 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (bool, err
 func (r TransactionRepository) Inquiry(Transaction models.Transaction) (bool, error) {
 	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
-		Object:        Transaction.Object,
+		Data:          Transaction.Data,
 		Prefix:        Transaction.Prefix,
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
@@ -202,20 +203,20 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 	for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
 		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 		log.Println(strings.Repeat("=>", 37))
-		data := hit.(map[string]interface{})["_source"]
+		source := hit.(map[string]interface{})["_source"]
 
 		id := hit.(map[string]interface{})["_id"]
-		appname := data.(map[string]interface{})["appname"]
-		object := data.(map[string]interface{})["object"]
-		prefix := data.(map[string]interface{})["prefix"]
-		expiredDate := data.(map[string]interface{})["expiredDate"]
-		referenceCode := data.(map[string]interface{})["referenceCode"]
-		status := data.(map[string]interface{})["status"]
+		appname := source.(map[string]interface{})["appname"]
+		data := source.(map[string]interface{})["data"]
+		prefix := source.(map[string]interface{})["prefix"]
+		expiredDate := source.(map[string]interface{})["expiredDate"]
+		referenceCode := source.(map[string]interface{})["referenceCode"]
+		status := source.(map[string]interface{})["status"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
 			Appname:       appname.(string),
-			Object:        object.(string),
+			Data:          data,
 			Prefix:        prefix.(string),
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),
@@ -286,20 +287,20 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 	for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
 		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 		log.Println(strings.Repeat("=>", 37))
-		data := hit.(map[string]interface{})["_source"]
+		source := hit.(map[string]interface{})["_source"]
 
 		id := hit.(map[string]interface{})["_id"]
-		appname := data.(map[string]interface{})["appname"]
-		object := data.(map[string]interface{})["object"]
-		prefix := data.(map[string]interface{})["prefix"]
-		expiredDate := data.(map[string]interface{})["expiredDate"]
-		referenceCode := data.(map[string]interface{})["referenceCode"]
-		status := data.(map[string]interface{})["status"]
+		appname := source.(map[string]interface{})["appname"]
+		data := source.(map[string]interface{})["data"]
+		prefix := source.(map[string]interface{})["prefix"]
+		expiredDate := source.(map[string]interface{})["expiredDate"]
+		referenceCode := source.(map[string]interface{})["referenceCode"]
+		status := source.(map[string]interface{})["status"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
 			Appname:       appname.(string),
-			Object:        object.(string),
+			Data:          data,
 			Prefix:        prefix.(string),
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),

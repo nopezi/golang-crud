@@ -4,6 +4,9 @@ import (
 	"eform-gateway/api/services"
 	"eform-gateway/lib"
 	"eform-gateway/requests"
+	"eform-gateway/responses"
+	"fmt"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,12 +64,25 @@ func NewTransactionController(TransactionService services.TransactionService, lo
 
 // SaveTransaction saves the Transaction
 func (u TransactionController) SaveTransaction(c *gin.Context) {
-	referenceCode := ""
+	referenceCode := responses.TransactionCreateResponse{}
 	Transaction := requests.TransactionRequest{}
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), referenceCode)
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), referenceCode)
+		return
+	}
+
+	if len(Transaction.Prefix) < 5 {
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Prefix harus 5 karakter", referenceCode)
+		return
+	}
+
+	re := regexp.MustCompile("((19|20)\\d\\d)-(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])")
+	checkmatch := re.MatchString(Transaction.ExpiredDate)
+
+	if !checkmatch {
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Format Tanggal yyy-mm-dd ", referenceCode)
 		return
 	}
 
@@ -77,17 +93,17 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), referenceCode)
 		return
 	}
-
+	fmt.Println("insert", referenceCode)
 	lib.ReturnToJson(c, 200, "00", "Insert data berhasil", referenceCode)
 }
 
 // UpdateTransaction updates Transaction
 func (u TransactionController) UpdateTransaction(c *gin.Context) {
 	Transaction := requests.UpdateRequest{}
-	var response bool
+	response := responses.TransactionCreateResponse{}
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), response)
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), response)
 		return
 	}
 
@@ -108,7 +124,7 @@ func (u TransactionController) InquiryTransaction(c *gin.Context) {
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi parameter gagal: "+err.Error(), "")
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), "")
 		return
 	}
 

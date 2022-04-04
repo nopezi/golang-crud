@@ -48,55 +48,54 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 // }
 
 // CreateTransaction call to create the Transaction
-func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (string, error) {
+func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (responses.TransactionCreateResponse, error) {
 	refCode := lib.GenerateReferenceNumber()
 	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
-		Object:        Transaction.Object,
 		Prefix:        Transaction.Prefix,
+		Data:          Transaction.Data,
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: refCode,
-		Status:        Transaction.Status,
+		Status:        "Open",
 	}
 
 	referenceCode, err := s.repository.Save(transaction)
-
-	return referenceCode, err
-}
-
-// UpdateTransaction updates the Transaction
-func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (response bool, err error) {
-	Transaction := s.repository.MatchSearch(params.ReferenceCode)
-	fmt.Println("from service:= ", Transaction)
-	transaction := models.Transaction{
-		Id:            Transaction.Id,
-		Appname:       Transaction.Appname,
-		Object:        Transaction.Object,
-		Prefix:        Transaction.Prefix,
-		ExpiredDate:   Transaction.ExpiredDate,
-		ReferenceCode: Transaction.ReferenceCode,
-		Status:        "Executed",
+	response := responses.TransactionCreateResponse{
+		ReferenceCode: referenceCode,
 	}
-
-	response, err = s.repository.Update(transaction)
 
 	return response, err
 }
 
 // UpdateTransaction updates the Transaction
-func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.TransactionResponse, err error) {
-	Transaction := s.repository.InquiryTransaction(request)
-	fmt.Println("from service:= ", Transaction)
-	transaction := responses.TransactionResponse{
+func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (response responses.TransactionCreateResponse, err error) {
+	Transaction := s.repository.MatchSearch(params.ReferenceCode)
+
+	transaction := models.Transaction{
+		Id:            Transaction.Id,
 		Appname:       Transaction.Appname,
-		Object:        Transaction.Object,
 		Prefix:        Transaction.Prefix,
+		Data:          Transaction.Data,
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
-		Status:        Transaction.Status,
+		Status:        "Executed",
 	}
 
-	return transaction, err
+	referenceCode, err := s.repository.Update(transaction)
+
+	response = responses.TransactionCreateResponse{
+		ReferenceCode: referenceCode,
+	}
+
+	return response, err
+}
+
+// UpdateTransaction updates the Transaction
+func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.Data, err error) {
+	Transaction := s.repository.InquiryTransaction(request)
+	fmt.Println("from service:= ", Transaction)
+
+	return Transaction.Data, err
 }
 
 // // DeleteTransaction deletes the Transaction
