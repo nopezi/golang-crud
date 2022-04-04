@@ -78,11 +78,11 @@ func (u TransactionController) SaveTransaction(c *gin.Context) {
 		return
 	}
 
-	re := regexp.MustCompile("((19|20)\\d\\d)-(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])")
+	re := regexp.MustCompile(`^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$`)
 	checkmatch := re.MatchString(Transaction.ExpiredDate)
 
 	if !checkmatch {
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Format Tanggal yyy-mm-dd ", referenceCode)
+		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Format Tanggal yyyy-mm-dd ", referenceCode)
 		return
 	}
 
