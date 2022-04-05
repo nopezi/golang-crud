@@ -42,7 +42,7 @@ func (r TransactionRepository) Save(Transaction requests.TransactionRequest) (re
 
 	// res, err := p.elastic.client.Create()
 	req := esapi.CreateRequest{
-		Index:      model.IndexName(),
+		Index:      model.IndexTransactionOpen(),
 		DocumentID: lib.UUID(false),
 		Body:       bytes.NewReader(bdy),
 	}
@@ -103,7 +103,7 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (string, e
 
 	// Delete by Id
 	reqDelete := esapi.DeleteRequest{
-		Index:      Transaction.IndexName(),
+		Index:      Transaction.IndexTransactionOpen(),
 		DocumentID: Transaction.Id,
 		// Body:       bytes.NewReader([]byte(fmt.Sprintf(`{"doc":%s}`, bdy))),
 	}
@@ -137,7 +137,7 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 
 	res, err := r.elastic.Client.Search(
 		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexName()),
+		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
 		r.elastic.Client.Search.WithBody(&buf),
 		r.elastic.Client.Search.WithTrackTotalHits(true),
 		r.elastic.Client.Search.WithPretty(),
@@ -222,7 +222,7 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 
 	res, err := r.elastic.Client.Search(
 		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexName()),
+		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
 		r.elastic.Client.Search.WithBody(&buf),
 		r.elastic.Client.Search.WithTrackTotalHits(true),
 		r.elastic.Client.Search.WithPretty(),

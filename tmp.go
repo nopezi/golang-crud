@@ -16,7 +16,7 @@ func (r TransactionRepository) Inquiry(Transaction models.Transaction) (bool, er
 	}
 
 	req := esapi.UpdateRequest{
-		Index:      Transaction.IndexName(),
+		Index:      Transaction.IndexTransactionOpen(),
 		DocumentID: Transaction.Id,
 		Body:       bytes.NewReader([]byte(fmt.Sprintf(`{"doc":%s}`, bdy))),
 	}

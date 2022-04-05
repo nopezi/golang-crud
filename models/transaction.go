@@ -13,8 +13,8 @@ type Transaction struct {
 
 type Data map[string]interface{}
 
-// TableName gives table name of model
-func (u Transaction) IndexName() string {
+// Table Index gives table name of model
+func (u Transaction) IndexTransactionOpen() string {
 	return "transactions"
 }
 
