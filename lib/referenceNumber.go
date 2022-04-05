@@ -23,3 +23,17 @@ func GenerateReferenceNumber() string {
 	}
 	return string(referenceNumber)
 }
+
+func StrPadLeft(input string, padLength int, padString string) string {
+	output := padString
+
+	for padLength > len(output) {
+		output += output
+	}
+
+	if len(input) >= padLength {
+		return input
+	}
+
+	return output[:padLength-len(input)] + input
+}

@@ -5,7 +5,6 @@ import (
 	"eform-gateway/lib"
 	"eform-gateway/requests"
 	"eform-gateway/responses"
-	"fmt"
 	"regexp"
 
 	"github.com/gin-gonic/gin"
@@ -53,10 +52,16 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), referenceCode)
+		lib.ReturnToJson(c, 200, "99", "Internal Error", referenceCode)
 		return
 	}
-	fmt.Println("insert", referenceCode)
+
+	if referenceCode.ReferenceCode == "" {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "99", "Internal Error", referenceCode)
+		return
+	}
+
 	lib.ReturnToJson(c, 200, "00", "Insert data berhasil", referenceCode)
 }
 
@@ -78,6 +83,12 @@ func (u TransactionController) UpdateTransaction(c *gin.Context) {
 		return
 	}
 
+	if response.ReferenceCode == "" {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "99", "Internal Error", response)
+		return
+	}
+
 	lib.ReturnToJson(c, 200, "00", "Update data berhasil", response)
 }
 
@@ -95,7 +106,7 @@ func (u TransactionController) InquiryTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "04", "exc:"+err.Error(), response)
+		lib.ReturnToJson(c, 200, "99", "Internal Error", response)
 		return
 	}
 

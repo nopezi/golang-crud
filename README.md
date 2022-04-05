@@ -64,7 +64,7 @@ Trying to implement clean architecture with gin framework.
       - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
 - [ ] Create TDD testing random refcode loop sejuta
 - [ ] Cronjob reset counter_transactions when transaction open expired by date_expired
-      - remove index counter_transactions
+- [ ] crontjob remove index counter_transactions
 
 ### Feature Eform
 - index elastic, 

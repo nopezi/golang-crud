@@ -18,3 +18,8 @@ type UpdateRequest struct {
 type InquiryRequest struct {
 	ReferenceCode string `json:"referenceCode" binding:"required"`
 }
+
+type ReferenceSequenceRequest struct {
+	Prefix   string `json:"prefix"`
+	Sequence int64  `json:"sequence"`
+}

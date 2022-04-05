@@ -25,3 +25,7 @@ func (u Transaction) IndexTransactionExecuted() string {
 func (u Transaction) IndexTransactionExpired() string {
 	return "transaction_expireds"
 }
+
+func (u Transaction) IndexReferenceSequence() string {
+	return "reference_sequence"
+}
