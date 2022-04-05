@@ -35,15 +35,15 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 	// Find sequence with param prefix and  prefix + 00000 +sequence
 
 	referenceSequence, status := s.repository.FindPrefixReferenceSequence(Transaction.Prefix)
-	fmt.Println("From CreateReferenceSequence before create", referenceSequence)
+	// fmt.Println("From CreateReferenceSequence before create", referenceSequence)
 	if status {
 		requestSequence = requests.ReferenceSequenceRequest{
 			Prefix:   Transaction.Prefix,
 			Sequence: referenceSequence.Sequence + 1,
 		}
 
-		data, err := s.repository.DeleteIndex(model.IndexReferenceSequence(), referenceSequence.Id)
-		fmt.Println("Delete Index=>", data, err)
+		_, err := s.repository.DeleteIndex(model.IndexReferenceSequence(), referenceSequence.Id)
+		// fmt.Println("Delete Index=>", data, err)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -63,11 +63,11 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		return response, err
 	} else {
 		sequences, _ := s.repository.FindPrefixReferenceSequence(requestSequence.Prefix)
-		fmt.Println("From CreateReferenceSequence after create", sequences)
+		// fmt.Println("From CreateReferenceSequence after create", sequences)
 
 		sequencePadLeft := lib.StrPadLeft(fmt.Sprint(sequences.Sequence+1), 8, "0")
 		referenceCode := Transaction.Prefix + sequencePadLeft
-		fmt.Println("referenceCode", referenceCode)
+		// fmt.Println("referenceCode", referenceCode)
 		// Create Transaction
 		transaction := requests.TransactionRequest{
 			Appname:       Transaction.Appname,
