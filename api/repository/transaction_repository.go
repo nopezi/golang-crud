@@ -33,7 +33,7 @@ func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) Tran
 }
 
 // Save Transaction
-func (r TransactionRepository) Save(Transaction requests.TransactionRequest) (referenceCode string, err error) {
+func (r TransactionRepository) CreateTransaction(Transaction requests.TransactionRequest) (referenceCode string, err error) {
 	model := models.Transaction{}
 	bdy, err := json.Marshal(Transaction)
 	if err != nil {
@@ -65,7 +65,7 @@ func (r TransactionRepository) Save(Transaction requests.TransactionRequest) (re
 
 // Update updates Transaction
 // UpdateToExecuted
-func (r TransactionRepository) Update(Transaction models.Transaction) (string, error) {
+func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction) (string, error) {
 
 	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
@@ -119,90 +119,6 @@ func (r TransactionRepository) Update(Transaction models.Transaction) (string, e
 	}
 
 	return transaction.ReferenceCode, err
-}
-
-func (r TransactionRepository) MatchSearch(param string) (transaction models.Transaction) {
-	var buf bytes.Buffer
-	query := map[string]interface{}{
-		"query": map[string]interface{}{
-			"match": map[string]interface{}{
-				"referenceCode": param,
-			},
-		},
-	}
-
-	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
-	}
-
-	res, err := r.elastic.Client.Search(
-		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
-		r.elastic.Client.Search.WithBody(&buf),
-		r.elastic.Client.Search.WithTrackTotalHits(true),
-		r.elastic.Client.Search.WithPretty(),
-	)
-
-	if err != nil {
-		log.Fatalf("Error getting response %s", err)
-	}
-
-	defer res.Body.Close()
-
-	if res.IsError() {
-		var e map[string]interface{}
-		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
-			log.Fatalf("Error parsing the response body: %s", err)
-		} else {
-			log.Fatalf("[%s] %s: %s",
-				res.Status(),
-				e["error"].(map[string]interface{})["type"],
-				e["error"].(map[string]interface{})["reason"],
-			)
-		}
-	}
-	var dataTrx map[string]interface{}
-	if err := json.NewDecoder(res.Body).Decode(&dataTrx); err != nil {
-		log.Fatalf("Error parsing the response body: %s", err)
-	}
-
-	// Print the response status, number of results, and request duration.
-	log.Printf(
-		"[%s] %d hits; took: %dms",
-		res.Status(),
-		int(dataTrx["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
-		int(dataTrx["took"].(float64)),
-	)
-
-	// Print the ID and document source for each hit.
-	for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
-		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
-		log.Println(strings.Repeat("=>", 37))
-		source := hit.(map[string]interface{})["_source"]
-
-		id := hit.(map[string]interface{})["_id"]
-		appname := source.(map[string]interface{})["appname"]
-		data := source.(map[string]interface{})["data"]
-		prefix := source.(map[string]interface{})["prefix"]
-		expiredDate := source.(map[string]interface{})["expiredDate"]
-		referenceCode := source.(map[string]interface{})["referenceCode"]
-		status := source.(map[string]interface{})["status"]
-
-		transaction = models.Transaction{
-			Id:            id.(string),
-			Appname:       appname.(string),
-			Data:          data,
-			Prefix:        prefix.(string),
-			ExpiredDate:   expiredDate.(string),
-			ReferenceCode: referenceCode.(string),
-			Status:        status.(string),
-		}
-
-		// fmt.Println(transaction)
-		log.Println(strings.Repeat("=>", 37))
-	}
-
-	return transaction
 }
 
 func (r TransactionRepository) InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction, notFound bool) {
@@ -303,4 +219,88 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 	}
 
 	return transaction, true
+}
+
+func (r TransactionRepository) MatchSearch(param string) (transaction models.Transaction) {
+	var buf bytes.Buffer
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"match": map[string]interface{}{
+				"referenceCode": param,
+			},
+		},
+	}
+
+	if err := json.NewEncoder(&buf).Encode(query); err != nil {
+		log.Fatalf("Error encoding query: %s", err)
+	}
+
+	res, err := r.elastic.Client.Search(
+		r.elastic.Client.Search.WithContext(context.Background()),
+		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
+		r.elastic.Client.Search.WithBody(&buf),
+		r.elastic.Client.Search.WithTrackTotalHits(true),
+		r.elastic.Client.Search.WithPretty(),
+	)
+
+	if err != nil {
+		log.Fatalf("Error getting response %s", err)
+	}
+
+	defer res.Body.Close()
+
+	if res.IsError() {
+		var e map[string]interface{}
+		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
+			log.Fatalf("Error parsing the response body: %s", err)
+		} else {
+			log.Fatalf("[%s] %s: %s",
+				res.Status(),
+				e["error"].(map[string]interface{})["type"],
+				e["error"].(map[string]interface{})["reason"],
+			)
+		}
+	}
+	var dataTrx map[string]interface{}
+	if err := json.NewDecoder(res.Body).Decode(&dataTrx); err != nil {
+		log.Fatalf("Error parsing the response body: %s", err)
+	}
+
+	// Print the response status, number of results, and request duration.
+	log.Printf(
+		"[%s] %d hits; took: %dms",
+		res.Status(),
+		int(dataTrx["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
+		int(dataTrx["took"].(float64)),
+	)
+
+	// Print the ID and document source for each hit.
+	for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
+		log.Println(strings.Repeat("=>", 37))
+		source := hit.(map[string]interface{})["_source"]
+
+		id := hit.(map[string]interface{})["_id"]
+		appname := source.(map[string]interface{})["appname"]
+		data := source.(map[string]interface{})["data"]
+		prefix := source.(map[string]interface{})["prefix"]
+		expiredDate := source.(map[string]interface{})["expiredDate"]
+		referenceCode := source.(map[string]interface{})["referenceCode"]
+		status := source.(map[string]interface{})["status"]
+
+		transaction = models.Transaction{
+			Id:            id.(string),
+			Appname:       appname.(string),
+			Data:          data,
+			Prefix:        prefix.(string),
+			ExpiredDate:   expiredDate.(string),
+			ReferenceCode: referenceCode.(string),
+			Status:        status.(string),
+		}
+
+		// fmt.Println(transaction)
+		log.Println(strings.Repeat("=>", 37))
+	}
+
+	return transaction
 }

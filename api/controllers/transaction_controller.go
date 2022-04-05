@@ -26,7 +26,7 @@ func NewTransactionController(TransactionService services.TransactionService, lo
 }
 
 // SaveTransaction saves the Transaction
-func (u TransactionController) SaveTransaction(c *gin.Context) {
+func (u TransactionController) CreateTransaction(c *gin.Context) {
 	referenceCode := responses.TransactionCreateResponse{}
 	Transaction := requests.TransactionRequest{}
 

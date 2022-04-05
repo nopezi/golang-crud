@@ -35,7 +35,7 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		Status:        "Open",
 	}
 
-	referenceCode, err := s.repository.Save(transaction)
+	referenceCode, err := s.repository.CreateTransaction(transaction)
 	response := responses.TransactionCreateResponse{
 		ReferenceCode: referenceCode,
 	}
@@ -57,7 +57,7 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 		Status:        "Executed",
 	}
 
-	referenceCode, err := s.repository.Update(transaction)
+	referenceCode, err := s.repository.UpdateTransaction(transaction)
 
 	response = responses.TransactionCreateResponse{
 		ReferenceCode: referenceCode,
