@@ -52,6 +52,7 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 			Prefix:   Transaction.Prefix,
 			Sequence: 1,
 		}
+		fmt.Println("false, =>>", requestSequence)
 	}
 
 	_, err = s.repository.CreateReferenceSequence(requestSequence)
@@ -65,8 +66,8 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		fmt.Println("From CreateReferenceSequence after create", sequences)
 
 		sequencePadLeft := lib.StrPadLeft(fmt.Sprint(sequences.Sequence+1), 8, "0")
-		referenceCode := sequences.Prefix + sequencePadLeft
-
+		referenceCode := Transaction.Prefix + sequencePadLeft
+		fmt.Println("referenceCode", referenceCode)
 		// Create Transaction
 		transaction := requests.TransactionRequest{
 			Appname:       Transaction.Appname,

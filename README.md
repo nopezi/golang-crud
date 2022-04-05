@@ -53,7 +53,7 @@ Trying to implement clean architecture with gin framework.
           - datanya bentuk json dari request
         - prefix
         - expired date
-
+      - generate reference code
 - [x] UpdateToExecuted
       - create index transactionExecuteds and remove index transactions
 - [x] Inquiry search by reference number
@@ -63,8 +63,8 @@ Trying to implement clean architecture with gin framework.
 - [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
       - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
 - [ ] Create TDD testing random refcode loop sejuta
-- [ ] Cronjob reset counter_transactions when transaction open expired by date_expired
-- [ ] crontjob remove index counter_transactions
+<!-- - [ ] Cronjob reset reference_sequence when transaction open expired by date_expired -->
+- [ ] crontjob remove index reference_sequence
 
 ### Feature Eform
 - index elastic, 
