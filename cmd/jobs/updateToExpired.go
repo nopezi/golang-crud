@@ -5,19 +5,19 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/joho/godotenv"
+	"eform-gateway/jobs"
 )
 
 var (
 	jobUpdateCmd = &cobra.Command{
-		Use:              "jobs-updatetoexecuted",
+		Use:              "job-update",
 		Short:            "Eform Jobs Update To Executed",
 		Long:             "Jobs Eform through Cron",
 		PersistentPreRun: jobsUpdatePreRun,
 		RunE:             jobsUpdateRun,
 	}
 )
-// - [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
-// - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
+
 func JobsUpdateCmd() *cobra.Command {
 	return jobUpdateCmd
 }
@@ -35,6 +35,7 @@ func jobsUpdatePreRun(cmd *cobra.Command, args []string) {
 func jobsUpdateRun(cmd *cobra.Command, args []string) error {
 	godotenv.Load()
 	fmt.Println()
+	jobs.JobsUpdate()
 	// fx.New(bootstrap.Module).Run()
 	return nil
 }
