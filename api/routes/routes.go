@@ -4,8 +4,8 @@ import "go.uber.org/fx"
 
 // Module exports dependency to container
 var Module = fx.Options(
-	fx.Provide(NewUserRoutes),
-	fx.Provide(NewAuthRoutes),
+	// fx.Provide(NewUserRoutes),
+	// fx.Provide(NewAuthRoutes),
 	fx.Provide(NewRoutes),
 	fx.Provide(NewTransactionRoutes),
 )

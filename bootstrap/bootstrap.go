@@ -31,10 +31,10 @@ func bootstrap(
 	env lib.Env,
 	logger lib.Logger,
 	middlewares middlewares.Middlewares,
-	database lib.Database,
+	// database lib.Database,
 	elastic lib.Elasticsearch,
 ) {
-	conn, _ := database.DB.DB()
+	// conn, _ := database.DB.DB()
 
 	// fmt.Println("conn2.Index=>>>>>>>>.", elastic)
 	lifecycle.Append(fx.Hook{
