@@ -65,7 +65,7 @@ Trying to implement clean architecture with gin framework.
 - [ ] Create TDD testing random refcode loop sejuta
 <!-- - [ ] Cronjob reset reference_sequence when transaction open expired by date_expired -->
 - [ ] crontjob remove index reference_sequence
-
+- [ ] revisi code to status http
 ### Feature Eform
 - index elastic, 
   - logs

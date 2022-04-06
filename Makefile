@@ -1,24 +1,87 @@
+APP_COMPOSE_FILE := -f docker-compose.yml
+APP_COMPOSE_FILE_DEV := -f docker-compose-dev.yml
+APP_SERVICE := eform-v3
 
-MIGRATE=docker-compose exec web migrate -path=migration -database "mysql://root:root@tcp(database:3306)/clean_gin" -verbose
+include .env
+export
 
-migrate-up:
-		$(MIGRATE) up
-migrate-down:
-		$(MIGRATE) down 
-force:
-		@read -p  "Which version do you want to force?" VERSION; \
-		$(MIGRATE) force $$VERSION
+# HELP =================================================================================================================
+# This will output the help for each task
+# thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+.PHONY: help
 
-goto:
-		@read -p  "Which version do you want to migrate?" VERSION; \
-		$(MIGRATE) goto $$VERSION
+help: ## Display this help screen
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-drop:
-		$(MIGRATE) drop
+migrate-create:  ### create new migration
+	@echo "Input Table Name>"
+	@read name; migrate create -ext sql -dir migrations $$name
+.PHONY: migrate-create
 
-create:
-		@read -p  "What is the name of migration?" NAME; \
-		migrate create -ext sql -seq -dir migration  $$NAME
+migrate-up: ### migration up
+	@if ! command -v migrate &> /dev/null; then go install go install github.com/golang-migrate/migrate/v4 ; fi
+	@migrate -path migrations -database '$(MYSQL_URL)?multiStatements=true' -verbose up
+.PHONY: migrate-up
 
-.PHONY: migrate-up migrate-down force goto drop create
+migrate-down: ### migration up
+	migrate -path migrations -database '$(MYSQL_URL)?multiStatements=true' -verbose down
+.PHONY: migrate-down
 
+
+test: 
+	@go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
+
+docker-start:
+	@echo "${NOW} STARTING CONTAINER..."
+	@docker-compose up -d --build
+
+docker-stop:
+	@echo "${NOW} STOPPING CONTAINER..."
+	@docker-compose stop
+ 
+docker-down:
+	@echo "${NOW} STOPPING & REMOVING CONTAINER..."
+	@docker-compose down
+
+docker-rebuilddb:
+	@echo "${NOW} REBUILDDB..."
+	@echo "${NOW} DROPING EXISTING DB..."
+	docker exec -it basedb  mysql -uroot -ppassword -e'drop database if exists ${DB}'
+	@echo "${NOW} CREATE DB..."
+	docker exec -it basedb  mysql -uroot -ppassword -e'create database ${DB}'
+	@echo "${NOW} RUN SQL SCRIPTS..." 
+	docker exec -it basedb setup.sh /config/database
+
+swag:
+	@echo "> Generate Swagger Docs"
+	@if ! command swag -v &> /dev/null; then go install github.com/swaggo/swag ; fi
+	@swag init --parseVendor
+
+build:
+	@echo "> Building Project"
+	@go build ${MAIN}
+	@echo "> Copying files to stagging folder"
+	@cp -r main .env .env.development .env.production .env.staging database staging
+
+dump:
+	@echo "> Dump Database"
+	@mysqldump -u ${DB_USER} -p ${DB_NAME} > staging/database/${DB_NAME}.sql
+
+restore:
+	@echo "> Restore Database"
+	@mysqldump -u ${DB_USER} -p ${DB_NAME} > staging/database/${DB_NAME}.sql
+
+restart:
+	@echo "> Restarting service app ${APP_NAME}"
+	@sudo service ${APP_NAME} restart
+
+zip:
+	@echo "> Input Name of file:"
+	@read name; zip -r $$name.zip staging;
+postman:
+	@ps aux | grep -ie Postman | awk '{print $2}' | xargs kill -9
+
+app:
+	sudo docker-compose ${APP_COMPOSE_FILE} up -d --build
+app-down:
+	sudo docker-compose ${APP_COMPOSE_FILE} down -v

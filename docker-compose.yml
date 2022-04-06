@@ -1,13 +1,17 @@
 version: "3.9"
 services:
   web:
+    restart: always
     build:
       context: .
       # dockerfile: dev.Dockerfile
-      dockerfile: Dockerfile
-    container_name: eform-gateway
+      # dockerfile: Dockerfile
+      # dockerfile: single.Dockerfile
+      dockerfile: single3.Dockerfile
+    container_name: eform-v3
+    env_file: .env
     ports:
-      - 2243:2243
+      - 5999:5999
     volumes:
       - ./:/app
     networks:
