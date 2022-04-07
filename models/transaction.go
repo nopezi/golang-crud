@@ -74,7 +74,7 @@ func (u Transaction) IndexTransactionExecuted() string {
 	return "transaction_executed"
 }
 
-func (u Transaction) IndexTransactionExpired() string {
+func (u TransactionExpired) IndexTransactionExpired() string {
 	return "transaction_expired"
 }
 
