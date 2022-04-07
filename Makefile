@@ -85,3 +85,6 @@ app:
 	sudo docker-compose ${APP_COMPOSE_FILE} up -d --build
 app-down:
 	sudo docker-compose ${APP_COMPOSE_FILE} down -v
+
+push:
+    git push origin dev-dik && git checkout development && git merge dev-dik && git push origin development
