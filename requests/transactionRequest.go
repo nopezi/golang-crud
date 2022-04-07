@@ -12,10 +12,12 @@ type TransactionRequest struct {
 type Data map[string]interface{}
 
 type UpdateRequest struct {
+	Appname       string `json:"appname" binding:"required" `
 	ReferenceCode string `json:"referenceCode" binding:"required"`
 }
 
 type InquiryRequest struct {
+	Appname       string `json:"appname" binding:"required" `
 	ReferenceCode string `json:"referenceCode" binding:"required"`
 }
 

@@ -31,12 +31,12 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), referenceCode)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), referenceCode)
 		return
 	}
 
 	if len(Transaction.Prefix) < 5 {
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Prefix harus 5 karakter", referenceCode)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: Prefix harus 5 karakter", referenceCode)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 	checkmatch := re.MatchString(Transaction.ExpiredDate)
 
 	if !checkmatch {
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: Format Tanggal yyyy-mm-dd ", referenceCode)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: Format Tanggal yyyy-mm-dd ", referenceCode)
 		return
 	}
 
@@ -52,17 +52,17 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "99", "Internal Error", referenceCode)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", referenceCode)
 		return
 	}
 
 	if referenceCode.ReferenceCode == "" {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "99", "Internal Error", referenceCode)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", referenceCode)
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "00", "Insert data berhasil", referenceCode)
+	lib.ReturnToJson(c, 200, "200", "Insert data berhasil", referenceCode)
 }
 
 // UpdateTransaction updates Transaction
@@ -71,7 +71,7 @@ func (u TransactionController) UpdateTransaction(c *gin.Context) {
 	response := responses.TransactionCreateResponse{}
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), response)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), response)
 		return
 	}
 
@@ -79,17 +79,17 @@ func (u TransactionController) UpdateTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "02", "Data tidak ditemukan", response)
+		lib.ReturnToJson(c, 200, "404", "Data tidak ditemukan", response)
 		return
 	}
 
 	if response.ReferenceCode == "" {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "99", "Internal Error", response)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", response)
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "00", "Update data berhasil", response)
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", response)
 }
 
 // UpdateTransaction updates Transaction
@@ -98,7 +98,7 @@ func (u TransactionController) InquiryTransaction(c *gin.Context) {
 
 	if err := c.Bind(&Transaction); err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "98", "Validasi gagal: "+err.Error(), "")
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
 
@@ -106,14 +106,14 @@ func (u TransactionController) InquiryTransaction(c *gin.Context) {
 
 	if err != nil {
 		u.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "99", "Internal Error", response)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", response)
 		return
 	}
 
 	if !status {
-		lib.ReturnToJson(c, 200, "02", "Data tidak ditemukan", response)
+		lib.ReturnToJson(c, 200, "404", "Data tidak ditemukan", response)
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "00", "Inquiry data berhasil", response)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", response)
 }

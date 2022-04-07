@@ -7,16 +7,16 @@ import (
 )
 
 type Response struct {
-	Code    string      `json:"code"`
+	Status  string      `json:"status"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
-func ReturnToJson(w *gin.Context, status int, code string, desc string, data interface{}) {
+func ReturnToJson(w *gin.Context, status int, codeStatus string, desc string, data interface{}) {
 	fmt.Println("status ", status)
 	var res Response
 
-	res.Code = code
+	res.Status = codeStatus
 	res.Message = desc
 	res.Data = data
 
