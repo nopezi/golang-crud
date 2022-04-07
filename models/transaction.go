@@ -70,15 +70,15 @@ func (u Transaction) IndexTransactionOpen() string {
 	return "transaction_open"
 }
 
-func (u TransactionExecuted) IndexTransactionExecuted() string {
+func (u Transaction) IndexTransactionExecuted() string {
 	return "transaction_executed"
 }
 
-func (u TransactionExpired) IndexTransactionExpired() string {
+func (u Transaction) IndexTransactionExpired() string {
 	return "transaction_expired"
 }
 
-func (u ReferenceCodeCounter) IndexReferenceSequence() string {
+func (u Transaction) IndexReferenceSequence() string {
 	return "reference_code_counter"
 }
 
