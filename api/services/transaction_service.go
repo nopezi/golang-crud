@@ -47,6 +47,11 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+		// if err != nil {
+		// 	filename, function, line := helper.WhereAmI()
+		// 	lib.CreateLogErrorToDB(dbdefault, filename, function, line, "Truncate Table tbl_report_usulan_bi Gagal", fmt.Sprintf("#{err}"))
+		// 	return false
+		// }
 	} else {
 		requestSequence = requests.ReferenceSequenceRequest{
 			Prefix:   Transaction.Prefix,

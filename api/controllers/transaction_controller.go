@@ -35,7 +35,7 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	if len(Transaction.Prefix) < 5 {
+	if len(Transaction.Prefix) != 5 {
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: Prefix harus 5 karakter", referenceCode)
 		return
 	}
@@ -44,6 +44,14 @@ func (u TransactionController) CreateTransaction(c *gin.Context) {
 	checkmatch := re.MatchString(Transaction.ExpiredDate)
 
 	if !checkmatch {
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: Format Tanggal yyyy-mm-dd ", referenceCode)
+		return
+	}
+
+	re2 := regexp.MustCompile(`^(19|20)\d\d[/ /.](0[1-9]|1[012])[/ /.](0[1-9]|[12][0-9]|3[01])$`)
+	checkmatch2 := re2.MatchString(Transaction.ExpiredDate)
+
+	if checkmatch2 {
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: Format Tanggal yyyy-mm-dd ", referenceCode)
 		return
 	}
