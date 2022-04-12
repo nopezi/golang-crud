@@ -91,4 +91,7 @@ push:
 	@git checkout development; 
 	@git merge dev-dik;
 	@git push origin development; 
+	@git checkout master;
+	@git merge dev-dik;
+	@git push origin master;
 	@git checkout dev-dik;
