@@ -34,8 +34,9 @@ func NewElastic(env Env, zapLogger Logger) Elasticsearch {
 	if err != nil {
 		zapLogger.Zap.Info("Url: ", url)
 		zapLogger.Zap.Panic(err)
+		zapLogger.Zap.Info("elastic connection failed")
 	}
-
+	zapLogger.Zap.Info("elastic connection established")
 	return Elasticsearch{
 		Client: client,
 	}

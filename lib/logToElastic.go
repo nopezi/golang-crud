@@ -1,12 +1,18 @@
 package lib
 
 import (
+	"bytes"
+	"context"
+	"eform-gateway/models"
+	"encoding/json"
 	"fmt"
 	"log"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/elastic/go-elasticsearch/v8/esapi"
 )
 
 var (
@@ -14,6 +20,14 @@ var (
 	InfoLogger    *log.Logger
 	ErrorLogger   *log.Logger
 )
+
+type logActivity struct {
+	Uri       string `json:"uri"`
+	Agent     string `json:"agent"`
+	Ipaddress string `json:"ipaddress"`
+	Request   string `json:"request"`
+	Response  string `json:"response"`
+}
 
 func WhereAmI(depthList ...int) (string, string, string) {
 
@@ -56,19 +70,43 @@ func CreateLogErrorToDB(db ElasticSearch2, filename, function, line, messageCust
 }
 
 func CreateLogActivityToDB(db *elasticsearch.Client, uri string, agent string, ipaddress string, reqBody string, respBody string) {
-	// var LogAccess models.LogAccess
-	// t := time.Now()
-	// y := fmt.Sprintf("%v", t.Year())
-	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
-	// my := mnumber + y
-	// tabActivity := os.Getenv("TABLOG_ACTIVITY") + "_" + my
+	model := models.LogAccess{}
+	logs := logActivity{
+		Uri:       uri,
+		Agent:     agent,
+		Ipaddress: ipaddress,
+		Request:   reqBody,
+		Response:  respBody,
+	}
+	body, err := json.Marshal(logs)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
+	month := strings.ToLower(GetTimeNow("month"))
+	req := esapi.CreateRequest{
+		Index:      model.IndexLogAccess(month),
+		DocumentID: UUID(false),
+		Body:       bytes.NewReader(body),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	res, err := req.Do(ctx, db)
+	if err != nil {
+		fmt.Println("LogToElastic =>", err.Error())
+	}
+	defer res.Body.Close()
+
+	if res.IsError() {
+		fmt.Println("LogToElastic=> ", res.String())
+	}
 	// create log activity
-	fmt.Println(db)
-	fmt.Println(uri)
-	fmt.Println(agent)
-	fmt.Println(ipaddress)
-	fmt.Println(reqBody)
-	fmt.Println(respBody)
-
+	// fmt.Println("==>", db)
+	// fmt.Println("uri==>", uri)
+	// fmt.Println("agent==>", agent)
+	// fmt.Println("ipaddress==>", ipaddress)
+	// fmt.Println("request==>", reqBody)
+	// fmt.Println("response==>", respBody)
 }

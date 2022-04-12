@@ -1,10 +1,12 @@
 package middlewares
 
 import (
+	"bytes"
 	"net/http"
 
 	"eform-gateway/constants"
 	"eform-gateway/lib"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +15,8 @@ type DatabaseTrx struct {
 	handler lib.RequestHandler
 	logger  lib.Logger
 	db      lib.Database
+	elastic lib.Elasticsearch
+	body    *bytes.Buffer
 }
 
 // statusInList function checks if context writer status is in provided list
@@ -30,11 +34,13 @@ func NewDatabaseTrx(
 	handler lib.RequestHandler,
 	logger lib.Logger,
 	db lib.Database,
+	elastic lib.Elasticsearch,
 ) DatabaseTrx {
 	return DatabaseTrx{
 		handler: handler,
 		logger:  logger,
 		db:      db,
+		elastic: elastic,
 	}
 }
 
@@ -54,7 +60,6 @@ func (m DatabaseTrx) Setup() {
 
 		c.Set(constants.DBTransaction, txHandle)
 		c.Next()
-
 		// rollback transaction on server errors
 		if c.Writer.Status() == http.StatusInternalServerError {
 			m.logger.Zap.Info("rolling back transaction due to status code: 500")
@@ -63,6 +68,7 @@ func (m DatabaseTrx) Setup() {
 
 		// commit transaction on success status
 		if statusInList(c.Writer.Status(), []int{http.StatusOK, http.StatusCreated}) {
+
 			m.logger.Zap.Info("committing transactions")
 			if err := txHandle.Commit().Error; err != nil {
 				m.logger.Zap.Error("trx commit error: ", err)
