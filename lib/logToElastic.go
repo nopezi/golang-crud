@@ -1,67 +1,74 @@
 package lib
 
-// import (
-// 	"eform-gateway/lib"
-// 	"fmt"
-// 	"log"
-// 	"runtime"
-// 	"strings"
-// )
+import (
+	"fmt"
+	"log"
+	"runtime"
+	"strings"
 
-// var (
-// 	WarningLogger *log.Logger
-// 	InfoLogger    *log.Logger
-// 	ErrorLogger   *log.Logger
-// 	Elastic       lib.Elasticsearch2
-// )
+	"github.com/elastic/go-elasticsearch/v8"
+)
 
-// func WhereAmI(depthList ...int) (string, string, string) {
-// 	var depth int
-// 	if depthList == nil {
-// 		depth = 1
-// 	} else {
-// 		depth = depthList[0]
-// 	}
+var (
+	WarningLogger *log.Logger
+	InfoLogger    *log.Logger
+	ErrorLogger   *log.Logger
+)
 
-// 	function, file, line, _ := runtime.Caller(depth)
-// 	fl := chopPath(file)
-// 	fn := runtime.FuncForPC(function).Name()
-// 	ln := fmt.Sprintf("%d", line)
+func WhereAmI(depthList ...int) (string, string, string) {
 
-// 	return fl, fn, ln
-// }
+	var depth int
+	if depthList == nil {
+		depth = 1
+	} else {
+		depth = depthList[0]
+	}
 
-// func chopPath(original string) string {
-// 	i := strings.LastIndex(original, "/")
-// 	if i == -1 {
-// 		return original
-// 	} else {
-// 		return original[i+1:]
-// 	}
-// }
+	function, file, line, _ := runtime.Caller(depth)
+	fl := chopPath(file)
+	fn := runtime.FuncForPC(function).Name()
+	ln := fmt.Sprintf("%d", line)
 
-// func CreateLogErrorToDB(db *Elastic.Client, filename, function, line, messageCustom, messageSystem string) {
-// 	// var logError models.LogError
+	return fl, fn, ln
+}
 
-// 	// t := time.Now()
-// 	// y := fmt.Sprintf("%v", t.Year())
-// 	// mstring := fmt.Sprintf("%v", t.Month())
-// 	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
-// 	// my := mnumber + y
-// 	// tabLog := os.Getenv("TABLOG_ERROR") + "_" + my
+func chopPath(original string) string {
+	i := strings.LastIndex(original, "/")
+	if i == -1 {
+		return original
+	} else {
+		return original[i+1:]
+	}
+}
 
-// 	// Create log error here
+func CreateLogErrorToDB(db ElasticSearch2, filename, function, line, messageCustom, messageSystem string) {
+	// var logError models.LogError
 
-// }
+	// t := time.Now()
+	// y := fmt.Sprintf("%v", t.Year())
+	// mstring := fmt.Sprintf("%v", t.Month())
+	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
+	// my := mnumber + y
+	// tabLog := os.Getenv("TABLOG_ERROR") + "_" + my
 
-// func CreateLogActivityToDB(db *Elastic.Client, uri string, agent string, ipaddress string, reqBody string, respBody string) {
-// 	// var LogAccess models.LogAccess
-// 	// t := time.Now()
-// 	// y := fmt.Sprintf("%v", t.Year())
-// 	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
-// 	// my := mnumber + y
-// 	// tabActivity := os.Getenv("TABLOG_ACTIVITY") + "_" + my
+	// Create log error here
 
-// 	// create log activity
+}
 
-// }
+func CreateLogActivityToDB(db *elasticsearch.Client, uri string, agent string, ipaddress string, reqBody string, respBody string) {
+	// var LogAccess models.LogAccess
+	// t := time.Now()
+	// y := fmt.Sprintf("%v", t.Year())
+	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
+	// my := mnumber + y
+	// tabActivity := os.Getenv("TABLOG_ACTIVITY") + "_" + my
+
+	// create log activity
+	fmt.Println(db)
+	fmt.Println(uri)
+	fmt.Println(agent)
+	fmt.Println(ipaddress)
+	fmt.Println(reqBody)
+	fmt.Println(respBody)
+
+}

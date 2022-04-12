@@ -3,15 +3,16 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
-	"github.com/joho/godotenv"
 	"eform-gateway/jobs"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
 )
 
 var (
 	jobUpdateCmd = &cobra.Command{
 		Use:              "job-update",
-		Short:            "Eform Jobs Update To Executed",
+		Short:            "Eform Jobs Update To Expired",
 		Long:             "Jobs Eform through Cron",
 		PersistentPreRun: jobsUpdatePreRun,
 		RunE:             jobsUpdateRun,
