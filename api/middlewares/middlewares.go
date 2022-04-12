@@ -7,7 +7,7 @@ var Module = fx.Options(
 	fx.Provide(NewCorsMiddleware),
 	fx.Provide(NewJWTAuthMiddleware),
 	// 6
-	fx.Provide(NewDatabaseTrx),
+	// fx.Provide(NewDatabaseTrx),
 	fx.Provide(NewMiddlewares),
 	fx.Provide(NewLogActivityMiddleware),
 )
@@ -25,13 +25,13 @@ type Middlewares []IMiddleware
 func NewMiddlewares(
 	corsMiddleware CorsMiddleware,
 	// 7
-	dbTrxMiddleware DatabaseTrx,
+	// dbTrxMiddleware DatabaseTrx,
 	logActivityMiddleware LogActivityMiddleware,
 ) Middlewares {
 	return Middlewares{
 		corsMiddleware,
 		// 8
-		dbTrxMiddleware,
+		// dbTrxMiddleware,
 		logActivityMiddleware,
 	}
 }
