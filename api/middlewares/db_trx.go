@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"bytes"
 	"net/http"
 
 	"eform-gateway/constants"
@@ -16,7 +15,7 @@ type DatabaseTrx struct {
 	logger  lib.Logger
 	db      lib.Database
 	elastic lib.Elasticsearch
-	body    *bytes.Buffer
+	// body    *bytes.Buffer
 }
 
 // statusInList function checks if context writer status is in provided list

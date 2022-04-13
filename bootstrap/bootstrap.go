@@ -52,7 +52,7 @@ func bootstrap(
 			go func() {
 				middlewares.Setup()
 				routes.Setup()
-				handler.Gin.Run(env.ServerPort)
+				_ = handler.Gin.Run(env.ServerPort)
 			}()
 			return nil
 		},

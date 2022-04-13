@@ -95,3 +95,6 @@ push:
 	@git merge dev-dik;
 	@git push origin master;
 	@git checkout dev-dik;
+lint:
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+	@golangci-lint run

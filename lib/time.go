@@ -7,7 +7,10 @@ import (
 
 func GetTimeNow(param string) string {
 	currentTime := time.Now()
-	time.LoadLocation("Asia/Jakarta")
+	_, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
 	switch param {
 	case "timestime":

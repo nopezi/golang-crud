@@ -33,7 +33,7 @@ func JobsRemoveCmd() *cobra.Command {
 }
 
 func jobsRemovePreRun(cmd *cobra.Command, args []string) {
-	godotenv.Load()
+	_ = godotenv.Load()
 	fmt.Println("root Pre RUN")
 }
 

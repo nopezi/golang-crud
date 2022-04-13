@@ -24,7 +24,7 @@ func constructQuery(q string, size int) *strings.Reader {
 	isValid := json.Valid([]byte(query)) // returns bool
 
 	// Default query is "{}" if JSON is invalid
-	if isValid == false {
+	if !isValid {
 		fmt.Println("constructQuery() ERROR: query string not valid:", query)
 		fmt.Println("Using default match_all query")
 		query = "{}"

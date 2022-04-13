@@ -3,11 +3,12 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"eform-gateway/bootstrap"
-	"github.com/joho/godotenv"
-	"go.uber.org/fx"
+
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
+	"go.uber.org/fx"
 )
 
 var (
@@ -35,7 +36,7 @@ func httpPreRun(cmd *cobra.Command, args []string) {
 }
 
 func runHTTP(cmd *cobra.Command, args []string) error {
-	godotenv.Load()
+	_ = godotenv.Load()
 	fx.New(bootstrap.Module).Run()
 	return nil
 }

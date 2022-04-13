@@ -93,7 +93,7 @@ func SearchElastic(param string) {
 
 	// Attempt to encode the JSON query and look for errors
 	if err := json.NewEncoder(&buf).Encode(read); err != nil {
-		log.Fatalf("json.NewEncoder() ERROR:", err)
+		log.Printf("json.NewEncoder() ERROR:", err)
 
 		filename, function, line := lib.WhereAmI()
 		lib.CreateLogErrorToDB(client, filename, function, line, "Attempt to encode the JSON query and look for errors", fmt.Sprintf("%v", err))

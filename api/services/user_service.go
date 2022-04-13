@@ -61,8 +61,10 @@ func (s UserService) UpdateUser(id uint, user models.User) error {
 		return err
 	}
 
-	copier.Copy(&userDB, &user)
-
+	err = copier.Copy(&userDB, &user)
+	if err != nil {
+		return err
+	}
 	userDB.ID = id
 
 	_, err = s.repository.Update(userDB)

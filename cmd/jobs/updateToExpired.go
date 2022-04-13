@@ -34,7 +34,7 @@ func jobsUpdatePreRun(cmd *cobra.Command, args []string) {
 }
 
 func jobsUpdateRun(cmd *cobra.Command, args []string) error {
-	godotenv.Load()
+	_ = godotenv.Load()
 	fmt.Println()
 	jobs.JobsUpdate()
 	// fx.New(bootstrap.Module).Run()
