@@ -29,6 +29,16 @@ type logActivity struct {
 	Response  string `json:"response"`
 }
 
+type logError struct {
+	Month         string `json:"month"`
+	Year          string `json:"year"`
+	Filename      string `json:"filename"`
+	Function      string `json:"function"`
+	Line          string `json:"line"`
+	MessageCustom string `json:"messageCustom"`
+	MessageSystem string `json:"messageSystem"`
+}
+
 func WhereAmI(depthList ...int) (string, string, string) {
 
 	var depth int
@@ -55,17 +65,42 @@ func chopPath(original string) string {
 	}
 }
 
-func CreateLogErrorToDB(db ElasticSearch2, filename, function, line, messageCustom, messageSystem string) {
-	// var logError models.LogError
+func CreateLogErrorToDB(db *elasticsearch.Client, filename, function, line, messageCustom, messageSystem string) {
+	year := GetTimeNow("year")
+	month := strings.ToLower(GetTimeNow("month"))
+	model := models.LogError{}
+	logs := logError{
+		Month:         month,
+		Year:          year,
+		Filename:      filename,
+		Function:      function,
+		Line:          line,
+		MessageCustom: messageCustom,
+		MessageSystem: messageSystem,
+	}
+	body, err := json.Marshal(logs)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
-	// t := time.Now()
-	// y := fmt.Sprintf("%v", t.Year())
-	// mstring := fmt.Sprintf("%v", t.Month())
-	// mnumber := fmt.Sprintf("%02d", int(t.Month()))
-	// my := mnumber + y
-	// tabLog := os.Getenv("TABLOG_ERROR") + "_" + my
+	req := esapi.CreateRequest{
+		Index:      model.IndexLogError(month),
+		DocumentID: UUID(false),
+		Body:       bytes.NewReader(body),
+	}
 
-	// Create log error here
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	res, err := req.Do(ctx, db)
+	if err != nil {
+		fmt.Println("LogErrorToElastic =>", err.Error())
+	}
+	defer res.Body.Close()
+
+	if res.IsError() {
+		fmt.Println("LogErrorToElastic=> ", res.String())
+	}
 
 }
 
@@ -95,12 +130,12 @@ func CreateLogActivityToDB(db *elasticsearch.Client, uri string, agent string, i
 
 	res, err := req.Do(ctx, db)
 	if err != nil {
-		fmt.Println("LogToElastic =>", err.Error())
+		fmt.Println("LogActivityToElastic =>", err.Error())
 	}
 	defer res.Body.Close()
 
 	if res.IsError() {
-		fmt.Println("LogToElastic=> ", res.String())
+		fmt.Println("LogActivityToElastic ", res.String())
 	}
 	// create log activity
 	// fmt.Println("==>", db)

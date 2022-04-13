@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/tls"
+	"eform-gateway/lib"
 	"eform-gateway/models"
 	"encoding/json"
 	"fmt"
@@ -35,13 +36,7 @@ func (job JobRemoveRepository) JobsRemove() error {
 	url := os.Getenv("DBEHost")
 	fmt.Println("jobs Remove", url)
 
-	// select all and remove one by one
-
-	// data := job.MatchSearch("DPS0100000002")
-	// fmt.Println(data)
-	// SearchElastic("DPS0100000002")
 	DeleteElasticIndex()
-	// *job.Elastic
 	return nil
 }
 
@@ -72,6 +67,8 @@ func SearchElastic(param string) {
 	// Check for connection errors to the Elasticsearch cluster
 	if err != nil {
 		fmt.Println("Elasticsearch connection error:", err)
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch connection error", fmt.Sprintf("%v", err))
 	}
 
 	// Create a new query string for the Elasticsearch method call
@@ -98,7 +95,9 @@ func SearchElastic(param string) {
 	if err := json.NewEncoder(&buf).Encode(read); err != nil {
 		log.Fatalf("json.NewEncoder() ERROR:", err)
 
-		// Query is a valid JSON object
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "Attempt to encode the JSON query and look for errors", fmt.Sprintf("%v", err))
+
 	} else {
 		fmt.Println("json.NewEncoder encoded query:", read, "\n")
 
@@ -113,6 +112,8 @@ func SearchElastic(param string) {
 		// Check for any errors returned by API call to Elasticsearch
 		if err != nil {
 			log.Fatalf("Elasticsearch Search() API ERROR:", err)
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch Search() API ERROR", fmt.Sprintf("%v", err))
 
 			// If no errors are returned, parse esapi.Response object
 		} else {
@@ -154,6 +155,8 @@ func DeleteElasticIndex() {
 	// Check for connection errors to the Elasticsearch cluster
 	if err != nil {
 		fmt.Println("Elasticsearch connection error:", err)
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch connection error", fmt.Sprintf("%v", err))
 	}
 
 	query2 := map[string]interface{}{
@@ -164,6 +167,8 @@ func DeleteElasticIndex() {
 	var buff bytes.Buffer
 	if err := json.NewEncoder(&buff).Encode(query2); err != nil {
 		log.Printf("Error encoding query: %s", err)
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "Error encoding query", fmt.Sprintf("%v", err))
 	}
 
 	// Instantiate a map interface object for storing returned documents
@@ -173,7 +178,8 @@ func DeleteElasticIndex() {
 	// Attempt to encode the JSON query and look for errors
 	if err := json.NewEncoder(&buff).Encode(query2); err != nil {
 		log.Fatalf("json.NewEncoder() ERROR:", err)
-
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "json.NewEncoder() ERROR", fmt.Sprintf("%v", err))
 		// Query is a valid JSON object
 	} else {
 		fmt.Println("json.NewEncoder encoded query:", query2, "\n")
@@ -187,12 +193,15 @@ func DeleteElasticIndex() {
 		res, err := req.Do(context.Background(), client)
 		if err != nil {
 			log.Fatalf("Error getting response: %s", err)
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(client, filename, function, line, "Error getting response", fmt.Sprintf("%v", err))
 		}
 
 		// Check for any errors returned by API call to Elasticsearch
 		if err != nil {
 			log.Fatalf("Elasticsearch Search() API ERROR:", err)
-
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch Search() API ERROR", fmt.Sprintf("%v", err))
 			// If no errors are returned, parse esapi.Response object
 		} else {
 			fmt.Println("res TYPE:", reflect.TypeOf(res))
@@ -204,91 +213,10 @@ func DeleteElasticIndex() {
 			if err := json.NewDecoder(res.Body).Decode(&mapResp); err == nil {
 				fmt.Println(`&mapResp:`, mapResp, "\n")
 				fmt.Println(`mapResp["hits"]:`, mapResp["hits"])
+				filename, function, line := lib.WhereAmI()
+				lib.CreateLogErrorToDB(client, filename, function, line, "&mapResp:", fmt.Sprintf("%v", mapResp))
+				lib.CreateLogErrorToDB(client, filename, function, line, "mapResp[]:", fmt.Sprintf("%v", mapResp["hits"]))
 			}
 		}
 	}
-}
-
-func (job JobRemoveRepository) MatchSearch(param string) (transaction models.Transaction) {
-	var buf bytes.Buffer
-	query := map[string]interface{}{
-		"query": map[string]interface{}{
-			"match": map[string]interface{}{
-				"referenceCode": param,
-			},
-		},
-	}
-
-	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Printf("Error encoding query: %s", err)
-	}
-
-	// res, err := job.elastic.Client.Search(
-	// 	job.elastic.Client.Search.WithContext(context.Background()),
-	// 	job.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
-	// 	job.elastic.Client.Search.WithBody(&buf),
-	// 	job.elastic.Client.Search.WithTrackTotalHits(true),
-	// 	job.elastic.Client.Search.WithPretty(),
-	// )
-
-	// if err != nil {
-	// 	log.Printf("Error getting response %s", err)
-	// }
-
-	// defer res.Body.Close()
-
-	// if res.IsError() {
-	// 	var e map[string]interface{}
-	// 	if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
-	// 		log.Printf("Error parsing the response body: %s", err)
-	// 	} else {
-	// 		log.Printf("[%s] %s: %s",
-	// 			res.Status(),
-	// 			e["error"].(map[string]interface{})["type"],
-	// 			e["error"].(map[string]interface{})["reason"],
-	// 		)
-	// 	}
-	// }
-	// var dataTrx map[string]interface{}
-	// if err := json.NewDecoder(res.Body).Decode(&dataTrx); err != nil {
-	// 	log.Printf("Error parsing the response body: %s", err)
-	// }
-
-	// // Print the response status, number of results, and request duration.
-	// log.Printf(
-	// 	"[%s] %d hits; took: %dms",
-	// 	res.Status(),
-	// 	int(dataTrx["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
-	// 	int(dataTrx["took"].(float64)),
-	// )
-
-	// // Print the ID and document source for each hit.
-	// for _, hit := range dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}) {
-	// 	log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
-	// 	log.Println(strings.Repeat("=>", 37))
-	// 	source := hit.(map[string]interface{})["_source"]
-
-	// 	id := hit.(map[string]interface{})["_id"]
-	// 	appname := source.(map[string]interface{})["appname"]
-	// 	data := source.(map[string]interface{})["data"]
-	// 	prefix := source.(map[string]interface{})["prefix"]
-	// 	expiredDate := source.(map[string]interface{})["expiredDate"]
-	// 	referenceCode := source.(map[string]interface{})["referenceCode"]
-	// 	status := source.(map[string]interface{})["status"]
-
-	// 	transaction = models.Transaction{
-	// 		Id:            id.(string),
-	// 		Appname:       appname.(string),
-	// 		Data:          data,
-	// 		Prefix:        prefix.(string),
-	// 		ExpiredDate:   expiredDate.(string),
-	// 		ReferenceCode: referenceCode.(string),
-	// 		Status:        status.(string),
-	// 	}
-
-	// 	// fmt.Println(transaction)
-	// 	log.Println(strings.Repeat("=>", 37))
-	// }
-
-	return transaction
 }

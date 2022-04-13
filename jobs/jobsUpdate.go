@@ -88,6 +88,8 @@ func MatchSearch(dateNow string) (transactions []models.Transaction, err error) 
 	// Check for connection errors to the Elasticsearch cluster
 	if err != nil {
 		fmt.Println("Elasticsearch connection error:", err)
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch connection error", fmt.Sprintf("%v", err))
 	}
 
 	// Create a new query string for the Elasticsearch method call
@@ -113,7 +115,8 @@ func MatchSearch(dateNow string) (transactions []models.Transaction, err error) 
 	// Attempt to encode the JSON query and look for errors
 	if err := json.NewEncoder(&buf).Encode(read); err != nil {
 		log.Fatalf("json.NewEncoder() ERROR:", err)
-
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(client, filename, function, line, "json.NewEncoder() ERROR", fmt.Sprintf("%v", err))
 		// Query is a valid JSON object
 	} else {
 		fmt.Println("json.NewEncoder encoded query:", read, "\n")
@@ -129,6 +132,8 @@ func MatchSearch(dateNow string) (transactions []models.Transaction, err error) 
 		// Check for any errors returned by API call to Elasticsearch
 		if err != nil {
 			log.Fatalf("Elasticsearch Search() API ERROR:", err)
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(client, filename, function, line, "Elasticsearch Search() API ERROR", fmt.Sprintf("%v", err))
 
 			// If no errors are returned, parse esapi.Response object
 		} else {

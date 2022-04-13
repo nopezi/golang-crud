@@ -25,14 +25,9 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 
 // CreateTransaction call to create the Transaction
 func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (response responses.TransactionCreateResponse, err error) {
-	// refCode := lib.GenerateReferenceNumber()
+
 	requestSequence := requests.ReferenceSequenceRequest{}
 	model := models.Transaction{}
-	// find prefix Transaction.Prefix in index reference_sequence
-	// if exist increment sequence
-	// if not exist create new
-	// createReference
-	// Find sequence with param prefix and  prefix + 00000 +sequence
 
 	referenceSequence, status := s.repository.FindPrefixReferenceSequence(Transaction.Prefix)
 	// fmt.Println("From CreateReferenceSequence before create", referenceSequence)
@@ -47,11 +42,11 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		// if err != nil {
-		// 	filename, function, line := helper.WhereAmI()
-		// 	lib.CreateLogErrorToDB(dbdefault, filename, function, line, "Truncate Table tbl_report_usulan_bi Gagal", fmt.Sprintf("#{err}"))
-		// 	return false
-		// }
+		if err != nil {
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "Delete Index Gagal", fmt.Sprintf("%v", err))
+			return response, err
+		}
 	} else {
 		requestSequence = requests.ReferenceSequenceRequest{
 			Prefix:   Transaction.Prefix,
@@ -64,6 +59,11 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 	if err != nil {
 		response = responses.TransactionCreateResponse{
 			ReferenceCode: "",
+		}
+		if err != nil {
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateReferenceSequence Gagal", fmt.Sprintf("%v", err))
+			return response, err
 		}
 		return response, err
 	} else {
@@ -85,6 +85,8 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 
 		_, err = s.repository.CreateTransaction(transaction)
 		if err != nil {
+			filename, function, line := lib.WhereAmI()
+			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateTransaction Gagal", fmt.Sprintf("%v", err))
 			return response, err
 		}
 
@@ -112,6 +114,11 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 	}
 
 	referenceCode, err := s.repository.UpdateTransaction(transaction)
+	if err != nil {
+		filename, function, line := lib.WhereAmI()
+		lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "UpdateTransaction Gagal", fmt.Sprintf("%v", err))
+		return response, err
+	}
 
 	response = responses.TransactionCreateResponse{
 		ReferenceCode: referenceCode,

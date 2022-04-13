@@ -20,7 +20,7 @@ import (
 
 // TransactionRepository database structure
 type TransactionRepository struct {
-	elastic lib.Elasticsearch
+	Elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -28,7 +28,7 @@ type TransactionRepository struct {
 // NewTransactionRepository creates a new Transaction repository
 func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
 	return TransactionRepository{
-		elastic: elastic,
+		Elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 10,
 	}
@@ -52,7 +52,7 @@ func (r TransactionRepository) CreateTransaction(Transaction requests.Transactio
 	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
 	defer cancel()
 
-	res, err := req.Do(ctx, r.elastic.Client)
+	res, err := req.Do(ctx, r.Elastic.Client)
 	if err != nil {
 		return "", fmt.Errorf("insert: request: %w", err)
 	}
@@ -92,7 +92,7 @@ func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction)
 	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
 	defer cancel()
 
-	res, err := req.Do(ctx, r.elastic.Client)
+	res, err := req.Do(ctx, r.Elastic.Client)
 	if err != nil {
 		return "", fmt.Errorf("insert: request: %w", err)
 	}
@@ -124,7 +124,7 @@ func (r TransactionRepository) DeleteIndex(index string, id string) (status bool
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
 	defer cancel()
-	resDelete, err := reqDelete.Do(ctx, r.elastic.Client)
+	resDelete, err := reqDelete.Do(ctx, r.Elastic.Client)
 	if err != nil {
 		return false, fmt.Errorf("insert: request: %w", err)
 	}
@@ -151,12 +151,12 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 		log.Printf("Error encoding query: %s", err)
 	}
 
-	res, err := r.elastic.Client.Search(
-		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
-		r.elastic.Client.Search.WithBody(&buf),
-		r.elastic.Client.Search.WithTrackTotalHits(true),
-		r.elastic.Client.Search.WithPretty(),
+	res, err := r.Elastic.Client.Search(
+		r.Elastic.Client.Search.WithContext(context.Background()),
+		r.Elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
+		r.Elastic.Client.Search.WithBody(&buf),
+		r.Elastic.Client.Search.WithTrackTotalHits(true),
+		r.Elastic.Client.Search.WithPretty(),
 	)
 
 	if err != nil {
@@ -250,12 +250,12 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 		log.Printf("Error encoding query: %s", err)
 	}
 
-	res, err := r.elastic.Client.Search(
-		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
-		r.elastic.Client.Search.WithBody(&buf),
-		r.elastic.Client.Search.WithTrackTotalHits(true),
-		r.elastic.Client.Search.WithPretty(),
+	res, err := r.Elastic.Client.Search(
+		r.Elastic.Client.Search.WithContext(context.Background()),
+		r.Elastic.Client.Search.WithIndex(transaction.IndexTransactionOpen()),
+		r.Elastic.Client.Search.WithBody(&buf),
+		r.Elastic.Client.Search.WithTrackTotalHits(true),
+		r.Elastic.Client.Search.WithPretty(),
 	)
 
 	if err != nil {
@@ -338,7 +338,7 @@ func (r TransactionRepository) CreateReferenceSequence(referenceSequence request
 	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
 	defer cancel()
 
-	res, err := req.Do(ctx, r.elastic.Client)
+	res, err := req.Do(ctx, r.Elastic.Client)
 	if err != nil {
 		return responseSequence, fmt.Errorf("insert: request: %w", err)
 	}
@@ -367,12 +367,12 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 		log.Printf("Error encoding query: %s", err)
 	}
 
-	res, err := r.elastic.Client.Search(
-		r.elastic.Client.Search.WithContext(context.Background()),
-		r.elastic.Client.Search.WithIndex(transaction.IndexReferenceSequence()),
-		r.elastic.Client.Search.WithBody(&buf),
-		r.elastic.Client.Search.WithTrackTotalHits(true),
-		r.elastic.Client.Search.WithPretty(),
+	res, err := r.Elastic.Client.Search(
+		r.Elastic.Client.Search.WithContext(context.Background()),
+		r.Elastic.Client.Search.WithIndex(transaction.IndexReferenceSequence()),
+		r.Elastic.Client.Search.WithBody(&buf),
+		r.Elastic.Client.Search.WithTrackTotalHits(true),
+		r.Elastic.Client.Search.WithPretty(),
 	)
 
 	if err != nil {
