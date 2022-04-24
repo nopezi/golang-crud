@@ -3,6 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/joho/godotenv"
+	"eform-gateway/lib"
+	"os"
 )
 
 var (
@@ -20,18 +23,21 @@ func DoctorCmd() *cobra.Command {
 }
 
 func doctorPreRun(cmd *cobra.Command, args []string) {
-	// log.LogInit()
-
-	// if env.Get() == env.EnvDevelopment {
-	// 	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
-	// 	log.Level("debug")
-	// }
 	fmt.Println("doctor Pre RUN")
 }
 
 func runDoctor(cmd *cobra.Command, args []string) error {
-	// _ = godotenv.Load()
-	// fx.New(bootstrap.Module).Run()
-	fmt.Println("doctor RUN")
+	fmt.Println("Go Doctor")
+	_ = godotenv.Load()
+	
+	url := os.Getenv("DBEHost")
+	username := os.Getenv("DBEUsername")
+	password := os.Getenv("DBEPassword")
+
+	_, err := lib.New([]string{url}, username, password)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	return nil
 }
