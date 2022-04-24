@@ -23,11 +23,13 @@ func DoctorCmd() *cobra.Command {
 }
 
 func doctorPreRun(cmd *cobra.Command, args []string) {
-	fmt.Println("doctor Pre RUN")
+	// fmt.Println("doctor Pre RUN")
 }
 
 func runDoctor(cmd *cobra.Command, args []string) error {
-	fmt.Println("Go Doctor")
+	lib.LogInfo("----------------------------------------")
+	lib.LogInfo("----------- Go Doctor ------------------")
+	lib.LogInfo("----------------------------------------")
 	_ = godotenv.Load()
 	
 	url := os.Getenv("DBEHost")
@@ -38,6 +40,6 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-
+	lib.LogInfo("----------------------------------------")
 	return nil
 }
