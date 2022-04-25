@@ -7,7 +7,7 @@ var Module = fx.Options(
 	fx.Provide(NewCorsMiddleware),
 	fx.Provide(NewJWTAuthMiddleware),
 	// 6
-	// fx.Provide(NewDatabaseTrx),
+	fx.Provide(NewDatabaseTrx),
 	fx.Provide(NewMiddlewares),
 	fx.Provide(NewLogActivityMiddleware),
 )

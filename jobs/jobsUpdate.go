@@ -161,6 +161,8 @@ func MatchSearch(dateNow string) (transactions []models.Transaction, err error) 
 				expiredDate := source.(map[string]interface{})["expiredDate"]
 				referenceCode := source.(map[string]interface{})["referenceCode"]
 				status := source.(map[string]interface{})["status"]
+				created := source.(map[string]interface{})["created"]
+				lastUpdate := source.(map[string]interface{})["lastUpdate"]
 
 				transactions = append(transactions, models.Transaction{
 					Id:            id.(string),
@@ -170,6 +172,8 @@ func MatchSearch(dateNow string) (transactions []models.Transaction, err error) 
 					ExpiredDate:   expiredDate.(string),
 					ReferenceCode: referenceCode.(string),
 					Status:        status.(string),
+					Created:       created.(string),
+					LastUpdate:    lastUpdate.(string),
 				})
 				log.Println(strings.Repeat("=>", 37))
 			}

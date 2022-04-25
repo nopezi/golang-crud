@@ -75,6 +75,8 @@ func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction)
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
 		Status:        Transaction.Status,
+		Created:       Transaction.Created,
+		LastUpdate:    Transaction.LastUpdate,
 	}
 
 	// Create data
@@ -205,6 +207,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 		expiredDate := source.(map[string]interface{})["expiredDate"]
 		referenceCode := source.(map[string]interface{})["referenceCode"]
 		status := source.(map[string]interface{})["status"]
+		created := source.(map[string]interface{})["created"]
+		lastUpdate := source.(map[string]interface{})["lastUpdate"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
@@ -214,6 +218,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),
 			Status:        status.(string),
+			Created:       created.(string),
+			LastUpdate:    lastUpdate.(string),
 		}
 
 		log.Println(strings.Repeat("=>", 37))
@@ -229,6 +235,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 			ExpiredDate:   "",
 			ReferenceCode: "",
 			Status:        "",
+			Created:       "",
+			LastUpdate:    "",
 		}
 		return transaction, false
 	}
@@ -302,6 +310,8 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 		expiredDate := source.(map[string]interface{})["expiredDate"]
 		referenceCode := source.(map[string]interface{})["referenceCode"]
 		status := source.(map[string]interface{})["status"]
+		created := source.(map[string]interface{})["created"]
+		lastUpdate := source.(map[string]interface{})["lastUpdate"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
@@ -311,6 +321,8 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),
 			Status:        status.(string),
+			Created:       created.(string),
+			LastUpdate:    lastUpdate.(string),
 		}
 
 		// fmt.Println(transaction)

@@ -7,6 +7,8 @@ type TransactionRequest struct {
 	Data          interface{} `json:"data" binding:"required"`
 	ReferenceCode string      `json:"referenceCode"`
 	Status        string      `json:"status"`
+	Created       string      `json:"created"`
+	LastUpdate    string      `json:"lastUpdate"`
 }
 
 type Data map[string]interface{}

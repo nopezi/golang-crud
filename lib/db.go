@@ -42,10 +42,12 @@ func NewDatabase(env Env, zapLogger Logger) Database {
 
 	if err != nil {
 		zapLogger.Zap.Info("Url: ", url)
+		LogChecklist("Mysql Connection Refused", false)
 		zapLogger.Zap.Panic(err)
 	}
 
-	zapLogger.Zap.Info("Database connection established")
+	// zapLogger.Zap.Info("Database connection established")
+	LogChecklist("Mysql Connection Established", true)
 
 	return Database{
 		DB: db,

@@ -81,6 +81,7 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 			ExpiredDate:   Transaction.ExpiredDate,
 			ReferenceCode: referenceCode,
 			Status:        "Open",
+			Created:       lib.GetTimeNow("timestime"),
 		}
 
 		_, err = s.repository.CreateTransaction(transaction)
@@ -111,6 +112,8 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
 		Status:        "Executed",
+		Created:       Transaction.Created,
+		LastUpdate:    lib.GetTimeNow("timestime"),
 	}
 
 	referenceCode, err := s.repository.UpdateTransaction(transaction)
