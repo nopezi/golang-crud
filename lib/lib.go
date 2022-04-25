@@ -8,6 +8,6 @@ var Module = fx.Options(
 	fx.Provide(NewEnv),
 	fx.Provide(NewLogger),
 	// 5
-	// fx.Provide(NewDatabase),
+	fx.Provide(NewDatabase),
 	fx.Provide(NewElastic),
 )

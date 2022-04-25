@@ -32,11 +32,11 @@ func bootstrap(
 	logger lib.Logger,
 	middlewares middlewares.Middlewares,
 	// 1
-	// database lib.Database,
+	database lib.Database,
 	elastic lib.Elasticsearch,
 ) {
 	// 2
-	// conn, _ := database.DB.DB()
+	conn, _ := database.DB.DB()
 
 	// fmt.Println("conn2.Index=>>>>>>>>.", elastic)
 	lifecycle.Append(fx.Hook{
@@ -47,7 +47,7 @@ func bootstrap(
 			logger.Zap.Info("---------------------")
 
 			// 3
-			// conn.SetMaxOpenConns(10)
+			conn.SetMaxOpenConns(10)
 
 			go func() {
 				middlewares.Setup()
@@ -59,7 +59,7 @@ func bootstrap(
 		OnStop: func(context.Context) error {
 			logger.Zap.Info("Stopping Application")
 			// 4
-			// conn.Close()
+			conn.Close()
 			return nil
 		},
 	})

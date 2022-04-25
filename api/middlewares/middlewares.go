@@ -25,13 +25,13 @@ type Middlewares []IMiddleware
 func NewMiddlewares(
 	corsMiddleware CorsMiddleware,
 	// 7
-	// dbTrxMiddleware DatabaseTrx,
+	dbTrxMiddleware DatabaseTrx,
 	logActivityMiddleware LogActivityMiddleware,
 ) Middlewares {
 	return Middlewares{
 		corsMiddleware,
 		// 8
-		// dbTrxMiddleware,
+		dbTrxMiddleware,
 		logActivityMiddleware,
 	}
 }
