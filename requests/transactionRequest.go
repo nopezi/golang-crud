@@ -24,6 +24,7 @@ type InquiryRequest struct {
 }
 
 type ReferenceSequenceRequest struct {
+	Id       int64  `json:"id"`
 	Prefix   string `json:"prefix"`
 	Sequence int64  `json:"sequence"`
 }

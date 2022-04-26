@@ -16,18 +16,22 @@ import (
 	"time"
 
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 )
 
 // TransactionRepository database structure
 type TransactionRepository struct {
+	db      lib.Database
 	Elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
 
 // NewTransactionRepository creates a new Transaction repository
-func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
+func NewTransactionRepository(db lib.Database, elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
 	return TransactionRepository{
+		db:      db,
 		Elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 10,
@@ -440,7 +444,7 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 		// log.Println(sequence)
 
 		response = responses.ReferenceSequenceResponse{
-			Id:       id.(string),
+			Id:       id.(int64),
 			Prefix:   pref.(string),
 			Sequence: sequence64,
 		}
@@ -457,4 +461,67 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 		return response, true
 	}
 
+}
+
+func (r TransactionRepository) WithTrx(trxHandle *gorm.DB) TransactionRepository {
+	if trxHandle == nil {
+		r.logger.Zap.Error("Transaction Database not found in gin context. ")
+		return r
+	}
+	r.db.DB = trxHandle
+	return r
+}
+
+func (r TransactionRepository) GetPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
+	var transaction models.ReferenceCodeCounter
+	err := r.db.DB.Where("prefix = ?", param).First(&transaction).Error
+
+	copy := copier.Copy(&response, &transaction)
+	if copy != nil {
+		return response, false
+	}
+
+	if err == nil {
+		fmt.Println("true")
+		return response, true
+	} else {
+		fmt.Println("false")
+		return response, false
+	}
+
+}
+
+func (r TransactionRepository) CreateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+	referenceCodeCounter := models.ReferenceCodeCounter{
+		Prefix:   referenceSequence.Prefix,
+		Sequence: referenceSequence.Sequence,
+	}
+	err = r.db.DB.Create(&referenceCodeCounter).Error
+
+	copy := copier.Copy(&responseSequence, &referenceCodeCounter)
+	if copy != nil {
+		return responseSequence, err
+	}
+
+	return responseSequence, err
+}
+
+func (r TransactionRepository) UpdateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+	referenceCodeCounter := models.ReferenceCodeCounter{
+		Id:       referenceSequence.Id,
+		Prefix:   referenceSequence.Prefix,
+		Sequence: referenceSequence.Sequence,
+	}
+	err = r.db.DB.Save(&referenceCodeCounter).Error
+	copy := copier.Copy(&responseSequence, &referenceCodeCounter)
+	if copy != nil {
+		return responseSequence, err
+	}
+
+	return responseSequence, err
+}
+
+// GetOne gets ont user
+func (r TransactionRepository) GetOne(param string) (counter models.ReferenceCodeCounter, err error) {
+	return counter, r.db.DB.Where("prefix = ?", param).First(&counter).Error
 }

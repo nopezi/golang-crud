@@ -25,38 +25,33 @@ func NewTransactionService(logger lib.Logger, repository repository.TransactionR
 
 // CreateTransaction call to create the Transaction
 func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (response responses.TransactionCreateResponse, err error) {
-
 	requestSequence := requests.ReferenceSequenceRequest{}
-	model := models.Transaction{}
+	referenceSequence, status := s.repository.GetPrefixReferenceSequence(Transaction.Prefix)
 
-	referenceSequence, status := s.repository.FindPrefixReferenceSequence(Transaction.Prefix)
-	// fmt.Println("From CreateReferenceSequence before create", referenceSequence)
+	fmt.Println("referenceSequence =>", referenceSequence)
+	fmt.Println("status =>", status)
+
+	var errCounter error
+	var dataCounter responses.ReferenceSequenceResponse
+
 	if status {
 		requestSequence = requests.ReferenceSequenceRequest{
-			Prefix:   Transaction.Prefix,
+			Id:       referenceSequence.Id,
+			Prefix:   referenceSequence.Prefix,
 			Sequence: referenceSequence.Sequence + 1,
 		}
-
-		_, err := s.repository.DeleteIndex(model.IndexReferenceSequence(), referenceSequence.Id)
-		// fmt.Println("Delete Index=>", data, err)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		if err != nil {
-			filename, function, line := lib.WhereAmI()
-			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "Delete Index Gagal", fmt.Sprintf("%v", err))
-			return response, err
-		}
+		dataCounter, errCounter = s.repository.UpdateReferenceCounter(requestSequence)
 	} else {
 		requestSequence = requests.ReferenceSequenceRequest{
 			Prefix:   Transaction.Prefix,
 			Sequence: 1,
 		}
-		fmt.Println("false, =>>", requestSequence)
+		dataCounter, errCounter = s.repository.CreateReferenceCounter(requestSequence)
 	}
 
-	_, err = s.repository.CreateReferenceSequence(requestSequence)
-	if err != nil {
+	fmt.Println("errCounter", errCounter)
+	fmt.Println("dataCounter", dataCounter)
+	if errCounter != nil {
 		response = responses.TransactionCreateResponse{
 			ReferenceCode: "",
 		}
@@ -67,13 +62,11 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 		}
 		return response, err
 	} else {
-		sequences, _ := s.repository.FindPrefixReferenceSequence(requestSequence.Prefix)
-		// fmt.Println("From CreateReferenceSequence after create", sequences)
+		// sequences, _ := s.repository.GetPrefixReferenceSequence(requestSequence.Prefix)
 
-		sequencePadLeft := lib.StrPadLeft(fmt.Sprint(sequences.Sequence+1), 8, "0")
-		referenceCode := Transaction.Prefix + sequencePadLeft
-		// fmt.Println("referenceCode", referenceCode)
-		// Create Transaction
+		sequencePadLeft := lib.StrPadLeft(fmt.Sprint(dataCounter.Sequence), 8, "0")
+		referenceCode := dataCounter.Prefix + sequencePadLeft
+
 		transaction := requests.TransactionRequest{
 			Appname:       Transaction.Appname,
 			Prefix:        Transaction.Prefix,
