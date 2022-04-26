@@ -84,3 +84,9 @@ func TestCreateTransaction(t *testing.T) {
 		t.Errorf("expected %q but got %q", expected, repeatedCount)
 	}
 }
+
+func BenchmarkCreateTransaction(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+
+	}
+}
