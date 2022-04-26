@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"eform-gateway/jobs"
 
@@ -11,6 +12,9 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type JobService struct {
@@ -38,27 +42,35 @@ func jobsRemovePreRun(cmd *cobra.Command, args []string) {
 }
 
 func jobRemoveRun(cmd *cobra.Command, args []string) error {
-	var job JobService
+	username := os.Getenv("DBUsername")
+	password := os.Getenv("DBPassword")
+	host := os.Getenv("DBHost")
+	port := os.Getenv("DBPort")
+	dbname := os.Getenv("DBName")
 
-	url := os.Getenv("DBEHost")
-	username := os.Getenv("DBEUsername")
-	password := os.Getenv("DBEPassword")
-	elastic, err := lib.New([]string{url}, username, password)
+	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
+
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold: time.Second,
+			LogLevel:      logger.Info,
+			Colorful:      true,
+		},
+	)
+
+	db, err := gorm.Open(mysql.Open(url), &gorm.Config{
+		Logger: newLogger,
+	})
+
 	if err != nil {
-		log.Fatalln(err)
+		lib.LogChecklist("Mysql Connection Refused", false)
 	}
 
-	_ = jobs.NewJobRepository(elastic)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	lib.LogChecklist("Mysql Connection Established", true)
 
-	// err = job.jobRepository.JobsRemove(elastic)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-	_ = job.jobRepository.JobsRemove()
+	result := db.Exec("truncate table reference_code_counters;")
+	fmt.Println(result)
 
 	return nil
 }
