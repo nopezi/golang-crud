@@ -9,6 +9,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"go.uber.org/fx"
+	"github.com/gavv/httpexpect/v2"
 )
 
 type Data struct {
@@ -90,3 +91,31 @@ func BenchmarkCreateTransaction(b *testing.B) {
 
 	}
 }
+
+// invoke http.Handler directly using httpexpect.Binder
+var handler http.Handler = MyHandler()
+
+e := httpexpect.WithConfig(httpexpect.Config{
+	// prepend this url to all requests, required for cookies
+	// to be handled correctly
+	BaseURL: "http://example.com",
+	Reporter: httpexpect.NewAssertReporter(t),
+	Client: &http.Client{
+		Transport: httpexpect.NewBinder(handler),
+		Jar:       httpexpect.NewJar(),
+	},
+})
+
+// invoke fasthttp.RequestHandler directly using httpexpect.FastBinder
+var handler fasthttp.RequestHandler = myHandler()
+
+e := httpexpect.WithConfig(httpexpect.Config{
+	// prepend this url to all requests, required for cookies
+	// to be handled correctly
+	BaseURL: "http://example.com",
+	Reporter: httpexpect.NewAssertReporter(t),
+	Client: &http.Client{
+		Transport: httpexpect.NewFastBinder(handler),
+		Jar:       httpexpect.NewJar(),
+	},
+})
