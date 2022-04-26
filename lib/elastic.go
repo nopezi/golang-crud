@@ -29,14 +29,16 @@ func NewElastic(env Env, zapLogger Logger) Elasticsearch {
 		},
 	}
 
-	client, err := elastic.NewClient(cfg)
-
+	client, _ := elastic.NewClient(cfg)
+	_, err := client.Info()
 	if err != nil {
 		zapLogger.Zap.Info("Url: ", url)
 		zapLogger.Zap.Panic(err)
-		zapLogger.Zap.Info("elastic connection failed")
+		LogChecklist("Elasticsearch Connection Refused", false)
 	}
-	zapLogger.Zap.Info("elastic connection established")
+
+	// fmt.Println("info", info)
+	LogChecklist("Elasticsearch Connection Established", true)
 	return Elasticsearch{
 		Client: client,
 	}

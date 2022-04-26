@@ -16,18 +16,22 @@ import (
 	"time"
 
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 )
 
 // TransactionRepository database structure
 type TransactionRepository struct {
+	db      lib.Database
 	Elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
 
 // NewTransactionRepository creates a new Transaction repository
-func NewTransactionRepository(elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
+func NewTransactionRepository(db lib.Database, elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
 	return TransactionRepository{
+		db:      db,
 		Elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 10,
@@ -75,6 +79,8 @@ func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction)
 		ExpiredDate:   Transaction.ExpiredDate,
 		ReferenceCode: Transaction.ReferenceCode,
 		Status:        Transaction.Status,
+		Created:       Transaction.Created,
+		LastUpdate:    Transaction.LastUpdate,
 	}
 
 	// Create data
@@ -205,6 +211,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 		expiredDate := source.(map[string]interface{})["expiredDate"]
 		referenceCode := source.(map[string]interface{})["referenceCode"]
 		status := source.(map[string]interface{})["status"]
+		created := source.(map[string]interface{})["created"]
+		lastUpdate := source.(map[string]interface{})["lastUpdate"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
@@ -214,6 +222,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),
 			Status:        status.(string),
+			Created:       created.(string),
+			LastUpdate:    lastUpdate.(string),
 		}
 
 		log.Println(strings.Repeat("=>", 37))
@@ -229,6 +239,8 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 			ExpiredDate:   "",
 			ReferenceCode: "",
 			Status:        "",
+			Created:       "",
+			LastUpdate:    "",
 		}
 		return transaction, false
 	}
@@ -302,6 +314,8 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 		expiredDate := source.(map[string]interface{})["expiredDate"]
 		referenceCode := source.(map[string]interface{})["referenceCode"]
 		status := source.(map[string]interface{})["status"]
+		created := source.(map[string]interface{})["created"]
+		lastUpdate := source.(map[string]interface{})["lastUpdate"]
 
 		transaction = models.Transaction{
 			Id:            id.(string),
@@ -311,6 +325,8 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 			ExpiredDate:   expiredDate.(string),
 			ReferenceCode: referenceCode.(string),
 			Status:        status.(string),
+			Created:       created.(string),
+			LastUpdate:    lastUpdate.(string),
 		}
 
 		// fmt.Println(transaction)
@@ -428,7 +444,7 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 		// log.Println(sequence)
 
 		response = responses.ReferenceSequenceResponse{
-			Id:       id.(string),
+			Id:       id.(int64),
 			Prefix:   pref.(string),
 			Sequence: sequence64,
 		}
@@ -445,4 +461,67 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 		return response, true
 	}
 
+}
+
+func (r TransactionRepository) WithTrx(trxHandle *gorm.DB) TransactionRepository {
+	if trxHandle == nil {
+		r.logger.Zap.Error("Transaction Database not found in gin context. ")
+		return r
+	}
+	r.db.DB = trxHandle
+	return r
+}
+
+func (r TransactionRepository) GetPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
+	var transaction models.ReferenceCodeCounter
+	err := r.db.DB.Where("prefix = ?", param).First(&transaction).Error
+
+	copy := copier.Copy(&response, &transaction)
+	if copy != nil {
+		return response, false
+	}
+
+	if err == nil {
+		fmt.Println("true")
+		return response, true
+	} else {
+		fmt.Println("false")
+		return response, false
+	}
+
+}
+
+func (r TransactionRepository) CreateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+	referenceCodeCounter := models.ReferenceCodeCounter{
+		Prefix:   referenceSequence.Prefix,
+		Sequence: referenceSequence.Sequence,
+	}
+	err = r.db.DB.Create(&referenceCodeCounter).Error
+
+	copy := copier.Copy(&responseSequence, &referenceCodeCounter)
+	if copy != nil {
+		return responseSequence, err
+	}
+
+	return responseSequence, err
+}
+
+func (r TransactionRepository) UpdateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+	referenceCodeCounter := models.ReferenceCodeCounter{
+		Id:       referenceSequence.Id,
+		Prefix:   referenceSequence.Prefix,
+		Sequence: referenceSequence.Sequence,
+	}
+	err = r.db.DB.Save(&referenceCodeCounter).Error
+	copy := copier.Copy(&responseSequence, &referenceCodeCounter)
+	if copy != nil {
+		return responseSequence, err
+	}
+
+	return responseSequence, err
+}
+
+// GetOne gets ont user
+func (r TransactionRepository) GetOne(param string) (counter models.ReferenceCodeCounter, err error) {
+	return counter, r.db.DB.Where("prefix = ?", param).First(&counter).Error
 }

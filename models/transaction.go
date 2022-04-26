@@ -38,9 +38,9 @@ type TransactionExecuted struct {
 }
 
 type ReferenceCodeCounter struct {
-	Id      string
-	Prefix  string `json:"prefix"`
-	Counter string `json:"counter"`
+	Id       int64  `json:"id"`
+	Prefix   string `json:"prefix"`
+	Sequence int64  `json:"sequence"`
 }
 
 type LogAccess struct {

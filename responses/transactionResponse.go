@@ -20,7 +20,7 @@ type TransactionCreateResponse struct {
 type Data interface{}
 
 type ReferenceSequenceResponse struct {
-	Id            string `json:"id"`
+	Id            int64  `json:"id"`
 	Prefix        string `json:"prefix"`
 	Sequence      int64  `json:"sequence"`
 	ReferenceCode string `json:"referenceCode"`

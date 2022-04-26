@@ -7,6 +7,7 @@ import (
 	// seeder "pab-admin/cmd/database/seeder"
 	jobs "eform-gateway/cmd/jobs"
 	http "eform-gateway/cmd/http"
+	doctor "eform-gateway/cmd/doctor"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -37,6 +38,13 @@ func Execute() {
 
 	jobs.JobsRemoveCmd().Flags().StringP("config", "c", "config/file", "Config URL dir i.e. config/file")
 	jobs.JobsRemoveCmd().Flags().StringP("env", "e", "", "Config env file")
+
+	rootCmd.AddCommand(doctor.DoctorCmd())
+
+	doctor.DoctorCmd().Flags().StringP("config", "c", "config/file", "Config URL dir i.e. config/file")
+	doctor.DoctorCmd().Flags().StringP("env", "e", "", "Config env file")
+
+	
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatalln("Error: \n", err.Error())

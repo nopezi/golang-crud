@@ -60,12 +60,15 @@ Trying to implement clean architecture with gin framework.
       - inquery where reference_code and status = Open
       - Note : 
       - [x] querynya baru by ref_code,
-- [ ] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
+- [x] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
       - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
+- [x] crontjob remove index reference_sequence
+- [x] revisi code to status http
 - [ ] Create TDD testing random refcode loop sejuta
-<!-- - [ ] Cronjob reset reference_sequence when transaction open expired by date_expired -->
-- [ ] crontjob remove index reference_sequence
-- [ ] revisi code to status http
+- [ ] Create cmd docker
+      - [ ] check connection elasticsearch
+      - [ ] check connection mysql
+- [ ] create endpoint to update env with authorization
 ### Feature Eform
 - index elastic, 
   - logs
@@ -75,26 +78,7 @@ Trying to implement clean architecture with gin framework.
             - Open,
             - Expired 
             - Executed
-### Response Code
-- 00 Inquiry Berhasil
-      	$result->responseCode = '00';
-				$result->responseDesc = 'Inquiry data berhasil.';
-				$result->responseData = $getdata->result();
 
-- 02 Data Tidak Ditemukan
-      	$result->responseCode = '02';
-				$result->responseDesc = 'Data tidak ditemukan.';
-				$result->responseData = array();
-
-- 04 exc: + Message Error
-      $result->responseCode = '04';
-			$result->responseDesc = 'exc:' . $e->getMessage();
-      $result->responseData = array();
-- 97
-    responseCode' => '97', 'responseDesc' => 'Unknown Request Method[' . $datapost->requestMethod . ']', responseCode' => '97', 'responseDesc' => 'Unknown Request Method);
-- 98 
-  responseCode' => '99', 'responseDesc' => 'Access Forbidden', 'responseData' => array()
-  responseCode' => '98', 'responseDesc' => 'Request Method Undefined', 'responseData' => array()
 ### Elasticsearch Reference
 http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
 https://github.com/codenoid/golang-elasticsearch-crud

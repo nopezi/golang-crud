@@ -18,6 +18,7 @@ require (
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.1.0
+	github.com/fatih/color v1.13.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -47,5 +48,6 @@ require (
 require (
 	github.com/elastic/elastic-transport-go/v8 v8.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 )

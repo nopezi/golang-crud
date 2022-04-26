@@ -2,7 +2,6 @@ package lib
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 
 	"github.com/elastic/go-elasticsearch/v8"
@@ -22,11 +21,14 @@ func New(addresses []string, username string, password string) (*elasticsearch.C
 		},
 	}
 
-	client, err := elasticsearch.NewClient(cfg)
+	client, _ := elasticsearch.NewClient(cfg)
+	_, err := client.Info()
 	if err != nil {
-		fmt.Println("elastic connection failed")
+		LogChecklist("Elasticsearch Connection Refused", false)
 		return client, err
 	}
-	fmt.Println("elastic connection established")
+	// fmt.Println("info", info)
+	// fmt.Println("err", err)
+	LogChecklist("Elasticsearch Connection Established", true)
 	return client, nil
 }
