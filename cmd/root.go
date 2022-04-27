@@ -3,11 +3,13 @@ package cmd
 import (
 	"log"
 	"os"
+
 	// migration "pab-admin/cmd/database/migration"
 	// seeder "pab-admin/cmd/database/seeder"
-	jobs "eform-gateway/cmd/jobs"
-	http "eform-gateway/cmd/http"
 	doctor "eform-gateway/cmd/doctor"
+	http "eform-gateway/cmd/http"
+	jobs "eform-gateway/cmd/jobs"
+	counter "eform-gateway/cmd/test-counter"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -44,7 +46,7 @@ func Execute() {
 	doctor.DoctorCmd().Flags().StringP("config", "c", "config/file", "Config URL dir i.e. config/file")
 	doctor.DoctorCmd().Flags().StringP("env", "e", "", "Config env file")
 
-	
+	rootCmd.AddCommand(counter.CounterCmd())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatalln("Error: \n", err.Error())
