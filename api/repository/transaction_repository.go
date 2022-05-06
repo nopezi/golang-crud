@@ -20,17 +20,32 @@ import (
 	"gorm.io/gorm"
 )
 
-// TransactionRepository database structure
-type TransactionRepository struct {
+type TransactionRepository interface {
+	CreateTransaction(Transaction requests.TransactionRequest) (referenceCode string, err error)
+	UpdateTransaction(Transaction models.Transaction) (string, error)
+	DeleteIndex(index string, id string) (status bool, err error)
+	InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction, notFound bool)
+	MatchSearch(param string) (transaction models.Transaction)
+	CreateReferenceSequence(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error)
+	FindPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool)
+	WithTrx(trxHandle *gorm.DB) TransactionRepositoryContext
+	GetPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool)
+	CreateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error)
+	UpdateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error)
+	GetOne(param string) (counter models.ReferenceCodeCounter, err error)
+}
+
+// TransactionRepositoryContext database structure
+type TransactionRepositoryContext struct {
 	db      lib.Database
 	Elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
 
-// NewTransactionRepository creates a new Transaction repository
+// NewTransactionRepositoryContext creates a new Transaction repository
 func NewTransactionRepository(db lib.Database, elastic lib.Elasticsearch, logger lib.Logger) TransactionRepository {
-	return TransactionRepository{
+	return TransactionRepositoryContext{
 		db:      db,
 		Elastic: elastic,
 		logger:  logger,
@@ -39,7 +54,7 @@ func NewTransactionRepository(db lib.Database, elastic lib.Elasticsearch, logger
 }
 
 // Create Transaction
-func (r TransactionRepository) CreateTransaction(Transaction requests.TransactionRequest) (referenceCode string, err error) {
+func (r TransactionRepositoryContext) CreateTransaction(Transaction requests.TransactionRequest) (referenceCode string, err error) {
 	model := models.Transaction{}
 	bdy, err := json.Marshal(Transaction)
 	if err != nil {
@@ -70,7 +85,7 @@ func (r TransactionRepository) CreateTransaction(Transaction requests.Transactio
 }
 
 // UpdateToExecuted
-func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction) (string, error) {
+func (r TransactionRepositoryContext) UpdateTransaction(Transaction models.Transaction) (string, error) {
 
 	transaction := requests.TransactionRequest{
 		Appname:       Transaction.Appname,
@@ -121,7 +136,7 @@ func (r TransactionRepository) UpdateTransaction(Transaction models.Transaction)
 	return transaction.ReferenceCode, err
 }
 
-func (r TransactionRepository) DeleteIndex(index string, id string) (status bool, err error) {
+func (r TransactionRepositoryContext) DeleteIndex(index string, id string) (status bool, err error) {
 	// Delete by Id
 	reqDelete := esapi.DeleteRequest{
 		Index:      index,
@@ -142,7 +157,7 @@ func (r TransactionRepository) DeleteIndex(index string, id string) (status bool
 	return true, err
 }
 
-func (r TransactionRepository) InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction, notFound bool) {
+func (r TransactionRepositoryContext) InquiryTransaction(request requests.InquiryRequest) (transaction models.Transaction, notFound bool) {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
@@ -248,7 +263,7 @@ func (r TransactionRepository) InquiryTransaction(request requests.InquiryReques
 	return transaction, true
 }
 
-func (r TransactionRepository) MatchSearch(param string) (transaction models.Transaction) {
+func (r TransactionRepositoryContext) MatchSearch(param string) (transaction models.Transaction) {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
@@ -337,7 +352,7 @@ func (r TransactionRepository) MatchSearch(param string) (transaction models.Tra
 }
 
 // CreateReferenceSequence
-func (r TransactionRepository) CreateReferenceSequence(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+func (r TransactionRepositoryContext) CreateReferenceSequence(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
 	model := models.Transaction{}
 	// sequences := responses.ReferenceSequenceResponse{}
 	bdy, err := json.Marshal(referenceSequence)
@@ -368,7 +383,7 @@ func (r TransactionRepository) CreateReferenceSequence(referenceSequence request
 	return responseSequence, err
 }
 
-func (r TransactionRepository) FindPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
+func (r TransactionRepositoryContext) FindPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
 	var transaction models.Transaction
 	var buf bytes.Buffer
 	query := map[string]interface{}{
@@ -463,7 +478,7 @@ func (r TransactionRepository) FindPrefixReferenceSequence(param string) (respon
 
 }
 
-func (r TransactionRepository) WithTrx(trxHandle *gorm.DB) TransactionRepository {
+func (r TransactionRepositoryContext) WithTrx(trxHandle *gorm.DB) TransactionRepositoryContext {
 	if trxHandle == nil {
 		r.logger.Zap.Error("Transaction Database not found in gin context. ")
 		return r
@@ -472,7 +487,7 @@ func (r TransactionRepository) WithTrx(trxHandle *gorm.DB) TransactionRepository
 	return r
 }
 
-func (r TransactionRepository) GetPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
+func (r TransactionRepositoryContext) GetPrefixReferenceSequence(param string) (response responses.ReferenceSequenceResponse, status bool) {
 	var transaction models.ReferenceCodeCounter
 	err := r.db.DB.Where("prefix = ?", param).First(&transaction).Error
 
@@ -491,7 +506,7 @@ func (r TransactionRepository) GetPrefixReferenceSequence(param string) (respons
 
 }
 
-func (r TransactionRepository) CreateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+func (r TransactionRepositoryContext) CreateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
 	referenceCodeCounter := models.ReferenceCodeCounter{
 		Prefix:   referenceSequence.Prefix,
 		Sequence: referenceSequence.Sequence,
@@ -506,7 +521,7 @@ func (r TransactionRepository) CreateReferenceCounter(referenceSequence requests
 	return responseSequence, err
 }
 
-func (r TransactionRepository) UpdateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
+func (r TransactionRepositoryContext) UpdateReferenceCounter(referenceSequence requests.ReferenceSequenceRequest) (responseSequence responses.ReferenceSequenceResponse, err error) {
 	referenceCodeCounter := models.ReferenceCodeCounter{
 		Id:       referenceSequence.Id,
 		Prefix:   referenceSequence.Prefix,
@@ -522,6 +537,6 @@ func (r TransactionRepository) UpdateReferenceCounter(referenceSequence requests
 }
 
 // GetOne gets ont user
-func (r TransactionRepository) GetOne(param string) (counter models.ReferenceCodeCounter, err error) {
+func (r TransactionRepositoryContext) GetOne(param string) (counter models.ReferenceCodeCounter, err error) {
 	return counter, r.db.DB.Where("prefix = ?", param).First(&counter).Error
 }

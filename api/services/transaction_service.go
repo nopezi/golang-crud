@@ -9,22 +9,28 @@ import (
 	"fmt"
 )
 
-// TransactionService service layer
-type TransactionService struct {
+type TransactionService interface {
+	CreateTransaction(Transaction requests.TransactionRequest) (response responses.TransactionCreateResponse, err error)
+	UpdateTransaction(params requests.UpdateRequest) (response responses.TransactionCreateResponse, err error)
+	InquiryTransaction(request requests.InquiryRequest) (response responses.Data, status bool, err error)
+}
+
+// TransactionServiceContext service layer
+type TransactionServiceContext struct {
 	logger     lib.Logger
 	repository repository.TransactionRepository
 }
 
-// NewTransactionService creates a new Transactionservice
+// NewTransactionServiceContext creates a new TransactionServiceContext
 func NewTransactionService(logger lib.Logger, repository repository.TransactionRepository) TransactionService {
-	return TransactionService{
+	return TransactionServiceContext{
 		logger:     logger,
 		repository: repository,
 	}
 }
 
 // CreateTransaction call to create the Transaction
-func (s TransactionService) CreateTransaction(Transaction requests.TransactionRequest) (response responses.TransactionCreateResponse, err error) {
+func (s TransactionServiceContext) CreateTransaction(Transaction requests.TransactionRequest) (response responses.TransactionCreateResponse, err error) {
 	requestSequence := requests.ReferenceSequenceRequest{}
 	referenceSequence, status := s.repository.GetPrefixReferenceSequence(Transaction.Prefix)
 
@@ -56,8 +62,8 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 			ReferenceCode: "",
 		}
 		if err != nil {
-			filename, function, line := lib.WhereAmI()
-			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateReferenceSequence Gagal", fmt.Sprintf("%v", err))
+			// filename, function, line := lib.WhereAmI()
+			// lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateReferenceSequence Gagal", fmt.Sprintf("%v", err))
 			return response, err
 		}
 		return response, err
@@ -79,8 +85,8 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 
 		_, err = s.repository.CreateTransaction(transaction)
 		if err != nil {
-			filename, function, line := lib.WhereAmI()
-			lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateTransaction Gagal", fmt.Sprintf("%v", err))
+			// filename, function, line := lib.WhereAmI()
+			// lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "CreateTransaction Gagal", fmt.Sprintf("%v", err))
 			return response, err
 		}
 
@@ -93,7 +99,7 @@ func (s TransactionService) CreateTransaction(Transaction requests.TransactionRe
 }
 
 // UpdateTransaction updates the Transaction
-func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (response responses.TransactionCreateResponse, err error) {
+func (s TransactionServiceContext) UpdateTransaction(params requests.UpdateRequest) (response responses.TransactionCreateResponse, err error) {
 
 	Transaction := s.repository.MatchSearch(params.ReferenceCode)
 
@@ -111,8 +117,8 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 
 	referenceCode, err := s.repository.UpdateTransaction(transaction)
 	if err != nil {
-		filename, function, line := lib.WhereAmI()
-		lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "UpdateTransaction Gagal", fmt.Sprintf("%v", err))
+		// filename, function, line := lib.WhereAmI()
+		// lib.CreateLogErrorToDB(s.repository.Elastic.Client, filename, function, line, "UpdateTransaction Gagal", fmt.Sprintf("%v", err))
 		return response, err
 	}
 
@@ -124,7 +130,7 @@ func (s TransactionService) UpdateTransaction(params requests.UpdateRequest) (re
 }
 
 // UpdateTransaction updates the Transaction
-func (s TransactionService) InquiryTransaction(request requests.InquiryRequest) (response responses.Data, status bool, err error) {
+func (s TransactionServiceContext) InquiryTransaction(request requests.InquiryRequest) (response responses.Data, status bool, err error) {
 	Transaction, status := s.repository.InquiryTransaction(request)
 	// fmt.Println("from service:= ", Transaction)
 
