@@ -3,12 +3,12 @@ package bootstrap
 import (
 	"context"
 
-	"eform-gateway/api/controllers"
-	"eform-gateway/api/middlewares"
-	"eform-gateway/api/repository"
-	"eform-gateway/api/routes"
-	"eform-gateway/api/services"
+	"eform-gateway/controllers"
 	"eform-gateway/lib"
+	"eform-gateway/middlewares"
+	"eform-gateway/repository"
+	"eform-gateway/routes"
+	"eform-gateway/services"
 
 	"go.uber.org/fx"
 )

@@ -9,7 +9,7 @@ import (
 )
 
 func TestCreateTransaction(t *testing.T) {
-	url := "http://localhost/eform/api/transaction/create"
+	url := "http://localhost/eform/transaction/create"
 	method := "POST"
 
 	payload := strings.NewReader(`{

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"eform-gateway/api/controllers"
+	"eform-gateway/controllers"
 	"eform-gateway/lib"
 )
 

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"eform-gateway/api/controllers"
+	"eform-gateway/controllers"
 	"eform-gateway/lib"
 )
 
@@ -16,7 +16,7 @@ type TransactionRoutes struct {
 // Setup Transaction routes
 func (s TransactionRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/api/transaction")
+	api := s.handler.Gin.Group("/transaction")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/create", s.TransactionController.CreateTransaction)

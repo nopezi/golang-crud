@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"eform-gateway/api/controllers"
-	"eform-gateway/api/middlewares"
+	"eform-gateway/controllers"
 	"eform-gateway/lib"
+	"eform-gateway/middlewares"
 )
 
 // UserRoutes struct

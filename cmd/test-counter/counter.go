@@ -57,7 +57,7 @@ func transaction(repeated int64, wg *sync.WaitGroup, trx string) {
 }
 
 func createTransaction() {
-	url := "http://172.18.241.57/api-eform-v3/api/transaction/create"
+	url := "http://172.18.241.57/api-eform-v3/transaction/create"
 	method := "POST"
 
 	payload := strings.NewReader(`{

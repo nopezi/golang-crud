@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"net/http"
-	"eform-gateway/api/services"
 	"eform-gateway/lib"
 	"eform-gateway/models"
+	"eform-gateway/services"
+	"net/http"
 
-	"golang.org/x/crypto/bcrypt"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // JWTAuthController struct
@@ -40,11 +40,10 @@ func (jwt JWTAuthController) SignIn(c *gin.Context) {
 			"error bind JSON": err.Error(),
 		})
 	}
-	
+
 	// Currently not checking for username and password
 	// Can add the logic later if necessary.
 	result, err := jwt.userService.GetOneUserEmail(user.Email)
-	
 
 	// Compare the stored hashed password, with the hashed version of the password that was received
 	if err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(user.Password)); err != nil {

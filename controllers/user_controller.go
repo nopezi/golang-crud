@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"net/http"
-	"strconv"
-	"eform-gateway/api/services"
 	"eform-gateway/constants"
 	"eform-gateway/lib"
 	"eform-gateway/models"
+	"eform-gateway/services"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -84,7 +84,6 @@ func (u UserController) SaveUser(c *gin.Context) {
 		return
 	}
 
-
 	c.JSON(200, gin.H{"data": "user created"})
 }
 
@@ -92,7 +91,6 @@ func (u UserController) SaveUser(c *gin.Context) {
 func (u UserController) SaveUserWOTrx(c *gin.Context) {
 	user := models.User{}
 
-	
 	if err := c.Bind(&user); err != nil {
 		u.logger.Zap.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -108,7 +106,6 @@ func (u UserController) SaveUserWOTrx(c *gin.Context) {
 		})
 		return
 	}
-
 
 	c.JSON(200, gin.H{"data": "user created"})
 }
