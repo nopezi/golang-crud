@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/joho/godotenv"
 	"eform-gateway/lib"
+	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -31,7 +32,7 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 	lib.LogInfo("----------- Go Doctor ------------------")
 	lib.LogInfo("----------------------------------------")
 	_ = godotenv.Load()
-	
+
 	url := os.Getenv("DBEHost")
 	username := os.Getenv("DBEUsername")
 	password := os.Getenv("DBEPassword")
