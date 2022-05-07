@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS `assets` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,  
+  `type` VARCHAR(100) NOT NULL,
+  `kpknl_id` INT(10) UNSIGNED NOT NULL ,
+  `auction_date` DATETIME NOT NULL,
+  `auction_time` DATETIME NOT NULL,
+  `auction_link` VARCHAR(100) NOT NULL,
+  `category_id` INT(10) UNSIGNED NOT NULL ,
+  `sub_category_id` INT(10) UNSIGNED NOT NULL ,
+  `name` VARCHAR(100) NOT NULL,
+  `price` FLOAT(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  `address_id` INT(10) UNSIGNED NOT NULL ,
+  `building_asset_id` INT(10) UNSIGNED NOT NULL ,
+  `vehicle_asset_id` INT(10) UNSIGNED NOT NULL ,
+  `contact_id` INT(10) UNSIGNED NOT NULL ,
+  `approval_id` VARCHAR(100) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  `updated_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT name_unique UNIQUE(name)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

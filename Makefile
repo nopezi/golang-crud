@@ -15,7 +15,7 @@ help: ## Display this help screen
 
 migrate-create:  ### create new migration
 	@echo "Input Table Name>"
-	@read name; migrate create -ext sql -dir migrations $$name
+	@read name; migrate create -ext sql -dir config/database $$name
 .PHONY: migrate-create
 
 migrate-up: ### migration up

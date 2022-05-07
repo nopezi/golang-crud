@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS `sub_categories` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,  
+  `category_id` INT(10) UNSIGNED NOT NULL ,
+  `name` VARCHAR(100) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  `updated_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT name_unique UNIQUE(name)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
