@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `category_id` INT(10) UNSIGNED NOT NULL ,
   `sub_category_id` INT(10) UNSIGNED NOT NULL ,
   `name` VARCHAR(100) NOT NULL,
-  `price` FLOAT(100) NOT NULL,
+  `price` int(100) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
   `address_id` INT(10) UNSIGNED NOT NULL ,
   `building_asset_id` INT(10) UNSIGNED NOT NULL ,
@@ -17,6 +17,5 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `approval_id` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT name_unique UNIQUE(name)
+  PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

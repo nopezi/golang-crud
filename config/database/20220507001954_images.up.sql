@@ -4,6 +4,5 @@ CREATE TABLE IF NOT EXISTS `images` (
   `size` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT name_unique UNIQUE(name)
+  PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

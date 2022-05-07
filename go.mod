@@ -40,7 +40,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/dig v1.14.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.0.0-20220317061510-51cd9980dadf // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -49,6 +49,10 @@ require (
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.1.0 // indirect
+	github.com/golang-migrate/migrate v3.5.4+incompatible // indirect
+	github.com/golang-migrate/migrate/v4 v4.15.2 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
