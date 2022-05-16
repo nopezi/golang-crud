@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `asset_approvals` (
   `asset_id` INT(10) UNSIGNED NOT NULL ,
   `approval_id` INT(10) UNSIGNED NOT NULL ,
   `created_at` DATETIME NOT NULL,
+  `status` VARCHAR(100) NOT NULL,
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`)  
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

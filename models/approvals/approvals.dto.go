@@ -1,45 +1,58 @@
 package models
 
 type ApprovalsRequest struct {
-	ID          int64  `json:"id,string"`
-	DebiturName string `json:"debitur_name"`
-	PicName     string `json:"pic_name"`
-	PicPhone    string `json:"pic_phone"`
-	PicEmail    string `json:"pic_email"`
-	Cif         string `json:"cif"`
+	ID             int64  `json:"id,string"`
+	CheckerID      string `json:"checkerID"`
+	CheckerDesc    string `json:"checkerDesc"`
+	CheckerComment string `json:"checkerComment"`
+	CheckerDate    string `json:"checkerDate"`
+	SignerID       string `json:"signerID"`
+	SignerDesc     string `json:"signerDesc"`
+	SignerComment  string `json:"signerComment"`
+	SignerDate     string `json:"signerDate"`
 }
 
 type ApprovalsResponse struct {
-	ID          int64  `json:"id,string"`
-	DebiturName string `json:"debitur_name"`
-	PicName     string `json:"pic_name"`
-	PicPhone    string `json:"pic_phone"`
-	PicEmail    string `json:"pic_email"`
-	Cif         string `json:"cif"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	ID int64 `json:"id,string"`
+
+	CheckerID      string `json:"checkerID"`
+	CheckerDesc    string `json:"checkerDesc"`
+	CheckerComment string `json:"checkerComment"`
+	CheckerDate    string `json:"checkerDate"`
+	SignerID       string `json:"signerID"`
+	SignerDesc     string `json:"signerDesc"`
+	SignerComment  string `json:"signerComment"`
+	SignerDate     string `json:"signerDate"`
+	CreatedAt      string `json:"createdAt"`
+	UpdatedAt      string `json:"updatedAt"`
 }
 
 func (p ApprovalsRequest) ParseRequest() Approvals {
 	return Approvals{
-		ID:          p.ID,
-		DebiturName: p.DebiturName,
-		PicName:     p.PicName,
-		PicPhone:    p.PicPhone,
-		PicEmail:    p.PicEmail,
-		Cif:         p.Cif,
+		ID:             p.ID,
+		CheckerID:      p.CheckerID,
+		CheckerDesc:    p.CheckerDesc,
+		CheckerComment: p.CheckerComment,
+		CheckerDate:    p.CheckerDate,
+		SignerID:       p.SignerID,
+		SignerDesc:     p.SignerDesc,
+		SignerComment:  p.SignerComment,
+		SignerDate:     p.SignerDate,
 	}
 }
 
 func (p ApprovalsResponse) ParseResponse() Approvals {
 	return Approvals{
-		ID:          p.ID,
-		DebiturName: p.DebiturName,
-		PicName:     p.PicName,
-		PicPhone:    p.PicPhone,
-		PicEmail:    p.PicEmail,
-		Cif:         p.Cif,
-		CreatedAt:   p.CreatedAt,
-		UpdatedAt:   p.UpdatedAt,
+		ID:             p.ID,
+		CheckerID:      p.CheckerID,
+		CheckerDesc:    p.CheckerDesc,
+		CheckerComment: p.CheckerComment,
+		CheckerDate:    p.CheckerDate,
+		SignerID:       p.SignerID,
+		SignerDesc:     p.SignerDesc,
+		SignerComment:  p.SignerComment,
+		SignerDate:     p.SignerDate,
+		CreatedAt:      p.CreatedAt,
+		UpdatedAt:      p.UpdatedAt,
 	}
 }
