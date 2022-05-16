@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -13,7 +14,8 @@ import (
 
 // Database modal
 type Database struct {
-	DB *gorm.DB
+	DB    *gorm.DB
+	DBRaw *sql.DB
 }
 
 // NewDatabase creates a new database instance

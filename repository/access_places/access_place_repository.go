@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"eform-gateway/lib"
 	models "eform-gateway/models/access_places"
 	"time"
@@ -18,6 +19,7 @@ type AccessPlaceDefinition interface {
 }
 type AccessPlaceRepository struct {
 	db      lib.Database
+	dbRaw   *sql.DB
 	elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
@@ -51,21 +53,21 @@ func (ap AccessPlaceRepository) GetAll() (responses []models.AccessPlacesRespons
 }
 
 // GetOne implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) GetOne(id models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error) {
+func (ap AccessPlaceRepository) GetOne(id *models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error) {
 	return responses, ap.db.DB.Where("id = ?", id.ID).Find(&responses).Error
 }
 
 // Store implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) Store(request models.AccessPlacesRequest) (responses bool, err error) {
+func (ap AccessPlaceRepository) Store(request *models.AccessPlacesRequest) (responses bool, err error) {
 	return responses, ap.db.DB.Save(&responses).Error
 }
 
 // Update implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) Update(request models.AccessPlacesRequest) (responses bool, err error) {
+func (ap AccessPlaceRepository) Update(request *models.AccessPlacesRequest) (responses bool, err error) {
 	return true, ap.db.DB.Save(&responses).Error
 }
 
 // Delete implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) Delete(id models.AccessPlacesRequest) (responses bool, err error) {
+func (ap AccessPlaceRepository) Delete(id *models.AccessPlacesRequest) (responses bool, err error) {
 	return true, ap.db.DB.Where("id = ?", id.ID).Delete(&models.AccessPlacesResponse{}).Error
 }
