@@ -35,3 +35,8 @@ func (p AccessPlacesResponse) ParseResponse() AccessPlaces {
 		UpdatedAt:   p.UpdatedAt,
 	}
 }
+
+// TableName gives table name of model
+func (u AccessPlacesResponse) TableName() string {
+	return "access_places"
+}
