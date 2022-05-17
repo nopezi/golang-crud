@@ -11,10 +11,10 @@ import (
 
 type AccessPlaceDefinition interface {
 	GetAll() (responses []models.AccessPlacesResponse, err error)
-	GetOne(id models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error)
-	Store(request models.AccessPlacesRequest) (responses bool, err error)
-	Update(request models.AccessPlacesRequest) (responses bool, err error)
-	Delete(id models.AccessPlacesRequest) (responses bool, err error)
+	GetOne(id *models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error)
+	Store(request *models.AccessPlacesRequest) (responses bool, err error)
+	Update(request *models.AccessPlacesRequest) (responses bool, err error)
+	Delete(id *models.AccessPlacesRequest) (responses bool, err error)
 	WithTrx(trxHandle *gorm.DB) AccessPlaceRepository
 }
 type AccessPlaceRepository struct {

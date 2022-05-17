@@ -83,3 +83,11 @@ Trying to implement clean architecture with gin framework.
 http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
 https://github.com/codenoid/golang-elasticsearch-crud
 
+
+### Testing
+go test ./...
+https://medium.com/easyread/unit-test-sql-in-golang-5af19075e68e -> used
+
+https://pingcap.com/blog/tidb-lite-a-simpler-way-to-unit-test-golang-database-code
+
+https://medium.com/@rosaniline/unit-testing-gorm-with-go-sqlmock-in-go-93cbce1f6b5b
