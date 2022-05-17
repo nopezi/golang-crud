@@ -1,4 +1,4 @@
-server:
+bserver:
   port: ":5999"
   enableswagger: true
   gracefultimeout: 10

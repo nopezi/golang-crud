@@ -2,8 +2,8 @@ package repository
 
 import (
 	"database/sql"
-	"eform-gateway/lib"
-	models "eform-gateway/models/access_places"
+	"infolelang/lib"
+	models "infolelang/models/access_places"
 	"time"
 
 	"gorm.io/gorm"

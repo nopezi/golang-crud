@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"eform-gateway/lib"
-	"eform-gateway/requests"
-	"eform-gateway/responses"
-	"eform-gateway/services"
+	"infolelang/lib"
+	"infolelang/requests"
+	"infolelang/responses"
+	"infolelang/services"
 	"regexp"
 
 	"github.com/gin-gonic/gin"

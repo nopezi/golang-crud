@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"eform-gateway/controllers"
-	"eform-gateway/lib"
+	"infolelang/controllers"
+	"infolelang/lib"
 )
 
 // TransactionRoutes struct

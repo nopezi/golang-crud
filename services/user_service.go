@@ -1,9 +1,9 @@
 package services
 
 import (
-	"eform-gateway/lib"
-	"eform-gateway/models"
-	"eform-gateway/repository"
+	"infolelang/lib"
+	"infolelang/models"
+	"infolelang/repository"
 
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

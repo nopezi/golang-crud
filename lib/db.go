@@ -3,6 +3,7 @@ package lib
 import (
 	"database/sql"
 	"fmt"
+	env "infolelang/lib/env"
 	"log"
 	"os"
 	"time"
@@ -19,7 +20,7 @@ type Database struct {
 }
 
 // NewDatabase creates a new database instance
-func NewDatabase(env Env, zapLogger Logger) Database {
+func NewDatabase(env env.Env, zapLogger Logger) Database {
 
 	username := env.DBUsername
 	password := env.DBPassword

@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"eform-gateway/jobs"
+	"infolelang/jobs"
 
-	"eform-gateway/lib"
+	"infolelang/lib"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

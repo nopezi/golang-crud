@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"eform-gateway/lib"
 	"fmt"
+	"infolelang/lib"
 	"os"
 
 	"github.com/joho/godotenv"

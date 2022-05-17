@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	"eform-gateway/constants"
-	"eform-gateway/lib"
+	"infolelang/constants"
+	"infolelang/lib"
 
 	"github.com/gin-gonic/gin"
 )

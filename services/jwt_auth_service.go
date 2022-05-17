@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"eform-gateway/lib"
-	"eform-gateway/models"
+	"infolelang/lib"
+	"infolelang/models"
 
 	"github.com/dgrijalva/jwt-go"
 )

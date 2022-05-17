@@ -1,12 +1,12 @@
 package services
 
 import (
-	"eform-gateway/lib"
-	"eform-gateway/models"
-	"eform-gateway/repository"
-	"eform-gateway/requests"
-	"eform-gateway/responses"
 	"fmt"
+	"infolelang/lib"
+	"infolelang/models"
+	"infolelang/repository"
+	"infolelang/requests"
+	"infolelang/responses"
 )
 
 type TransactionService interface {

@@ -3,12 +3,15 @@ package bootstrap
 import (
 	"context"
 
-	"eform-gateway/controllers"
-	"eform-gateway/lib"
-	"eform-gateway/middlewares"
-	"eform-gateway/repository"
-	"eform-gateway/routes"
-	"eform-gateway/services"
+	"infolelang/controllers"
+	"infolelang/lib"
+	db "infolelang/lib/database"
+	env "infolelang/lib/env"
+
+	"infolelang/middlewares"
+	"infolelang/repository"
+	"infolelang/routes"
+	"infolelang/services"
 
 	"go.uber.org/fx"
 )
@@ -28,13 +31,15 @@ func bootstrap(
 	lifecycle fx.Lifecycle,
 	handler lib.RequestHandler,
 	routes routes.Routes,
-	env lib.Env,
+	env env.Env,
 	logger lib.Logger,
 	middlewares middlewares.Middlewares,
 	database lib.Database,
 	elastic lib.Elasticsearch,
+	databases db.Databases,
 ) {
 	conn, _ := database.DB.DB()
+	connection := databases.DB
 
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
@@ -44,6 +49,8 @@ func bootstrap(
 			logger.Zap.Info("---------------------")
 
 			conn.SetMaxOpenConns(10)
+			connection.SetMaxOpenConns(10)
+			connection.SetMaxIdleConns(10)
 
 			go func() {
 				middlewares.Setup()
@@ -55,6 +62,7 @@ func bootstrap(
 		OnStop: func(context.Context) error {
 			logger.Zap.Info("Stopping Application")
 			conn.Close()
+			connection.Close()
 			return nil
 		},
 	})

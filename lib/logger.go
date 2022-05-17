@@ -1,6 +1,8 @@
 package lib
 
 import (
+	env "infolelang/lib/env"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,7 +13,7 @@ type Logger struct {
 }
 
 // NewLogger sets up logger
-func NewLogger(env Env) Logger {
+func NewLogger(env env.Env) Logger {
 
 	config := zap.NewDevelopmentConfig()
 

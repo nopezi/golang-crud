@@ -6,10 +6,10 @@ import (
 
 	// migration "pab-admin/cmd/database/migration"
 	// seeder "pab-admin/cmd/database/seeder"
-	doctor "eform-gateway/cmd/doctor"
-	http "eform-gateway/cmd/http"
-	jobs "eform-gateway/cmd/jobs"
-	counter "eform-gateway/cmd/test-counter"
+	doctor "infolelang/cmd/doctor"
+	http "infolelang/cmd/http"
+	jobs "infolelang/cmd/jobs"
+	counter "infolelang/cmd/test-counter"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

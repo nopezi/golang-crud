@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"eform-gateway/jobs"
+	"infolelang/jobs"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"eform-gateway/lib"
-	"eform-gateway/models"
+	"infolelang/lib"
+	"infolelang/models"
 
 	"gorm.io/gorm"
 )

@@ -2,6 +2,7 @@ package lib
 
 import (
 	"crypto/tls"
+	env "infolelang/lib/env"
 	"net/http"
 
 	elastic "github.com/elastic/go-elasticsearch/v8"
@@ -13,7 +14,7 @@ type Elasticsearch struct {
 	// alias  string
 }
 
-func NewElastic(env Env, zapLogger Logger) Elasticsearch {
+func NewElastic(env env.Env, zapLogger Logger) Elasticsearch {
 	url := env.DBEHost
 	username := env.DBEUsername
 	password := env.DBEPassword

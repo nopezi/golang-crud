@@ -1,14 +1,13 @@
 server:
   port: ":5999"
-  swagger: true
-  timeout: 10
+  enableswagger: true
+  gracefultimeout: 10
   appurl: "http://localhost:5999"
   appname: "Infolelang"
 
 database:
   slavedsn: "root:P@ssw0rd@tcp(localhost:49155)/infolelang2?parseTime=true"
   masterdsn: "root:P@ssw0rd@tcp(localhost:49155)/infolelang2?parseTime=true"
-  elastic: "elastic:P@ssw0rd:https://localhost:9200"
   retryinterval: 5
   maxidleconn: 10
   maxconn: 10

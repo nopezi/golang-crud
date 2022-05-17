@@ -1,7 +1,7 @@
 package main
 
 import (
-	"eform-gateway/cmd"
+	"infolelang/cmd"
 )
 
 func main() {

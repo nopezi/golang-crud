@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"eform-gateway/lib"
+	"infolelang/lib"
 
 	cors "github.com/rs/cors/wrapper/gin"
 )

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"eform-gateway/lib"
-	"eform-gateway/models"
-	"eform-gateway/services"
+	"infolelang/lib"
+	"infolelang/models"
+	"infolelang/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

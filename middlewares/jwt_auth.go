@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"eform-gateway/lib"
-	"eform-gateway/services"
+	"infolelang/lib"
+	"infolelang/services"
 
 	"github.com/gin-gonic/gin"
 )

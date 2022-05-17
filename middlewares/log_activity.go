@@ -2,9 +2,9 @@ package middlewares
 
 import (
 	"bytes"
-	"eform-gateway/constants"
-	"eform-gateway/lib"
 	"fmt"
+	"infolelang/constants"
+	"infolelang/lib"
 	"io/ioutil"
 	"net/http"
 	"text/template"

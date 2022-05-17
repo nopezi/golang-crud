@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"eform-gateway/controllers"
-	"eform-gateway/lib"
-	"eform-gateway/middlewares"
+	"infolelang/controllers"
+	"infolelang/lib"
+	"infolelang/middlewares"
 )
 
 // UserRoutes struct

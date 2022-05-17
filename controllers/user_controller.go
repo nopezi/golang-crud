@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"eform-gateway/constants"
-	"eform-gateway/lib"
-	"eform-gateway/models"
-	"eform-gateway/services"
+	"infolelang/constants"
+	"infolelang/lib"
+	"infolelang/models"
+	"infolelang/services"
 	"net/http"
 	"strconv"
 

@@ -1,7 +1,14 @@
 package config
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
 	"github.com/jinzhu/configor"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
@@ -29,4 +36,39 @@ func NewConfig(configFile string) (*Config, error) {
 		return nil, err
 	}
 	return config, nil
+}
+
+func ReadConfig(cfg interface{}, fullPathURL string) error {
+
+	getFormatFile := filePath(fullPathURL)
+
+	switch getFormatFile {
+	case ".json":
+		fname := fullPathURL
+		jsonFile, err := ioutil.ReadFile(fname)
+		if err != nil {
+			return err
+		}
+		return json.Unmarshal(jsonFile, cfg)
+	default:
+		fname := fullPathURL
+		yamlFile, err := ioutil.ReadFile(fname)
+		if err != nil {
+			return err
+		}
+		return yaml.Unmarshal(yamlFile, cfg)
+	}
+
+}
+
+func filePath(root string) string {
+	var file string
+	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		file = filepath.Ext(info.Name())
+		return nil
+	})
+	return file
 }
