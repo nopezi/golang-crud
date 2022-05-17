@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"infolelang/lib"
+	"infolelang/lib/env"
 
 	cors "github.com/rs/cors/wrapper/gin"
 )
@@ -10,11 +11,11 @@ import (
 type CorsMiddleware struct {
 	handler lib.RequestHandler
 	logger  lib.Logger
-	env     lib.Env
+	env     env.Env
 }
 
 // NewCorsMiddleware creates new cors middleware
-func NewCorsMiddleware(handler lib.RequestHandler, logger lib.Logger, env lib.Env) CorsMiddleware {
+func NewCorsMiddleware(handler lib.RequestHandler, logger lib.Logger, env env.Env) CorsMiddleware {
 	return CorsMiddleware{
 		handler: handler,
 		logger:  logger,

@@ -11,10 +11,10 @@ import (
 
 type AccessPlaceDefinition interface {
 	GetAll() (responses []models.AccessPlacesResponse, err error)
-	GetOne(id *models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error)
+	GetOne(id int64) (responses models.AccessPlacesResponse, err error)
 	Store(request *models.AccessPlacesRequest) (responses bool, err error)
 	Update(request *models.AccessPlacesRequest) (responses bool, err error)
-	Delete(id *models.AccessPlacesRequest) (responses bool, err error)
+	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AccessPlaceRepository
 }
 type AccessPlaceRepository struct {
@@ -53,8 +53,8 @@ func (ap AccessPlaceRepository) GetAll() (responses []models.AccessPlacesRespons
 }
 
 // GetOne implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) GetOne(id *models.AccessPlacesRequest) (responses models.AccessPlacesResponse, err error) {
-	return responses, ap.db.DB.Where("id = ?", id.ID).Find(&responses).Error
+func (ap AccessPlaceRepository) GetOne(id int64) (responses models.AccessPlacesResponse, err error) {
+	return responses, ap.db.DB.Where("id = ?", id).Find(&responses).Error
 }
 
 // Store implements AccessPlaceDefinition
@@ -68,6 +68,6 @@ func (ap AccessPlaceRepository) Update(request *models.AccessPlacesRequest) (res
 }
 
 // Delete implements AccessPlaceDefinition
-func (ap AccessPlaceRepository) Delete(id *models.AccessPlacesRequest) (responses bool, err error) {
-	return true, ap.db.DB.Where("id = ?", id.ID).Delete(&models.AccessPlacesResponse{}).Error
+func (ap AccessPlaceRepository) Delete(id int64) (err error) {
+	return ap.db.DB.Where("id = ?", id).Delete(&models.AccessPlacesResponse{}).Error
 }

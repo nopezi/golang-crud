@@ -23,11 +23,13 @@ func NewRoutes(
 	// userRoutes UserRoutes,
 	// authRoutes AuthRoutes,
 	transactionRoutes TransactionRoutes,
+	accessPlaceRoutes AccessPlaceRoutes,
 ) Routes {
 	return Routes{
 		// userRoutes,
 		// authRoutes,
 		transactionRoutes,
+		accessPlaceRoutes,
 	}
 }
 

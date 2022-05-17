@@ -1,9 +1,8 @@
-package database
+package lib
 
 import (
 	"database/sql"
 	"fmt"
-	"infolelang/lib"
 	env "infolelang/lib/env"
 )
 
@@ -13,7 +12,7 @@ type Databases struct {
 }
 
 // NewDatabase creates a new database instance
-func NewDatabases(env env.Env, zapLogger lib.Logger) Databases {
+func NewDatabases(env env.Env, zapLogger Logger) Databases {
 
 	username := env.DBUsername
 	password := env.DBPassword
@@ -27,12 +26,13 @@ func NewDatabases(env env.Env, zapLogger lib.Logger) Databases {
 
 	if err != nil {
 		zapLogger.Zap.Info("Url: ", url)
-		lib.LogChecklist("Mysql Connection Refused", false)
+		LogChecklist("Mysql Connection Refused", false)
 		zapLogger.Zap.Panic(err)
 	}
 
 	// zapLogger.Zap.Info("Database connection established")
-	lib.LogChecklist("Mysql Connection Established", true)
+	LogChecklist("Mysql Connection Established", true)
+	fmt.Println("tes")
 
 	return Databases{
 		DB: db,

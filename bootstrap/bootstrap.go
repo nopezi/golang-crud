@@ -5,7 +5,6 @@ import (
 
 	"infolelang/controllers"
 	"infolelang/lib"
-	db "infolelang/lib/database"
 	env "infolelang/lib/env"
 
 	"infolelang/middlewares"
@@ -36,7 +35,7 @@ func bootstrap(
 	middlewares middlewares.Middlewares,
 	database lib.Database,
 	elastic lib.Elasticsearch,
-	databases db.Databases,
+	databases lib.Databases,
 ) {
 	conn, _ := database.DB.DB()
 	connection := databases.DB

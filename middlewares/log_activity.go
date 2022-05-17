@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"infolelang/constants"
 	"infolelang/lib"
+	"infolelang/lib/env"
 	"io/ioutil"
 	"net/http"
 	"text/template"
@@ -16,7 +17,7 @@ import (
 type LogActivityMiddleware struct {
 	handler lib.RequestHandler
 	logger  lib.Logger
-	env     lib.Env
+	env     env.Env
 	elastic lib.Elasticsearch
 }
 
@@ -28,7 +29,7 @@ type bodyLogWriter struct {
 // NewCorsMiddleware creates new cors middleware
 func NewLogActivityMiddleware(
 	handler lib.RequestHandler,
-	logger lib.Logger, env lib.Env,
+	logger lib.Logger, env env.Env,
 	elastic lib.Elasticsearch,
 ) LogActivityMiddleware {
 	return LogActivityMiddleware{
