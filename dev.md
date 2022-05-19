@@ -28,16 +28,16 @@
 
 - [ ] Admin 
     - [ ] Assets
-        - [ ] GetAll
-        - [ ] Store 
+        - [x] GetAll
+        - [x] Store 
             type => 
             - form_b1| form bangunan 1: rumah, ruko, apartemen, condotel, kos atau kontrakan, toko, vila , kios
             - form_k1| form kendaraan 1: Kapal
             - form_k2| form kendaraan 2: Pesawat, Alat Berat
             - form_k3| from kendaraan 3: Mobil, Sepeda Motor, Truk, Bus
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] BuildingAssets [repoonly]
         - [ ] GetAll
         - [ ] Store
