@@ -51,23 +51,17 @@
         - [ ] Update
         - [ ] Delete
     - [ ] Categories
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] SubCategories
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
-    - [ ] SubCategories
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] AccessPlaces ketika create asset -> create ini [repoonly]
         - [ ] GetAll
         - [ ] Store
@@ -80,6 +74,7 @@
         - [x] GetOne
         - [x] Update
         - [x] Delete
+          - repository not yet change to *sql.DB
     - [ ] Facilities ketika create asset -> create ini [repoonly]
         - [ ] GetAll
         - [ ] Store
@@ -123,16 +118,18 @@
         - [ ] Update
         - [ ] Delete
     - [ ] Kpknl
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
+        - repository not yet change to *sql.DB
     - [ ] Faqs
         - [x] GetAll
         - [x] Store
         - [x] GetOne
         - [x] Update
         - [x] Delete
+          - repository not yet change to *sql.DB
     - [ ] loginUserByPN ldap mas tomi
     
