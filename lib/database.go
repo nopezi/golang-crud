@@ -31,8 +31,8 @@ func NewDatabases(env env.Env, zapLogger Logger) Databases {
 	}
 
 	// zapLogger.Zap.Info("Database connection established")
-	LogChecklist("Mysql Connection Established", true)
-	fmt.Println("tes")
+	LogChecklist("Mysql Non ORM Connection Established", true)
+	// fmt.Println("tes")
 
 	return Databases{
 		DB: db,

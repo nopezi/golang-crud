@@ -39,7 +39,6 @@ func bootstrap(
 ) {
 	conn, _ := database.DB.DB()
 	connection := databases.DB
-
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			logger.Zap.Info("Starting Application")

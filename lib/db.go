@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"database/sql"
 	"fmt"
 	env "infolelang/lib/env"
 	"log"
@@ -15,8 +14,8 @@ import (
 
 // Database modal
 type Database struct {
-	DB    *gorm.DB
-	DBRaw *sql.DB
+	DB *gorm.DB
+	// DBRaw *sql.DB
 }
 
 // NewDatabase creates a new database instance
