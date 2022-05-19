@@ -1,10 +1,138 @@
-# kill port
-sudo kill -9 `sudo lsof -t -i:5000`
+#### Checklist Module
 
-git push origin dev-dik && git checkout development && git merge dev-dik && git push origin development && git checkout dev-dik
+- [ ] FrontWeb
+    - [ ] GetAllAssetsDefault elasticsearch pagination di frontend
+    - [ ] GetAllAssetsSearch elasticsearch pagination di frontend
+        - params:
+            - property
+                - name
+                - lokasi
+                - tipe
+                - harga
+            - otomotif
+                - name
+                - merk
+                - seri
+                - harga
+            - mesin
+                - name
+                - lokasi
+                - merk
+                - harga
+            - lainnya
+                - name
+                - lokasi
+                - merk
+    - [ ] GetAllFaqs
+    - [ ] GetJadwalLelang
 
-// find prefix Transaction.Prefix in index reference_sequence
-// if exist increment sequence
-// if not exist create new
-// createReference
-// Find sequence with param prefix and  prefix + 00000 +sequence
+- [ ] Admin 
+    - [ ] Assets
+        - [ ] GetAll
+        - [ ] Store 
+            type => 
+            - form_b1| form bangunan 1: rumah, ruko, apartemen, condotel, kos atau kontrakan, toko, vila , kios
+            - form_k1| form kendaraan 1: Kapal
+            - form_k2| form kendaraan 2: Pesawat, Alat Berat
+            - form_k3| from kendaraan 3: Mobil, Sepeda Motor, Truk, Bus
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] BuildingAssets [repoonly]
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] VehicleAssets [repoonly]
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Categories
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] SubCategories
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] SubCategories
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] AccessPlaces ketika create asset -> create ini [repoonly]
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [x] AssetAccessPlaces ketika create asset -> create ini [repoonly]
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
+    - [ ] Facilities ketika create asset -> create ini [repoonly]
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] AssetFacilities ketika create asset -> create ini [repoonly]
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Contacts ketika create asset -> create contact [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Addresses ketika create asset -> create address [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Images ketika create asset -> create images [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] AssetImages ketika create asset -> create images [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Approvals ketika create asset -> create approvals [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] AssetApprovals ketika create asset -> create approvals [repoonly]
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Kpknl
+        - [ ] GetAll
+        - [ ] Store
+        - [ ] GetOne
+        - [ ] Update
+        - [ ] Delete
+    - [ ] Faqs
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
+    - [ ] loginUserByPN ldap mas tomi
+    
