@@ -39,36 +39,36 @@ func NewFaqReporitory(
 }
 
 // WithTrx implements FaqDefinition
-func (ap FaqRepository) WithTrx(trxHandle *gorm.DB) FaqRepository {
+func (faq FaqRepository) WithTrx(trxHandle *gorm.DB) FaqRepository {
 	if trxHandle == nil {
-		ap.logger.Zap.Error("transaction Database not found in gin context. ")
-		return ap
+		faq.logger.Zap.Error("transaction Database not found in gin context. ")
+		return faq
 	}
-	ap.db.DB = trxHandle
-	return ap
+	faq.db.DB = trxHandle
+	return faq
 }
 
 // GetAll implements FaqDefinition
-func (ap FaqRepository) GetAll() (responses []models.FaqResponse, err error) {
-	return responses, ap.db.DB.Find(&responses).Error
+func (faq FaqRepository) GetAll() (responses []models.FaqResponse, err error) {
+	return responses, faq.db.DB.Find(&responses).Error
 }
 
 // GetOne implements FaqDefinition
-func (ap FaqRepository) GetOne(id int64) (responses models.FaqResponse, err error) {
-	return responses, ap.db.DB.Where("id = ?", id).Find(&responses).Error
+func (faq FaqRepository) GetOne(id int64) (responses models.FaqResponse, err error) {
+	return responses, faq.db.DB.Where("id = ?", id).Find(&responses).Error
 }
 
 // Store implements FaqDefinition
-func (ap FaqRepository) Store(request *models.FaqsRequest) (responses bool, err error) {
-	return responses, ap.db.DB.Save(&responses).Error
+func (faq FaqRepository) Store(request *models.FaqRequest) (responses bool, err error) {
+	return responses, faq.db.DB.Save(&responses).Error
 }
 
 // Update implements FaqDefinition
-func (ap FaqRepository) Update(request *models.FaqsRequest) (responses bool, err error) {
-	return true, ap.db.DB.Save(&responses).Error
+func (faq FaqRepository) Update(request *models.FaqRequest) (responses bool, err error) {
+	return true, faq.db.DB.Save(&responses).Error
 }
 
 // Delete implements FaqDefinition
-func (ap FaqRepository) Delete(id int64) (err error) {
-	return ap.db.DB.Where("id = ?", id).Delete(&models.FaqResponse{}).Error
+func (faq FaqRepository) Delete(id int64) (err error) {
+	return faq.db.DB.Where("id = ?", id).Delete(&models.FaqResponse{}).Error
 }

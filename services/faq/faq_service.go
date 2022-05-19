@@ -7,7 +7,7 @@ import (
 )
 
 type FaqDefinition interface {
-	GetAll() (responses []models.FaqsResponse, err error)
+	GetAll() (responses []models.FaqResponse, err error)
 	GetOne(id int64) (responses models.FaqResponse, err error)
 	Store(request *models.FaqRequest) (err error)
 	Update(request *models.FaqRequest) (err error)
