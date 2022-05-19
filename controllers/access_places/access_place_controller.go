@@ -1,8 +1,9 @@
-package access_places
+package controllers
 
 import (
 	"infolelang/lib"
 	models "infolelang/models/access_places"
+
 	services "infolelang/services/access_places"
 	"strconv"
 
@@ -11,13 +12,13 @@ import (
 
 type AccessPlaceController struct {
 	logger  lib.Logger
-	service services.AccessPlaceService
+	service services.AccessPlaceDefinition
 }
 
-func NewAccessPlaceController(accessPlaceService services.AccessPlaceService, logger lib.Logger) AccessPlaceController {
+func NewAccessPlaceController(AccessPlaceService services.AccessPlaceDefinition, logger lib.Logger) AccessPlaceController {
 	return AccessPlaceController{
+		service: AccessPlaceService,
 		logger:  logger,
-		service: accessPlaceService,
 	}
 }
 

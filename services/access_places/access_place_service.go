@@ -1,4 +1,4 @@
-package service
+package repoAccessPlace
 
 import (
 	"infolelang/lib"
@@ -13,17 +13,16 @@ type AccessPlaceDefinition interface {
 	Update(request *models.AccessPlacesRequest) (err error)
 	Delete(id int64) (err error)
 }
+type AccessPlaceService struct {
+	logger     lib.Logger
+	repository repository.AccessPlaceDefinition
+}
 
-func NewAccessPlaceService(logger lib.Logger, repository repository.AccessPlaceRepository) AccessPlaceDefinition {
+func NewAccessPlaceService(logger lib.Logger, repository repository.AccessPlaceDefinition) AccessPlaceDefinition {
 	return AccessPlaceService{
 		logger:     logger,
 		repository: repository,
 	}
-}
-
-type AccessPlaceService struct {
-	logger     lib.Logger
-	repository repository.AccessPlaceRepository
 }
 
 // GetAll implements AccessPlaceDefinition

@@ -1,4 +1,4 @@
-package repository
+package access_places
 
 import (
 	"database/sql"
@@ -35,9 +35,9 @@ func NewMock() (*sql.DB, sqlmock.Sqlmock) {
 
 func TestGetAll(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
@@ -53,9 +53,9 @@ func TestGetAll(t *testing.T) {
 
 func TestGetAllError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
@@ -70,40 +70,40 @@ func TestGetAllError(t *testing.T) {
 
 func TestGetOne(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at where id = \\?"
 	rows := sqlmock.NewRows([]string{"id", "name", "icon", "description", "updated_at", "created_at"})
 	mock.ExpectQuery(query).WithArgs(ap.ID).WillReturnRows(rows)
 
-	ap, err := repo.GetOne(ap)
+	ap, err := repo.GetOne(ap.ID)
 	assert.NotNil(t, ap)
 	assert.NoError(t, err)
 }
 
 func TestGetOneError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
 	rows := sqlmock.NewRows([]string{"id", "name", "icon", "description", "updated_at", "created_at"})
 	mock.ExpectQuery(query).WithArgs(ap.ID).WillReturnRows(rows)
 
-	ap, err := repo.GetOne(ap)
+	ap, err := repo.GetOne(ap.ID)
 	assert.Empty(t, ap)
 	assert.Error(t, err)
 }
 func TestStore(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "INSERT into access_places (name, icon, description, created_at) VALUES (?,?,?,?)"
@@ -115,9 +115,9 @@ func TestStore(t *testing.T) {
 
 func TestStoreError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "INSERT into access_places (name, icon, description, created_at) VALUES (?,?,?,?)"
@@ -128,9 +128,9 @@ func TestStoreError(t *testing.T) {
 }
 func TestUpdate(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "UPDATE access_places SET name = \\?, icon = \\?, description = \\?, updated_at = \\? WHERE id = \\?"
@@ -144,9 +144,9 @@ func TestUpdate(t *testing.T) {
 
 func TestUpdateError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "UPDATE access_places SET name = \\?, icon = \\?, description = \\?, updated_at = \\? WHERE id = \\?"
@@ -159,9 +159,9 @@ func TestUpdateError(t *testing.T) {
 }
 func TestDelete(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "DELETE FROM access_places WHERE id = \\?"
@@ -169,15 +169,15 @@ func TestDelete(t *testing.T) {
 	prep := mock.ExpectPrepare(query)
 	prep.ExpectExec().WithArgs(ap.ID).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	_, err := repo.Delete(ap)
+	err := repo.Delete(ap.ID)
 	assert.NoError(t, err)
 }
 
 func TestDeleteError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{dbRaw: db}
+	repo := &AccessPlaceRepository{db2: db}
 	defer func() {
-		repo.dbRaw.Close()
+		repo.db2.Close()
 	}()
 
 	query := "DELETE FROM access_places WHERE id = \\?"
@@ -185,6 +185,6 @@ func TestDeleteError(t *testing.T) {
 	prep := mock.ExpectPrepare(query)
 	prep.ExpectExec().WithArgs(ap.ID).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	_, err := repo.Delete(ap)
+	err := repo.Delete(ap.ID)
 	assert.Error(t, err)
 }

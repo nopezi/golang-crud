@@ -1,7 +1,7 @@
 package routes
 
 import (
-	ap "infolelang/controllers/access_places"
+	controllers "infolelang/controllers/access_places"
 	"infolelang/lib"
 )
 
@@ -9,7 +9,7 @@ import (
 type AccessPlaceRoutes struct {
 	logger                 lib.Logger
 	handler                lib.RequestHandler
-	AccessPlacesController ap.AccessPlaceController
+	AccessPlacesController controllers.AccessPlaceController
 	// authMiddleware        middlewares.JWTAuthMiddleware
 }
 
@@ -32,13 +32,13 @@ func (s AccessPlaceRoutes) Setup() {
 func NewAccessPlaceRoutes(
 	logger lib.Logger,
 	handler lib.RequestHandler,
-	accessPlacesController ap.AccessPlaceController,
+	AccessPlacesController controllers.AccessPlaceController,
 	// authMiddleware middlewares.JWTAuthMiddleware,
 ) AccessPlaceRoutes {
 	return AccessPlaceRoutes{
 		handler:                handler,
 		logger:                 logger,
-		AccessPlacesController: accessPlacesController,
+		AccessPlacesController: AccessPlacesController,
 		// authMiddleware:        authMiddleware,
 	}
 }

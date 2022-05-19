@@ -1,4 +1,4 @@
-package models
+package access_places
 
 type AccessPlacesRequest struct {
 	ID          int64  `json:"id,string"`

@@ -1,4 +1,4 @@
-package models
+package access_places
 
 type AccessPlaces struct {
 	ID          int64

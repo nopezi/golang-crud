@@ -1,7 +1,6 @@
-package repository
+package access_places
 
 import (
-	"database/sql"
 	"infolelang/lib"
 	models "infolelang/models/access_places"
 	"time"
@@ -19,7 +18,7 @@ type AccessPlaceDefinition interface {
 }
 type AccessPlaceRepository struct {
 	db      lib.Database
-	dbRaw   *sql.DB
+	db2     lib.Databases
 	elastic lib.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
@@ -27,10 +26,12 @@ type AccessPlaceRepository struct {
 
 func NewAccessPlaceReporitory(
 	db lib.Database,
+	db2 lib.Databases,
 	elastic lib.Elasticsearch,
 	logger lib.Logger) AccessPlaceDefinition {
 	return AccessPlaceRepository{
 		db:      db,
+		db2:     db2,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
