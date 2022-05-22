@@ -4,12 +4,16 @@ import "go.uber.org/fx"
 
 // Module exports dependency to container
 var Module = fx.Options(
-	// fx.Provide(NewUserRoutes),
-	// fx.Provide(NewAuthRoutes),
+	fx.Provide(NewUserRoutes),
+	fx.Provide(NewAuthRoutes),
 	fx.Provide(NewRoutes),
 	fx.Provide(NewTransactionRoutes),
 	fx.Provide(NewAccessPlaceRoutes),
 	fx.Provide(NewFaqRoutes),
+	fx.Provide(NewAssetRoutes),
+	fx.Provide(NewKpknlRoutes),
+	fx.Provide(NewCategoryRoutes),
+	fx.Provide(NewSubCategoryRoutes),
 )
 
 // Routes contains multiple routes
@@ -22,18 +26,26 @@ type Route interface {
 
 // NewRoutes sets up routes
 func NewRoutes(
-	// userRoutes UserRoutes,
-	// authRoutes AuthRoutes,
+	userRoutes UserRoutes,
+	authRoutes AuthRoutes,
 	transactionRoutes TransactionRoutes,
 	accessPlaceRoutes AccessPlaceRoutes,
 	faqRoutes FaqRoutes,
+	assetRoutes AssetRoutes,
+	kpknlRoutes KpknlRoutes,
+	categoryRoutes CategoryRoutes,
+	subCategoryRoutes SubCategoryRoutes,
 ) Routes {
 	return Routes{
-		// userRoutes,
-		// authRoutes,
+		userRoutes,
+		authRoutes,
 		transactionRoutes,
 		accessPlaceRoutes,
 		faqRoutes,
+		assetRoutes,
+		kpknlRoutes,
+		categoryRoutes,
+		subCategoryRoutes,
 	}
 }
 
