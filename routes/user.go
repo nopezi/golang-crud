@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"infolelang/controllers"
+	controllers "infolelang/controllers/user"
 	"infolelang/lib"
 	"infolelang/middlewares"
 )
@@ -17,7 +17,7 @@ type UserRoutes struct {
 // Setup user routes
 func (s UserRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/api").Use(s.authMiddleware.Handler())
+	api := s.handler.Gin.Group("/api/v1").Use(s.authMiddleware.Handler())
 	{
 		api.GET("/user", s.userController.GetUser)
 		api.GET("/user/:id", s.userController.GetOneUser)
