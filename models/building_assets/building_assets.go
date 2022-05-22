@@ -1,4 +1,4 @@
-package models
+package building_assets
 
 type BuildingAssets struct {
 	ID                int64

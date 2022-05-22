@@ -1,4 +1,4 @@
-package models
+package building_assets
 
 type BuildingAssetsRequest struct {
 	ID                int64  `json:"id,string"`
