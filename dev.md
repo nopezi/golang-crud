@@ -23,9 +23,7 @@
                 - name
                 - lokasi
                 - merk
-    - [ ] GetAllFaqs
-    - [ ] GetJadwalLelang
-
+    
 - [ ] Admin 
     - [ ] Assets
         - [x] GetAll
@@ -39,12 +37,18 @@
         - [x] Update
         - [x] Delete
     - [ ] BuildingAssets [repoonly]
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] VehicleAssets [repoonly]
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
+    - [ ] Jadwal Lelang
         - [ ] GetAll
         - [ ] Store
         - [ ] GetOne
@@ -62,12 +66,6 @@
         - [x] GetOne
         - [x] Update
         - [x] Delete
-    - [ ] AccessPlaces ketika create asset -> create ini [repoonly]
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
     - [x] AssetAccessPlaces ketika create asset -> create ini [repoonly]
         - [x] GetAll
         - [x] Store
@@ -76,47 +74,47 @@
         - [x] Delete
           - repository not yet change to *sql.DB
     - [ ] Facilities ketika create asset -> create ini [repoonly]
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] AssetFacilities ketika create asset -> create ini [repoonly]
-        - [ ] GetAll
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] GetAll
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] Contacts ketika create asset -> create contact [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] Addresses ketika create asset -> create address [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] Images ketika create asset -> create images [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] AssetImages ketika create asset -> create images [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] Approvals ketika create asset -> create approvals [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] AssetApprovals ketika create asset -> create approvals [repoonly]
-        - [ ] Store
-        - [ ] GetOne
-        - [ ] Update
-        - [ ] Delete
+        - [x] Store
+        - [x] GetOne
+        - [x] Update
+        - [x] Delete
     - [ ] Kpknl
         - [x] GetAll
         - [x] Store
