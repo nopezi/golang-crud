@@ -1,9 +1,9 @@
-package services
+package user
 
 import (
 	"infolelang/lib"
-	"infolelang/models"
-	"infolelang/repository"
+	models "infolelang/models/user"
+	repository "infolelang/repository/user"
 
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

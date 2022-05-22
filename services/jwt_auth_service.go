@@ -4,7 +4,7 @@ import (
 	"errors"
 	"infolelang/lib"
 	env "infolelang/lib/env"
-	"infolelang/models"
+	models "infolelang/models/user"
 
 	"github.com/dgrijalva/jwt-go"
 )

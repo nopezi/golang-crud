@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"infolelang/lib"
-	"infolelang/models"
-	"infolelang/services"
+	models "infolelang/models/user"
+	services "infolelang/services"
+	user "infolelang/services/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,14 +15,14 @@ import (
 type JWTAuthController struct {
 	logger      lib.Logger
 	service     services.JWTAuthService
-	userService services.UserService
+	userService user.UserService
 }
 
 // NewJWTAuthController creates new controller
 func NewJWTAuthController(
 	logger lib.Logger,
 	service services.JWTAuthService,
-	userService services.UserService,
+	userService user.UserService,
 ) JWTAuthController {
 	return JWTAuthController{
 		logger:      logger,
