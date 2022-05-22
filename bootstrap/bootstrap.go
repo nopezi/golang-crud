@@ -53,7 +53,7 @@ func bootstrap(
 			logger.Zap.Info("------- CLEAN -------")
 			logger.Zap.Info("---------------------")
 
-			// buckets, err := stMinio.ListBuckets(minio.Client)
+			// buckets, err := minio.Client().ListBuckets(context.Background())
 			// if err != nil {
 			// 	fmt.Println(err)
 			// } else {
