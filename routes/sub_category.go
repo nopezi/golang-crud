@@ -16,7 +16,7 @@ type SubCategoryRoutes struct {
 // Setup Transaction routes
 func (s SubCategoryRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/Category")
+	api := s.handler.Gin.Group("/api/v1/subCategory")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.CategoryController.GetAll)

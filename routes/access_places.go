@@ -16,7 +16,7 @@ type AccessPlaceRoutes struct {
 // Setup Transaction routes
 func (s AccessPlaceRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/accessPlaces")
+	api := s.handler.Gin.Group("/api/v1/accessPlaces")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.AccessPlacesController.GetAll)

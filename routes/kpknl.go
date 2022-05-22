@@ -16,7 +16,7 @@ type KpknlRoutes struct {
 // Setup Transaction routes
 func (s KpknlRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/Kpknl")
+	api := s.handler.Gin.Group("/api/v1/kpknl")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.KpknlController.GetAll)

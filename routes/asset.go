@@ -16,7 +16,7 @@ type AssetRoutes struct {
 // Setup Transaction routes
 func (s AssetRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/asset")
+	api := s.handler.Gin.Group("/api/v1/asset")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.AssetController.GetAll)

@@ -16,7 +16,7 @@ type FaqRoutes struct {
 // Setup Transaction routes
 func (s FaqRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/faq")
+	api := s.handler.Gin.Group("/api/v1/faq")
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.FaqController.GetAll)
