@@ -42,7 +42,8 @@ require (
 	github.com/stretchr/testify v1.7.1
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/ziutek/mymysql v1.5.4
-	gitlab.com/golang-package-library/minio v0.0.0-20220522141056-382c797bb041
+	gitlab.com/golang-package-library/env v0.0.0-20220522085307-1f1e68f337d0
+	gitlab.com/golang-package-library/minio v0.0.0-20220522175705-890cec9660ea
 	go.mongodb.org/mongo-driver v1.9.1
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/dig v1.14.1 // indirect
@@ -76,7 +77,6 @@ require (
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
-	gitlab.com/golang-package-library/env v0.0.0-20220522085307-1f1e68f337d0 // indirect
 	go.uber.org/goleak v1.1.12 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
 	golang.org/x/sync v0.0.0-20220513210516-0976fa681c29 // indirect

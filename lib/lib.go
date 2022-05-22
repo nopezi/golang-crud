@@ -3,6 +3,7 @@ package lib
 import (
 	env "infolelang/lib/env"
 
+	minioEnv "gitlab.com/golang-package-library/env"
 	minio "gitlab.com/golang-package-library/minio"
 
 	"go.uber.org/fx"
@@ -16,5 +17,6 @@ var Module = fx.Options(
 	fx.Provide(NewDatabase),
 	fx.Provide(NewElastic),
 	fx.Provide(NewDatabases),
+	fx.Provide(minioEnv.NewEnv),
 	fx.Provide(minio.NewMinio),
 )

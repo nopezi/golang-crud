@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	minio "gitlab.com/golang-package-library/minio"
+	"gitlab.com/golang-package-library/minio"
 )
 
 type FileManagerDefinition interface {
@@ -20,19 +20,16 @@ type FileManagerDefinition interface {
 	RemoveObject(request models.FileManagerRequest) (bool, error)
 }
 type FileManagerService struct {
-	minio       minio.MinioDefinition
-	minioClient minio.Minio
-	logger      lib.Logger
+	logger lib.Logger
+	minio  minio.Minio
 }
 
 func NewFileManagerService(
-	minio minio.MinioDefinition,
-	minioClient minio.Minio,
+	minio minio.Minio,
 	logger lib.Logger) FileManagerDefinition {
 	return FileManagerService{
-		minio:       minio,
-		minioClient: minioClient,
-		logger:      logger,
+		logger: logger,
+		minio:  minio,
 	}
 }
 
@@ -79,7 +76,7 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 
 	// check bucket exist
 	// if true do upload else create bucket and do upload
-	bucketExist := fm.minio.BucketExist(fm.minioClient.MinioClient, request.BucketName)
+	bucketExist := fm.minio.BucketExist(fm.minio.Client(), request.BucketName)
 
 	uuid := uuid.New()
 	if bucketExist {
@@ -95,13 +92,13 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 		}
 
 		objectMinioPath := "tmp/" + uuid.String() + "/" + request.Subdir + "/" + filename
-		_, err = fm.minio.UploadObject(fm.minioClient.MinioClient, request.BucketName, objectMinioPath, pathFile, contentType)
+		_, err = fm.minio.UploadObject(fm.minio.Client(), request.BucketName, objectMinioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
 
 	} else {
-		fm.minio.MakeBucket(fm.minioClient.MinioClient, request.BucketName, "")
+		fm.minio.MakeBucket(fm.minio.Client(), request.BucketName, "")
 
 		// Get Content Type
 		dataFile, err := os.Open(fileLocation)
@@ -116,7 +113,7 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 
 		objectMinioPath := "tmp/" + uuid.String() + "/" + request.Subdir + "/" + filename
 
-		_, err = fm.minio.UploadObject(fm.minioClient.MinioClient, request.BucketName, objectMinioPath, pathFile, contentType)
+		_, err = fm.minio.UploadObject(fm.minio.Client(), request.BucketName, objectMinioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}

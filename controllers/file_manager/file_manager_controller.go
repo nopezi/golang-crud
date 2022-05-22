@@ -6,18 +6,23 @@ import (
 	services "infolelang/services/file_manager"
 	"net/http"
 
+	minio "gitlab.com/golang-package-library/minio"
+
 	"github.com/gin-gonic/gin"
 )
 
 type FileManagerController struct {
+	minio   minio.Minio
 	logger  lib.Logger
 	service services.FileManagerDefinition
 }
 
 func NewFileManagerController(
-	FileManagerService services.FileManagerService,
-	logger lib.Logger) FileManagerController {
+	FileManagerService services.FileManagerDefinition,
+	logger lib.Logger,
+	minio minio.Minio) FileManagerController {
 	return FileManagerController{
+		minio:   minio,
 		service: FileManagerService,
 		logger:  logger,
 	}

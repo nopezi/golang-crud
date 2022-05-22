@@ -5,6 +5,7 @@ import (
 	asset "infolelang/controllers/asset"
 	category "infolelang/controllers/category"
 	faq "infolelang/controllers/faq"
+	file "infolelang/controllers/file_manager"
 	kpknl "infolelang/controllers/kpknl"
 	subCategory "infolelang/controllers/sub_category"
 	user "infolelang/controllers/user"
@@ -23,4 +24,5 @@ var Module = fx.Options(
 	fx.Provide(category.NewCategoryController),
 	fx.Provide(subCategory.NewSubCategoryController),
 	fx.Provide(asset.NewAssetController),
+	fx.Provide(file.NewFileManagerController),
 )

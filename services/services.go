@@ -5,6 +5,7 @@ import (
 	asset "infolelang/services/asset"
 	category "infolelang/services/category"
 	faq "infolelang/services/faq"
+	file "infolelang/services/file_manager"
 	kpknl "infolelang/services/kpknl"
 	subCategory "infolelang/services/sub_category"
 	user "infolelang/services/user"
@@ -23,4 +24,5 @@ var Module = fx.Options(
 	fx.Provide(category.NewCategoryService),
 	fx.Provide(subCategory.NewSubCategoryService),
 	fx.Provide(asset.NewAssetService),
+	fx.Provide(file.NewFileManagerService),
 )

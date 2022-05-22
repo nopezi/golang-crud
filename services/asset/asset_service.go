@@ -4,8 +4,7 @@ import (
 	"infolelang/lib"
 	models "infolelang/models/assets"
 	repository "infolelang/repository/asset"
-
-	minio "gitlab.com/golang-package-library/minio"
+	// minio "gitlab.com/golang-package-library/minio"
 )
 
 type AssetDefinition interface {
@@ -16,17 +15,17 @@ type AssetDefinition interface {
 	Delete(id int64) (err error)
 }
 type AssetService struct {
-	minio      minio.Minio
+	// minio      minio.Minio
 	logger     lib.Logger
 	repository repository.AssetDefinition
 }
 
 func NewAssetService(
-	minio minio.Minio,
+	// minio minio.Minio,
 	logger lib.Logger,
 	repository repository.AssetDefinition) AssetDefinition {
 	return AssetService{
-		minio:      minio,
+		// minio:      minio,
 		logger:     logger,
 		repository: repository,
 	}

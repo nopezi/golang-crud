@@ -12,18 +12,19 @@ import (
 	"infolelang/routes"
 	"infolelang/services"
 
+	minioEnv "gitlab.com/golang-package-library/env"
 	storageMinio "gitlab.com/golang-package-library/minio"
 	"go.uber.org/fx"
 )
 
 // Module exported for initializing application
 var Module = fx.Options(
-	controllers.Module,
 	routes.Module,
 	lib.Module,
+	controllers.Module,
 	services.Module,
-	middlewares.Module,
 	repository.Module,
+	middlewares.Module,
 	fx.Invoke(bootstrap),
 )
 
@@ -37,10 +38,14 @@ func bootstrap(
 	database lib.Database,
 	elastic lib.Elasticsearch,
 	databases lib.Databases,
-	minio storageMinio.MinioDefinition,
+	minioEnv minioEnv.Env,
+	minio storageMinio.Minio,
 ) {
 	conn, _ := database.DB.DB()
 	connection := databases.DB
+	status := minio.MinioClient.IsOnline()
+	logger.Zap.Info("Minio Status : ", status)
+
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			logger.Zap.Info("Starting Application")

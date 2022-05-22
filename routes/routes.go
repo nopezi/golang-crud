@@ -14,6 +14,7 @@ var Module = fx.Options(
 	fx.Provide(NewKpknlRoutes),
 	fx.Provide(NewCategoryRoutes),
 	fx.Provide(NewSubCategoryRoutes),
+	fx.Provide(NewFileManagerRoutes),
 )
 
 // Routes contains multiple routes
@@ -35,6 +36,7 @@ func NewRoutes(
 	kpknlRoutes KpknlRoutes,
 	categoryRoutes CategoryRoutes,
 	subCategoryRoutes SubCategoryRoutes,
+	fileManager FileManagerRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -46,6 +48,7 @@ func NewRoutes(
 		kpknlRoutes,
 		categoryRoutes,
 		subCategoryRoutes,
+		fileManager,
 	}
 }
 
