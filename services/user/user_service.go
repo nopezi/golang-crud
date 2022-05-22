@@ -5,19 +5,26 @@ import (
 	models "infolelang/models/user"
 	repository "infolelang/repository/user"
 
+	minio "gitlab.com/golang-package-library/minio"
+
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
 
 // UserService service layer
 type UserService struct {
+	minio      minio.Minio
 	logger     lib.Logger
 	repository repository.UserRepository
 }
 
 // NewUserService creates a new userservice
-func NewUserService(logger lib.Logger, repository repository.UserRepository) UserService {
+func NewUserService(
+	minio minio.Minio,
+	logger lib.Logger,
+	repository repository.UserRepository) UserService {
 	return UserService{
+		minio:      minio,
 		logger:     logger,
 		repository: repository,
 	}

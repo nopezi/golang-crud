@@ -4,18 +4,22 @@ import "os"
 
 // Env has environment stored
 type Env struct {
-	ServerPort  string
-	Environment string
-	LogOutput   string
-	DBUsername  string
-	DBPassword  string
-	DBHost      string
-	DBPort      string
-	DBName      string
-	JWTSecret   string
-	DBEUsername string
-	DBEPassword string
-	DBEHost     string
+	ServerPort      string
+	Environment     string
+	LogOutput       string
+	DBUsername      string
+	DBPassword      string
+	DBHost          string
+	DBPort          string
+	DBName          string
+	JWTSecret       string
+	DBEUsername     string
+	DBEPassword     string
+	DBEHost         string
+	Endpoint        string
+	AcessKeyID      string
+	SecretAccessKey string
+	UseSsl          string
 }
 
 // NewEnv creates a new environment
@@ -42,4 +46,9 @@ func (env *Env) LoadEnv() {
 	env.DBEUsername = os.Getenv("DBEUsername")
 	env.DBEPassword = os.Getenv("DBEPassword")
 	env.DBEHost = os.Getenv("DBEHost")
+
+	env.Endpoint = os.Getenv("ENDPOINT")
+	env.AcessKeyID = os.Getenv("ACCESS_KEY_ID")
+	env.SecretAccessKey = os.Getenv("SECRET_ACCESS_KEY")
+	env.UseSsl = os.Getenv("USE_SSL")
 }

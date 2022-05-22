@@ -130,4 +130,6 @@
         - [x] Delete
           - repository not yet change to *sql.DB
     - [ ] loginUserByPN ldap mas tomi
+    - [ ] create asset multiple form
+    - [ ] handle upload with minio
     

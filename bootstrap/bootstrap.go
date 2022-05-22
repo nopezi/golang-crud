@@ -12,6 +12,7 @@ import (
 	"infolelang/routes"
 	"infolelang/services"
 
+	storageMinio "gitlab.com/golang-package-library/minio"
 	"go.uber.org/fx"
 )
 
@@ -36,6 +37,7 @@ func bootstrap(
 	database lib.Database,
 	elastic lib.Elasticsearch,
 	databases lib.Databases,
+	minio storageMinio.MinioDefinition,
 ) {
 	conn, _ := database.DB.DB()
 	connection := databases.DB
@@ -45,6 +47,14 @@ func bootstrap(
 			logger.Zap.Info("---------------------")
 			logger.Zap.Info("------- CLEAN -------")
 			logger.Zap.Info("---------------------")
+
+			// buckets, err := stMinio.ListBuckets(minio.Client)
+			// if err != nil {
+			// 	fmt.Println(err)
+			// } else {
+			// 	fmt.Println(buckets)
+			// 	fmt.Println(err)
+			// }
 
 			conn.SetMaxOpenConns(10)
 			connection.SetMaxOpenConns(10)
