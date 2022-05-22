@@ -1,4 +1,4 @@
-package repoAsset
+package asset
 
 import (
 	"infolelang/lib"
