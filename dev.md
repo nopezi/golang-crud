@@ -132,4 +132,5 @@
     - [ ] loginUserByPN ldap mas tomi
     - [ ] create asset multiple form
     - [ ] handle upload with minio
+    - [ ] scheduler buat update asset status to unpublish dan hapus asset di elastic
     
