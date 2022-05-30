@@ -26,7 +26,7 @@ func NewDatabases(env env.Env, zapLogger Logger) Databases {
 
 	if err != nil {
 		zapLogger.Zap.Info("Url: ", url)
-		LogChecklist("Mysql Connection Refused", false)
+		LogChecklist("Mysql Non ORM Connection Refused", false)
 		zapLogger.Zap.Panic(err)
 	}
 
