@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS `images` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,  
+  `filename` VARCHAR(100) NOT NULL,
   `path` VARCHAR(100) NOT NULL,
+  `extension` VARCHAR(100) NOT NULL,
   `size` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,

@@ -1,7 +1,6 @@
 package models
 
 type ContactsRequest struct {
-	ID          int64  `json:"id,string"`
 	DebiturName string `json:"debitur_name"`
 	PicName     string `json:"pic_name"`
 	PicPhone    string `json:"pic_phone"`
@@ -22,7 +21,6 @@ type ContactsResponse struct {
 
 func (p ContactsRequest) ParseRequest() Contacts {
 	return Contacts{
-		ID:          p.ID,
 		DebiturName: p.DebiturName,
 		PicName:     p.PicName,
 		PicPhone:    p.PicPhone,

@@ -60,7 +60,7 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 
 // Store implements AssetDefinition
 func (asset AssetRepository) Store(request *models.AssetsRequest) (responses bool, err error) {
-	return responses, asset.db.DB.Save(&responses).Error
+	return true, asset.db.DB.Save(&request).Error
 }
 
 // Update implements AssetDefinition

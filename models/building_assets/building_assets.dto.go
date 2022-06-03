@@ -1,8 +1,6 @@
 package building_assets
 
 type BuildingAssetsRequest struct {
-	ID                int64  `json:"id,string"`
-	AssetID           int64  `json:"assetID",string`
 	CertificateType   string `json:"certificateType"`
 	CertificateNumber string `json:"certificateNumber"`
 	BuildYear         string `json:"buildYear"`
@@ -18,7 +16,6 @@ type BuildingAssetsRequest struct {
 
 type BuildingAssetsResponse struct {
 	ID                int64  `json:"id,string"`
-	AssetID           int64  `json:"assetID",string`
 	CertificateType   string `json:"certificateType"`
 	CertificateNumber string `json:"certificateNumber"`
 	BuildYear         string `json:"buildYear"`
@@ -36,8 +33,6 @@ type BuildingAssetsResponse struct {
 
 func (p BuildingAssetsRequest) ParseRequest() BuildingAssets {
 	return BuildingAssets{
-		ID:                p.ID,
-		AssetID:           p.AssetID,
 		CertificateType:   p.CertificateType,
 		CertificateNumber: p.CertificateNumber,
 		BuildYear:         p.BuildYear,
@@ -55,7 +50,6 @@ func (p BuildingAssetsRequest) ParseRequest() BuildingAssets {
 func (p BuildingAssetsResponse) ParseResponse() BuildingAssets {
 	return BuildingAssets{
 		ID:                p.ID,
-		AssetID:           p.AssetID,
 		CertificateType:   p.CertificateType,
 		CertificateNumber: p.CertificateNumber,
 		BuildYear:         p.BuildYear,

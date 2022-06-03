@@ -54,11 +54,11 @@ func (asset AssetController) Store(c *gin.Context) {
 		return
 	}
 
-	if err := asset.service.Store(&data); err != nil {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
-		return
-	}
+	// if err := asset.service.Store(&data); err != nil {
+	// 	asset.logger.Zap.Error(err)
+	// 	lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+	// 	return
+	// }
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 
@@ -66,7 +66,7 @@ func (asset AssetController) Update(c *gin.Context) {
 	data := models.AssetsRequest{}
 	// paramID := c.Param("id")
 
-	if err := c.Bind(&data); err != nil {
+	if err := c.BindJSON(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return

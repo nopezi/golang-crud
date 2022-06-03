@@ -43,7 +43,12 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponse, err
 
 // Store implements AssetDefinition
 func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
-	_, err = asset.repository.Store(request)
+	// buildingasset
+	// vehicle asset
+	// contact
+	// approval
+	// fmt.Println(request)
+	// _, err = asset.repository.Store(request)
 	return err
 }
 

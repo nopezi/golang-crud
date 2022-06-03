@@ -1,7 +1,6 @@
 package models
 
 type ApprovalsRequest struct {
-	ID             int64  `json:"id,string"`
 	CheckerID      string `json:"checkerID"`
 	CheckerDesc    string `json:"checkerDesc"`
 	CheckerComment string `json:"checkerComment"`
@@ -29,7 +28,6 @@ type ApprovalsResponse struct {
 
 func (p ApprovalsRequest) ParseRequest() Approvals {
 	return Approvals{
-		ID:             p.ID,
 		CheckerID:      p.CheckerID,
 		CheckerDesc:    p.CheckerDesc,
 		CheckerComment: p.CheckerComment,

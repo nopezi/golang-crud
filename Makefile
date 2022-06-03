@@ -15,11 +15,12 @@ help: ## Display this help screen
 
 migrate-create:  ### create new migration
 	@echo "Input Table Name>"
-	@read name; migrate create -ext sql -dir config/database -seq $$name
+	@read name; migrate create -ext sql -dir config/database $$name
+		# @read name; migrate create -ext sql -dir config/database -seq $$name
 .PHONY: migrate-create
 
 migrate-up: ### migration up
-	@if ! command -v migrate &> /dev/null; then go get -d github.com/golang-migrate/migrate/v4 ; fi
+	# @if ! command -v migrate &> /dev/null; then go get -d github.com/golang-migrate/migrate/v4 ; fi
 	# @migrate -path config/database -database '$(MYSQL_URL)?multiStatements=true' -verbose up
 	# @migrate -path config/database -database "mysql://root:P@ssw0rd@127.0.0.1:49155/infolelang2?sslmode=disable" -verbose up
 	@migrate -source "file://config/database" -database "mysql://root:P@ssw0rd@tcp(localhost:3306)/infolelang2" up

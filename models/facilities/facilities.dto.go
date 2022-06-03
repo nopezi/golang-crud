@@ -1,12 +1,12 @@
 package models
 
 type FacilitiesRequest struct {
-	ID          int64  `json:"id,string"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
 	Description string `json:"description"`
 }
 
+type FacilitiesRequests []map[string]interface{}
 type FacilitiesResponse struct {
 	ID          int64  `json:"id,string"`
 	Name        string `json:"name"`
@@ -18,7 +18,6 @@ type FacilitiesResponse struct {
 
 func (p FacilitiesRequest) ParseRequest() Facilities {
 	return Facilities{
-		ID:          p.ID,
 		Name:        p.Name,
 		Icon:        p.Icon,
 		Description: p.Description,

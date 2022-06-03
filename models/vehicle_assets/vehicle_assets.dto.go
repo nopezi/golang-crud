@@ -1,7 +1,6 @@
 package models
 
 type VehicleAssetsRequest struct {
-	ID                int64  `json:"id,string"`
 	AssetID           int64  `json:"asset_id,string"`
 	VehicleType       string `json:"vehicle_type"`
 	CertificateType   string `json:"certificate_type"`
@@ -44,7 +43,6 @@ type VehicleAssetsResponse struct {
 
 func (p VehicleAssetsRequest) ParseRequest() VehicleAssets {
 	return VehicleAssets{
-		ID:                p.ID,
 		AssetID:           p.AssetID,
 		VehicleType:       p.VehicleType,
 		CertificateType:   p.CertificateType,
