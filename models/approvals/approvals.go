@@ -2,6 +2,7 @@ package models
 
 type Approvals struct {
 	ID             int64
+	AssetID        int64
 	CheckerID      string
 	CheckerDesc    string
 	CheckerComment string

@@ -1,6 +1,7 @@
 package models
 
 type ContactsRequest struct {
+	AssetID     int64  `json:"asset_id,string"`
 	DebiturName string `json:"debitur_name"`
 	PicName     string `json:"pic_name"`
 	PicPhone    string `json:"pic_phone"`
@@ -10,6 +11,7 @@ type ContactsRequest struct {
 
 type ContactsResponse struct {
 	ID          int64  `json:"id,string"`
+	AssetID     int64  `json:"asset_id,string"`
 	DebiturName string `json:"debitur_name"`
 	PicName     string `json:"pic_name"`
 	PicPhone    string `json:"pic_phone"`
@@ -21,6 +23,7 @@ type ContactsResponse struct {
 
 func (p ContactsRequest) ParseRequest() Contacts {
 	return Contacts{
+		AssetID:     p.AssetID,
 		DebiturName: p.DebiturName,
 		PicName:     p.PicName,
 		PicPhone:    p.PicPhone,
@@ -32,6 +35,7 @@ func (p ContactsRequest) ParseRequest() Contacts {
 func (p ContactsResponse) ParseResponse() Contacts {
 	return Contacts{
 		ID:          p.ID,
+		AssetID:     p.AssetID,
 		DebiturName: p.DebiturName,
 		PicName:     p.PicName,
 		PicPhone:    p.PicPhone,

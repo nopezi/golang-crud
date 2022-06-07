@@ -1,31 +1,33 @@
 package building_assets
 
 type BuildingAssetsRequest struct {
-	CertificateType   string `json:"certificateType"`
-	CertificateNumber string `json:"certificateNumber"`
-	BuildYear         string `json:"buildYear"`
-	SurfaceArea       string `json:"burfaceArea"`
-	BuildingArea      string `json:"buildingArea"`
+	AssetID           int64  `json:"asset_id"`
+	CertificateType   string `json:"certificate_type"`
+	CertificateNumber string `json:"certificate_number"`
+	BuildYear         string `json:"build_year"`
+	SurfaceArea       string `json:"burface_area"`
+	BuildingArea      string `json:"building_area"`
 	Derection         string `json:"derection"`
-	NumberOfFloors    string `json:"numberOfFloors`
-	NumberOfBedrooms  string `json:"numberOfBedrooms"`
-	NumberOfBathrooms string `json:"numberOfBathrooms"`
-	ElectricalPower   string `json:"electricalPower"`
+	NumberOfFloors    string `json:"number_of_floors`
+	NumberOfBedrooms  string `json:"number_of_bedrooms"`
+	NumberOfBathrooms string `json:"number_of_bathrooms"`
+	ElectricalPower   string `json:"electrical_power"`
 	Carport           string `json:"carport"`
 }
 
 type BuildingAssetsResponse struct {
 	ID                int64  `json:"id,string"`
-	CertificateType   string `json:"certificateType"`
-	CertificateNumber string `json:"certificateNumber"`
-	BuildYear         string `json:"buildYear"`
-	SurfaceArea       string `json:"burfaceArea"`
-	BuildingArea      string `json:"buildingArea"`
+	AssetID           int64  `json:"asset_id,string"`
+	CertificateType   string `json:"certificate_type"`
+	CertificateNumber string `json:"certificate_number"`
+	BuildYear         string `json:"build_year"`
+	SurfaceArea       string `json:"burface_area"`
+	BuildingArea      string `json:"building_area"`
 	Derection         string `json:"derection"`
-	NumberOfFloors    string `json:"numberOfFloors`
-	NumberOfBedrooms  string `json:"numberOfBedrooms"`
-	NumberOfBathrooms string `json:"numberOfBathrooms"`
-	ElectricalPower   string `json:"electricalPower"`
+	NumberOfFloors    string `json:"number_of_floors`
+	NumberOfBedrooms  string `json:"number_of_bedrooms"`
+	NumberOfBathrooms string `json:"number_of_bathrooms"`
+	ElectricalPower   string `json:"electrical_power"`
 	Carport           string `json:"carport"`
 	CreatedAt         string `json:"created_at"`
 	UpdatedAt         string `json:"updated_at"`
@@ -33,6 +35,7 @@ type BuildingAssetsResponse struct {
 
 func (p BuildingAssetsRequest) ParseRequest() BuildingAssets {
 	return BuildingAssets{
+		AssetID:           p.AssetID,
 		CertificateType:   p.CertificateType,
 		CertificateNumber: p.CertificateNumber,
 		BuildYear:         p.BuildYear,
@@ -50,6 +53,7 @@ func (p BuildingAssetsRequest) ParseRequest() BuildingAssets {
 func (p BuildingAssetsResponse) ParseResponse() BuildingAssets {
 	return BuildingAssets{
 		ID:                p.ID,
+		AssetID:           p.AssetID,
 		CertificateType:   p.CertificateType,
 		CertificateNumber: p.CertificateNumber,
 		BuildYear:         p.BuildYear,

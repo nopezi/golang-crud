@@ -54,11 +54,11 @@ func (asset AssetController) Store(c *gin.Context) {
 		return
 	}
 
-	// if err := asset.service.Store(&data); err != nil {
-	// 	asset.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "500", "Internal Error", data)
-	// 	return
-	// }
+	if err := asset.service.Store(&data); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
+	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 

@@ -28,15 +28,15 @@ type VehicleAssetsResponse struct {
 	Series            string `json:"series"`
 	Brand             string `json:"brand"`
 	Type              string `json:"type"`
-	ProductionYear    string `json:"productionYear"`
+	ProductionYear    string `json:"production_year"`
 	Transmission      string `json:"transmission"`
-	MachineCapacity   string `json:"machineCapacity"`
+	MachineCapacity   string `json:"machine_capacity"`
 	Color             string `json:"color"`
-	NumberOfSeat      string `json:"numberOfSeat"`
-	NumberOfUsage     string `json:"numberOfUsage"`
-	MachineNumber     string `json:"machineNumber"`
-	BodyNumber        string `json:"bodyNumber"`
-	LicenceDate       string `json:"licenceDate"`
+	NumberOfSeat      string `json:"number_of_seat"`
+	NumberOfUsage     string `json:"number_of_usage"`
+	MachineNumber     string `json:"machine_number"`
+	BodyNumber        string `json:"body_number"`
+	LicenceDate       string `json:"licence_date"`
 	CreatedAt         string `json:"created_at"`
 	UpdatedAt         string `json:"updated_at"`
 }

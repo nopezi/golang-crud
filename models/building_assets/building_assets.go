@@ -2,6 +2,7 @@ package building_assets
 
 type BuildingAssets struct {
 	ID                int64
+	AssetID           int64
 	CertificateType   string
 	CertificateNumber string
 	BuildYear         string

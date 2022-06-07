@@ -2,6 +2,7 @@ package models
 
 type Contacts struct {
 	ID          int64
+	AssetID     int64
 	DebiturName string
 	PicName     string
 	PicPhone    string

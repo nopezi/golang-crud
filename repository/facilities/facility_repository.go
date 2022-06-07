@@ -1,4 +1,4 @@
-package vehicle_asset
+package facilities
 
 import (
 	"infolelang/lib"

@@ -60,7 +60,7 @@ func (buildingAsset BuildingAssetRepository) GetOne(id int64) (responses models.
 
 // Store implements BuildingAssetDefinition
 func (buildingAsset BuildingAssetRepository) Store(request *models.BuildingAssetsRequest) (responses bool, err error) {
-	return responses, buildingAsset.db.DB.Save(&responses).Error
+	return responses, buildingAsset.db.DB.Save(&request).Error
 }
 
 // Update implements BuildingAssetDefinition

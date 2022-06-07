@@ -1,6 +1,7 @@
 package access_places
 
 type AccessPlacesRequest struct {
+	ID          int64  `json:"id,string"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
 	Description string `json:"description"`
@@ -19,6 +20,7 @@ type AccessPlacesResponse struct {
 
 func (p AccessPlacesRequest) ParseRequest() AccessPlaces {
 	return AccessPlaces{
+		ID:          p.ID,
 		Name:        p.Name,
 		Icon:        p.Icon,
 		Description: p.Description,

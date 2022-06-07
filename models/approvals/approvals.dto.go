@@ -1,33 +1,35 @@
 package models
 
 type ApprovalsRequest struct {
-	CheckerID      string `json:"checkerID"`
-	CheckerDesc    string `json:"checkerDesc"`
-	CheckerComment string `json:"checkerComment"`
-	CheckerDate    string `json:"checkerDate"`
-	SignerID       string `json:"signerID"`
-	SignerDesc     string `json:"signerDesc"`
-	SignerComment  string `json:"signerComment"`
-	SignerDate     string `json:"signerDate"`
+	AssetID        int64  `json:"asset_id,string"`
+	CheckerID      string `json:"checker_od"`
+	CheckerDesc    string `json:"checker_desc"`
+	CheckerComment string `json:"checker_domment"`
+	CheckerDate    string `json:"checker_date"`
+	SignerID       string `json:"signer_id"`
+	SignerDesc     string `json:"signer_desc"`
+	SignerComment  string `json:"signer_comment"`
+	SignerDate     string `json:"signer_date"`
 }
 
 type ApprovalsResponse struct {
-	ID int64 `json:"id,string"`
-
-	CheckerID      string `json:"checkerID"`
-	CheckerDesc    string `json:"checkerDesc"`
-	CheckerComment string `json:"checkerComment"`
-	CheckerDate    string `json:"checkerDate"`
-	SignerID       string `json:"signerID"`
-	SignerDesc     string `json:"signerDesc"`
-	SignerComment  string `json:"signerComment"`
-	SignerDate     string `json:"signerDate"`
-	CreatedAt      string `json:"createdAt"`
-	UpdatedAt      string `json:"updatedAt"`
+	ID             int64  `json:"id,string"`
+	AssetID        int64  `json:"asset_id,string"`
+	CheckerID      string `json:"checker_id"`
+	CheckerDesc    string `json:"checker_desc"`
+	CheckerComment string `json:"checkerd_domment"`
+	CheckerDate    string `json:"checker_date"`
+	SignerID       string `json:"signer_id"`
+	SignerDesc     string `json:"signer_desc"`
+	SignerComment  string `json:"signer_comment"`
+	SignerDate     string `json:"signer_date"`
+	CreatedAt      string `json:"created_at"`
+	UpdatedAt      string `json:"updated_at"`
 }
 
 func (p ApprovalsRequest) ParseRequest() Approvals {
 	return Approvals{
+		AssetID:        p.AssetID,
 		CheckerID:      p.CheckerID,
 		CheckerDesc:    p.CheckerDesc,
 		CheckerComment: p.CheckerComment,
@@ -42,6 +44,7 @@ func (p ApprovalsRequest) ParseRequest() Approvals {
 func (p ApprovalsResponse) ParseResponse() Approvals {
 	return Approvals{
 		ID:             p.ID,
+		AssetID:        p.AssetID,
 		CheckerID:      p.CheckerID,
 		CheckerDesc:    p.CheckerDesc,
 		CheckerComment: p.CheckerComment,
