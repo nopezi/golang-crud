@@ -10,12 +10,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `name` VARCHAR(100) NOT NULL,
   `price` int(100) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
-  `address_id` INT(10) UNSIGNED NOT NULL ,
-  `building_asset_id` INT(10) UNSIGNED NOT NULL ,
-  `vehicle_asset_id` INT(10) UNSIGNED NOT NULL ,
-  `contact_id` INT(10) UNSIGNED NOT NULL ,
-  `approval_id` VARCHAR(100) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

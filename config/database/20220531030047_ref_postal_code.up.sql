@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `ref_postal_code` (
   `city` VARCHAR(100) NOT NULL,
   `province` VARCHAR(100) NOT NULL ,
   `enabled` int(2) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`)  
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

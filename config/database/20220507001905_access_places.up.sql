@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `access_places` (
   `name` VARCHAR(100) NOT NULL,
   `icon` VARCHAR(100) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

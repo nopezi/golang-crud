@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,  
   `question` VARCHAR(100) NOT NULL,
   `answer` VARCHAR(100) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`)  
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

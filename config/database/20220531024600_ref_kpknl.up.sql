@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `ref_kpknl` (
   `address` VARCHAR(100) NOT NULL ,
   `phone` VARCHAR(100) NOT NULL ,
   `fax` VARCHAR(100) NOT NULL ,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`)  
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

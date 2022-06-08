@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `age` int(10) UNSIGNED,
   `birthday` DATETIME,
   `member_number` VARCHAR(100),
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT email_unique UNIQUE(email)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
