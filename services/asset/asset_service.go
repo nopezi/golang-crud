@@ -3,6 +3,7 @@ package asset
 import (
 	"fmt"
 	"infolelang/lib"
+
 	approvals "infolelang/models/approvals"
 	models "infolelang/models/assets"
 	requestImage "infolelang/models/images"
@@ -49,7 +50,8 @@ func NewAssetService(
 	imagesRepo imageRepo.ImageDefinition,
 	assetImage assetRepo.AssetImageDefinition,
 	assetFacility assetRepo.AssetFacilityDefinition,
-	assetAccessPlace assetRepo.AssetAccessPlaceDefinition) AssetDefinition {
+	assetAccessPlace assetRepo.AssetAccessPlaceDefinition,
+) AssetDefinition {
 	return AssetService{
 		minio:            minio,
 		logger:           logger,
@@ -79,7 +81,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponse, err
 // Store implements AssetDefinition
 func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// create assets
-	dataAsset, err := asset.assetRepo.Store(request.ParseRequest(*request))
+	dataAsset, err := asset.assetRepo.Store(request.ParseCreate(*request))
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return err
@@ -108,6 +110,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			asset.logger.Zap.Error(err)
 			return err
 		}
+
 	}
 
 	for _, value := range request.Facilities {
@@ -186,7 +189,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		asset.logger.Zap.Error(err)
 		return err
 	}
-	// fmt.Println(request)
+	fmt.Println(request)
 	return err
 }
 

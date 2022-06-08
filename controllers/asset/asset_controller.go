@@ -8,17 +8,25 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	// "gitlab.com/golang-package-library/minio"
+	// minio "gitlab.com/golang-package-library/minio"
 )
 
 type AssetController struct {
+	// minio   minio.Minio
 	logger  lib.Logger
 	service services.AssetDefinition
 }
 
-func NewAssetController(AssetService services.AssetDefinition, logger lib.Logger) AssetController {
+func NewAssetController(
+	AssetService services.AssetDefinition,
+	logger lib.Logger,
+	// minio minio.Minio,
+) AssetController {
 	return AssetController{
 		service: AssetService,
 		logger:  logger,
+		// minio:   minio,
 	}
 }
 
@@ -56,7 +64,7 @@ func (asset AssetController) Store(c *gin.Context) {
 
 	if err := asset.service.Store(&data); err != nil {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
