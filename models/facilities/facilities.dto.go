@@ -1,17 +1,19 @@
 package models
 
 type FacilitiesRequest struct {
-	ID          int64  `json:"id,string"`
+	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
 	Description string `json:"description"`
+	Status      bool   `json:"status"`
 }
 
 type FacilitiesRequests []map[string]interface{}
 type FacilitiesResponse struct {
-	ID          int64  `json:"id,string"`
+	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
+	Status      bool   `json:"status"`
 	Description string `json:"description"`
 	CreatedAt   string `json:"created_at"`
 	UpdatedAt   string `json:"updated_at"`

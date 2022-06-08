@@ -1,19 +1,19 @@
 package models
 
 type ImagesRequest struct {
-	ID        int64  `json:"id,string"`
+	ID        int64  `json:"id"`
 	Filename  string `json:"filename"`
 	Path      string `json:"path"`
 	Extension string `json:"extension"`
-	Size      int64  `json:"size,string"`
+	Size      int64  `json:"size"`
 }
 
 type ImagesResponse struct {
-	ID        int64  `json:"id,string"`
+	ID        int64  `json:"id"`
 	Filename  string `json:"filename"`
 	Path      string `json:"path"`
 	Extension string `json:"extension"`
-	Size      int64  `json:"size,string"`
+	Size      int64  `json:"size"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }

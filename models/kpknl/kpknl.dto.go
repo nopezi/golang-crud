@@ -1,7 +1,7 @@
 package models
 
 type KpknlRequest struct {
-	ID      int64  `json:"id,string"`
+	ID      int64  `json:"id"`
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Phone   string `json:"phone"`
@@ -9,7 +9,7 @@ type KpknlRequest struct {
 }
 
 type KpknlResponse struct {
-	ID        int64  `json:"id,string"`
+	ID        int64  `json:"id"`
 	Name      string `json:"name"`
 	Address   string `json:"address"`
 	Phone     string `json:"phone"`

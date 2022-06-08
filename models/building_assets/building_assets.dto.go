@@ -4,31 +4,31 @@ type BuildingAssetsRequest struct {
 	AssetID           int64  `json:"asset_id"`
 	CertificateType   string `json:"certificate_type"`
 	CertificateNumber string `json:"certificate_number"`
-	BuildYear         string `json:"build_year"`
-	SurfaceArea       string `json:"burface_area"`
-	BuildingArea      string `json:"building_area"`
+	BuildYear         int64  `json:"build_year"`
+	SurfaceArea       int64  `json:"burface_area"`
+	BuildingArea      int64  `json:"building_area"`
 	Derection         string `json:"derection"`
-	NumberOfFloors    string `json:"number_of_floors`
-	NumberOfBedrooms  string `json:"number_of_bedrooms"`
-	NumberOfBathrooms string `json:"number_of_bathrooms"`
-	ElectricalPower   string `json:"electrical_power"`
-	Carport           string `json:"carport"`
+	NumberOfFloors    int64  `json:"number_of_floors`
+	NumberOfBedrooms  int64  `json:"number_of_bedrooms"`
+	NumberOfBathrooms int64  `json:"number_of_bathrooms"`
+	ElectricalPower   int64  `json:"electrical_power"`
+	Carport           int64  `json:"carport"`
 }
 
 type BuildingAssetsResponse struct {
-	ID                int64  `json:"id,string"`
-	AssetID           int64  `json:"asset_id,string"`
+	ID                int64  `json:"id"`
+	AssetID           int64  `json:"asset_id"`
 	CertificateType   string `json:"certificate_type"`
 	CertificateNumber string `json:"certificate_number"`
-	BuildYear         string `json:"build_year"`
-	SurfaceArea       string `json:"burface_area"`
-	BuildingArea      string `json:"building_area"`
+	BuildYear         int64  `json:"build_year"`
+	SurfaceArea       int64  `json:"burface_area"`
+	BuildingArea      int64  `json:"building_area"`
 	Derection         string `json:"derection"`
-	NumberOfFloors    string `json:"number_of_floors`
-	NumberOfBedrooms  string `json:"number_of_bedrooms"`
-	NumberOfBathrooms string `json:"number_of_bathrooms"`
-	ElectricalPower   string `json:"electrical_power"`
-	Carport           string `json:"carport"`
+	NumberOfFloors    int64  `json:"number_of_floors`
+	NumberOfBedrooms  int64  `json:"number_of_bedrooms"`
+	NumberOfBathrooms int64  `json:"number_of_bathrooms"`
+	ElectricalPower   int64  `json:"electrical_power"`
+	Carport           int64  `json:"carport"`
 	CreatedAt         string `json:"created_at"`
 	UpdatedAt         string `json:"updated_at"`
 }

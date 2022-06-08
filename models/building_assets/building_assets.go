@@ -5,15 +5,15 @@ type BuildingAssets struct {
 	AssetID           int64
 	CertificateType   string
 	CertificateNumber string
-	BuildYear         string
-	SurfaceArea       string
-	BuildingArea      string
+	BuildYear         int64
+	SurfaceArea       int64
+	BuildingArea      int64
 	Derection         string
-	NumberOfFloors    string
-	NumberOfBedrooms  string
-	NumberOfBathrooms string
-	ElectricalPower   string
-	Carport           string
+	NumberOfFloors    int64
+	NumberOfBedrooms  int64
+	NumberOfBathrooms int64
+	ElectricalPower   int64
+	Carport           int64
 	UpdatedAt         string
 	CreatedAt         string
 }

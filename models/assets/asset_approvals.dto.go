@@ -1,17 +1,17 @@
 package models
 
 type AssetApprovalsRequest struct {
-	ID         int64  `json:"id,string"`
-	AssetID    int64  `json:"asset_id,string"`
-	ApprovalID int64  `json:"approval_id,string"`
-	Status     string `json:"status,string"`
+	ID         int64  `json:"id"`
+	AssetID    int64  `json:"asset_id"`
+	ApprovalID int64  `json:"approval_id"`
+	Status     string `json:"status"`
 }
 
 type AssetApprovalsResponse struct {
-	ID         int64  `json:"id,string"`
-	AssetID    int64  `json:"asset_id,string"`
-	ApprovalID int64  `json:"approval_id,string"`
-	Status     string `json:"status,string"`
+	ID         int64  `json:"id"`
+	AssetID    int64  `json:"asset_id"`
+	ApprovalID int64  `json:"approval_id"`
+	Status     string `json:"status"`
 	CreatedAt  string `json:"created_at"`
 	UpdatedAt  string `json:"updated_at"`
 }

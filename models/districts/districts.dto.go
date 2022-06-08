@@ -1,17 +1,17 @@
 package models
 
 type DistrictsRequest struct {
-	ID         int64  `json:"id,string"`
+	ID         int64  `json:"id"`
 	Name       string `json:"name"`
-	ProvinceID int64  `json:"province_id",string`
-	CityID     int64  `json:"city_id",string`
+	ProvinceID int64  `json:"province_id"`
+	CityID     int64  `json:"city_id"`
 }
 
 type DistrictsResponse struct {
-	ID         int64  `json:"id,string"`
+	ID         int64  `json:"id"`
 	Name       string `json:"name"`
-	ProvinceID int64  `json:"province_id",string`
-	CityID     int64  `json:"city_id",string`
+	ProvinceID int64  `json:"province_id"`
+	CityID     int64  `json:"city_id"`
 	CreatedAt  string `json:"created_at"`
 	UpdatedAt  string `json:"updated_at"`
 }

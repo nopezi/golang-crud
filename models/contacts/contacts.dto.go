@@ -1,7 +1,7 @@
 package models
 
 type ContactsRequest struct {
-	AssetID     int64  `json:"asset_id,string"`
+	AssetID     int64  `json:"asset_id"`
 	DebiturName string `json:"debitur_name"`
 	PicName     string `json:"pic_name"`
 	PicPhone    string `json:"pic_phone"`
@@ -10,8 +10,8 @@ type ContactsRequest struct {
 }
 
 type ContactsResponse struct {
-	ID          int64  `json:"id,string"`
-	AssetID     int64  `json:"asset_id,string"`
+	ID          int64  `json:"id"`
+	AssetID     int64  `json:"asset_id"`
 	DebiturName string `json:"debitur_name"`
 	PicName     string `json:"pic_name"`
 	PicPhone    string `json:"pic_phone"`

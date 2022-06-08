@@ -1,38 +1,38 @@
 package models
 
 type VehicleAssetsRequest struct {
-	AssetID           int64  `json:"asset_id,string"`
+	AssetID           int64  `json:"asset_id"`
 	VehicleType       string `json:"vehicle_type"`
-	CertificateType   string `json:"certificate_type"`
+	CertificateTypeID int64  `json:"certificate_type_id"`
 	CertificateNumber string `json:"certificate_number"`
 	Series            string `json:"series"`
-	Brand             string `json:"brand"`
+	BrandID           int64  `json:"brand_id"`
 	Type              string `json:"type"`
 	ProductionYear    string `json:"productionYear"`
-	Transmission      string `json:"transmission"`
-	MachineCapacity   string `json:"machineCapacity"`
-	Color             string `json:"color"`
-	NumberOfSeat      string `json:"numberOfSeat"`
-	NumberOfUsage     string `json:"numberOfUsage"`
-	MachineNumber     string `json:"machineNumber"`
-	BodyNumber        string `json:"bodyNumber"`
-	LicenceDate       string `json:"licenceDate"`
+	TransmissionID    int64  `json:"transmission_id"`
+	MachineCapacityID int64  `json:"machineCapacity_id"`
+	ColorID           int64  `json:"color_id"`
+	NumberOfSeat      int64  `json:"number_of_seat"`
+	NumberOfUsage     string `json:"number_of_usage"`
+	MachineNumber     string `json:"machine_number"`
+	BodyNumber        string `json:"body_number"`
+	LicenceDate       string `json:"licence_date"`
 }
 
 type VehicleAssetsResponse struct {
-	ID                int64  `json:"id,string"`
-	AssetID           int64  `json:"asset_id,string"`
+	ID                int64  `json:"id"`
+	AssetID           int64  `json:"asset_id"`
 	VehicleType       string `json:"vehicle_type"`
-	CertificateType   string `json:"certificate_type"`
+	CertificateTypeID int64  `json:"certificate_type_id"`
 	CertificateNumber string `json:"certificate_number"`
 	Series            string `json:"series"`
-	Brand             string `json:"brand"`
+	BrandID           int64  `json:"brand_id"`
 	Type              string `json:"type"`
 	ProductionYear    string `json:"production_year"`
-	Transmission      string `json:"transmission"`
-	MachineCapacity   string `json:"machine_capacity"`
-	Color             string `json:"color"`
-	NumberOfSeat      string `json:"number_of_seat"`
+	TransmissionID    int64  `json:"transmission_id"`
+	MachineCapacityID int64  `json:"machine_capacity_id"`
+	ColorID           int64  `json:"color_id"`
+	NumberOfSeat      int64  `json:"number_of_seat"`
 	NumberOfUsage     string `json:"number_of_usage"`
 	MachineNumber     string `json:"machine_number"`
 	BodyNumber        string `json:"body_number"`
@@ -45,15 +45,15 @@ func (p VehicleAssetsRequest) ParseRequest() VehicleAssets {
 	return VehicleAssets{
 		AssetID:           p.AssetID,
 		VehicleType:       p.VehicleType,
-		CertificateType:   p.CertificateType,
+		CertificateTypeID: p.CertificateTypeID,
 		CertificateNumber: p.CertificateNumber,
 		Series:            p.Series,
-		Brand:             p.Brand,
+		BrandID:           p.BrandID,
 		Type:              p.Type,
 		ProductionYear:    p.ProductionYear,
-		Transmission:      p.Transmission,
-		MachineCapacity:   p.MachineCapacity,
-		Color:             p.Color,
+		TransmissionID:    p.TransmissionID,
+		MachineCapacityID: p.MachineCapacityID,
+		ColorID:           p.ColorID,
 		NumberOfSeat:      p.NumberOfSeat,
 		NumberOfUsage:     p.NumberOfUsage,
 		MachineNumber:     p.MachineNumber,
@@ -67,15 +67,15 @@ func (p VehicleAssetsResponse) ParseResponse() VehicleAssets {
 		ID:                p.ID,
 		AssetID:           p.AssetID,
 		VehicleType:       p.VehicleType,
-		CertificateType:   p.CertificateType,
+		CertificateTypeID: p.CertificateTypeID,
 		CertificateNumber: p.CertificateNumber,
 		Series:            p.Series,
-		Brand:             p.Brand,
+		BrandID:           p.BrandID,
 		Type:              p.Type,
 		ProductionYear:    p.ProductionYear,
-		Transmission:      p.Transmission,
-		MachineCapacity:   p.MachineCapacity,
-		Color:             p.Color,
+		TransmissionID:    p.TransmissionID,
+		MachineCapacityID: p.MachineCapacityID,
+		ColorID:           p.ColorID,
 		NumberOfSeat:      p.NumberOfSeat,
 		NumberOfUsage:     p.NumberOfUsage,
 		MachineNumber:     p.MachineNumber,

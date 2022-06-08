@@ -1,13 +1,13 @@
 package models
 
 type FaqRequest struct {
-	ID       int64  `json:"id,string"`
+	ID       int64  `json:"id"`
 	Question string `json:"question"`
 	Answer   string `json:"answer"`
 }
 
 type FaqResponse struct {
-	ID        int64  `json:"id,string"`
+	ID        int64  `json:"id"`
 	Question  string `json:"question"`
 	Answer    string `json:"answer"`
 	CreatedAt string `json:"created_at"`

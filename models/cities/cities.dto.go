@@ -1,15 +1,15 @@
 package models
 
 type CitiesRequest struct {
-	ID         int64  `json:"id,string"`
+	ID         int64  `json:"id"`
 	Name       string `json:"name"`
-	ProvinceID int64  `json:"province_id",string`
+	ProvinceID int64  `json:"province_id"`
 }
 
 type CitiesResponse struct {
-	ID         int64  `json:"id,string"`
+	ID         int64  `json:"id"`
 	Name       string `json:"name"`
-	ProvinceID int64  `json:"province_id",string`
+	ProvinceID int64  `json:"province_id"`
 	CreatedAt  string `json:"created_at"`
 	UpdatedAt  string `json:"updated_at"`
 }

@@ -5,6 +5,7 @@ type Facilities struct {
 	Name        string
 	Icon        string
 	Description string
+	Status      bool
 	UpdatedAt   string
 	CreatedAt   string
 }

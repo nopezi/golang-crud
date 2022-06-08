@@ -1,15 +1,15 @@
 package models
 
 type AssetImagesRequest struct {
-	ID      int64 `json:"id,string"`
-	AssetID int64 `json:"asset_id,string"`
-	ImageID int64 `json:"image_id,string"`
+	ID      int64 `json:"id"`
+	AssetID int64 `json:"asset_id"`
+	ImageID int64 `json:"image_id"`
 }
 
 type AssetImagesResponse struct {
-	ID        int64  `json:"id,string"`
-	AssetID   int64  `json:"asset_id,string"`
-	ImageID   int64  `json:"image_id,string"`
+	ID        int64  `json:"id"`
+	AssetID   int64  `json:"asset_id"`
+	ImageID   int64  `json:"image_id"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }

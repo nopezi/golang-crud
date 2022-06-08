@@ -12,6 +12,6 @@ type Assets struct {
 	Name          string
 	Price         int64
 	Description   string
-	UpdatedAt     string
-	CreatedAt     string
+	UpdatedAt     *string
+	CreatedAt     *string
 }

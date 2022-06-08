@@ -1,19 +1,21 @@
 package access_places
 
 type AccessPlacesRequest struct {
-	ID          int64  `json:"id,string"`
+	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
 	Description string `json:"description"`
+	Status      bool   `json:"status"`
 }
 
 type AccessPlacesRequests []map[string]interface{}
 
 type AccessPlacesResponse struct {
-	ID          int64  `json:"id,string"`
+	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	Icon        string `json:"icon"`
 	Description string `json:"description"`
+	Status      bool   `json:"status"`
 	CreatedAt   string `json:"created_at"`
 	UpdatedAt   string `json:"updated_at"`
 }

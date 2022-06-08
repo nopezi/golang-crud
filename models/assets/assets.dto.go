@@ -1,6 +1,7 @@
 package models
 
 import (
+	"infolelang/lib"
 	access "infolelang/models/access_places"
 	address "infolelang/models/addresses"
 	approvals "infolelang/models/approvals"
@@ -12,15 +13,15 @@ import (
 )
 
 type AssetsRequest struct {
-	ID             int64                          `json:"id,string"`
-	FormType       string                         `json:"formType"`
+	ID             int64                          `json:"id"`
+	FormType       string                         `json:"form_type"`
 	Type           string                         `json:"type"`
-	KpknlID        int64                          `json:"kpknl_id,string"`
+	KpknlID        int64                          `json:"kpknl_id"`
 	AuctionDate    string                         `json:"auction_date"`
 	AuctionTime    string                         `json:"auction_time"`
 	AuctionLink    string                         `json:"auction_link"`
-	CategoryID     int64                          `json:"category_id,string"`
-	SubCategoryID  int64                          `json:"subCategory_id,string"`
+	CategoryID     int64                          `json:"category_id"`
+	SubCategoryID  int64                          `json:"sub_category_id"`
 	Name           string                         `json:"name"`
 	Price          int64                          `json:"price"`
 	Description    string                         `json:"description"`
@@ -35,22 +36,23 @@ type AssetsRequest struct {
 }
 
 type AssetsResponse struct {
-	ID            int64  `json:"id,string"`
-	Type          string `json:"type"`
-	KpknlID       int64  `json:"kpknl_id,string"`
-	AuctionDate   string `json:"auction_date"`
-	AuctionTime   string `json:"auction_time"`
-	AuctionLink   string `json:"auction_link"`
-	CategoryID    int64  `json:"category_id,string"`
-	SubCategoryID int64  `json:"subCategory_id,string"`
-	Name          string `json:"name"`
-	Price         int64  `json:"price"`
-	Description   string `json:"description"`
-	CreatedAt     string `json:"created_at"`
-	UpdatedAt     string `json:"updated_at"`
+	ID            int64   `json:"id"`
+	Type          string  `json:"type"`
+	KpknlID       int64   `json:"kpknl_id"`
+	AuctionDate   string  `json:"auction_date"`
+	AuctionTime   string  `json:"auction_time"`
+	AuctionLink   string  `json:"auction_link"`
+	CategoryID    int64   `json:"category_id"`
+	SubCategoryID int64   `json:"subCategory_id"`
+	Name          string  `json:"name"`
+	Price         int64   `json:"price"`
+	Description   string  `json:"description"`
+	CreatedAt     *string `json:"created_at"`
+	UpdatedAt     *string `json:"updated_at"`
 }
 
-func (p AssetsRequest) ParseRequest(request AssetsRequest) *Assets {
+func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
+	timeNow := lib.GetTimeNow("timestime")
 	return &Assets{
 		ID:            request.ID,
 		Type:          request.Type,
@@ -63,6 +65,7 @@ func (p AssetsRequest) ParseRequest(request AssetsRequest) *Assets {
 		Name:          request.Name,
 		Price:         request.Price,
 		Description:   request.Description,
+		CreatedAt:     &timeNow,
 	}
 }
 

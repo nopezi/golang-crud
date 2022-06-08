@@ -1,14 +1,14 @@
 package models
 
 type SubCategoriesRequest struct {
-	ID         int64  `json:"id,string"`
-	CategoryID int64  `json:"category_id,string"`
+	ID         int64  `json:"id"`
+	CategoryID int64  `json:"category_id"`
 	Name       string `json:"name"`
 }
 
 type SubCategoriesResponse struct {
-	ID         int64  `json:"id,string"`
-	CategoryID int64  `json:"category_id,string"`
+	ID         int64  `json:"id"`
+	CategoryID int64  `json:"category_id"`
 	Name       string `json:"name"`
 	CreatedAt  string `json:"created_at"`
 	UpdatedAt  string `json:"updated_at"`
