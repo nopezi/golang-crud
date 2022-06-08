@@ -11,7 +11,7 @@ import (
 type AddressDefinition interface {
 	GetAll() (responses []models.AddressesResponse, err error)
 	GetOne(id int64) (responses models.AddressesResponse, err error)
-	Store(request *models.AddressesRequest) (responses bool, err error)
+	Store(request *models.Addresses) (responses bool, err error)
 	Update(request *models.AddressesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AddressRepository
@@ -59,13 +59,13 @@ func (address AddressRepository) GetOne(id int64) (responses models.AddressesRes
 }
 
 // Store implements AddressDefinition
-func (address AddressRepository) Store(request *models.AddressesRequest) (responses bool, err error) {
-	return responses, address.db.DB.Save(&responses).Error
+func (address AddressRepository) Store(request *models.Addresses) (responses bool, err error) {
+	return responses, address.db.DB.Save(&request).Error
 }
 
 // Update implements AddressDefinition
 func (address AddressRepository) Update(request *models.AddressesRequest) (responses bool, err error) {
-	return true, address.db.DB.Save(&responses).Error
+	return true, address.db.DB.Save(&request).Error
 }
 
 // Delete implements AddressDefinition

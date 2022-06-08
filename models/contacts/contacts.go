@@ -8,6 +8,6 @@ type Contacts struct {
 	PicPhone    string
 	PicEmail    string
 	Cif         string
-	UpdatedAt   string
-	CreatedAt   string
+	UpdatedAt   *string
+	CreatedAt   *string
 }

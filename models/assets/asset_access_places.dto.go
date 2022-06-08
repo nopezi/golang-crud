@@ -8,12 +8,12 @@ type AssetAccessPlacesRequest struct {
 }
 
 type AssetAccessPlacesResponse struct {
-	ID            int64  `json:"id"`
-	AssetID       int64  `json:"asset_id"`
-	AccessPlaceID int64  `json:"access_place_id"`
-	Status        bool   `json:"status"`
-	CreatedAt     string `json:"created_at"`
-	UpdatedAt     string `json:"updated_at"`
+	ID            int64   `json:"id"`
+	AssetID       int64   `json:"asset_id"`
+	AccessPlaceID int64   `json:"access_place_id"`
+	Status        bool    `json:"status"`
+	CreatedAt     *string `json:"created_at"`
+	UpdatedAt     *string `json:"updated_at"`
 }
 
 func (p AssetAccessPlacesRequest) ParseRequest() AssetAccessPlaces {
@@ -32,4 +32,12 @@ func (p AssetAccessPlacesResponse) ParseResponse() AssetAccessPlaces {
 		CreatedAt:     p.CreatedAt,
 		UpdatedAt:     p.UpdatedAt,
 	}
+}
+
+func (aap AssetAccessPlacesRequest) TableName() string {
+	return "asset_access_places"
+}
+
+func (aap AssetAccessPlacesResponse) TableName() string {
+	return "asset_access_places"
 }

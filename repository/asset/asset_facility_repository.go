@@ -11,7 +11,7 @@ import (
 type AssetFacilityDefinition interface {
 	GetAll() (responses []models.AssetFacilitiesResponse, err error)
 	GetOne(id int64) (responses models.AssetFacilitiesResponse, err error)
-	Store(request *models.AssetFacilitiesRequest) (responses bool, err error)
+	Store(request *models.AssetFacilities) (responses bool, err error)
 	Update(request *models.AssetFacilitiesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetFacilityRepository
@@ -59,13 +59,13 @@ func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.
 }
 
 // Store implements AssetFacilityDefinition
-func (AssetFacility AssetFacilityRepository) Store(request *models.AssetFacilitiesRequest) (responses bool, err error) {
-	return responses, AssetFacility.db.DB.Save(&responses).Error
+func (AssetFacility AssetFacilityRepository) Store(request *models.AssetFacilities) (responses bool, err error) {
+	return responses, AssetFacility.db.DB.Save(&request).Error
 }
 
 // Update implements AssetFacilityDefinition
 func (AssetFacility AssetFacilityRepository) Update(request *models.AssetFacilitiesRequest) (responses bool, err error) {
-	return true, AssetFacility.db.DB.Save(&responses).Error
+	return true, AssetFacility.db.DB.Save(&request).Error
 }
 
 // Delete implements AssetFacilityDefinition

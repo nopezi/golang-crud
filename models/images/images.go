@@ -1,4 +1,4 @@
-package models
+package images
 
 type Images struct {
 	ID        int64
@@ -6,6 +6,6 @@ type Images struct {
 	Path      string
 	Extension string
 	Size      int64
-	UpdatedAt string
-	CreatedAt string
+	UpdatedAt *string
+	CreatedAt *string
 }

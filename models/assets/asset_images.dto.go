@@ -7,11 +7,11 @@ type AssetImagesRequest struct {
 }
 
 type AssetImagesResponse struct {
-	ID        int64  `json:"id"`
-	AssetID   int64  `json:"asset_id"`
-	ImageID   int64  `json:"image_id"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	ID        int64   `json:"id"`
+	AssetID   int64   `json:"asset_id"`
+	ImageID   int64   `json:"image_id"`
+	CreatedAt *string `json:"created_at"`
+	UpdatedAt *string `json:"updated_at"`
 }
 
 func (p AssetImagesRequest) ParseRequest() AssetImages {
@@ -30,4 +30,12 @@ func (p AssetImagesResponse) ParseResponse() AssetImages {
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,
 	}
+}
+
+func (ai AssetImagesRequest) TableName() string {
+	return "asset_images"
+}
+
+func (ai AssetImagesResponse) TableName() string {
+	return "asset_images"
 }

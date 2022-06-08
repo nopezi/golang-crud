@@ -87,6 +87,10 @@ func (p AssetsResponse) ParseResponse() Assets {
 	}
 }
 
-func (ar AssetsRequest) TableName() string {
+func (a AssetsRequest) TableName() string {
+	return "assets"
+}
+
+func (a AssetsResponse) TableName() string {
 	return "assets"
 }

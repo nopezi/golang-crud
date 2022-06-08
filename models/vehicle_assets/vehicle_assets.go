@@ -18,6 +18,6 @@ type VehicleAssets struct {
 	MachineNumber     string
 	BodyNumber        string
 	LicenceDate       string
-	UpdatedAt         string
-	CreatedAt         string
+	UpdatedAt         *string
+	CreatedAt         *string
 }
