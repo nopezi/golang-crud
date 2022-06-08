@@ -31,9 +31,9 @@ func (m CorsMiddleware) Setup() {
 	m.handler.Gin.Use(cors.New(cors.Options{
 		AllowCredentials: true,
 		AllowOriginFunc:  func(origin string) bool { return true },
-		AllowedOrigins:   []string{"*"},
-		// AllowedHeaders: []string{},
-		AllowedMethods: []string{"GET", "POST", "PUT", "HEAD", "OPTIONS"},
-		Debug:          debug,
+		AllowedOrigins:   []string{},
+		AllowedHeaders:   []string{},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "HEAD", "OPTIONS"},
+		Debug:            debug,
 	}))
 }
