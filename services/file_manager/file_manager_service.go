@@ -8,16 +8,15 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/google/uuid"
 	"gitlab.com/golang-package-library/minio"
 )
 
 type FileManagerDefinition interface {
-	MakeUpload(request models.FileManagerRequest) (responses []models.FileManagerResponse, err error)
-	GetFile(request models.FileManagerRequest) (response models.FileManagerResponse, err error)
-	RemoveObject(request models.FileManagerRequest) (bool, error)
+	MakeUpload(request models.FileManagerRequest) (responses models.FileManagerResponse, err error)
+	GetFile(request models.FileManagerRequest) (response models.FileManagerResponseUrl, err error)
+	RemoveObject(request models.FileManagerRequest) (response bool, err error)
 }
 type FileManagerService struct {
 	logger lib.Logger
@@ -34,11 +33,11 @@ func NewFileManagerService(
 }
 
 // GetFile implements FileManagerDefinition
-func (fm FileManagerService) GetFile(request models.FileManagerRequest) (response models.FileManagerResponse, err error) {
+func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (response models.FileManagerResponse, err error) {
 	var minioPath string
-	currentTime := time.Now()
-	time.LoadLocation("Asia/Jakarta")
-	timeNow := currentTime.Format("01-02-2006")
+	bucketName := os.Getenv("BUCKET_NAME")
+
+	timeNow := lib.GetTimeNow("date")
 	filename := timeNow + "-" + request.File.Filename
 
 	src, err := request.File.Open()
@@ -54,14 +53,14 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 	}
 
 	// mkdir bucket if not exist
-	if _, err := os.Stat(dir + "/storage/uploads/" + request.BucketName); os.IsNotExist(err) {
-		err = os.MkdirAll(dir+"/storage/uploads/"+request.BucketName, os.ModePerm)
+	if _, err := os.Stat(dir + "/storage/uploads/" + bucketName); os.IsNotExist(err) {
+		err = os.MkdirAll(dir+"/storage/uploads/"+bucketName, os.ModePerm)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
 	}
 
-	fileLocation := filepath.Join(dir, "storage/uploads/"+request.BucketName+"/", filename)
+	fileLocation := filepath.Join(dir, "storage/uploads/"+bucketName+"/", filename)
 	dst, err := os.Create(fileLocation)
 
 	if err != nil {
@@ -72,11 +71,11 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 		fm.logger.Zap.Error(err)
 	}
 
-	pathFile := "storage/uploads/" + request.BucketName + "/" + filename
+	pathFile := "storage/uploads/" + bucketName + "/" + filename
 
 	// check bucket exist
 	// if true do upload else create bucket and do upload
-	bucketExist := fm.minio.BucketExist(fm.minio.Client(), request.BucketName)
+	bucketExist := fm.minio.BucketExist(fm.minio.Client(), bucketName)
 
 	uuid := uuid.New()
 	if bucketExist {
@@ -91,14 +90,14 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 			fmt.Println(err.Error())
 		}
 
-		objectMinioPath := "tmp/" + uuid.String() + "/" + request.Subdir + "/" + filename
-		_, err = fm.minio.UploadObject(fm.minio.Client(), request.BucketName, objectMinioPath, pathFile, contentType)
+		objectMinioPath := "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
+		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, objectMinioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
 
 	} else {
-		fm.minio.MakeBucket(fm.minio.Client(), request.BucketName, "")
+		fm.minio.MakeBucket(fm.minio.Client(), bucketName, "")
 
 		// Get Content Type
 		dataFile, err := os.Open(fileLocation)
@@ -111,9 +110,9 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 			fmt.Println(err.Error())
 		}
 
-		objectMinioPath := "tmp/" + uuid.String() + "/" + request.Subdir + "/" + filename
+		objectMinioPath := "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
 
-		_, err = fm.minio.UploadObject(fm.minio.Client(), request.BucketName, objectMinioPath, pathFile, contentType)
+		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, objectMinioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
@@ -126,7 +125,7 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 		fmt.Println(err)
 	}
 
-	minioPath = "tmp/" + uuid.String() + "/" + request.Subdir + "/" + filename
+	minioPath = "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
 	fileResponse := models.FileManagerResponse{
 		Subdir:   minioPath,
 		Size:     fmt.Sprint(request.File.Size),
@@ -138,13 +137,64 @@ func (fm FileManagerService) GetFile(request models.FileManagerRequest) (respons
 }
 
 // MakeUpload implements FileManagerDefinition
-func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (responses []models.FileManagerResponse, err error) {
-	panic("unimplemented")
+func (fm FileManagerService) GetFile(request models.FileManagerRequest) (responses models.FileManagerResponseUrl, err error) {
+	bucket := os.Getenv("BUCKET_NAME")
+	subdir := request.Subdir
+	filename := request.Filename
+	// strings.Split(subdir, "/")
+	// fmt.Println(filename[3])
+
+	// Minio Init
+	var minioPath string
+	// minioClient, err := minio.Init()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+	// check bucket exist
+	// if true do upload else create bucket and do upload
+	bucketExist := fm.minio.BucketExist(fm.minio.Client(), bucket)
+	if bucketExist {
+		preSign := fm.minio.SignUrl(fm.minio.Client(), bucket, subdir, request.Filename)
+		minioPath = fmt.Sprint(preSign)
+		fmt.Println(filename)
+		fmt.Println("presign url", preSign)
+
+		responses := models.FileManagerResponseUrl{
+			MinioPath:  minioPath,
+			PreSignUrl: preSign,
+		}
+
+		return responses, err
+	} else {
+		return responses, err
+	}
 }
 
 // RemoveObject implements FileManagerDefinition
-func (fm FileManagerService) RemoveObject(request models.FileManagerRequest) (bool, error) {
-	panic("unimplemented")
+func (fm FileManagerService) RemoveObject(request models.FileManagerRequest) (response bool, err error) {
+	bucket := os.Getenv("BUCKET_NAME")
+	objectName := request.ObjectName
+
+	// Minio Init
+	// var minioPath string
+	// minioClient, err := minio.Init()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+	// check bucket exist
+	// if true do upload else create bucket and do upload
+	bucketExist := fm.minio.BucketExist(fm.minio.Client(), bucket)
+	if bucketExist {
+		remove := fm.minio.RemoveObject(fm.minio.Client(), bucket, objectName)
+		if remove {
+			return true, err
+		} else {
+			return false, err
+		}
+
+	} else {
+		return false, err
+	}
 }
 
 func GetFileContentType(out *os.File) (string, error) {

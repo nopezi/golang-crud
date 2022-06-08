@@ -19,9 +19,9 @@ func (s FileManagerRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/fileManager")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.POST("/makeUpload", s.FileManagerController.MakeUpload)
+		api.POST("/uploadFile", s.FileManagerController.MakeUpload)
 		api.POST("/getFile", s.FileManagerController.GetFile)
-		api.POST("/removeObject", s.FileManagerController.RemoveObject)
+		api.POST("/removeFile", s.FileManagerController.RemoveObject)
 
 	}
 }
