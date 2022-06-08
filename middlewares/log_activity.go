@@ -56,6 +56,10 @@ func (m LogActivityMiddleware) Setup() {
 			agent := template.HTMLEscapeString(c.Request.UserAgent())
 			ipaddress := template.HTMLEscapeString(c.ClientIP())
 
+			// uri := c.Request.RequestURI
+			// agent := c.Request.UserAgent()
+			// ipaddress := c.ClientIP()
+
 			// get request body
 			var bodyBytes []byte
 			if c.Request.Body != nil {
@@ -85,6 +89,11 @@ func (m LogActivityMiddleware) DummyMiddleware(c *gin.Context) {
 		uri := template.HTMLEscapeString(ctx.Request.RequestURI)
 		agent := template.HTMLEscapeString(ctx.Request.UserAgent())
 		ipaddress := template.HTMLEscapeString(ctx.ClientIP())
+
+		// uri := c.Request.RequestURI
+		// agent := c.Request.UserAgent()
+		// ipaddress := c.ClientIP()
+
 		fmt.Println("Middleware", uri)
 		lib.CreateLogActivityToDB(m.elastic.Client, uri, agent, ipaddress, string(reqBody), string(respBody))
 
