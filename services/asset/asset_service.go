@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"infolelang/lib"
 
-	approvals "infolelang/models/approvals"
-	models "infolelang/models/assets"
+	requestAddress "infolelang/models/addresses"
+	requestApprovals "infolelang/models/approvals"
+	requestBuilding "infolelang/models/building_assets"
+	requestContact "infolelang/models/contacts"
 	requestImage "infolelang/models/images"
+	requestVehicle "infolelang/models/vehicle_assets"
+
+	models "infolelang/models/assets"
 	addressRepo "infolelang/repository/address"
 	approvalRepo "infolelang/repository/approvals"
 	assetRepo "infolelang/repository/asset"
@@ -14,6 +19,10 @@ import (
 	imageRepo "infolelang/repository/images"
 
 	minio "gitlab.com/golang-package-library/minio"
+)
+
+var (
+	timeNow = lib.GetTimeNow("timestime")
 )
 
 type AssetDefinition interface {
@@ -89,7 +98,16 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	fmt.Println("dataAsset", dataAsset)
 
 	// address
-	_, err = asset.addressRepo.Store(&request.Addresses)
+
+	_, err = asset.addressRepo.Store(
+		&requestAddress.Addresses{
+			AssetID:      dataAsset.ID,
+			PostalcodeID: request.Addresses.PostalcodeID,
+			Address:      request.Addresses.Address,
+			Longitude:    request.Addresses.Longitude,
+			Langitude:    request.Addresses.Langitude,
+			CreatedAt:    &timeNow,
+		})
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return err
@@ -98,14 +116,46 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	switch request.Type {
 	case "FormB1":
 		// buildingasset
-		_, err = asset.buildingRepo.Store(&request.BuildingAssets)
+		_, err = asset.buildingRepo.Store(&requestBuilding.BuildingAssets{
+			AssetID:           dataAsset.ID,
+			CertificateType:   request.BuildingAssets.CertificateType,
+			CertificateNumber: request.BuildingAssets.CertificateNumber,
+			BuildYear:         request.BuildingAssets.BuildYear,
+			SurfaceArea:       request.BuildingAssets.SurfaceArea,
+			BuildingArea:      request.BuildingAssets.BuildingArea,
+			Direction:         request.BuildingAssets.Direction,
+			NumberOfFloors:    request.BuildingAssets.NumberOfFloors,
+			NumberOfBedrooms:  request.BuildingAssets.NumberOfBedrooms,
+			NumberOfBathrooms: request.BuildingAssets.NumberOfBathrooms,
+			ElectricalPower:   request.BuildingAssets.ElectricalPower,
+			Carport:           request.BuildingAssets.Carport,
+			CreatedAt:         &timeNow,
+		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
 			return err
 		}
 	default:
 		// vehicle asset
-		_, err = asset.vehicleRepo.Store(&request.VehicleAssets)
+		_, err = asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
+			AssetID:           dataAsset.ID,
+			VehicleType:       request.VehicleAssets.VehicleType,
+			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
+			CertificateNumber: request.VehicleAssets.CertificateNumber,
+			Series:            request.VehicleAssets.Series,
+			BrandID:           request.VehicleAssets.BrandID,
+			Type:              request.VehicleAssets.Type,
+			ProductionYear:    request.VehicleAssets.ProductionYear,
+			TransmissionID:    request.VehicleAssets.TransmissionID,
+			MachineCapacityID: request.VehicleAssets.MachineCapacityID,
+			ColorID:           request.VehicleAssets.ColorID,
+			NumberOfSeat:      request.VehicleAssets.NumberOfSeat,
+			NumberOfUsage:     request.VehicleAssets.NumberOfUsage,
+			MachineNumber:     request.VehicleAssets.MachineNumber,
+			BodyNumber:        request.VehicleAssets.BodyNumber,
+			LicenceDate:       request.VehicleAssets.LicenceDate,
+			CreatedAt:         &timeNow,
+		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
 			return err
@@ -115,9 +165,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	for _, value := range request.Facilities {
 		_, err = asset.assetFacility.Store(
-			&models.AssetFacilitiesRequest{
-				AssetID:      dataAsset.ID,
-				FacilitiesID: value.ID,
+			&models.AssetFacilities{
+				AssetID:    dataAsset.ID,
+				FacilityID: value.ID,
+				CreatedAt:  &timeNow,
 			})
 
 		if err != nil {
@@ -129,9 +180,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// asset_access_places
 	for _, value := range request.AccessPlaces {
 		_, err = asset.assetAccessPlace.Store(
-			&models.AssetAccessPlacesRequest{
+			&models.AssetAccessPlaces{
 				AssetID:       dataAsset.ID,
 				AccessPlaceID: value.ID,
+				CreatedAt:     &timeNow,
 			})
 
 		if err != nil {
@@ -141,7 +193,15 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	}
 
 	// contact
-	_, err = asset.contactRepo.Store(&request.Contacts)
+	_, err = asset.contactRepo.Store(&requestContact.Contacts{
+		AssetID:     dataAsset.ID,
+		DebiturName: request.Contacts.DebiturName,
+		PicName:     request.Contacts.PicName,
+		PicPhone:    request.Contacts.PicPhone,
+		PicEmail:    request.Contacts.PicEmail,
+		Cif:         request.Contacts.Cif,
+		CreatedAt:   &timeNow,
+	})
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return err
@@ -150,11 +210,12 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// images
 	for _, value := range request.Images {
 		image, err := asset.imagesRepo.Store(
-			&requestImage.ImagesRequest{
+			&requestImage.Images{
 				Filename:  value.Filename,
 				Path:      value.Path,
 				Extension: value.Extension,
 				Size:      value.Size,
+				CreatedAt: &timeNow,
 			})
 
 		if err != nil {
@@ -162,9 +223,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			return err
 		}
 
-		_, err = asset.assetImage.Store(&models.AssetImagesRequest{
-			AssetID: dataAsset.ID,
-			ImageID: image.ID,
+		_, err = asset.assetImage.Store(&models.AssetImages{
+			AssetID:   dataAsset.ID,
+			ImageID:   image.ID,
+			CreatedAt: &timeNow,
 		})
 
 		if err != nil {
@@ -175,16 +237,17 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	// approval
 	_, err = asset.approvalRepo.Store(
-		&approvals.ApprovalsRequest{
-			AssetID:        dataAsset.ID,
-			CheckerID:      request.Approvals.CheckerID,
-			CheckerDesc:    request.Approvals.CheckerDesc,
-			CheckerComment: request.Approvals.CheckerComment,
-			CheckerDate:    request.Approvals.CheckerDate,
-			SignerID:       request.Approvals.SignerID,
-			SignerDesc:     request.Approvals.SignerDesc,
-			SignerComment:  request.Approvals.SignerComment,
-			SignerDate:     request.Approvals.SignerDate})
+		&requestApprovals.Approvals{
+			AssetID:     dataAsset.ID,
+			CheckerID:   request.Approvals.CheckerID,
+			CheckerDesc: request.Approvals.CheckerDesc,
+			// CheckerComment: request.Approvals.CheckerComment,
+			// CheckerDate:    request.Approvals.CheckerDate,
+			SignerID:   request.Approvals.SignerID,
+			SignerDesc: request.Approvals.SignerDesc,
+			// SignerComment:  request.Approvals.SignerComment,
+			// SignerDate:     request.Approvals.SignerDate,
+			CreatedAt: &timeNow})
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return err

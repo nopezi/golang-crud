@@ -67,7 +67,7 @@ func (asset AssetController) Store(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
 }
 
 func (asset AssetController) Update(c *gin.Context) {
