@@ -36,19 +36,28 @@ type AssetsRequest struct {
 }
 
 type AssetsResponse struct {
-	ID            int64   `json:"id"`
-	Type          string  `json:"type"`
-	KpknlID       int64   `json:"kpknl_id"`
-	AuctionDate   string  `json:"auction_date"`
-	AuctionTime   string  `json:"auction_time"`
-	AuctionLink   string  `json:"auction_link"`
-	CategoryID    int64   `json:"category_id"`
-	SubCategoryID int64   `json:"subCategory_id"`
-	Name          string  `json:"name"`
-	Price         int64   `json:"price"`
-	Description   string  `json:"description"`
-	CreatedAt     *string `json:"created_at"`
-	UpdatedAt     *string `json:"updated_at"`
+	ID             int64                           `json:"id"`
+	FormType       string                          `json:"form_type"`
+	Type           string                          `json:"type"`
+	KpknlID        int64                           `json:"kpknl_id"`
+	AuctionDate    string                          `json:"auction_date"`
+	AuctionTime    string                          `json:"auction_time"`
+	AuctionLink    string                          `json:"auction_link"`
+	CategoryID     int64                           `json:"category_id"`
+	SubCategoryID  int64                           `json:"sub_category_id"`
+	Name           string                          `json:"name"`
+	Price          int64                           `json:"price"`
+	Description    string                          `json:"description"`
+	Addresses      address.AddressesResponse       `json:"addresses"`
+	BuildingAssets building.BuildingAssetsResponse `json:"building_assets"`
+	VehicleAssets  vehicle.VehicleAssetsResponse   `json:"vehicle_assets"`
+	Facilities     []facilities.FacilitiesResponse `json:"facilities"`
+	AccessPlaces   []access.AccessPlacesResponse   `json:"access_places"`
+	Contacts       contact.ContactsResponse        `json:"contacts"`
+	Images         []images.ImagesResponse         `json:"images"`
+	Approvals      approvals.ApprovalsResponse     `json:"approvals"`
+	UpdatedAt      *string                         `json:"updated_at"`
+	CreatedAt      *string                         `json:"created_at"`
 }
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {

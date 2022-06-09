@@ -66,7 +66,7 @@ func (asset AssetController) Store(c *gin.Context) {
 		return
 	}
 
-	if err := asset.service.WithTrx(trxHandle).Store(&data); err != nil {
+	if _, err := asset.service.WithTrx(trxHandle).Store(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
 		return
