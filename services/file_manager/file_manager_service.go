@@ -78,6 +78,8 @@ func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (resp
 	bucketExist := fm.minio.BucketExist(fm.minio.Client(), bucketName)
 
 	uuid := uuid.New()
+	minioPath = "tmp/" + request.Subdir + lib.GetTimeNow("year") + "/" + lib.GetTimeNow("month") + "/" + lib.GetTimeNow("day") + "/" + uuid.String() + "/" + filename
+
 	if bucketExist {
 		// Get Content Type
 		dataFile, err := os.Open(fileLocation)
@@ -90,8 +92,7 @@ func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (resp
 			fmt.Println(err.Error())
 		}
 
-		objectMinioPath := "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
-		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, objectMinioPath, pathFile, contentType)
+		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, minioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
@@ -110,9 +111,7 @@ func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (resp
 			fmt.Println(err.Error())
 		}
 
-		objectMinioPath := "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
-
-		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, objectMinioPath, pathFile, contentType)
+		_, err = fm.minio.UploadObject(fm.minio.Client(), bucketName, minioPath, pathFile, contentType)
 		if err != nil {
 			fm.logger.Zap.Error(err)
 		}
@@ -125,7 +124,6 @@ func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (resp
 		fmt.Println(err)
 	}
 
-	minioPath = "tmp/" + request.Subdir + "/" + uuid.String() + "/" + filename
 	fileResponse := models.FileManagerResponse{
 		Subdir:   minioPath,
 		Size:     fmt.Sprint(request.File.Size),
