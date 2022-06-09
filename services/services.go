@@ -17,7 +17,7 @@ import (
 var Module = fx.Options(
 	fx.Provide(user.NewUserService),
 	fx.Provide(NewJWTAuthService),
-	fx.Provide(NewTransactionService),
+	// fx.Provide(NewTransactionService),pc
 	fx.Provide(ap.NewAccessPlaceService),
 	fx.Provide(faq.NewFaqService),
 	fx.Provide(kpknl.NewKpknlService),

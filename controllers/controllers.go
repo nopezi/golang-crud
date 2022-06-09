@@ -17,7 +17,7 @@ import (
 var Module = fx.Options(
 	fx.Provide(user.NewUserController),
 	fx.Provide(NewJWTAuthController),
-	fx.Provide(NewTransactionController),
+	// fx.Provide(NewTransactionController),
 	fx.Provide(ap.NewAccessPlaceController),
 	fx.Provide(faq.NewFaqController),
 	fx.Provide(kpknl.NewKpknlController),

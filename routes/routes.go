@@ -7,7 +7,7 @@ var Module = fx.Options(
 	fx.Provide(NewUserRoutes),
 	fx.Provide(NewAuthRoutes),
 	fx.Provide(NewRoutes),
-	fx.Provide(NewTransactionRoutes),
+	// fx.Provide(NewTransactionRoutes),
 	fx.Provide(NewAccessPlaceRoutes),
 	fx.Provide(NewFaqRoutes),
 	fx.Provide(NewAssetRoutes),
@@ -29,7 +29,7 @@ type Route interface {
 func NewRoutes(
 	userRoutes UserRoutes,
 	authRoutes AuthRoutes,
-	transactionRoutes TransactionRoutes,
+	// transactionRoutes TransactionRoutes,
 	accessPlaceRoutes AccessPlaceRoutes,
 	faqRoutes FaqRoutes,
 	assetRoutes AssetRoutes,
@@ -41,7 +41,7 @@ func NewRoutes(
 	return Routes{
 		userRoutes,
 		authRoutes,
-		transactionRoutes,
+		// transactionRoutes,
 		accessPlaceRoutes,
 		faqRoutes,
 		assetRoutes,

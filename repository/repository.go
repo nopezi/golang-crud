@@ -19,7 +19,7 @@ import (
 // Module exports dependency
 var Module = fx.Options(
 	fx.Provide(user.NewUserRepository),
-	fx.Provide(NewTransactionRepository),
+	// fx.Provide(NewTransactionRepository),
 	fx.Provide(ap.NewAccessPlaceReporitory),
 	fx.Provide(faq.NewFaqReporitory),
 	fx.Provide(asset.NewAssetReporitory),

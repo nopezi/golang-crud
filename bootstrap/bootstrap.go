@@ -14,6 +14,7 @@ import (
 
 	elastic "gitlab.com/golang-package-library/elasticsearch"
 	minioEnv "gitlab.com/golang-package-library/env"
+	logger "gitlab.com/golang-package-library/logger"
 	storageMinio "gitlab.com/golang-package-library/minio"
 	"go.uber.org/fx"
 )
@@ -34,7 +35,7 @@ func bootstrap(
 	handler lib.RequestHandler,
 	routes routes.Routes,
 	env env.Env,
-	logger lib.Logger,
+	logger logger.Logger,
 	middlewares middlewares.Middlewares,
 	database lib.Database,
 	elastic elastic.Elasticsearch,
