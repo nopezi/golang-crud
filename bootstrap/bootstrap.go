@@ -12,6 +12,7 @@ import (
 	"infolelang/routes"
 	"infolelang/services"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	minioEnv "gitlab.com/golang-package-library/env"
 	storageMinio "gitlab.com/golang-package-library/minio"
 	"go.uber.org/fx"
@@ -36,7 +37,7 @@ func bootstrap(
 	logger lib.Logger,
 	middlewares middlewares.Middlewares,
 	database lib.Database,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	databases lib.Databases,
 	minioEnv minioEnv.Env,
 	minio storageMinio.Minio,
