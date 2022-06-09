@@ -3,6 +3,10 @@ package asset
 import (
 	"fmt"
 	"infolelang/lib"
+	"os"
+	"strings"
+
+	"github.com/google/uuid"
 
 	requestAddress "infolelang/models/addresses"
 	requestApprovals "infolelang/models/approvals"
@@ -23,6 +27,7 @@ import (
 
 var (
 	timeNow = lib.GetTimeNow("timestime")
+	UUID    = uuid.NewString()
 )
 
 type AssetDefinition interface {
@@ -90,6 +95,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponse, err
 // Store implements AssetDefinition
 func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// create assets
+	bucket := os.Getenv("BUCKET_NAME")
 	dataAsset, err := asset.assetRepo.Store(request.ParseCreate(*request))
 	if err != nil {
 		asset.logger.Zap.Error(err)
@@ -209,10 +215,39 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	// images
 	for _, value := range request.Images {
+
+		var destinationPath string
+		bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
+
+		pathSplit := strings.Split(value.Path, "/")
+		sourcePath := fmt.Sprint(value.Path)
+		destinationPath = pathSplit[1] + "/" +
+			dataAsset.Type + "/" +
+			lib.GetTimeNow("year") + "/" +
+			lib.GetTimeNow("month") + "/" +
+			lib.GetTimeNow("day") + "/" +
+			pathSplit[2] + "/" +
+			value.Filename
+		// assets/formb1/2022/June/01/uuid/gambar.jpg
+
+		if bucketExist {
+			fmt.Println("Exist")
+			fmt.Println(bucket)
+			fmt.Println(destinationPath)
+			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+
+		} else {
+			fmt.Println("Not Exist")
+			fmt.Println(bucket)
+			fmt.Println(destinationPath)
+			asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
+			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+		}
+
 		image, err := asset.imagesRepo.Store(
 			&requestImage.Images{
 				Filename:  value.Filename,
-				Path:      value.Path,
+				Path:      destinationPath,
 				Extension: value.Extension,
 				Size:      value.Size,
 				CreatedAt: &timeNow,
