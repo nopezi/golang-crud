@@ -1,18 +1,20 @@
 package building_assets
 
 type BuildingAssetsRequest struct {
-	AssetID           int64  `json:"asset_id"`
-	CertificateType   string `json:"certificate_type"`
-	CertificateNumber string `json:"certificate_number"`
-	BuildYear         int64  `json:"build_year"`
-	SurfaceArea       int64  `json:"burface_area"`
-	BuildingArea      int64  `json:"building_area"`
-	Direction         string `json:"Direction"`
-	NumberOfFloors    int64  `json:"number_of_floors`
-	NumberOfBedrooms  int64  `json:"number_of_bedrooms"`
-	NumberOfBathrooms int64  `json:"number_of_bathrooms"`
-	ElectricalPower   int64  `json:"electrical_power"`
-	Carport           int64  `json:"carport"`
+	AssetID           int64   `json:"asset_id"`
+	CertificateType   string  `json:"certificate_type"`
+	CertificateNumber string  `json:"certificate_number"`
+	BuildYear         int64   `json:"build_year"`
+	SurfaceArea       int64   `json:"burface_area"`
+	BuildingArea      int64   `json:"building_area"`
+	Direction         string  `json:"Direction"`
+	NumberOfFloors    int64   `json:"number_of_floors`
+	NumberOfBedrooms  int64   `json:"number_of_bedrooms"`
+	NumberOfBathrooms int64   `json:"number_of_bathrooms"`
+	ElectricalPower   int64   `json:"electrical_power"`
+	Carport           int64   `json:"carport"`
+	CreatedAt         *string `json:"created_at"`
+	UpdatedAt         *string `json:"updated_at"`
 }
 
 type BuildingAssetsResponse struct {

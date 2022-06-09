@@ -10,6 +10,8 @@ type ApprovalsRequest struct {
 	SignerDesc     string  `json:"signer_desc"`
 	SignerComment  *string `json:"signer_comment"`
 	SignerDate     *string `json:"signer_date"`
+	CreatedAt      *string `json:"created_at"`
+	UpdatedAt      *string `json:"updated_at"`
 }
 
 type ApprovalsResponse struct {

@@ -1,10 +1,12 @@
 package models
 
 type AssetAccessPlacesRequest struct {
-	ID            int64 `json:"id"`
-	AssetID       int64 `json:"asset_id"`
-	AccessPlaceID int64 `json:"access_place_id"`
-	Status        bool  `json:"status"`
+	ID            int64   `json:"id"`
+	AssetID       int64   `json:"asset_id"`
+	AccessPlaceID int64   `json:"access_place_id"`
+	Status        bool    `json:"status"`
+	CreatedAt     *string `json:"created_at"`
+	UpdatedAt     *string `json:"updated_at"`
 }
 
 type AssetAccessPlacesResponse struct {

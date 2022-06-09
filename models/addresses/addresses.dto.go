@@ -1,11 +1,13 @@
 package models
 
 type AddressesRequest struct {
-	AssetID      int64  `json:"asset_id"`
-	PostalcodeID int64  `json:"postalcode_id"`
-	Address      string `json:"address"`
-	Longitude    string `json:"longitude"`
-	Langitude    string `json:"langitude"`
+	AssetID      int64   `json:"asset_id"`
+	PostalcodeID int64   `json:"postalcode_id"`
+	Address      string  `json:"address"`
+	Longitude    string  `json:"longitude"`
+	Langitude    string  `json:"langitude"`
+	CreatedAt    *string `json:"created_at"`
+	UpdatedAt    *string `json:"updated_at"`
 }
 
 type AddressesResponse struct {

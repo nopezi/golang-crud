@@ -1,9 +1,11 @@
 package models
 
 type AssetFacilitiesRequest struct {
-	ID         int64 `json:"id"`
-	AssetID    int64 `json:"asset_id"`
-	FacilityID int64 `json:"access_place_id"`
+	ID         int64   `json:"id"`
+	AssetID    int64   `json:"asset_id"`
+	FacilityID int64   `json:"access_place_id"`
+	CreatedAt  *string `json:"created_at"`
+	UpdatedAt  *string `json:"updated_at"`
 }
 
 type AssetFacilitiesResponse struct {

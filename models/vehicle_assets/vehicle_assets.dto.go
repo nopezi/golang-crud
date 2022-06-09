@@ -1,22 +1,24 @@
 package models
 
 type VehicleAssetsRequest struct {
-	AssetID           int64  `json:"asset_id"`
-	VehicleType       string `json:"vehicle_type"`
-	CertificateTypeID int64  `json:"certificate_type_id"`
-	CertificateNumber string `json:"certificate_number"`
-	Series            string `json:"series"`
-	BrandID           int64  `json:"brand_id"`
-	Type              string `json:"type"`
-	ProductionYear    string `json:"productionYear"`
-	TransmissionID    int64  `json:"transmission_id"`
-	MachineCapacityID int64  `json:"machineCapacity_id"`
-	ColorID           int64  `json:"color_id"`
-	NumberOfSeat      int64  `json:"number_of_seat"`
-	NumberOfUsage     string `json:"number_of_usage"`
-	MachineNumber     string `json:"machine_number"`
-	BodyNumber        string `json:"body_number"`
-	LicenceDate       string `json:"licence_date"`
+	AssetID           int64   `json:"asset_id"`
+	VehicleType       string  `json:"vehicle_type"`
+	CertificateTypeID int64   `json:"certificate_type_id"`
+	CertificateNumber string  `json:"certificate_number"`
+	Series            string  `json:"series"`
+	BrandID           int64   `json:"brand_id"`
+	Type              string  `json:"type"`
+	ProductionYear    string  `json:"productionYear"`
+	TransmissionID    int64   `json:"transmission_id"`
+	MachineCapacityID int64   `json:"machineCapacity_id"`
+	ColorID           int64   `json:"color_id"`
+	NumberOfSeat      int64   `json:"number_of_seat"`
+	NumberOfUsage     string  `json:"number_of_usage"`
+	MachineNumber     string  `json:"machine_number"`
+	BodyNumber        string  `json:"body_number"`
+	LicenceDate       string  `json:"licence_date"`
+	CreatedAt         *string `json:"created_at"`
+	UpdatedAt         *string `json:"updated_at"`
 }
 
 type VehicleAssetsResponse struct {
