@@ -35,7 +35,7 @@ type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
-	Store(request *models.AssetsRequest) (responses *models.AssetsResponse, err error)
+	Store(request *models.AssetsRequest) (err error)
 	Update(request *models.AssetsRequest) (err error)
 	Delete(id int64) (err error)
 }
@@ -101,13 +101,13 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponse, err
 }
 
 // Store implements AssetDefinition
-func (asset AssetService) Store(request *models.AssetsRequest) (responses *models.AssetsResponse, err error) {
+func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
 	dataAsset, err := asset.assetRepo.Store(request.ParseCreate(*request))
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return responses, err
+		return err
 	}
 	fmt.Println("dataAsset", dataAsset)
 
@@ -124,8 +124,11 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 		})
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return responses, err
+		return err
 	}
+
+	// var building *requestBuilding.BuildingAssets
+	// var vehicle *requestVehicle.VehicleAssets
 
 	switch request.Type {
 	case "FormB1":
@@ -147,7 +150,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 	default:
 		// vehicle asset
@@ -172,22 +175,21 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 
 	}
 
 	for _, value := range request.Facilities {
-		_, err = asset.assetFacility.Store(
+		_, err := asset.assetFacility.Store(
 			&models.AssetFacilities{
 				AssetID:    dataAsset.ID,
 				FacilityID: value.ID,
 				CreatedAt:  &timeNow,
 			})
-
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 	}
 
@@ -202,7 +204,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 	}
 
@@ -218,8 +220,9 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 	})
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return responses, err
+		return err
 	}
+	var images []requestImage.ImagesRequest
 
 	// images
 	for _, value := range request.Images {
@@ -252,18 +255,25 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
 		}
 
-		image, err := asset.imagesRepo.Store(
-			&requestImage.Images{
-				Filename:  value.Filename,
-				Path:      destinationPath,
-				Extension: value.Extension,
-				Size:      value.Size,
-				CreatedAt: &timeNow,
-			})
+		image, err := asset.imagesRepo.Store(&requestImage.Images{
+			Filename:  value.Filename,
+			Path:      destinationPath,
+			Extension: value.Extension,
+			Size:      value.Size,
+			CreatedAt: &timeNow,
+		})
+
+		images = append(images, requestImage.ImagesRequest{
+			Filename:  value.Filename,
+			Path:      destinationPath,
+			Extension: value.Extension,
+			Size:      value.Size,
+			CreatedAt: &timeNow,
+		})
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 
 		_, err = asset.assetImage.Store(&models.AssetImages{
@@ -274,7 +284,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return responses, err
+			return err
 		}
 	}
 
@@ -293,12 +303,42 @@ func (asset AssetService) Store(request *models.AssetsRequest) (responses *model
 			CreatedAt: &timeNow})
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return responses, err
+		return err
 	}
 
 	// create elastic
-	fmt.Println(request)
-	return responses, err
+	// dataAssets := models.AssetsResponse{
+	// 	ID:             dataAsset.ID,
+	// 	Type:           dataAsset.Type,
+	// 	KpknlID:        dataAsset.KpknlID,
+	// 	AuctionDate:    dataAsset.AuctionDate,
+	// 	AuctionTime:    dataAsset.AuctionTime,
+	// 	AuctionLink:    dataAsset.AuctionLink,
+	// 	CategoryID:     dataAsset.CategoryID,
+	// 	SubCategoryID:  dataAsset.SubCategoryID,
+	// 	Name:           dataAsset.Name,
+	// 	Price:          dataAsset.Price,
+	// 	Description:    dataAsset.Description,
+	// 	Addresses:      *address,
+	// 	BuildingAssets: *building,
+	// 	VehicleAssets:  *vehicle,
+	// 	Facilities:     request.Facilities,
+	// 	AccessPlaces:   request.AccessPlaces,
+	// 	Contacts:       request.Contacts,
+	// 	Images:         images,
+	// 	Approvals:      *approvals,
+	// 	UpdatedAt:      dataAsset.UpdatedAt,
+	// 	CreatedAt:      dataAsset.CreatedAt,
+	// }
+
+	// fmt.Println("TES")
+	// fmt.Println(dataAssets)
+	// _, err = asset.assetRepo.StoreElastic(dataAssets)
+	// if err != nil {
+	// 	asset.logger.Zap.Error(err)
+	// 	return responses, err
+	// }
+	return err
 }
 
 // Update implements AssetDefinition

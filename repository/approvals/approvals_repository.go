@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/approvals"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type ApprovalDefinition interface {
 type ApprovalRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type ApprovalRepository struct {
 func NewApprovalReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) ApprovalDefinition {
 	return ApprovalRepository{
 		db:      db,

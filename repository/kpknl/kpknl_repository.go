@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/kpknl"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type KpknlDefinition interface {
 type KpknlRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type KpknlRepository struct {
 func NewKpknlReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) KpknlDefinition {
 	return KpknlRepository{
 		db:      db,

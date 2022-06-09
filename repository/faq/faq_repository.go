@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/faq"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type FaqDefinition interface {
 type FaqRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type FaqRepository struct {
 func NewFaqReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) FaqDefinition {
 	return FaqRepository{
 		db:      db,

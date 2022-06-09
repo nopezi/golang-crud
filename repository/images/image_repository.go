@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/images"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type ImageDefinition interface {
 type ImageRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type ImageRepository struct {
 func NewImageReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) ImageDefinition {
 	return ImageRepository{
 		db:      db,

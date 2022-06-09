@@ -3,6 +3,7 @@ package lib
 import (
 	env "infolelang/lib/env"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	minioEnv "gitlab.com/golang-package-library/env"
 	minio "gitlab.com/golang-package-library/minio"
 
@@ -15,7 +16,7 @@ var Module = fx.Options(
 	fx.Provide(env.NewEnv),
 	fx.Provide(NewLogger),
 	fx.Provide(NewDatabase),
-	fx.Provide(NewElastic),
+	fx.Provide(elastic.NewElastic),
 	fx.Provide(NewDatabases),
 	fx.Provide(minioEnv.NewEnv),
 	fx.Provide(minio.NewMinio),

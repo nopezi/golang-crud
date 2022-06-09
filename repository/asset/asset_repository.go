@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/assets"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -15,12 +16,12 @@ type AssetDefinition interface {
 	Store(request *models.Assets) (responses *models.Assets, err error)
 	Update(request *models.AssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
-	StoreElastic(request *models.AssetsRequest) (response bool, err error)
+	StoreElastic(request *models.AssetsResponse) (response bool, err error)
 }
 type AssetRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -28,7 +29,7 @@ type AssetRepository struct {
 func NewAssetReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) AssetDefinition {
 	return AssetRepository{
 		db:      db,
@@ -74,6 +75,6 @@ func (asset AssetRepository) Delete(id int64) (err error) {
 	return asset.db.DB.Where("id = ?", id).Delete(&models.AssetsResponse{}).Error
 }
 
-func (asset AssetRepository) StoreElastic(request *models.AssetsRequest) (response bool, err error) {
+func (asset AssetRepository) StoreElastic(request *models.AssetsResponse) (response bool, err error) {
 	return true, err
 }

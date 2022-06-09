@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"infolelang/constants"
 	"infolelang/lib"
 	models "infolelang/models/assets"
 
@@ -9,7 +8,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	// "gitlab.com/golang-package-library/minio"
 	// minio "gitlab.com/golang-package-library/minio"
 )
@@ -58,7 +56,7 @@ func (asset AssetController) GetOne(c *gin.Context) {
 
 func (asset AssetController) Store(c *gin.Context) {
 	data := models.AssetsRequest{}
-	trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
+	// trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
 
 	if err := c.Bind(&data); err != nil {
 		asset.logger.Zap.Error(err)
@@ -66,11 +64,18 @@ func (asset AssetController) Store(c *gin.Context) {
 		return
 	}
 
-	if _, err := asset.service.WithTrx(trxHandle).Store(&data); err != nil {
+	if err := asset.service.Store(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
 		return
 	}
+
+	// if _, err := asset.service.WithTrx(trxHandle).Store(&data); err != nil {
+	// 	asset.logger.Zap.Error(err)
+	// 	lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
+	// 	return
+	// }
+
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
 }
 

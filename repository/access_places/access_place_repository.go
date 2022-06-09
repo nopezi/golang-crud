@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/access_places"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type AccessPlaceDefinition interface {
 type AccessPlaceRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type AccessPlaceRepository struct {
 func NewAccessPlaceReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) AccessPlaceDefinition {
 	return AccessPlaceRepository{
 		db:      db,

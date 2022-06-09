@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/vehicle_assets"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type VehicleAssetDefinition interface {
 type VehicleAssetRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type VehicleAssetRepository struct {
 func NewVehicleAssetReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) VehicleAssetDefinition {
 	return VehicleAssetRepository{
 		db:      db,

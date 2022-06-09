@@ -5,6 +5,7 @@ import (
 	models "infolelang/models/sub_categories"
 	"time"
 
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type SubCategoryDefinition interface {
 type SubCategoryRepository struct {
 	db      lib.Database
 	db2     lib.Databases
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	logger  lib.Logger
 	timeout time.Duration
 }
@@ -27,7 +28,7 @@ type SubCategoryRepository struct {
 func NewSubCategoryReporitory(
 	db lib.Database,
 	db2 lib.Databases,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 	logger lib.Logger) SubCategoryDefinition {
 	return SubCategoryRepository{
 		db:      db,

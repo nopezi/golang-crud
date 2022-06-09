@@ -11,6 +11,7 @@ import (
 	"text/template"
 
 	"github.com/gin-gonic/gin"
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 )
 
 // CorsMiddleware middleware for cors
@@ -18,7 +19,7 @@ type LogActivityMiddleware struct {
 	handler lib.RequestHandler
 	logger  lib.Logger
 	env     env.Env
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 }
 
 type bodyLogWriter struct {
@@ -30,7 +31,7 @@ type bodyLogWriter struct {
 func NewLogActivityMiddleware(
 	handler lib.RequestHandler,
 	logger lib.Logger, env env.Env,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 ) LogActivityMiddleware {
 	return LogActivityMiddleware{
 		handler: handler,

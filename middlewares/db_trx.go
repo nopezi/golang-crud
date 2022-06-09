@@ -7,6 +7,7 @@ import (
 	"infolelang/lib"
 
 	"github.com/gin-gonic/gin"
+	elastic "gitlab.com/golang-package-library/elasticsearch"
 )
 
 // DatabaseTrx middleware for transactions support for database
@@ -14,7 +15,7 @@ type DatabaseTrx struct {
 	handler lib.RequestHandler
 	logger  lib.Logger
 	db      lib.Database
-	elastic lib.Elasticsearch
+	elastic elastic.Elasticsearch
 	// body    *bytes.Buffer
 }
 
@@ -33,7 +34,7 @@ func NewDatabaseTrx(
 	handler lib.RequestHandler,
 	logger lib.Logger,
 	db lib.Database,
-	elastic lib.Elasticsearch,
+	elastic elastic.Elasticsearch,
 ) DatabaseTrx {
 	return DatabaseTrx{
 		handler: handler,
