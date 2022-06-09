@@ -11,7 +11,7 @@ import (
 type AssetImageDefinition interface {
 	GetAll() (responses []models.AssetImagesResponse, err error)
 	GetOne(id int64) (responses models.AssetImagesResponse, err error)
-	Store(request *models.AssetImages) (responses bool, err error)
+	Store(request *models.AssetImages) (responses *models.AssetImages, err error)
 	Update(request *models.AssetImagesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetImageRepository
@@ -59,8 +59,8 @@ func (AssetImage AssetImageRepository) GetOne(id int64) (responses models.AssetI
 }
 
 // Store implements AssetImageDefinition
-func (AssetImage AssetImageRepository) Store(request *models.AssetImages) (responses bool, err error) {
-	return responses, AssetImage.db.DB.Save(&request).Error
+func (AssetImage AssetImageRepository) Store(request *models.AssetImages) (responses *models.AssetImages, err error) {
+	return request, AssetImage.db.DB.Save(&request).Error
 }
 
 // Update implements AssetImageDefinition

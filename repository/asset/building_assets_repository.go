@@ -11,7 +11,7 @@ import (
 type BuildingAssetDefinition interface {
 	GetAll() (responses []models.BuildingAssetsResponse, err error)
 	GetOne(id int64) (responses models.BuildingAssetsResponse, err error)
-	Store(request *models.BuildingAssets) (responses bool, err error)
+	Store(request *models.BuildingAssets) (responses *models.BuildingAssets, err error)
 	Update(request *models.BuildingAssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) BuildingAssetRepository
@@ -59,8 +59,8 @@ func (buildingAsset BuildingAssetRepository) GetOne(id int64) (responses models.
 }
 
 // Store implements BuildingAssetDefinition
-func (buildingAsset BuildingAssetRepository) Store(request *models.BuildingAssets) (responses bool, err error) {
-	return responses, buildingAsset.db.DB.Save(&request).Error
+func (buildingAsset BuildingAssetRepository) Store(request *models.BuildingAssets) (responses *models.BuildingAssets, err error) {
+	return request, buildingAsset.db.DB.Save(&request).Error
 }
 
 // Update implements BuildingAssetDefinition

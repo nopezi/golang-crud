@@ -11,7 +11,7 @@ import (
 type AssetAccessPlaceDefinition interface {
 	GetAll() (responses []models.AssetAccessPlacesResponse, err error)
 	GetOne(id int64) (responses models.AssetAccessPlacesResponse, err error)
-	Store(request *models.AssetAccessPlaces) (responses bool, err error)
+	Store(request *models.AssetAccessPlaces) (responses *models.AssetAccessPlaces, err error)
 	Update(request *models.AssetAccessPlacesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetAccessPlaceRepository
@@ -59,8 +59,8 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOne(id int64) (responses m
 }
 
 // Store implements AssetAccessPlaceDefinition
-func (assetAccessPlace AssetAccessPlaceRepository) Store(request *models.AssetAccessPlaces) (responses bool, err error) {
-	return responses, assetAccessPlace.db.DB.Save(&request).Error
+func (assetAccessPlace AssetAccessPlaceRepository) Store(request *models.AssetAccessPlaces) (responses *models.AssetAccessPlaces, err error) {
+	return request, assetAccessPlace.db.DB.Save(&request).Error
 }
 
 // Update implements AssetAccessPlaceDefinition

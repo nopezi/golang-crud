@@ -11,7 +11,7 @@ import (
 type VehicleAssetDefinition interface {
 	GetAll() (responses []models.VehicleAssetsResponse, err error)
 	GetOne(id int64) (responses models.VehicleAssetsResponse, err error)
-	Store(request *models.VehicleAssets) (responses bool, err error)
+	Store(request *models.VehicleAssets) (responses *models.VehicleAssets, err error)
 	Update(request *models.VehicleAssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) VehicleAssetRepository
@@ -59,8 +59,8 @@ func (vehicleAsset VehicleAssetRepository) GetOne(id int64) (responses models.Ve
 }
 
 // Store implements VehicleAssetDefinition
-func (vehicleAsset VehicleAssetRepository) Store(request *models.VehicleAssets) (responses bool, err error) {
-	return responses, vehicleAsset.db.DB.Save(&request).Error
+func (vehicleAsset VehicleAssetRepository) Store(request *models.VehicleAssets) (responses *models.VehicleAssets, err error) {
+	return request, vehicleAsset.db.DB.Save(&request).Error
 }
 
 // Update implements VehicleAssetDefinition

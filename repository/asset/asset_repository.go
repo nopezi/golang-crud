@@ -9,12 +9,13 @@ import (
 )
 
 type AssetDefinition interface {
+	WithTrx(trxHandle *gorm.DB) AssetRepository
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
 	Update(request *models.AssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
-	WithTrx(trxHandle *gorm.DB) AssetRepository
+	StoreElastic(request *models.AssetsRequest) (response bool, err error)
 }
 type AssetRepository struct {
 	db      lib.Database
@@ -71,4 +72,8 @@ func (asset AssetRepository) Update(request *models.AssetsRequest) (responses bo
 // Delete implements AssetDefinition
 func (asset AssetRepository) Delete(id int64) (err error) {
 	return asset.db.DB.Where("id = ?", id).Delete(&models.AssetsResponse{}).Error
+}
+
+func (asset AssetRepository) StoreElastic(request *models.AssetsRequest) (response bool, err error) {
+	return true, err
 }

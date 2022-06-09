@@ -11,7 +11,7 @@ import (
 type ContactDefinition interface {
 	GetAll() (responses []models.ContactsResponse, err error)
 	GetOne(id int64) (responses models.ContactsResponse, err error)
-	Store(request *models.Contacts) (responses bool, err error)
+	Store(request *models.Contacts) (responses *models.Contacts, err error)
 	Update(request *models.ContactsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) ContactRepository
@@ -59,8 +59,8 @@ func (contact ContactRepository) GetOne(id int64) (responses models.ContactsResp
 }
 
 // Store implements ContactDefinition
-func (contact ContactRepository) Store(request *models.Contacts) (responses bool, err error) {
-	return responses, contact.db.DB.Save(&request).Error
+func (contact ContactRepository) Store(request *models.Contacts) (responses *models.Contacts, err error) {
+	return request, contact.db.DB.Save(&request).Error
 }
 
 // Update implements ContactDefinition

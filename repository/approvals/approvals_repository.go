@@ -11,7 +11,7 @@ import (
 type ApprovalDefinition interface {
 	GetAll() (responses []models.ApprovalsResponse, err error)
 	GetOne(id int64) (responses models.ApprovalsResponse, err error)
-	Store(request *models.Approvals) (responses *models.ApprovalsResponse, err error)
+	Store(request *models.Approvals) (responses *models.Approvals, err error)
 	Update(request *models.ApprovalsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) ApprovalRepository
@@ -59,8 +59,8 @@ func (approval ApprovalRepository) GetOne(id int64) (responses models.ApprovalsR
 }
 
 // Store implements ApprovalDefinition
-func (approval ApprovalRepository) Store(request *models.Approvals) (responses *models.ApprovalsResponse, err error) {
-	return responses, approval.db.DB.Save(&request).Error
+func (approval ApprovalRepository) Store(request *models.Approvals) (responses *models.Approvals, err error) {
+	return request, approval.db.DB.Save(&request).Error
 }
 
 // Update implements ApprovalDefinition

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 
 	requestAddress "infolelang/models/addresses"
 	requestApprovals "infolelang/models/approvals"
@@ -31,6 +32,7 @@ var (
 )
 
 type AssetDefinition interface {
+	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.AssetsRequest) (err error)
@@ -80,6 +82,12 @@ func NewAssetService(
 		assetFacility:    assetFacility,
 		assetAccessPlace: assetAccessPlace,
 	}
+}
+
+// WithTrx delegates transaction to repository database
+func (asset AssetService) WithTrx(trxHandle *gorm.DB) AssetService {
+	asset.assetRepo = asset.assetRepo.WithTrx(trxHandle)
+	return asset
 }
 
 // GetAll implements AssetDefinition
@@ -287,6 +295,8 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		asset.logger.Zap.Error(err)
 		return err
 	}
+
+	// create elastic
 	fmt.Println(request)
 	return err
 }
