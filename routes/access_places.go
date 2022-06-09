@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/access_places"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type AccessPlaceRoutes struct {
-	logger                 lib.Logger
+	logger                 logger.Logger
 	handler                lib.RequestHandler
 	AccessPlacesController controllers.AccessPlaceController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s AccessPlaceRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewAccessPlaceRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	AccessPlacesController controllers.AccessPlaceController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

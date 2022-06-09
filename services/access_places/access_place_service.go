@@ -1,9 +1,10 @@
 package repoAccessPlace
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/access_places"
 	repository "infolelang/repository/access_places"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type AccessPlaceDefinition interface {
@@ -14,11 +15,11 @@ type AccessPlaceDefinition interface {
 	Delete(id int64) (err error)
 }
 type AccessPlaceService struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.AccessPlaceDefinition
 }
 
-func NewAccessPlaceService(logger lib.Logger, repository repository.AccessPlaceDefinition) AccessPlaceDefinition {
+func NewAccessPlaceService(logger logger.Logger, repository repository.AccessPlaceDefinition) AccessPlaceDefinition {
 	return AccessPlaceService{
 		logger:     logger,
 		repository: repository,

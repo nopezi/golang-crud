@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"gitlab.com/golang-package-library/logger"
 	"gitlab.com/golang-package-library/minio"
 )
 
@@ -19,13 +20,13 @@ type FileManagerDefinition interface {
 	RemoveObject(request models.FileManagerRequest) (response bool, err error)
 }
 type FileManagerService struct {
-	logger lib.Logger
+	logger logger.Logger
 	minio  minio.Minio
 }
 
 func NewFileManagerService(
 	minio minio.Minio,
-	logger lib.Logger) FileManagerDefinition {
+	logger logger.Logger) FileManagerDefinition {
 	return FileManagerService{
 		logger: logger,
 		minio:  minio,

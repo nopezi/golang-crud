@@ -6,6 +6,7 @@ import (
 	"time"
 
 	elastic "gitlab.com/golang-package-library/elasticsearch"
+	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
 
@@ -22,7 +23,7 @@ type AssetRepository struct {
 	db      lib.Database
 	db2     lib.Databases
 	elastic elastic.Elasticsearch
-	logger  lib.Logger
+	logger  logger.Logger
 	timeout time.Duration
 }
 
@@ -30,7 +31,7 @@ func NewAssetReporitory(
 	db lib.Database,
 	db2 lib.Databases,
 	elastic elastic.Elasticsearch,
-	logger lib.Logger) AssetDefinition {
+	logger logger.Logger) AssetDefinition {
 	return AssetRepository{
 		db:      db,
 		db2:     db2,

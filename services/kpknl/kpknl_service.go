@@ -1,9 +1,10 @@
 package repoKpknl
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/kpknl"
 	repository "infolelang/repository/kpknl"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type KpknlDefinition interface {
@@ -14,11 +15,11 @@ type KpknlDefinition interface {
 	Delete(id int64) (err error)
 }
 type KpknlService struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.KpknlDefinition
 }
 
-func NewKpknlService(logger lib.Logger, repository repository.KpknlDefinition) KpknlDefinition {
+func NewKpknlService(logger logger.Logger, repository repository.KpknlDefinition) KpknlDefinition {
 	return KpknlService{
 		logger:     logger,
 		repository: repository,

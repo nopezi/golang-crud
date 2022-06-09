@@ -7,6 +7,8 @@ import (
 	"infolelang/repository"
 	"infolelang/requests"
 	"infolelang/responses"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type TransactionService interface {
@@ -17,12 +19,12 @@ type TransactionService interface {
 
 // TransactionServiceContext service layer
 type TransactionServiceContext struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.TransactionRepository
 }
 
 // NewTransactionServiceContext creates a new TransactionServiceContext
-func NewTransactionService(logger lib.Logger, repository repository.TransactionRepository) TransactionService {
+func NewTransactionService(logger logger.Logger, repository repository.TransactionRepository) TransactionService {
 	return TransactionServiceContext{
 		logger:     logger,
 		repository: repository,

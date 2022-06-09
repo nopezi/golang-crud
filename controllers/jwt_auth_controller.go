@@ -1,26 +1,26 @@
 package controllers
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/user"
 	services "infolelang/services"
 	user "infolelang/services/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // JWTAuthController struct
 type JWTAuthController struct {
-	logger      lib.Logger
+	logger      logger.Logger
 	service     services.JWTAuthService
 	userService user.UserService
 }
 
 // NewJWTAuthController creates new controller
 func NewJWTAuthController(
-	logger lib.Logger,
+	logger logger.Logger,
 	service services.JWTAuthService,
 	userService user.UserService,
 ) JWTAuthController {

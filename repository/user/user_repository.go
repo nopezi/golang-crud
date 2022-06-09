@@ -4,17 +4,18 @@ import (
 	"infolelang/lib"
 	models "infolelang/models/user"
 
+	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
 
 // UserRepository database structure
 type UserRepository struct {
 	db     lib.Database
-	logger lib.Logger
+	logger logger.Logger
 }
 
 // NewUserRepository creates a new user repository
-func NewUserRepository(db lib.Database, logger lib.Logger) UserRepository {
+func NewUserRepository(db lib.Database, logger logger.Logger) UserRepository {
 	return UserRepository{
 		db:     db,
 		logger: logger,

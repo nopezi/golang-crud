@@ -8,14 +8,15 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 type KpknlController struct {
-	logger  lib.Logger
+	logger  logger.Logger
 	service services.KpknlDefinition
 }
 
-func NewKpknlController(KpknlService services.KpknlDefinition, logger lib.Logger) KpknlController {
+func NewKpknlController(KpknlService services.KpknlDefinition, logger logger.Logger) KpknlController {
 	return KpknlController{
 		service: KpknlService,
 		logger:  logger,

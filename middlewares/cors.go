@@ -5,17 +5,18 @@ import (
 	"infolelang/lib/env"
 
 	cors "github.com/rs/cors/wrapper/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 // CorsMiddleware middleware for cors
 type CorsMiddleware struct {
 	handler lib.RequestHandler
-	logger  lib.Logger
+	logger  logger.Logger
 	env     env.Env
 }
 
 // NewCorsMiddleware creates new cors middleware
-func NewCorsMiddleware(handler lib.RequestHandler, logger lib.Logger, env env.Env) CorsMiddleware {
+func NewCorsMiddleware(handler lib.RequestHandler, logger logger.Logger, env env.Env) CorsMiddleware {
 	return CorsMiddleware{
 		handler: handler,
 		logger:  logger,

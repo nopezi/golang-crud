@@ -2,21 +2,21 @@ package services
 
 import (
 	"errors"
-	"infolelang/lib"
 	env "infolelang/lib/env"
 	models "infolelang/models/user"
 
 	"github.com/dgrijalva/jwt-go"
+	"gitlab.com/golang-package-library/logger"
 )
 
 // JWTAuthService service relating to authorization
 type JWTAuthService struct {
 	env    env.Env
-	logger lib.Logger
+	logger logger.Logger
 }
 
 // NewJWTAuthService creates a new auth service
-func NewJWTAuthService(env env.Env, logger lib.Logger) JWTAuthService {
+func NewJWTAuthService(env env.Env, logger logger.Logger) JWTAuthService {
 	return JWTAuthService{
 		env:    env,
 		logger: logger,

@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/asset"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type AssetRoutes struct {
-	logger          lib.Logger
+	logger          logger.Logger
 	handler         lib.RequestHandler
 	AssetController controllers.AssetController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s AssetRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewAssetRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	AssetController controllers.AssetController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

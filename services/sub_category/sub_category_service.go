@@ -1,9 +1,10 @@
 package repoSubCategory
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/sub_categories"
 	repository "infolelang/repository/sub_categories"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type SubCategoryDefinition interface {
@@ -14,11 +15,11 @@ type SubCategoryDefinition interface {
 	Delete(id int64) (err error)
 }
 type SubCategoryService struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.SubCategoryDefinition
 }
 
-func NewSubCategoryService(logger lib.Logger, repository repository.SubCategoryDefinition) SubCategoryDefinition {
+func NewSubCategoryService(logger logger.Logger, repository repository.SubCategoryDefinition) SubCategoryDefinition {
 	return SubCategoryService{
 		logger:     logger,
 		repository: repository,

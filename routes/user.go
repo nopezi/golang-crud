@@ -4,11 +4,13 @@ import (
 	controllers "infolelang/controllers/user"
 	"infolelang/lib"
 	"infolelang/middlewares"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // UserRoutes struct
 type UserRoutes struct {
-	logger         lib.Logger
+	logger         logger.Logger
 	handler        lib.RequestHandler
 	userController controllers.UserController
 	authMiddleware middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s UserRoutes) Setup() {
 
 // NewUserRoutes creates new user controller
 func NewUserRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	userController controllers.UserController,
 	authMiddleware middlewares.JWTAuthMiddleware,

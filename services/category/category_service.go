@@ -1,9 +1,10 @@
 package repoCategory
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/categories"
 	repository "infolelang/repository/categories"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type CategoryDefinition interface {
@@ -14,11 +15,11 @@ type CategoryDefinition interface {
 	Delete(id int64) (err error)
 }
 type CategoryService struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.CategoryDefinition
 }
 
-func NewCategoryService(logger lib.Logger, repository repository.CategoryDefinition) CategoryDefinition {
+func NewCategoryService(logger logger.Logger, repository repository.CategoryDefinition) CategoryDefinition {
 	return CategoryService{
 		logger:     logger,
 		repository: repository,

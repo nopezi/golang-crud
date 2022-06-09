@@ -23,6 +23,7 @@ import (
 	contactRepo "infolelang/repository/contacts"
 	imageRepo "infolelang/repository/images"
 
+	"gitlab.com/golang-package-library/logger"
 	minio "gitlab.com/golang-package-library/minio"
 )
 
@@ -41,7 +42,7 @@ type AssetDefinition interface {
 }
 type AssetService struct {
 	minio            minio.Minio
-	logger           lib.Logger
+	logger           logger.Logger
 	assetRepo        assetRepo.AssetDefinition
 	addressRepo      addressRepo.AddressDefinition
 	buildingRepo     assetRepo.BuildingAssetDefinition
@@ -56,7 +57,7 @@ type AssetService struct {
 
 func NewAssetService(
 	minio minio.Minio,
-	logger lib.Logger,
+	logger logger.Logger,
 	assetRepo assetRepo.AssetDefinition,
 	addressRepo addressRepo.AddressDefinition,
 	buildingRepo assetRepo.BuildingAssetDefinition,

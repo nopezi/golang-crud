@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/category"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type CategoryRoutes struct {
-	logger             lib.Logger
+	logger             logger.Logger
 	handler            lib.RequestHandler
 	CategoryController controllers.CategoryController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s CategoryRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewCategoryRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	CategoryController controllers.CategoryController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

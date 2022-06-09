@@ -8,12 +8,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	elastic "gitlab.com/golang-package-library/elasticsearch"
+	"gitlab.com/golang-package-library/logger"
 )
 
 // DatabaseTrx middleware for transactions support for database
 type DatabaseTrx struct {
 	handler lib.RequestHandler
-	logger  lib.Logger
+	logger  logger.Logger
 	db      lib.Database
 	elastic elastic.Elasticsearch
 	// body    *bytes.Buffer
@@ -32,7 +33,7 @@ func statusInList(status int, statusList []int) bool {
 // NewDatabaseTrx creates new database transactions middleware
 func NewDatabaseTrx(
 	handler lib.RequestHandler,
-	logger lib.Logger,
+	logger logger.Logger,
 	db lib.Database,
 	elastic elastic.Elasticsearch,
 ) DatabaseTrx {

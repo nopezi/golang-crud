@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/file_manager"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type FileManagerRoutes struct {
-	logger                lib.Logger
+	logger                logger.Logger
 	handler               lib.RequestHandler
 	FileManagerController controllers.FileManagerController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -28,7 +30,7 @@ func (s FileManagerRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewFileManagerRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	FileManagerController controllers.FileManagerController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

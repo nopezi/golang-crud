@@ -8,14 +8,15 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 type AccessPlaceController struct {
-	logger  lib.Logger
+	logger  logger.Logger
 	service services.AccessPlaceDefinition
 }
 
-func NewAccessPlaceController(AccessPlaceService services.AccessPlaceDefinition, logger lib.Logger) AccessPlaceController {
+func NewAccessPlaceController(AccessPlaceService services.AccessPlaceDefinition, logger logger.Logger) AccessPlaceController {
 	return AccessPlaceController{
 		service: AccessPlaceService,
 		logger:  logger,

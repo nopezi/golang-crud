@@ -12,13 +12,14 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
+	zapLog "gitlab.com/golang-package-library/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 type JobService struct {
-	logger        lib.Logger
+	logger        zapLog.Logger
 	jobRepository jobs.JobRemoveRepository
 }
 

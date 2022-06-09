@@ -8,19 +8,20 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 	// "gitlab.com/golang-package-library/minio"
 	// minio "gitlab.com/golang-package-library/minio"
 )
 
 type AssetController struct {
 	// minio   minio.Minio
-	logger  lib.Logger
+	logger  logger.Logger
 	service services.AssetDefinition
 }
 
 func NewAssetController(
 	AssetService services.AssetDefinition,
-	logger lib.Logger,
+	logger logger.Logger,
 	// minio minio.Minio,
 ) AssetController {
 	return AssetController{

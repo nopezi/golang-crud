@@ -1,9 +1,10 @@
 package repoFaq
 
 import (
-	"infolelang/lib"
 	models "infolelang/models/faq"
 	repository "infolelang/repository/faq"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 type FaqDefinition interface {
@@ -14,11 +15,11 @@ type FaqDefinition interface {
 	Delete(id int64) (err error)
 }
 type FaqService struct {
-	logger     lib.Logger
+	logger     logger.Logger
 	repository repository.FaqDefinition
 }
 
-func NewFaqService(logger lib.Logger, repository repository.FaqDefinition) FaqDefinition {
+func NewFaqService(logger logger.Logger, repository repository.FaqDefinition) FaqDefinition {
 	return FaqService{
 		logger:     logger,
 		repository: repository,

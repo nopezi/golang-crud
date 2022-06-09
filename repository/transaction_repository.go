@@ -18,6 +18,7 @@ import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/jinzhu/copier"
 	elastic "gitlab.com/golang-package-library/elasticsearch"
+	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
 
@@ -40,12 +41,12 @@ type TransactionRepository interface {
 type TransactionRepositoryContext struct {
 	db      lib.Database
 	Elastic elastic.Elasticsearch
-	logger  lib.Logger
+	logger  logger.Logger
 	timeout time.Duration
 }
 
 // NewTransactionRepositoryContext creates a new Transaction repository
-func NewTransactionRepository(db lib.Database, elastic elastic.Elasticsearch, logger lib.Logger) TransactionRepository {
+func NewTransactionRepository(db lib.Database, elastic elastic.Elasticsearch, logger logger.Logger) TransactionRepository {
 	return TransactionRepositoryContext{
 		db:      db,
 		Elastic: elastic,

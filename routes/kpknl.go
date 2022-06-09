@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/kpknl"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type KpknlRoutes struct {
-	logger          lib.Logger
+	logger          logger.Logger
 	handler         lib.RequestHandler
 	KpknlController controllers.KpknlController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s KpknlRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewKpknlRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	KpknlController controllers.KpknlController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

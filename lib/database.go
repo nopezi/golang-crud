@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	env "infolelang/lib/env"
+
+	zapLog "gitlab.com/golang-package-library/logger"
 )
 
 // Database modal
@@ -12,7 +14,7 @@ type Databases struct {
 }
 
 // NewDatabase creates a new database instance
-func NewDatabases(env env.Env, zapLogger Logger) Databases {
+func NewDatabases(env env.Env, zapLogger zapLog.Logger) Databases {
 
 	username := env.DBUsername
 	password := env.DBPassword

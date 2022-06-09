@@ -3,11 +3,13 @@ package routes
 import (
 	controllers "infolelang/controllers/faq"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionRoutes struct
 type FaqRoutes struct {
-	logger        lib.Logger
+	logger        logger.Logger
 	handler       lib.RequestHandler
 	FaqController controllers.FaqController
 	// authMiddleware        middlewares.JWTAuthMiddleware
@@ -30,7 +32,7 @@ func (s FaqRoutes) Setup() {
 
 // NewTransactionRoutes creates new Transaction controller
 func NewFaqRoutes(
-	logger lib.Logger,
+	logger logger.Logger,
 	handler lib.RequestHandler,
 	FaqController controllers.FaqController,
 	// authMiddleware middlewares.JWTAuthMiddleware,

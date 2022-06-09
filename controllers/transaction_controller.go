@@ -8,16 +8,17 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 // TransactionController data type
 type TransactionController struct {
 	service services.TransactionService
-	logger  lib.Logger
+	logger  logger.Logger
 }
 
 // NewTransactionController creates new Transaction controller
-func NewTransactionController(TransactionService services.TransactionService, logger lib.Logger) TransactionController {
+func NewTransactionController(TransactionService services.TransactionService, logger logger.Logger) TransactionController {
 	return TransactionController{
 		service: TransactionService,
 		logger:  logger,

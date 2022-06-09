@@ -8,14 +8,15 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 type SubCategoryController struct {
-	logger  lib.Logger
+	logger  logger.Logger
 	service services.SubCategoryDefinition
 }
 
-func NewSubCategoryController(SubCategoryService services.SubCategoryDefinition, logger lib.Logger) SubCategoryController {
+func NewSubCategoryController(SubCategoryService services.SubCategoryDefinition, logger logger.Logger) SubCategoryController {
 	return SubCategoryController{
 		service: SubCategoryService,
 		logger:  logger,

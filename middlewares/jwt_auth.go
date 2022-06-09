@@ -4,21 +4,21 @@ import (
 	"net/http"
 	"strings"
 
-	"infolelang/lib"
 	"infolelang/services"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 // JWTAuthMiddleware middleware for jwt authentication
 type JWTAuthMiddleware struct {
 	service services.JWTAuthService
-	logger  lib.Logger
+	logger  logger.Logger
 }
 
 // NewJWTAuthMiddleware creates new jwt auth middleware
 func NewJWTAuthMiddleware(
-	logger lib.Logger,
+	logger logger.Logger,
 	service services.JWTAuthService,
 ) JWTAuthMiddleware {
 	return JWTAuthMiddleware{

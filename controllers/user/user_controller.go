@@ -2,24 +2,24 @@ package user
 
 import (
 	"infolelang/constants"
-	"infolelang/lib"
 	models "infolelang/models/user"
 	services "infolelang/services/user"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
 
 // UserController data type
 type UserController struct {
 	service services.UserService
-	logger  lib.Logger
+	logger  logger.Logger
 }
 
 // NewUserController creates new user controller
-func NewUserController(userService services.UserService, logger lib.Logger) UserController {
+func NewUserController(userService services.UserService, logger logger.Logger) UserController {
 	return UserController{
 		service: userService,
 		logger:  logger,

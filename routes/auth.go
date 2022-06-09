@@ -3,11 +3,13 @@ package routes
 import (
 	"infolelang/controllers"
 	"infolelang/lib"
+
+	"gitlab.com/golang-package-library/logger"
 )
 
 // AuthRoutes struct
 type AuthRoutes struct {
-	logger         lib.Logger
+	logger         logger.Logger
 	handler        lib.RequestHandler
 	authController controllers.JWTAuthController
 }
@@ -26,7 +28,7 @@ func (s AuthRoutes) Setup() {
 func NewAuthRoutes(
 	handler lib.RequestHandler,
 	authController controllers.JWTAuthController,
-	logger lib.Logger,
+	logger logger.Logger,
 ) AuthRoutes {
 	return AuthRoutes{
 		handler:        handler,

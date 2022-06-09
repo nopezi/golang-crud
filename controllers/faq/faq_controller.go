@@ -8,14 +8,15 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/golang-package-library/logger"
 )
 
 type FaqController struct {
-	logger  lib.Logger
+	logger  logger.Logger
 	service services.FaqDefinition
 }
 
-func NewFaqController(FaqService services.FaqDefinition, logger lib.Logger) FaqController {
+func NewFaqController(FaqService services.FaqDefinition, logger logger.Logger) FaqController {
 	return FaqController{
 		service: FaqService,
 		logger:  logger,

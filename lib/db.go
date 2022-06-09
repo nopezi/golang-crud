@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	zapLog "gitlab.com/golang-package-library/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,7 +20,7 @@ type Database struct {
 }
 
 // NewDatabase creates a new database instance
-func NewDatabase(env env.Env, zapLogger Logger) Database {
+func NewDatabase(env env.Env, zapLogger zapLog.Logger) Database {
 
 	username := env.DBUsername
 	password := env.DBPassword
