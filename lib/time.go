@@ -6,11 +6,9 @@ import (
 )
 
 func GetTimeNow(param string) string {
+
 	currentTime := time.Now()
-	_, err := time.LoadLocation("Asia/Jakarta")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	time.LoadLocation("Asia/Jakarta")
 
 	switch param {
 	case "timestime":
@@ -18,11 +16,13 @@ func GetTimeNow(param string) string {
 	case "date":
 		return currentTime.Format("2006-01-02")
 	case "year":
-		return string(currentTime.Year())
+		return fmt.Sprint(currentTime.Year())
 	case "month":
-		return currentTime.Month().String()
+		return fmt.Sprint(int(currentTime.Month()))
+	case "month-name":
+		return fmt.Sprint(currentTime.Month())
 	case "day":
-		return string(currentTime.Day())
+		return fmt.Sprint(currentTime.Day())
 	case "hour":
 		return string(currentTime.Hour())
 	case "minutes":
