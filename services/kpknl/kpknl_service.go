@@ -10,8 +10,8 @@ import (
 type KpknlDefinition interface {
 	GetAll() (responses []models.KpknlResponse, err error)
 	GetOne(id int64) (responses models.KpknlResponse, err error)
-	Store(request *models.KpknlRequest) (err error)
-	Update(request *models.KpknlRequest) (err error)
+	Store(request *models.KpknlRequest) (status bool, err error)
+	Update(request *models.KpknlRequest) (status bool, err error)
 	Delete(id int64) (err error)
 }
 type KpknlService struct {
@@ -37,15 +37,15 @@ func (kpknl KpknlService) GetOne(id int64) (responses models.KpknlResponse, err 
 }
 
 // Store implements KpknlDefinition
-func (kpknl KpknlService) Store(request *models.KpknlRequest) (err error) {
-	_, err = kpknl.repository.Store(request)
-	return err
+func (kpknl KpknlService) Store(request *models.KpknlRequest) (status bool, err error) {
+	status, err = kpknl.repository.Store(request)
+	return status, err
 }
 
 // Update implements KpknlDefinition
-func (kpknl KpknlService) Update(request *models.KpknlRequest) (err error) {
-	_, err = kpknl.repository.Update(request)
-	return err
+func (kpknl KpknlService) Update(request *models.KpknlRequest) (status bool, err error) {
+	status, err = kpknl.repository.Update(request)
+	return status, err
 }
 
 // Delete implements KpknlDefinition

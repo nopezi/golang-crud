@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"infolelang/lib"
 	models "infolelang/models/kpknl"
 
@@ -33,16 +34,19 @@ func (kpknl KpknlController) GetAll(c *gin.Context) {
 
 func (kpknl KpknlController) GetOne(c *gin.Context) {
 	paramId := c.Param("id")
+	fmt.Println(paramId)
 	id, err := strconv.Atoi(paramId)
 	if err != nil {
 		kpknl.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
 	}
 
 	data, err := kpknl.service.GetOne(int64(id))
 	if err != nil {
 		kpknl.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
@@ -55,17 +59,19 @@ func (kpknl KpknlController) Store(c *gin.Context) {
 		return
 	}
 
-	if err := kpknl.service.Store(&data); err != nil {
+	status, err := kpknl.service.Store(&data)
+
+	if err != nil {
 		kpknl.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", status)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", status)
 }
 
 func (kpknl KpknlController) Update(c *gin.Context) {
 	data := models.KpknlRequest{}
-	// paramID := c.Param("id")
 
 	if err := c.Bind(&data); err != nil {
 		kpknl.logger.Zap.Error(err)
@@ -73,19 +79,13 @@ func (kpknl KpknlController) Update(c *gin.Context) {
 		return
 	}
 
-	// id, err := strconv.Atoi(paramID)
-	// if err != nil {
-	// 	kpknl.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-	// 	return
-	// }
-
-	if err := kpknl.service.Update(&data); err != nil {
+	status, err := kpknl.service.Update(&data)
+	if err != nil {
 		kpknl.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", status)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", status)
 
 }
 

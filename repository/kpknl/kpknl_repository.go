@@ -62,12 +62,30 @@ func (kpknl KpknlRepository) GetOne(id int64) (responses models.KpknlResponse, e
 
 // Store implements KpknlDefinition
 func (kpknl KpknlRepository) Store(request *models.KpknlRequest) (responses bool, err error) {
-	return responses, kpknl.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+
+	return true, kpknl.db.DB.Save(&models.KpknlRequest{
+		Kpknl:     request.Kpknl,
+		Address:   request.Address,
+		Phone:     request.Phone,
+		Fax:       request.Fax,
+		CreatedAt: &timeNow,
+	}).Error
 }
 
 // Update implements KpknlDefinition
 func (kpknl KpknlRepository) Update(request *models.KpknlRequest) (responses bool, err error) {
-	return true, kpknl.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+
+	return true, kpknl.db.DB.Save(&models.KpknlRequest{
+		ID:        request.ID,
+		Kpknl:     request.Kpknl,
+		Address:   request.Address,
+		Phone:     request.Phone,
+		Fax:       request.Fax,
+		CreatedAt: request.CreatedAt,
+		UpdatedAt: &timeNow,
+	}).Error
 }
 
 // Delete implements KpknlDefinition

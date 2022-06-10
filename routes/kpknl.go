@@ -21,11 +21,11 @@ func (s KpknlRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/kpknl")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.POST("/getAll", s.KpknlController.GetAll)
-		api.POST("/getOne", s.KpknlController.GetOne)
+		api.GET("/getAll", s.KpknlController.GetAll)
+		api.GET("/getOne/:id", s.KpknlController.GetOne)
 		api.POST("/update", s.KpknlController.Update)
 		api.POST("/store", s.KpknlController.Store)
-		api.POST("/selete", s.KpknlController.Delete)
+		api.DELETE("/delete/:id", s.KpknlController.Delete)
 
 	}
 }
