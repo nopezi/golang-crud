@@ -10,6 +10,7 @@ import (
 	faq "infolelang/repository/faq"
 	image "infolelang/repository/images"
 	kpknl "infolelang/repository/kpknl"
+	postalcode "infolelang/repository/postalcode"
 	subCategory "infolelang/repository/sub_categories"
 	user "infolelang/repository/user"
 
@@ -35,4 +36,5 @@ var Module = fx.Options(
 	fx.Provide(approval.NewApprovalReporitory),
 	fx.Provide(contact.NewContactReporitory),
 	fx.Provide(image.NewImageReporitory),
+	fx.Provide(postalcode.NewPostalcodeReporitory),
 )

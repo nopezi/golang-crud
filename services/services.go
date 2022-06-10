@@ -7,6 +7,7 @@ import (
 	faq "infolelang/services/faq"
 	file "infolelang/services/file_manager"
 	kpknl "infolelang/services/kpknl"
+	postalcode "infolelang/services/postalcode"
 	subCategory "infolelang/services/sub_category"
 	user "infolelang/services/user"
 
@@ -25,4 +26,5 @@ var Module = fx.Options(
 	fx.Provide(subCategory.NewSubCategoryService),
 	fx.Provide(asset.NewAssetService),
 	fx.Provide(file.NewFileManagerService),
+	fx.Provide(postalcode.NewPostalcodeService),
 )
