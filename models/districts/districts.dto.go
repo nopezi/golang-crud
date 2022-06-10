@@ -35,3 +35,11 @@ func (p DistrictsResponse) ParseResponse() Districts {
 		UpdatedAt:  p.UpdatedAt,
 	}
 }
+
+func (dr DistrictsRequest) TableName() string {
+	return "district"
+}
+
+func (dr DistrictsResponse) TableName() string {
+	return "district"
+}
