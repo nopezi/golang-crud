@@ -114,7 +114,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	// address
 
-	_, err = asset.addressRepo.Store(
+	address, err := asset.addressRepo.Store(
 		&requestAddress.Addresses{
 			AssetID:      dataAsset.ID,
 			PostalcodeID: request.Addresses.PostalcodeID,
@@ -123,6 +123,9 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			Langitude:    request.Addresses.Langitude,
 			CreatedAt:    &timeNow,
 		})
+
+	fmt.Println("this is address => ", address)
+
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return err
@@ -134,7 +137,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	switch request.Type {
 	case "FormB1":
 		// buildingasset
-		_, err = asset.buildingRepo.Store(&requestBuilding.BuildingAssets{
+		building, err := asset.buildingRepo.Store(&requestBuilding.BuildingAssets{
 			AssetID:           dataAsset.ID,
 			CertificateType:   request.BuildingAssets.CertificateType,
 			CertificateNumber: request.BuildingAssets.CertificateNumber,
@@ -153,9 +156,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			asset.logger.Zap.Error(err)
 			return err
 		}
+		fmt.Println("building=>", building)
 	default:
 		// vehicle asset
-		_, err = asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
+		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
 			AssetID:           dataAsset.ID,
 			VehicleType:       request.VehicleAssets.VehicleType,
 			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
@@ -178,8 +182,11 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			asset.logger.Zap.Error(err)
 			return err
 		}
+		fmt.Println("vehicle=>", vehicle)
 
 	}
+
+	fmt.Println("facilities=>", request.Facilities)
 
 	for _, value := range request.Facilities {
 		_, err := asset.assetFacility.Store(
@@ -195,6 +202,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	}
 
 	// asset_access_places
+	fmt.Println("Access Places=>", request.AccessPlaces)
 	for _, value := range request.AccessPlaces {
 		_, err = asset.assetAccessPlace.Store(
 			&models.AssetAccessPlaces{
@@ -210,7 +218,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	}
 
 	// contact
-	_, err = asset.contactRepo.Store(&requestContact.Contacts{
+	contact, err := asset.contactRepo.Store(&requestContact.Contacts{
 		AssetID:     dataAsset.ID,
 		DebiturName: request.Contacts.DebiturName,
 		PicName:     request.Contacts.PicName,
@@ -223,6 +231,8 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		asset.logger.Zap.Error(err)
 		return err
 	}
+	fmt.Println("contact=>", contact)
+
 	var images []requestImage.ImagesRequest
 
 	// images
@@ -265,6 +275,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		})
 
 		images = append(images, requestImage.ImagesRequest{
+			ID:        image.ID,
 			Filename:  value.Filename,
 			Path:      destinationPath,
 			Extension: value.Extension,
@@ -288,9 +299,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			return err
 		}
 	}
+	fmt.Println("images=>", images)
 
 	// approval
-	_, err = asset.approvalRepo.Store(
+	approval, err := asset.approvalRepo.Store(
 		&requestApprovals.Approvals{
 			AssetID:     dataAsset.ID,
 			CheckerID:   request.Approvals.CheckerID,
@@ -306,6 +318,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		asset.logger.Zap.Error(err)
 		return err
 	}
+	fmt.Println("approval=>", approval)
 
 	// create elastic
 	// dataAssets := models.AssetsResponse{

@@ -9,7 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"
-	// "gitlab.com/golang-package-library/minio"
 	// minio "gitlab.com/golang-package-library/minio"
 )
 
