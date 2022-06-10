@@ -15,6 +15,7 @@ var Module = fx.Options(
 	fx.Provide(NewCategoryRoutes),
 	fx.Provide(NewSubCategoryRoutes),
 	fx.Provide(NewFileManagerRoutes),
+	fx.Provide(NewPostalcodeRoutes),
 )
 
 // Routes contains multiple routes
@@ -37,6 +38,7 @@ func NewRoutes(
 	categoryRoutes CategoryRoutes,
 	subCategoryRoutes SubCategoryRoutes,
 	fileManager FileManagerRoutes,
+	postalcode PostalcodeRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -49,6 +51,7 @@ func NewRoutes(
 		categoryRoutes,
 		subCategoryRoutes,
 		fileManager,
+		postalcode,
 	}
 }
 
