@@ -1,17 +1,19 @@
 package models
 
 type SubCategoriesRequest struct {
-	ID         int64  `json:"id"`
-	CategoryID int64  `json:"category_id"`
-	Name       string `json:"name"`
+	ID         int64   `json:"id"`
+	CategoryID int64   `json:"category_id"`
+	Name       string  `json:"name"`
+	CreatedAt  *string `json:"created_at"`
+	UpdatedAt  *string `json:"updated_at"`
 }
 
 type SubCategoriesResponse struct {
-	ID         int64  `json:"id"`
-	CategoryID int64  `json:"category_id"`
-	Name       string `json:"name"`
-	CreatedAt  string `json:"created_at"`
-	UpdatedAt  string `json:"updated_at"`
+	ID         int64   `json:"id"`
+	CategoryID int64   `json:"category_id"`
+	Name       string  `json:"name"`
+	CreatedAt  *string `json:"created_at"`
+	UpdatedAt  *string `json:"updated_at"`
 }
 
 func (p SubCategoriesRequest) ParseRequest() SubCategories {
@@ -30,4 +32,12 @@ func (p SubCategoriesResponse) ParseResponse() SubCategories {
 		CreatedAt:  p.CreatedAt,
 		UpdatedAt:  p.UpdatedAt,
 	}
+}
+
+func (kr SubCategoriesRequest) TableName() string {
+	return "sub_categories"
+}
+
+func (kr SubCategoriesResponse) TableName() string {
+	return "sub_categories"
 }

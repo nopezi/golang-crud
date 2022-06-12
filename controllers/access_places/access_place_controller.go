@@ -57,15 +57,14 @@ func (ap AccessPlaceController) Store(c *gin.Context) {
 
 	if err := ap.service.Store(&data); err != nil {
 		ap.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
 }
 
 func (ap AccessPlaceController) Update(c *gin.Context) {
 	data := models.AccessPlacesRequest{}
-	// paramID := c.Param("id")
 
 	if err := c.Bind(&data); err != nil {
 		ap.logger.Zap.Error(err)
@@ -73,19 +72,12 @@ func (ap AccessPlaceController) Update(c *gin.Context) {
 		return
 	}
 
-	// id, err := strconv.Atoi(paramID)
-	// if err != nil {
-	// 	ap.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-	// 	return
-	// }
-
 	if err := ap.service.Update(&data); err != nil {
 		ap.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Data berhasil Diupdate", true)
 
 }
 
@@ -100,8 +92,8 @@ func (ap AccessPlaceController) Delete(c *gin.Context) {
 
 	if err := ap.service.Delete(int64(id)); err != nil {
 		ap.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "data deleted", "")
+	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", true)
 }

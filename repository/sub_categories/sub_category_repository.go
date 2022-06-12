@@ -62,12 +62,24 @@ func (subCategory SubCategoryRepository) GetOne(id int64) (responses models.SubC
 
 // Store implements SubCategoryDefinition
 func (subCategory SubCategoryRepository) Store(request *models.SubCategoriesRequest) (responses bool, err error) {
-	return responses, subCategory.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return responses, subCategory.db.DB.Save(&models.SubCategoriesRequest{
+		CategoryID: request.CategoryID,
+		Name:       request.Name,
+		CreatedAt:  &timeNow,
+	}).Error
 }
 
 // Update implements SubCategoryDefinition
 func (subCategory SubCategoryRepository) Update(request *models.SubCategoriesRequest) (responses bool, err error) {
-	return true, subCategory.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return true, subCategory.db.DB.Save(&models.SubCategoriesRequest{
+		ID:         request.ID,
+		CategoryID: request.CategoryID,
+		Name:       request.Name,
+		CreatedAt:  request.CreatedAt,
+		UpdatedAt:  &timeNow,
+	}).Error
 }
 
 // Delete implements SubCategoryDefinition

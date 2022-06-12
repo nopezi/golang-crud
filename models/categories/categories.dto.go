@@ -1,15 +1,17 @@
 package models
 
 type CategoryRequest struct {
-	ID   int64  `json:"id"`
-	Name string `json:"name"`
+	ID        int64   `json:"id"`
+	Name      string  `json:"name"`
+	CreatedAt *string `json:"created_at"`
+	UpdatedAt *string `json:"updated_at"`
 }
 
 type CategoryResponse struct {
-	ID        int64  `json:"id"`
-	Name      string `json:"name"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	ID        int64   `json:"id"`
+	Name      string  `json:"name"`
+	CreatedAt *string `json:"created_at"`
+	UpdatedAt *string `json:"updated_at"`
 }
 
 func (p CategoryRequest) ParseRequest() Categories {
@@ -26,4 +28,12 @@ func (p CategoryResponse) ParseResponse() Categories {
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,
 	}
+}
+
+func (cr CategoryRequest) TableName() string {
+	return "categories"
+}
+
+func (cr CategoryResponse) TableName() string {
+	return "categories"
 }

@@ -37,12 +37,14 @@ func (subCategory SubCategoryController) GetOne(c *gin.Context) {
 	if err != nil {
 		subCategory.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
 	}
 
 	data, err := subCategory.service.GetOne(int64(id))
 	if err != nil {
 		subCategory.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
@@ -57,10 +59,10 @@ func (subCategory SubCategoryController) Store(c *gin.Context) {
 
 	if err := subCategory.service.Store(&data); err != nil {
 		subCategory.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Data berhasil disimpan", true)
 }
 
 func (subCategory SubCategoryController) Update(c *gin.Context) {
@@ -73,19 +75,12 @@ func (subCategory SubCategoryController) Update(c *gin.Context) {
 		return
 	}
 
-	// id, err := strconv.Atoi(paramID)
-	// if err != nil {
-	// 	SubCategory.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-	// 	return
-	// }
-
 	if err := subCategory.service.Update(&data); err != nil {
 		subCategory.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Data berhasil diupdate", true)
 
 }
 
@@ -100,8 +95,8 @@ func (subCategory SubCategoryController) Delete(c *gin.Context) {
 
 	if err := subCategory.service.Delete(int64(id)); err != nil {
 		subCategory.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "data deleted", "")
+	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", true)
 }

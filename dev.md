@@ -180,3 +180,9 @@
 - access_place
 - checker list
 - signer list
+# Elastic trial 14Day
+https://infolelang.es.us-central1.gcp.cloud.es.io
+username,
+elastic,
+password 
+CIEkxlGYVzr83ql1Lvwp4C1N

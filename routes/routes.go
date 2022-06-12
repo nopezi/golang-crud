@@ -7,7 +7,6 @@ var Module = fx.Options(
 	fx.Provide(NewUserRoutes),
 	fx.Provide(NewAuthRoutes),
 	fx.Provide(NewRoutes),
-	// fx.Provide(NewTransactionRoutes),
 	fx.Provide(NewAccessPlaceRoutes),
 	fx.Provide(NewFaqRoutes),
 	fx.Provide(NewAssetRoutes),
@@ -16,6 +15,7 @@ var Module = fx.Options(
 	fx.Provide(NewSubCategoryRoutes),
 	fx.Provide(NewFileManagerRoutes),
 	fx.Provide(NewPostalcodeRoutes),
+	fx.Provide(NewFacilityRoutes),
 )
 
 // Routes contains multiple routes
@@ -30,7 +30,6 @@ type Route interface {
 func NewRoutes(
 	userRoutes UserRoutes,
 	authRoutes AuthRoutes,
-	// transactionRoutes TransactionRoutes,
 	accessPlaceRoutes AccessPlaceRoutes,
 	faqRoutes FaqRoutes,
 	assetRoutes AssetRoutes,
@@ -39,11 +38,11 @@ func NewRoutes(
 	subCategoryRoutes SubCategoryRoutes,
 	fileManager FileManagerRoutes,
 	postalcode PostalcodeRoutes,
+	facility FacilityRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
 		authRoutes,
-		// transactionRoutes,
 		accessPlaceRoutes,
 		faqRoutes,
 		assetRoutes,
@@ -52,6 +51,7 @@ func NewRoutes(
 		subCategoryRoutes,
 		fileManager,
 		postalcode,
+		facility,
 	}
 }
 

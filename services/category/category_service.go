@@ -1,6 +1,7 @@
 package repoCategory
 
 import (
+	"fmt"
 	models "infolelang/models/categories"
 	repository "infolelang/repository/categories"
 
@@ -38,6 +39,7 @@ func (category CategoryService) GetOne(id int64) (responses models.CategoryRespo
 
 // Store implements CategoryDefinition
 func (category CategoryService) Store(request *models.CategoryRequest) (err error) {
+	fmt.Println("service =", request)
 	_, err = category.repository.Store(request)
 	return err
 }

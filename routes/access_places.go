@@ -21,11 +21,11 @@ func (s AccessPlaceRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/accessPlaces")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.POST("/getAll", s.AccessPlacesController.GetAll)
-		api.POST("/getOne", s.AccessPlacesController.GetOne)
+		api.GET("/getAll", s.AccessPlacesController.GetAll)
+		api.GET("/getOne/:id", s.AccessPlacesController.GetOne)
 		api.POST("/update", s.AccessPlacesController.Update)
 		api.POST("/store", s.AccessPlacesController.Store)
-		api.POST("/selete", s.AccessPlacesController.Delete)
+		api.DELETE("/delete/:id", s.AccessPlacesController.Delete)
 
 	}
 }

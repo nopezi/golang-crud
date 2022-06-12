@@ -62,12 +62,28 @@ func (Facilities FacilitiesRepository) GetOne(id int64) (responses models.Facili
 
 // Store implements FacilitiesDefinition
 func (Facilities FacilitiesRepository) Store(request *models.FacilitiesRequest) (responses bool, err error) {
-	return responses, Facilities.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return responses, Facilities.db.DB.Save(&models.FacilitiesRequest{
+		Name:        request.Name,
+		Icon:        request.Icon,
+		Description: request.Description,
+		// Status:      request.Status,
+		CreatedAt: &timeNow,
+	}).Error
 }
 
 // Update implements FacilitiesDefinition
 func (Facilities FacilitiesRepository) Update(request *models.FacilitiesRequest) (responses bool, err error) {
-	return true, Facilities.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return true, Facilities.db.DB.Save(&models.FacilitiesRequest{
+		ID:          request.ID,
+		Name:        request.Name,
+		Icon:        request.Icon,
+		Description: request.Description,
+		// Status:      request.Status,
+		CreatedAt: request.CreatedAt,
+		UpdatedAt: &timeNow,
+	}).Error
 }
 
 // Delete implements FacilitiesDefinition

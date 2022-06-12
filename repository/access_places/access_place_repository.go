@@ -62,12 +62,29 @@ func (ap AccessPlaceRepository) GetOne(id int64) (responses models.AccessPlacesR
 
 // Store implements AccessPlaceDefinition
 func (ap AccessPlaceRepository) Store(request *models.AccessPlacesRequest) (responses bool, err error) {
-	return responses, ap.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return responses, ap.db.DB.Save(&models.AccessPlacesRequest{
+		ID:          request.ID,
+		Name:        request.Name,
+		Icon:        request.Icon,
+		Description: request.Description,
+		Status:      request.Status,
+		CreatedAt:   &timeNow,
+	}).Error
 }
 
 // Update implements AccessPlaceDefinition
 func (ap AccessPlaceRepository) Update(request *models.AccessPlacesRequest) (responses bool, err error) {
-	return true, ap.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return true, ap.db.DB.Save(&models.AccessPlacesRequest{
+		ID:          request.ID,
+		Name:        request.Name,
+		Icon:        request.Icon,
+		Description: request.Description,
+		Status:      request.Status,
+		CreatedAt:   request.CreatedAt,
+		UpdatedAt:   &timeNow,
+	}).Error
 }
 
 // Delete implements AccessPlaceDefinition

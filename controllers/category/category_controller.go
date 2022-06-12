@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"infolelang/lib"
 	models "infolelang/models/categories"
 
@@ -37,30 +38,33 @@ func (category CategoryController) GetOne(c *gin.Context) {
 	if err != nil {
 		category.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
 	}
 
-	data, err := category.service.GetOne(int64(id))
+	_, err = category.service.GetOne(int64(id))
 	if err != nil {
 		category.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
+		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
 }
 
 func (category CategoryController) Store(c *gin.Context) {
 	data := models.CategoryRequest{}
+
 	if err := c.Bind(&data); err != nil {
 		category.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
-
+	fmt.Println(data)
 	if err := category.service.Store(&data); err != nil {
 		category.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
 }
 
 func (category CategoryController) Update(c *gin.Context) {
@@ -100,8 +104,8 @@ func (category CategoryController) Delete(c *gin.Context) {
 
 	if err := category.service.Delete(int64(id)); err != nil {
 		category.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "data deleted", "")
+	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", true)
 }

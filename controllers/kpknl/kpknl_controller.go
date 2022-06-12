@@ -103,5 +103,5 @@ func (kpknl KpknlController) Delete(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "data deleted", "")
+	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", "")
 }

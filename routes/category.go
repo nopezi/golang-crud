@@ -21,11 +21,11 @@ func (s CategoryRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/category")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.POST("/getAll", s.CategoryController.GetAll)
-		api.POST("/getOne", s.CategoryController.GetOne)
+		api.GET("/getAll", s.CategoryController.GetAll)
+		api.GET("/getOne/:id", s.CategoryController.GetOne)
 		api.POST("/update", s.CategoryController.Update)
 		api.POST("/store", s.CategoryController.Store)
-		api.POST("/selete", s.CategoryController.Delete)
+		api.DELETE("/delete/:id", s.CategoryController.Delete)
 
 	}
 }

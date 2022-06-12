@@ -4,6 +4,7 @@ import (
 	ap "infolelang/controllers/access_places"
 	asset "infolelang/controllers/asset"
 	category "infolelang/controllers/category"
+	facility "infolelang/controllers/facility"
 	faq "infolelang/controllers/faq"
 	file "infolelang/controllers/file_manager"
 	kpknl "infolelang/controllers/kpknl"
@@ -18,7 +19,6 @@ import (
 var Module = fx.Options(
 	fx.Provide(user.NewUserController),
 	fx.Provide(NewJWTAuthController),
-	// fx.Provide(NewTransactionController),
 	fx.Provide(ap.NewAccessPlaceController),
 	fx.Provide(faq.NewFaqController),
 	fx.Provide(kpknl.NewKpknlController),
@@ -27,4 +27,5 @@ var Module = fx.Options(
 	fx.Provide(asset.NewAssetController),
 	fx.Provide(file.NewFileManagerController),
 	fx.Provide(postalcode.NewPostalcodeController),
+	fx.Provide(facility.NewFacilityController),
 )

@@ -7,6 +7,7 @@ import (
 	asset "infolelang/repository/asset"
 	category "infolelang/repository/categories"
 	contact "infolelang/repository/contacts"
+	facility "infolelang/repository/facilities"
 	faq "infolelang/repository/faq"
 	image "infolelang/repository/images"
 	kpknl "infolelang/repository/kpknl"
@@ -37,4 +38,5 @@ var Module = fx.Options(
 	fx.Provide(contact.NewContactReporitory),
 	fx.Provide(image.NewImageReporitory),
 	fx.Provide(postalcode.NewPostalcodeReporitory),
+	fx.Provide(facility.NewFacilitiesReporitory),
 )

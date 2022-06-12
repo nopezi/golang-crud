@@ -1,6 +1,7 @@
 package access_places
 
 import (
+	"fmt"
 	"infolelang/lib"
 	models "infolelang/models/categories"
 	"time"
@@ -62,12 +63,28 @@ func (category CategoryRepository) GetOne(id int64) (responses models.CategoryRe
 
 // Store implements CategoryDefinition
 func (category CategoryRepository) Store(request *models.CategoryRequest) (responses bool, err error) {
-	return responses, category.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	fmt.Println("repo =", models.CategoryRequest{
+		Name:      request.Name,
+		CreatedAt: &timeNow,
+	})
+	err = category.db.DB.Save(&models.Categories{
+		Name:      request.Name,
+		CreatedAt: &timeNow,
+	}).Error
+	fmt.Println(err)
+	return true, err
 }
 
 // Update implements CategoryDefinition
 func (category CategoryRepository) Update(request *models.CategoryRequest) (responses bool, err error) {
-	return true, category.db.DB.Save(&responses).Error
+	timeNow := lib.GetTimeNow("timestime")
+	return true, category.db.DB.Save(&models.CategoryRequest{
+		ID:        request.ID,
+		Name:      request.Name,
+		CreatedAt: request.CreatedAt,
+		UpdatedAt: &timeNow,
+	}).Error
 }
 
 // Delete implements CategoryDefinition

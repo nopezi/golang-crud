@@ -6,6 +6,6 @@ type Facilities struct {
 	Icon        string
 	Description string
 	Status      bool
-	UpdatedAt   string
-	CreatedAt   string
+	UpdatedAt   *string
+	CreatedAt   *string
 }

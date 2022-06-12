@@ -4,6 +4,7 @@ import (
 	ap "infolelang/services/access_places"
 	asset "infolelang/services/asset"
 	category "infolelang/services/category"
+	facility "infolelang/services/facility"
 	faq "infolelang/services/faq"
 	file "infolelang/services/file_manager"
 	kpknl "infolelang/services/kpknl"
@@ -18,7 +19,6 @@ import (
 var Module = fx.Options(
 	fx.Provide(user.NewUserService),
 	fx.Provide(NewJWTAuthService),
-	// fx.Provide(NewTransactionService),pc
 	fx.Provide(ap.NewAccessPlaceService),
 	fx.Provide(faq.NewFaqService),
 	fx.Provide(kpknl.NewKpknlService),
@@ -27,4 +27,5 @@ var Module = fx.Options(
 	fx.Provide(asset.NewAssetService),
 	fx.Provide(file.NewFileManagerService),
 	fx.Provide(postalcode.NewPostalcodeService),
+	fx.Provide(facility.NewFacilityService),
 )
