@@ -4,6 +4,7 @@ import (
 	ap "infolelang/services/access_places"
 	asset "infolelang/services/asset"
 	category "infolelang/services/category"
+	certificate_type "infolelang/services/certificate_type"
 	facility "infolelang/services/facility"
 	faq "infolelang/services/faq"
 	file "infolelang/services/file_manager"
@@ -28,4 +29,5 @@ var Module = fx.Options(
 	fx.Provide(file.NewFileManagerService),
 	fx.Provide(postalcode.NewPostalcodeService),
 	fx.Provide(facility.NewFacilityService),
+	fx.Provide(certificate_type.NewCertificateTypeService),
 )

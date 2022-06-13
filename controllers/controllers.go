@@ -4,6 +4,7 @@ import (
 	ap "infolelang/controllers/access_places"
 	asset "infolelang/controllers/asset"
 	category "infolelang/controllers/category"
+	certificate_type "infolelang/controllers/certificate_type"
 	facility "infolelang/controllers/facility"
 	faq "infolelang/controllers/faq"
 	file "infolelang/controllers/file_manager"
@@ -28,4 +29,5 @@ var Module = fx.Options(
 	fx.Provide(file.NewFileManagerController),
 	fx.Provide(postalcode.NewPostalcodeController),
 	fx.Provide(facility.NewFacilityController),
+	fx.Provide(certificate_type.NewCertificateTypeController),
 )

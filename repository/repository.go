@@ -6,6 +6,7 @@ import (
 	approval "infolelang/repository/approvals"
 	asset "infolelang/repository/asset"
 	category "infolelang/repository/categories"
+	certificate_type "infolelang/repository/certificate_type"
 	contact "infolelang/repository/contacts"
 	facility "infolelang/repository/facilities"
 	faq "infolelang/repository/faq"
@@ -39,4 +40,5 @@ var Module = fx.Options(
 	fx.Provide(image.NewImageReporitory),
 	fx.Provide(postalcode.NewPostalcodeReporitory),
 	fx.Provide(facility.NewFacilitiesReporitory),
+	fx.Provide(certificate_type.NewCertificateTypeReporitory),
 )
