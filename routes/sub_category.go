@@ -21,7 +21,7 @@ func (s SubCategoryRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/subCategory")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.GET("/getAll", s.CategoryController.GetAll)
+		api.GET("/getAll/:category_id", s.CategoryController.GetAll)
 		api.GET("/getOne/:id", s.CategoryController.GetOne)
 		api.POST("/update", s.CategoryController.Update)
 		api.POST("/store", s.CategoryController.Store)

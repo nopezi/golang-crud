@@ -24,7 +24,10 @@ func NewSubCategoryController(SubCategoryService services.SubCategoryDefinition,
 }
 
 func (subCategory SubCategoryController) GetAll(c *gin.Context) {
-	datas, err := subCategory.service.GetAll()
+	paramId := c.Param("category_id")
+	categoryID, _ := strconv.Atoi(paramId)
+
+	datas, err := subCategory.service.GetAll(categoryID)
 	if err != nil {
 		subCategory.logger.Zap.Error(err)
 	}

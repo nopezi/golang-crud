@@ -11,7 +11,7 @@ import (
 )
 
 type SubCategoryDefinition interface {
-	GetAll() (responses []models.SubCategoriesResponse, err error)
+	GetAll(category_id int) (responses []models.SubCategoriesResponse, err error)
 	GetOne(id int64) (responses models.SubCategoriesResponse, err error)
 	Store(request *models.SubCategoriesRequest) (responses bool, err error)
 	Update(request *models.SubCategoriesRequest) (responses bool, err error)
@@ -51,8 +51,8 @@ func (subCategory SubCategoryRepository) WithTrx(trxHandle *gorm.DB) SubCategory
 }
 
 // GetAll implements SubCategoryDefinition
-func (subCategory SubCategoryRepository) GetAll() (responses []models.SubCategoriesResponse, err error) {
-	return responses, subCategory.db.DB.Find(&responses).Error
+func (subCategory SubCategoryRepository) GetAll(category_id int) (responses []models.SubCategoriesResponse, err error) {
+	return responses, subCategory.db.DB.Where("category_id = ?", category_id).Find(&responses).Error
 }
 
 // GetOne implements SubCategoryDefinition

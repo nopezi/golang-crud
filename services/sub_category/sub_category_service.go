@@ -8,7 +8,7 @@ import (
 )
 
 type SubCategoryDefinition interface {
-	GetAll() (responses []models.SubCategoriesResponse, err error)
+	GetAll(category_id int) (responses []models.SubCategoriesResponse, err error)
 	GetOne(id int64) (responses models.SubCategoriesResponse, err error)
 	Store(request *models.SubCategoriesRequest) (err error)
 	Update(request *models.SubCategoriesRequest) (err error)
@@ -27,8 +27,8 @@ func NewSubCategoryService(logger logger.Logger, repository repository.SubCatego
 }
 
 // GetAll implements SubCategoryDefinition
-func (subCategory SubCategoryService) GetAll() (responses []models.SubCategoriesResponse, err error) {
-	return subCategory.repository.GetAll()
+func (subCategory SubCategoryService) GetAll(category_id int) (responses []models.SubCategoriesResponse, err error) {
+	return subCategory.repository.GetAll(category_id)
 }
 
 // GetOne implements SubCategoryDefinition
