@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"infolelang/constants"
 	"infolelang/lib"
 	models "infolelang/models/user"
@@ -34,6 +35,7 @@ func (u UserController) Login(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
+	fmt.Println(request)
 	login, err := u.service.Login(request)
 	if err != nil {
 		u.logger.Zap.Error(err)

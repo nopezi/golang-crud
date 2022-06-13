@@ -19,14 +19,16 @@ type UserRoutes struct {
 // Setup user routes
 func (s UserRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
-	api := s.handler.Gin.Group("/api/v1").Use(s.authMiddleware.Handler())
+	api := s.handler.Gin.Group("/api/v1/user")
+	// .Use(s.authMiddleware.Handler())
 	{
-		api.GET("/user", s.userController.GetUser)
-		api.GET("/user/:id", s.userController.GetOneUser)
-		api.POST("/user", s.userController.SaveUser)
-		api.POST("/user-no-trx", s.userController.SaveUserWOTrx)
-		api.POST("/user/:id", s.userController.UpdateUser)
-		api.DELETE("/user/:id", s.userController.DeleteUser)
+		api.POST("/login", s.userController.Login)
+		api.GET("/getAll", s.userController.GetUser)
+		api.GET("/getOne/:id", s.userController.GetOneUser)
+		api.POST("/store", s.userController.SaveUser)
+		api.POST("/store-no-trx", s.userController.SaveUserWOTrx)
+		api.POST("/update/:id", s.userController.UpdateUser)
+		api.DELETE("/delete/:id", s.userController.DeleteUser)
 	}
 }
 

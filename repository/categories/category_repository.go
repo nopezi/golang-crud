@@ -53,7 +53,7 @@ func (category CategoryRepository) WithTrx(trxHandle *gorm.DB) CategoryRepositor
 
 // GetAll implements CategoryDefinition
 func (category CategoryRepository) GetAll() (responses []models.CategoryResponse, err error) {
-	return responses, category.db.DB.Find(&responses).Error
+	return responses, category.db.DB.Where("status = 1").Find(&responses).Error
 }
 
 // GetOne implements CategoryDefinition

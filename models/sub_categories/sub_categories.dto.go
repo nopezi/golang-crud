@@ -4,6 +4,8 @@ type SubCategoriesRequest struct {
 	ID         int64   `json:"id"`
 	CategoryID int64   `json:"category_id"`
 	Name       string  `json:"name"`
+	Form       string  `json:"form"`
+	Status     bool    `json:"status" `
 	CreatedAt  *string `json:"created_at"`
 	UpdatedAt  *string `json:"updated_at"`
 }
@@ -12,6 +14,8 @@ type SubCategoriesResponse struct {
 	ID         int64   `json:"id"`
 	CategoryID int64   `json:"category_id"`
 	Name       string  `json:"name"`
+	Form       string  `json:"form"`
+	Status     bool    `json:"status"`
 	CreatedAt  *string `json:"created_at"`
 	UpdatedAt  *string `json:"updated_at"`
 }

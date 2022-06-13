@@ -3,6 +3,7 @@ package models
 type CategoryRequest struct {
 	ID        int64   `json:"id"`
 	Name      string  `json:"name"`
+	Status    bool    `json:"status"`
 	CreatedAt *string `json:"created_at"`
 	UpdatedAt *string `json:"updated_at"`
 }
@@ -10,6 +11,7 @@ type CategoryRequest struct {
 type CategoryResponse struct {
 	ID        int64   `json:"id"`
 	Name      string  `json:"name"`
+	Status    bool    `json:"status"`
 	CreatedAt *string `json:"created_at"`
 	UpdatedAt *string `json:"updated_at"`
 }
