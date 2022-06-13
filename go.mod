@@ -78,6 +78,7 @@ require (
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	gitlab.com/golang-package-library/elasticsearch v0.0.0-20220522190157-dec731449078 // indirect
+	gitlab.com/golang-package-library/goresums v0.0.0-20220525100056-5eafcfd99673 // indirect
 	gitlab.com/golang-package-library/logger v0.0.0-20220522181613-012fdadbbc7d // indirect
 	go.uber.org/goleak v1.1.12 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect

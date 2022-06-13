@@ -167,7 +167,7 @@
         - [ ] Delete
     - [ ] loginUserByPN ldap mas tomi
     - [ ] create asset multiple form
-    - [ ] handle upload with minio
+    - [ ] handle upload witbh minio
     - [ ] scheduler buat update asset status to unpublish dan hapus asset di elastic
 
     
@@ -180,9 +180,12 @@
 - access_place
 - checker list
 - signer list
+
 # Elastic trial 14Day
 https://infolelang.es.us-central1.gcp.cloud.es.io
 username,
 elastic,
 password 
 CIEkxlGYVzr83ql1Lvwp4C1N
+
+docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolelang2 > infolelang2.sql 

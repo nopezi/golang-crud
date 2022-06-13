@@ -187,6 +187,8 @@ gitlab.com/golang-package-library/elasticsearch v0.0.0-20220522190157-dec7314490
 gitlab.com/golang-package-library/elasticsearch v0.0.0-20220522190157-dec731449078/go.mod h1:M6CVDEWG11a4knajphjlO0jrIBPgCmKTRO4g/pqYREQ=
 gitlab.com/golang-package-library/env v0.0.0-20220522085307-1f1e68f337d0 h1:mHPIKRt+8rRp4d8l7sNcmKr0DZv1wTEjKZm2tL1KEbI=
 gitlab.com/golang-package-library/env v0.0.0-20220522085307-1f1e68f337d0/go.mod h1:qBhCYg9SlF8hjOGZNoIj+9zJlDNUb4/T/4+/Rglj4zA=
+gitlab.com/golang-package-library/goresums v0.0.0-20220525100056-5eafcfd99673 h1:5LoTvkcObCuOaB6U8YOecHeEjIVvEBguGD8LwwiOWAQ=
+gitlab.com/golang-package-library/goresums v0.0.0-20220525100056-5eafcfd99673/go.mod h1:F8PiFhqPxMMb4uFW5kKQujF5byQ4yHMkWrlJaKJ87rk=
 gitlab.com/golang-package-library/logger v0.0.0-20220522181613-012fdadbbc7d h1:VLSF++ftr3UW1xzNReBKGE5wH+g5uNEiytPOJjw+7WU=
 gitlab.com/golang-package-library/logger v0.0.0-20220522181613-012fdadbbc7d/go.mod h1:WpSACri/0/fxIdDdjTajB5NAsS3MieFse7kC/0uvL4Q=
 gitlab.com/golang-package-library/minio v0.0.0-20220522175705-890cec9660ea h1:CMKwQGiJwE5WhqDvPxzdmL3O3WGA3o/nReBYv1YTTxE=
