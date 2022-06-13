@@ -1,7 +1,7 @@
 package postalcode
 
 type PostalcodeRequest struct {
-	ID         string  `json:"id"`
+	ID         int64   `json:"id"`
 	PostalCode string  `json:"postal_code" binding:"required"`
 	Region     string  `json:"region"`
 	District   string  `json:"district"`
@@ -13,7 +13,7 @@ type PostalcodeRequest struct {
 }
 
 type PostalcodeResponse struct {
-	ID         string  `json:"id"`
+	ID         int64   `json:"id"`
 	PostalCode string  `json:"postal_code"`
 	Region     string  `json:"region"`
 	District   string  `json:"district"`
