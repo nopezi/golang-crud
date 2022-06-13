@@ -37,6 +37,12 @@ func (s UserService) WithTrx(trxHandle *gorm.DB) UserService {
 }
 
 // GetOneUser gets one user
+func (s UserService) Login(request models.Login) (response bool, err error) {
+
+	return response, err
+}
+
+// GetOneUser gets one user
 func (s UserService) GetOneUser(id uint) (models.User, error) {
 	user, err := s.repository.GetOne(id)
 	return user, err

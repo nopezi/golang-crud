@@ -2,6 +2,7 @@ package user
 
 import (
 	"infolelang/constants"
+	"infolelang/lib"
 	models "infolelang/models/user"
 	services "infolelang/services/user"
 	"net/http"
@@ -24,6 +25,22 @@ func NewUserController(userService services.UserService, logger logger.Logger) U
 		service: userService,
 		logger:  logger,
 	}
+}
+
+func (u UserController) Login(c *gin.Context) {
+	request := models.Login{}
+	if err := c.Bind(&request); err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+	login, err := u.service.Login(request)
+	if err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", login)
 }
 
 // GetOneUser gets one user
