@@ -66,6 +66,11 @@ func (Postalcode PostalcodeController) FindPostalCode(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
 		return
 	}
+	if data.ID == 0 {
+		Postalcode.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", data)
+		return
+	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 

@@ -1,7 +1,6 @@
 package postalcode
 
 import (
-	"fmt"
 	models "infolelang/models/postalcode"
 	repository "infolelang/repository/postalcode"
 
@@ -41,7 +40,6 @@ func (Postalcode PostalcodeService) GetOne(id int64) (responses models.Postalcod
 // GetOne implements PostalcodeDefinition
 func (Postalcode PostalcodeService) FindPostalCode(id string) (responses models.PostalcodeResponse, err error) {
 	response, err := Postalcode.repository.FindPostalCode(id)
-	fmt.Println("find : ", response)
 	return response, err
 }
 
