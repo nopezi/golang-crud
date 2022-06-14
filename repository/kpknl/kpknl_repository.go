@@ -52,7 +52,7 @@ func (kpknl KpknlRepository) WithTrx(trxHandle *gorm.DB) KpknlRepository {
 
 // GetAll implements KpknlDefinition
 func (kpknl KpknlRepository) GetAll() (responses []models.KpknlResponse, err error) {
-	return responses, kpknl.db.DB.Find(&responses).Error
+	return responses, kpknl.db.DB.Order("ref_kpknl.desc asc").Find(&responses).Error
 }
 
 // GetOne implements KpknlDefinition

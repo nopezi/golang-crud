@@ -63,7 +63,12 @@ func (Postalcode PostalcodeRepository) GetOne(id int64) (responses models.Postal
 
 // GetOne implements PostalcodeDefinition
 func (Postalcode PostalcodeRepository) FindPostalCode(postalcode string) (responses models.PostalcodeResponse, err error) {
-	return responses, Postalcode.db.DB.Where("postal_code = ? ", postalcode).Find(&responses).Error
+	find := Postalcode.db.DB.Where("postal_code = ? ", postalcode).Find(&responses).Error
+
+	if find == nil {
+		return responses, err
+	}
+	return responses, err
 }
 
 // Store implements PostalcodeDefinition
