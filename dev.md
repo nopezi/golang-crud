@@ -189,3 +189,18 @@ password
 CIEkxlGYVzr83ql1Lvwp4C1N
 
 docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolelang2 > infolelang2.sql 
+
+-- ==========================================================
+## PR Backend
+-- auth onegate => done ,( incognito not down)
+-- getMCS => done 
+    -- - checker list
+    -- - signer list
+select * from vehicle_brand;
+select * from vehicle_capacity;
+select * from vehicle_category;
+select * from vehicle_color;
+select * from vehicle_transmission;
+-- handle get table error, get data empty, pagination
+-- api inquiry cif ke esb
+-- ==========================================================

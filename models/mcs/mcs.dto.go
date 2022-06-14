@@ -2,8 +2,8 @@ package models
 
 type McsRequest struct {
 	Keyword string `json:"keywor"`
-	Limit   string `json:"limit"`
-	Offset  string `json:"offset"`
+	Limit   int    `json:"limit"`
+	Offset  int    `json:"offset"`
 }
 
 type McsResponse struct {

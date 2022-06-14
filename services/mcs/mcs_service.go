@@ -10,7 +10,7 @@ import (
 )
 
 type McsDefinition interface {
-	GetMcs(request *models.McsRequest) (response models.McsResponse, err error)
+	GetMcs(request *models.McsRequest) (response []models.McsResponse, err error)
 }
 type McsService struct {
 	logger logger.Logger
@@ -24,7 +24,7 @@ func NewMcsService(logger logger.Logger) McsDefinition {
 }
 
 // Store implements McsDefinition
-func (mcs McsService) GetMcs(request *models.McsRequest) (response models.McsResponse, err error) {
+func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsResponse, err error) {
 	// ===============================
 	// Get Session API
 	jwt := ""
@@ -65,7 +65,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response models.McsRes
 	// Search Pekerja
 	mcs.logger.Zap.Info("Search Pekerja")
 
-	options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/loginPekerja"
+	options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/searchPekerja"
 	responseObjectSession, err := lib.AuthBearer(options, auth)
 	if err != nil {
 		mcs.logger.Zap.Error(err)
@@ -79,18 +79,18 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response models.McsRes
 	fmt.Println("dataResponseSession", dataResponseSession)
 	fmt.Println("==================================================")
 	fmt.Println("Login Pekerja Normal=====================================")
+	dataResponse := []models.McsResponse{}
+	for _, data := range dataResponseSession.([]interface{}) {
 
-	response = models.McsResponse{
-		PERNR: dataResponseSession.(map[string]interface{})["PERNR"].(string),
-		HTEXT: dataResponseSession.(map[string]interface{})["HTEXT"].(string),
-		NAMA:  dataResponseSession.(map[string]interface{})["NAMA"].(string),
-
-		// handle interface mapping error nil
-		// solution : cari cara handle nil parsing interface to struct
-		// WERKSPGS:   dataResponseSession.(map[string]interface{})["WERKS_PGS"].(string),
-		// BTRTLPGS: dataResponseSession.(map[string]interface{})["BTRTL_PGS"].(string),
-		// KOSTLPGS: dataResponseSession.(map[string]interface{})["KOSTL_PGS"].(string),
+		subData := models.McsResponse{
+			PERNR: data.(map[string]interface{})["PERNR"].(string),
+			HTEXT: data.(map[string]interface{})["HTEXT"].(string),
+			NAMA:  data.(map[string]interface{})["NAMA"].(string),
+		}
+		dataResponse = append(dataResponse, subData)
 	}
-	fmt.Println("response", response)
-	return response, err
+
+	// fmt.Println("response", response)
+	fmt.Println("dataResponse", dataResponse)
+	return dataResponse, err
 }
