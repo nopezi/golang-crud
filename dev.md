@@ -197,10 +197,46 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
     -- - checker list
     -- - signer list
 select * from vehicle_brand;
+id
+vehicle_category_id
+name
+icon
+description
+created_at
+updated_at
+
 select * from vehicle_capacity;
+id
+name
+icon
+description
+created_at
+updated_at
+
 select * from vehicle_category;
+id
+name
+icon
+description
+created_at
+updated_at
+
 select * from vehicle_color;
+id
+name
+icon
+description
+created_at
+updated_at
+
 select * from vehicle_transmission;
+id
+name
+icon
+description
+created_at
+updated_at
+
 -- handle get table error, get data empty, pagination
 -- api inquiry cif ke esb
 -- ==========================================================
