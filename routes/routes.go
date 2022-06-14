@@ -17,6 +17,7 @@ var Module = fx.Options(
 	fx.Provide(NewPostalcodeRoutes),
 	fx.Provide(NewFacilityRoutes),
 	fx.Provide(NewCertificateTypeRoutes),
+	fx.Provide(NewMcsRoutes),
 )
 
 // Routes contains multiple routes
@@ -41,6 +42,7 @@ func NewRoutes(
 	postalcode PostalcodeRoutes,
 	facility FacilityRoutes,
 	certificateType CertificateTypeRoutes,
+	mcsRoutes McsRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -55,6 +57,7 @@ func NewRoutes(
 		postalcode,
 		facility,
 		certificateType,
+		mcsRoutes,
 	}
 }
 

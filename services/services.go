@@ -9,6 +9,7 @@ import (
 	faq "infolelang/services/faq"
 	file "infolelang/services/file_manager"
 	kpknl "infolelang/services/kpknl"
+	mcs "infolelang/services/mcs"
 	postalcode "infolelang/services/postalcode"
 	subCategory "infolelang/services/sub_category"
 	user "infolelang/services/user"
@@ -30,4 +31,5 @@ var Module = fx.Options(
 	fx.Provide(postalcode.NewPostalcodeService),
 	fx.Provide(facility.NewFacilityService),
 	fx.Provide(certificate_type.NewCertificateTypeService),
+	fx.Provide(mcs.NewMcsService),
 )
