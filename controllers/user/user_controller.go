@@ -29,7 +29,7 @@ func NewUserController(userService services.UserService, logger logger.Logger) U
 }
 
 func (u UserController) Login(c *gin.Context) {
-	request := models.Login{}
+	request := models.LoginRequest{}
 	if err := c.Bind(&request); err != nil {
 		u.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")

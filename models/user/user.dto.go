@@ -1,5 +1,9 @@
 package user
 
+type LoginRequest struct {
+	Pernr    string `json:"pernr"`
+	Password string `json:"password"`
+}
 type Login struct {
 	ClientID     string `json:"clientid"`
 	ClientSecret string `json:"clientsecret"`
@@ -42,4 +46,28 @@ type UserSession struct {
 	WERKSPGS   string `json:"WERKS_PGS"`
 	BTRTLPGS   string `json:"BTRTL_PGS"`
 	KOSTLPGS   string `json:"KOSTL_PGS"`
+}
+
+type UserSessionIncognito struct {
+	PERNR      string `json:"PERNR"`
+	WERKS      string `json:"WERKS"`
+	BTRTL      string `json:"BTRTL"`
+	KOSTL      string `json:"KOSTL"`
+	ORGEH      string `json:"ORGEH"`
+	ORGEHPGS   string `json:"ORGEH_PGS"`
+	STELL      string `json:"STELL"`
+	SNAME      string `json:"SNAME"`
+	WERKSTX    string `json:"WERKS_TX"`
+	BTRTLTX    string `json:"BTRTL_TX"`
+	KOSTLTX    string `json:"KOSTL_TX"`
+	ORGEHTX    string `json:"ORGEH_TX"`
+	ORGEHPGSTX string `json:"ORGEH_PGS_TX"`
+	STELLTX    string `json:"STELL_TX"`
+	BRANCH     string `json:"BRANCH"`
+	TIPEUKER   string `json:"TIPE_UKER"`
+	HILFM      string `json:"HILFM"`
+	HILFMPGS   string `json:"HILFM_PGS"`
+	HTEXT      string `json:"HTEXT"`
+	HTEXTPGS   string `json:"HTEXT_PGS"`
+	CORPTITLE  string `json:"CORP_TITLE"`
 }
