@@ -1,19 +1,21 @@
 package models
 
 type VehicleCategoryRequest struct {
-	ID        int64   `json:"id"`
-	Name      string  `json:"name"`
-	Status    bool    `json:"status"`
-	CreatedAt *string `json:"created_at"`
-	UpdatedAt *string `json:"updated_at"`
+	ID          int64   `json:"id"`
+	Name        string  `json:"name"`
+	Icon        string  `json:"icon"`
+	Description string  `json:"description"`
+	CreatedAt   *string `json:"created_at"`
+	UpdatedAt   *string `json:"updated_at"`
 }
 
 type VehicleCategoryResponse struct {
-	ID        int64   `json:"id"`
-	Name      string  `json:"name"`
-	Status    bool    `json:"status"`
-	CreatedAt *string `json:"created_at"`
-	UpdatedAt *string `json:"updated_at"`
+	ID          int64   `json:"id"`
+	Name        string  `json:"name"`
+	Icon        string  `json:"icon"`
+	Description string  `json:"description"`
+	CreatedAt   *string `json:"created_at"`
+	UpdatedAt   *string `json:"updated_at"`
 }
 
 func (p VehicleCategoryRequest) ParseRequest() VehicleCategory {
