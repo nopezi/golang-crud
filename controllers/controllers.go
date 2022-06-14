@@ -13,6 +13,11 @@ import (
 	postalcode "infolelang/controllers/postalcode"
 	subCategory "infolelang/controllers/sub_category"
 	user "infolelang/controllers/user"
+	vehicle_brand "infolelang/controllers/vehicle_brand"
+	vehicle_capacity "infolelang/controllers/vehicle_capacity"
+	vehicle_category "infolelang/controllers/vehicle_category"
+	vehicle_color "infolelang/controllers/vehicle_color"
+	vehicle_transmission "infolelang/controllers/vehicle_transmission"
 
 	"go.uber.org/fx"
 )
@@ -32,4 +37,9 @@ var Module = fx.Options(
 	fx.Provide(facility.NewFacilityController),
 	fx.Provide(certificate_type.NewCertificateTypeController),
 	fx.Provide(mcs.NewMcsController),
+	fx.Provide(vehicle_brand.NewVehicleBrandController),
+	fx.Provide(vehicle_capacity.NewVehicleCapacityController),
+	fx.Provide(vehicle_category.NewVehicleCategoryController),
+	fx.Provide(vehicle_color.NewVehicleColorController),
+	fx.Provide(vehicle_transmission.NewVehicleTransmissionController),
 )

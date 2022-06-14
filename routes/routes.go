@@ -18,6 +18,11 @@ var Module = fx.Options(
 	fx.Provide(NewFacilityRoutes),
 	fx.Provide(NewCertificateTypeRoutes),
 	fx.Provide(NewMcsRoutes),
+	fx.Provide(NewVehicleBrandRoutes),
+	fx.Provide(NewVehicleCapacityRoutes),
+	fx.Provide(NewVehicleCategoryRoutes),
+	fx.Provide(NewVehicleColorRoutes),
+	fx.Provide(NewVehicleTransmissionRoutes),
 )
 
 // Routes contains multiple routes
@@ -42,7 +47,12 @@ func NewRoutes(
 	postalcode PostalcodeRoutes,
 	facility FacilityRoutes,
 	certificateType CertificateTypeRoutes,
-	mcsRoutes McsRoutes,
+	mcs McsRoutes,
+	vehicleBrand VehicleBrandRoutes,
+	vehicleCapacity VehicleCapacityRoutes,
+	vehicleCategory VehicleCategoryRoutes,
+	vehicleColor VehicleColorRoutes,
+	vehicleTransmission VehicleTransmissionRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -57,7 +67,12 @@ func NewRoutes(
 		postalcode,
 		facility,
 		certificateType,
-		mcsRoutes,
+		mcs,
+		vehicleBrand,
+		vehicleCapacity,
+		vehicleCategory,
+		vehicleColor,
+		vehicleTransmission,
 	}
 }
 
