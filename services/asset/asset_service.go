@@ -135,7 +135,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// var vehicle *requestVehicle.VehicleAssets
 
 	switch request.FormType {
-	case "FormB1":
+	case "form-b1":
 		// buildingasset
 		building, err := asset.buildingRepo.Store(&requestBuilding.BuildingAssets{
 			AssetID:           dataAsset.ID,
