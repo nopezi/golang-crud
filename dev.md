@@ -196,6 +196,7 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
 -- getMCS => done 
     -- - checker list
     -- - signer list
+    
 select * from vehicle_brand;
 id
 vehicle_category_id
