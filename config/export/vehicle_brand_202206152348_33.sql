@@ -1,0 +1,75 @@
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(1,'Honda',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Audi',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Mitsubishi',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(4,'Mercedes Benz',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Kawasaki',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Kawasaki',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Piaggio',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Royal Enfield',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Suzuki',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'TVS',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(1,'Viar',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Yamaha',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'KTM',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'BMW',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Peugeot',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(1,'Triumph',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'BMW',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Chevrolet',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Daihatsu',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Datsun',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(2,'Dofge',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Dongfeng Sokon (DFSK)',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Ford',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Foton',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Honda',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Hyundai',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Isuzu',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'KIA',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Land Rover',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Lexus',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(2,'Mahindra',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Mazda',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Mercedez Benz',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'MG',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Mini Cooper',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Mitsubishi',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Morris',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Nissan',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Peugeot',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Range Rover',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(2,'Renault',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Suzuki',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Tata',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Toyota',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Volkswagen',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Volvo',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(2,'Wuling',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Hino',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Tata',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'UD Indonesia',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(3,'Toyota',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Isuzu',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Scania',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'MAN',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Mercedez Benz',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(3,'Renault',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(4,'Scania',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(4,'Volvo',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(4,'MAN',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+,(4,'Chevrolet',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
+INSERT INTO infolelang2.vehicle_brand (vehicle_category_id,name,icon,description,created_at,updated_at) VALUES 
+(4,'Iveco',NULL,NULL,'2022-06-02 22:51:45.000',NULL)
+;
