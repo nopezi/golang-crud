@@ -13,6 +13,7 @@ import (
 type VehicleAssetDefinition interface {
 	GetAll() (responses []models.VehicleAssetsResponse, err error)
 	GetOne(id int64) (responses models.VehicleAssetsResponse, err error)
+	GetOneAsset(id int64) (responses models.VehicleAssetsResponse, err error)
 	Store(request *models.VehicleAssets) (responses *models.VehicleAssets, err error)
 	Update(request *models.VehicleAssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (vehicleAsset VehicleAssetRepository) GetAll() (responses []models.VehicleA
 // GetOne implements VehicleAssetDefinition
 func (vehicleAsset VehicleAssetRepository) GetOne(id int64) (responses models.VehicleAssetsResponse, err error) {
 	return responses, vehicleAsset.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements VehicleAssetDefinition
+func (vehicleAsset VehicleAssetRepository) GetOneAsset(id int64) (responses models.VehicleAssetsResponse, err error) {
+	return responses, vehicleAsset.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements VehicleAssetDefinition

@@ -13,6 +13,7 @@ import (
 type FacilitiesDefinition interface {
 	GetAll() (responses []models.FacilitiesResponse, err error)
 	GetOne(id int64) (responses models.FacilitiesResponse, err error)
+	GetOneAsset(id int64) (responses models.FacilitiesResponse, err error)
 	Store(request *models.FacilitiesRequest) (responses bool, err error)
 	Update(request *models.FacilitiesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (Facilities FacilitiesRepository) GetAll() (responses []models.FacilitiesRe
 // GetOne implements FacilitiesDefinition
 func (Facilities FacilitiesRepository) GetOne(id int64) (responses models.FacilitiesResponse, err error) {
 	return responses, Facilities.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements FacilitiesDefinition
+func (Facilities FacilitiesRepository) GetOneAsset(id int64) (responses models.FacilitiesResponse, err error) {
+	return responses, Facilities.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements FacilitiesDefinition

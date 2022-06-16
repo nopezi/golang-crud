@@ -8,9 +8,9 @@ type VehicleAssetsRequest struct {
 	Series            string  `json:"series"`
 	BrandID           int64   `json:"brand_id"`
 	Type              string  `json:"type"`
-	ProductionYear    string  `json:"productionYear"`
+	ProductionYear    string  `json:"production_year"`
 	TransmissionID    int64   `json:"transmission_id"`
-	MachineCapacityID int64   `json:"machineCapacity_id"`
+	MachineCapacityID int64   `json:"machine_capacity_id"`
 	ColorID           int64   `json:"color_id"`
 	NumberOfSeat      int64   `json:"number_of_seat"`
 	NumberOfUsage     string  `json:"number_of_usage"`

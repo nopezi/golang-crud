@@ -13,6 +13,7 @@ import (
 type BuildingAssetDefinition interface {
 	GetAll() (responses []models.BuildingAssetsResponse, err error)
 	GetOne(id int64) (responses models.BuildingAssetsResponse, err error)
+	GetOneAsset(id int64) (responses models.BuildingAssetsResponse, err error)
 	Store(request *models.BuildingAssets) (responses *models.BuildingAssets, err error)
 	Update(request *models.BuildingAssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (buildingAsset BuildingAssetRepository) GetAll() (responses []models.Buildi
 // GetOne implements BuildingAssetDefinition
 func (buildingAsset BuildingAssetRepository) GetOne(id int64) (responses models.BuildingAssetsResponse, err error) {
 	return responses, buildingAsset.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements BuildingAssetDefinition
+func (buildingAsset BuildingAssetRepository) GetOneAsset(id int64) (responses models.BuildingAssetsResponse, err error) {
+	return responses, buildingAsset.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements BuildingAssetDefinition

@@ -20,6 +20,14 @@ type ImagesResponse struct {
 	UpdatedAt *string `json:"updated_at"`
 }
 
+type ImagesResponses struct {
+	ID        int64  `json:"id"`
+	Filename  string `json:"filename"`
+	Path      string `json:"path"`
+	Extension string `json:"extension"`
+	Size      string `json:"size"`
+}
+
 func (p ImagesRequest) ParseRequest() Images {
 	return Images{
 		ID:        p.ID,

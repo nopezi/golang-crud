@@ -3,6 +3,7 @@ package asset
 import (
 	"infolelang/lib"
 	models "infolelang/models/assets"
+	facilitiesModel "infolelang/models/facilities"
 	"time"
 
 	elastic "gitlab.com/golang-package-library/elasticsearch"
@@ -13,6 +14,7 @@ import (
 type AssetFacilityDefinition interface {
 	GetAll() (responses []models.AssetFacilitiesResponse, err error)
 	GetOne(id int64) (responses models.AssetFacilitiesResponse, err error)
+	GetOneAsset(id int64) (responses []facilitiesModel.FacilitiesResponse, err error)
 	Store(request *models.AssetFacilities) (responses *models.AssetFacilities, err error)
 	Update(request *models.AssetFacilitiesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +60,26 @@ func (AssetFacility AssetFacilityRepository) GetAll() (responses []models.AssetF
 // GetOne implements AssetFacilityDefinition
 func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.AssetFacilitiesResponse, err error) {
 	return responses, AssetFacility.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements AssetFacilityDefinition
+func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []facilitiesModel.FacilitiesResponse, err error) {
+	// return responses, AssetFacility.db.DB.Where("asset_id = ?", id).Find(&responses).Error
+	rows, err := AssetFacility.db.DB.Raw(`select f.id,f.name, 
+				f.icon , af.status,f.description  from 
+				asset_facilities af join facilities f on af.id 
+				= f.id where asset_id = ? `, id).Rows()
+
+	defer rows.Close()
+
+	var facilitiy facilitiesModel.FacilitiesResponse
+	for rows.Next() {
+		// ScanRows scan a row into user
+		AssetFacility.db.DB.ScanRows(rows, &facilitiy)
+		responses = append(responses, facilitiy)
+		// do something
+	}
+	return responses, err
 }
 
 // Store implements AssetFacilityDefinition

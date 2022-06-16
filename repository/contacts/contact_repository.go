@@ -13,6 +13,7 @@ import (
 type ContactDefinition interface {
 	GetAll() (responses []models.ContactsResponse, err error)
 	GetOne(id int64) (responses models.ContactsResponse, err error)
+	GetOneAsset(id int64) (responses models.ContactsResponse, err error)
 	Store(request *models.Contacts) (responses *models.Contacts, err error)
 	Update(request *models.ContactsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (contact ContactRepository) GetAll() (responses []models.ContactsResponse, 
 // GetOne implements ContactDefinition
 func (contact ContactRepository) GetOne(id int64) (responses models.ContactsResponse, err error) {
 	return responses, contact.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements ContactDefinition
+func (contact ContactRepository) GetOneAsset(id int64) (responses models.ContactsResponse, err error) {
+	return responses, contact.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements ContactDefinition

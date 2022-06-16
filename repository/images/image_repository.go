@@ -13,6 +13,7 @@ import (
 type ImageDefinition interface {
 	GetAll() (responses []models.ImagesResponse, err error)
 	GetOne(id int64) (responses models.ImagesResponse, err error)
+	GetOneAsset(id int64) (responses []models.ImagesResponses, err error)
 	Store(request *models.Images) (responses *models.Images, err error)
 	Update(request *models.ImagesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,33 @@ func (image ImageRepository) GetAll() (responses []models.ImagesResponse, err er
 // GetOne implements ImageDefinition
 func (image ImageRepository) GetOne(id int64) (responses models.ImagesResponse, err error) {
 	return responses, image.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements ImageDefinition
+func (image ImageRepository) GetOneAsset(id int64) (responses []models.ImagesResponses, err error) {
+	// return responses, image.db.DB.Where("id = ?", id).Find(&responses).Error
+	// rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
+	// defer rows.Close()
+
+	// var user User
+	// for rows.Next() {
+	//   // ScanRows scan a row into user
+	//   db.ScanRows(rows, &user)
+
+	//   // do something
+	// }
+	rows, err := image.db.DB.Raw("select ai.id id, i.filename filename, i.`path` path , i.extension extension, i.`size` size  from asset_images ai join images i on ai.image_id = i.id where ai.asset_id  = ? ", id).Rows()
+
+	defer rows.Close()
+
+	var images models.ImagesResponses
+	for rows.Next() {
+		// ScanRows scan a row into user
+		image.db.DB.ScanRows(rows, &images)
+		responses = append(responses, images)
+		// do something
+	}
+	return responses, err
 }
 
 // Store implements ImageDefinition

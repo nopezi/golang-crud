@@ -16,6 +16,7 @@ type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetRepository
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
+	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
 	Update(request *models.AssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -63,6 +64,11 @@ func (asset AssetRepository) GetAll() (responses []models.AssetsResponse, err er
 // GetOne implements AssetDefinition
 func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, err error) {
 	return responses, asset.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements AssetDefinition
+func (asset AssetRepository) GetOneAsset(id int64) (responses models.AssetsResponse, err error) {
+	return responses, asset.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements AssetDefinition

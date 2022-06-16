@@ -17,10 +17,12 @@ import (
 	requestVehicle "infolelang/models/vehicle_assets"
 
 	models "infolelang/models/assets"
+	accessPlace "infolelang/repository/access_places"
 	addressRepo "infolelang/repository/address"
 	approvalRepo "infolelang/repository/approvals"
 	assetRepo "infolelang/repository/asset"
 	contactRepo "infolelang/repository/contacts"
+	facilityRepo "infolelang/repository/facilities"
 	imageRepo "infolelang/repository/images"
 
 	"gitlab.com/golang-package-library/logger"
@@ -35,7 +37,7 @@ var (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
-	GetOne(id int64) (responses models.AssetsResponse, err error)
+	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (err error)
 	Update(request *models.AssetsRequest) (err error)
 	Delete(id int64) (err error)
@@ -54,7 +56,9 @@ type AssetService struct {
 	imagesRepo       imageRepo.ImageDefinition
 	assetImage       assetRepo.AssetImageDefinition
 	assetFacility    assetRepo.AssetFacilityDefinition
+	facilityRepo     facilityRepo.FacilitiesDefinition
 	assetAccessPlace assetRepo.AssetAccessPlaceDefinition
+	accessPlace      accessPlace.AccessPlaceDefinition
 }
 
 func NewAssetService(
@@ -69,7 +73,9 @@ func NewAssetService(
 	imagesRepo imageRepo.ImageDefinition,
 	assetImage assetRepo.AssetImageDefinition,
 	assetFacility assetRepo.AssetFacilityDefinition,
+	facilityRepo facilityRepo.FacilitiesDefinition,
 	assetAccessPlace assetRepo.AssetAccessPlaceDefinition,
+	accessPlace accessPlace.AccessPlaceDefinition,
 ) AssetDefinition {
 	return AssetService{
 		minio:            minio,
@@ -83,7 +89,9 @@ func NewAssetService(
 		imagesRepo:       imagesRepo,
 		assetImage:       assetImage,
 		assetFacility:    assetFacility,
+		facilityRepo:     facilityRepo,
 		assetAccessPlace: assetAccessPlace,
+		accessPlace:      accessPlace,
 	}
 }
 
@@ -99,8 +107,64 @@ func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error
 }
 
 // GetOne implements AssetDefinition
-func (asset AssetService) GetOne(id int64) (responses models.AssetsResponse, err error) {
-	return asset.assetRepo.GetOne(id)
+func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, err error) {
+	assets, err := asset.assetRepo.GetOne(id)
+	// get address
+	address, err := asset.addressRepo.GetOneAsset(assets.ID)
+	// get building
+	building, err := asset.buildingRepo.GetOneAsset(assets.ID)
+	// get vehicle
+	vehicle, err := asset.vehicleRepo.GetOneAsset(assets.ID)
+
+	// get asset facilities
+	facilities, err := asset.assetFacility.GetOneAsset(assets.ID)
+	// get access place
+	accessPlace, err := asset.assetAccessPlace.GetOneAsset(assets.ID)
+	// get contact
+	contact, err := asset.contactRepo.GetOneAsset(assets.ID)
+
+	// get images
+	images, err := asset.imagesRepo.GetOneAsset(assets.ID)
+
+	// get approval
+	approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
+
+	responses = models.AssetsResponseGetOne{
+		ID:             assets.ID,
+		Type:           assets.Type,
+		KpknlID:        assets.KpknlID,
+		AuctionDate:    assets.AuctionDate,
+		AuctionTime:    assets.AuctionTime,
+		AuctionLink:    assets.AuctionLink,
+		CategoryID:     assets.CategoryID,
+		SubCategoryID:  assets.SubCategoryID,
+		Name:           assets.Name,
+		Price:          assets.Price,
+		Description:    assets.Description,
+		Status:         assets.Status,
+		MakerID:        assets.MakerID,
+		MakerDesc:      assets.MakerDesc,
+		MakerComment:   assets.MakerComment,
+		MakerDate:      assets.MakerDate,
+		LastMakerID:    assets.LastMakerID,
+		LastMakerDesc:  assets.LastMakerDesc,
+		LastMakerDate:  assets.LastMakerDate,
+		Published:      assets.Published,
+		Deleted:        assets.Deleted,
+		ExpiredDate:    assets.ExpiredDate,
+		Action:         assets.Action,
+		Addresses:      address,
+		BuildingAssets: building,
+		VehicleAssets:  vehicle,
+		Facilities:     facilities,
+		AccessPlaces:   accessPlace,
+		Contacts:       contact,
+		Images:         images,
+		Approvals:      approval,
+		UpdatedAt:      assets.UpdatedAt,
+		CreatedAt:      assets.CreatedAt,
+	}
+	return responses, err
 }
 
 // Store implements AssetDefinition
@@ -210,6 +274,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			&models.AssetFacilities{
 				AssetID:    dataAsset.ID,
 				FacilityID: value.ID,
+				Status:     value.Status,
 				CreatedAt:  &timeNow,
 			})
 		if err != nil {

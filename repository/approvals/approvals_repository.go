@@ -13,6 +13,7 @@ import (
 type ApprovalDefinition interface {
 	GetAll() (responses []models.ApprovalsResponse, err error)
 	GetOne(id int64) (responses models.ApprovalsResponse, err error)
+	GetOneAsset(id int64) (responses models.ApprovalsResponse, err error)
 	Store(request *models.Approvals) (responses *models.Approvals, err error)
 	Update(request *models.ApprovalsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (approval ApprovalRepository) GetAll() (responses []models.ApprovalsRespons
 // GetOne implements ApprovalDefinition
 func (approval ApprovalRepository) GetOne(id int64) (responses models.ApprovalsResponse, err error) {
 	return responses, approval.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements ApprovalDefinition
+func (approval ApprovalRepository) GetOneAsset(id int64) (responses models.ApprovalsResponse, err error) {
+	return responses, approval.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements ApprovalDefinition

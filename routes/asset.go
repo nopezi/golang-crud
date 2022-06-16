@@ -22,7 +22,7 @@ func (s AssetRoutes) Setup() {
 	// .Use(s.authMiddleware.Handler())
 	{
 		api.POST("/getAll", s.AssetController.GetAll)
-		api.POST("/getOne", s.AssetController.GetOne)
+		api.GET("/getOne/:id", s.AssetController.GetOne)
 		api.POST("/update", s.AssetController.Update)
 		api.POST("/store", s.AssetController.Store)
 		api.POST("/delete", s.AssetController.Delete)

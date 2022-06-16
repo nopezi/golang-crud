@@ -13,6 +13,7 @@ import (
 type AddressDefinition interface {
 	GetAll() (responses []models.AddressesResponse, err error)
 	GetOne(id int64) (responses models.AddressesResponse, err error)
+	GetOneAsset(id int64) (responses models.AddressesResponse, err error)
 	Store(request *models.Addresses) (responses *models.Addresses, err error)
 	Update(request *models.AddressesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -58,6 +59,11 @@ func (address AddressRepository) GetAll() (responses []models.AddressesResponse,
 // GetOne implements AddressDefinition
 func (address AddressRepository) GetOne(id int64) (responses models.AddressesResponse, err error) {
 	return responses, address.db.DB.Where("id = ?", id).Find(&responses).Error
+}
+
+// GetOneAsset implements AddressDefinition
+func (address AddressRepository) GetOneAsset(id int64) (responses models.AddressesResponse, err error) {
+	return responses, address.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 }
 
 // Store implements AddressDefinition

@@ -25,7 +25,7 @@ type BuildingAssetsResponse struct {
 	BuildYear         int64   `json:"build_year"`
 	SurfaceArea       int64   `json:"burface_area"`
 	BuildingArea      int64   `json:"building_area"`
-	Direction         string  `json:"Direction"`
+	Direction         string  `json:"direction"`
 	NumberOfFloors    int64   `json:"number_of_floors`
 	NumberOfBedrooms  int64   `json:"number_of_bedrooms"`
 	NumberOfBathrooms int64   `json:"number_of_bathrooms"`
