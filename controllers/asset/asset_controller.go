@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"database/sql"
+	"fmt"
 	"infolelang/lib"
 	models "infolelang/models/assets"
 
@@ -120,4 +122,52 @@ func (asset AssetController) Delete(c *gin.Context) {
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", "")
+}
+
+func (asset AssetController) GetApproval(c *gin.Context) {
+	request := models.AssetsRequestMaintain{}
+	if err := c.Bind(&request); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	datas, pagination, err := asset.service.GetApproval(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+	}
+
+	if pagination.Total == 0 {
+		lib.ReturnToJson(c, 200, "404", "Data Kosong", datas)
+		return
+	}
+
+	if err == sql.ErrNoRows {
+		lib.ReturnToJson(c, 200, "500", "Internal Error", datas)
+		return
+	}
+	fmt.Println("Data Approvals controller=>", datas)
+	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquiry data berhasil", datas, pagination)
+}
+
+func (asset AssetController) GetMaintain(c *gin.Context) {
+	request := models.AssetsRequestMaintain{}
+
+	if err := c.Bind(&request); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	datas, pagination, err := asset.service.GetMaintain(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+	}
+
+	if pagination.Total == 0 {
+		lib.ReturnToJson(c, 200, "404", "Data Kosong", datas)
+		return
+	}
+
+	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquiry data berhasil", datas, pagination)
 }

@@ -25,7 +25,9 @@ func (s AssetRoutes) Setup() {
 		api.POST("/getOne", s.AssetController.GetOne)
 		api.POST("/update", s.AssetController.Update)
 		api.POST("/store", s.AssetController.Store)
-		api.POST("/selete", s.AssetController.Delete)
+		api.POST("/delete", s.AssetController.Delete)
+		api.POST("/getApproval", s.AssetController.GetApproval)
+		api.POST("/getMaintain", s.AssetController.GetMaintain)
 
 	}
 }

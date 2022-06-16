@@ -12,6 +12,18 @@ type Assets struct {
 	Name          string
 	Price         int64
 	Description   string
+	Status        string
+	MakerID       string
+	MakerDesc     string
+	MakerComment  string
+	MakerDate     *string
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Published     bool
+	Deleted       bool
+	ExpiredDate   *string
+	Action        string
 	UpdatedAt     *string
 	CreatedAt     *string
 }

@@ -25,6 +25,18 @@ type AssetsRequest struct {
 	Name           string                         `json:"name"`
 	Price          int64                          `json:"price"`
 	Description    string                         `json:"description"`
+	Status         string                         `json:"status"`
+	MakerID        string                         `json:"maker_id"`
+	MakerDesc      string                         `json:"maker_desc"`
+	MakerComment   string                         `json:"maker_comment"`
+	MakerDate      *string                        `json:"maker_date"`
+	LastMakerID    string                         `json:"last_maker_id"`
+	LastMakerDesc  string                         `json:"last_maker_desc"`
+	LastMakerDate  *string                        `json:"last_maker_date"`
+	Published      bool                           `json:"published"`
+	Deleted        bool                           `json:"deleted"`
+	ExpiredDate    *string                        `json:"expired_date"`
+	Action         string                         `json:"action"`
 	Addresses      address.AddressesRequest       `json:"addresses"`
 	BuildingAssets building.BuildingAssetsRequest `json:"building_assets"`
 	VehicleAssets  vehicle.VehicleAssetsRequest   `json:"vehicle_assets"`
@@ -48,6 +60,18 @@ type AssetsResponse struct {
 	Name           string                         `json:"name"`
 	Price          int64                          `json:"price"`
 	Description    string                         `json:"description"`
+	Status         string                         `json:"status"`
+	MakerID        string                         `json:"maker_id"`
+	MakerDesc      string                         `json:"maker_desc"`
+	MakerComment   string                         `json:"maker_comment"`
+	MakerDate      *string                        `json:"maker_date"`
+	LastMakerID    string                         `json:"last_maker_id"`
+	LastMakerDesc  string                         `json:"last_maker_desc"`
+	LastMakerDate  *string                        `json:"last_maker_date"`
+	Published      bool                           `json:"published"`
+	Deleted        bool                           `json:"deleted"`
+	ExpiredDate    *string                        `json:"expired_date"`
+	Action         string                         `json:"action"`
 	Addresses      address.Addresses              `json:"addresses"`
 	BuildingAssets building.BuildingAssets        `json:"building_assets"`
 	VehicleAssets  vehicle.VehicleAssets          `json:"vehicle_assets"`
@@ -58,6 +82,54 @@ type AssetsResponse struct {
 	Approvals      approvals.Approvals            `json:"approvals"`
 	UpdatedAt      *string                        `json:"updated_at"`
 	CreatedAt      *string                        `json:"created_at"`
+}
+
+type AssetsRequestMaintain struct {
+	Order     string `json:"order"`
+	Sort      string `json:"sort"`
+	Offset    int    `json:"offset"`
+	Limit     int    `json:"limit"`
+	Page      int    `json:"page"`
+	Type      string `json:"type"`
+	Category  string `json:"category"`
+	Name      string `json:"name"`
+	Price     int    `json:"price"`
+	PicName   string `json:"pic_name"`
+	Status    string `json:"status"`
+	CheckerID string `json:"checker_id"`
+	SignerID  string `json:"signer_id"`
+}
+
+type AssetsResponseMaintain struct {
+	ID          lib.NullInt64  `json:"id"`
+	Type        lib.NullString `json:"type"`
+	Category    lib.NullString `json:"category"`
+	SubCategory lib.NullString `json:"sub_category"`
+	Name        lib.NullString `json:"name"`
+	Price       lib.NullInt64  `json:"price"`
+	Status      lib.NullString `json:"status"`
+	PicName     lib.NullString `json:"pic_name"`
+	Published   lib.NullString `json:"published"`
+	CheckerID   lib.NullString `json:"checker_id"`
+	SignerID    lib.NullString `json:"signer_id"`
+	UpdatedAt   lib.NullTime   `json:"updated_at"`
+	CreatedAt   lib.NullTime   `json:"created_at"`
+}
+
+type AssetsResponses struct {
+	ID          int64  `json:"id"`
+	Type        string `json:"type"`
+	Category    string `json:"category"`
+	SubCategory string `json:"sub_category"`
+	Name        string `json:"name"`
+	Price       int64  `json:"price"`
+	PicName     string `json:"pic_name"`
+	Status      string `json:"status"`
+	Published   string `json:"published"`
+	CheckerID   string `json:"checker_id"`
+	SignerID    string `json:"signer_id"`
+	UpdatedAt   string `json:"updated_at"`
+	CreatedAt   string `json:"created_at"`
 }
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
@@ -101,5 +173,9 @@ func (a AssetsRequest) TableName() string {
 }
 
 func (a AssetsResponse) TableName() string {
-	return "assets"
+	return "assets as ast"
+}
+
+func (a AssetsRequestMaintain) TableName() string {
+	return "assets as ast"
 }

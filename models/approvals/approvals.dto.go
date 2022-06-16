@@ -2,7 +2,7 @@ package models
 
 type ApprovalsRequest struct {
 	AssetID        int64   `json:"asset_id"`
-	CheckerID      string  `json:"checker_od"`
+	CheckerID      string  `json:"checker_id"`
 	CheckerDesc    string  `json:"checker_desc"`
 	CheckerComment *string `json:"checker_domment"`
 	CheckerDate    *string `json:"checker_date"`
