@@ -36,6 +36,14 @@ func (asset AssetController) GetAll(c *gin.Context) {
 	datas, err := asset.service.GetAll()
 	if err != nil {
 		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if len(datas) == 0 {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
+		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
 }
@@ -46,12 +54,14 @@ func (asset AssetController) GetOne(c *gin.Context) {
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
 	}
 
 	data, err := asset.service.GetOne(int64(id))
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
@@ -72,18 +82,11 @@ func (asset AssetController) Store(c *gin.Context) {
 		return
 	}
 
-	// if _, err := asset.service.WithTrx(trxHandle).Store(&data); err != nil {
-	// 	asset.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
-	// 	return
-	// }
-
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
+	lib.ReturnToJson(c, 200, "200", "Create data berhasil", true)
 }
 
-func (asset AssetController) Update(c *gin.Context) {
+func (asset AssetController) UpdatePublish(c *gin.Context) {
 	data := models.AssetsRequest{}
-	// paramID := c.Param("id")
 
 	if err := c.BindJSON(&data); err != nil {
 		asset.logger.Zap.Error(err)
@@ -91,20 +94,66 @@ func (asset AssetController) Update(c *gin.Context) {
 		return
 	}
 
-	// id, err := strconv.Atoi(paramID)
-	// if err != nil {
-	// 	Asset.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-	// 	return
-	// }
-
-	if err := asset.service.Update(&data); err != nil {
+	status, err := asset.service.UpdatePublish(&data)
+	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 
+	if !status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", data)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
+}
+
+func (asset AssetController) UpdateApproval(c *gin.Context) {
+	data := models.AssetsRequest{}
+
+	if err := c.BindJSON(&data); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	status, err := asset.service.UpdateApproval(&data)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
+	}
+	if !status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", err)
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
+}
+
+func (asset AssetController) UpdateMaintain(c *gin.Context) {
+	data := models.AssetsRequest{}
+
+	if err := c.BindJSON(&data); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	status, err := asset.service.UpdateMaintain(&data)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
+	}
+	if !status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", data)
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
 }
 
 func (asset AssetController) Delete(c *gin.Context) {

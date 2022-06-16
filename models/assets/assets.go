@@ -23,7 +23,7 @@ type Assets struct {
 	Published     bool
 	Deleted       bool
 	ExpiredDate   *string
-	Action        string
+	Action        string // create, updateApproval, updateMaintain, delete, publish, unpublish
 	UpdatedAt     *string
 	CreatedAt     *string
 }

@@ -39,10 +39,12 @@ type AssetDefinition interface {
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (err error)
-	Update(request *models.AssetsRequest) (err error)
 	Delete(id int64) (err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
+	UpdatePublish(request *models.AssetsRequest) (status bool, err error)
+	UpdateApproval(request *models.AssetsRequest) (status bool, err error)
+	UpdateMaintain(request *models.AssetsRequest) (status bool, err error)
 }
 type AssetService struct {
 	minio            minio.Minio
@@ -171,6 +173,13 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
+	// -- / asset
+	// --  add maker_id. maker_desc, maker_comment, maker_date, last_maker_id. last_maker_desc, last_maker_date, -- jadi pas create maker = last_maker, update dll input ke last_maker
+	// -- done add action varchar(100) misal approve hapus, approve create. approve, dia update terus
+	// -- done add field deleted tinyint(1) -- ini buat soft delete
+	// -- done add expired_date datetime  = published_date datetime= now() pas approve + 6 bulan ketika update approve
+	// -- apabila lebih dari 6 bulan dan status publish maka scheduler jalan untuk me unpublis status
+	// -- / asset
 
 	dataAsset, err := asset.assetRepo.Store(&models.Assets{
 		Type:          request.Type,
@@ -184,7 +193,18 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		Price:         request.Price,
 		Description:   request.Description,
 		Status:        "01a", // pending checker
-		CreatedAt:     &timeNow,
+		MakerID:       request.MakerID,
+		MakerDesc:     request.MakerDesc,
+		MakerComment:  request.MakerComment,
+		MakerDate:     request.MakerDate,
+		LastMakerID:   request.LastMakerID,
+		LastMakerDesc: request.LastMakerDesc,
+		LastMakerDate: request.LastMakerDate,
+		// Published:     request.Published,
+		// Deleted:       request.Deleted,
+		// ExpiredDate:   request.ExpiredDate,
+		Action:    "Create",
+		CreatedAt: &timeNow,
 	})
 
 	if err != nil {
@@ -437,10 +457,22 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	return err
 }
 
+// UpdatePublish implements AssetDefinition
+func (asset AssetService) UpdatePublish(request *models.AssetsRequest) (status bool, err error) {
+	_, err = asset.assetRepo.UpdatePublish(request)
+	return true, err
+}
+
+// UpdateApproval implements AssetDefinition
+func (asset AssetService) UpdateApproval(request *models.AssetsRequest) (status bool, err error) {
+	_, err = asset.assetRepo.UpdateApproval(request)
+	return true, err
+}
+
 // Update implements AssetDefinition
-func (asset AssetService) Update(request *models.AssetsRequest) (err error) {
-	_, err = asset.assetRepo.Update(request)
-	return err
+func (asset AssetService) UpdateMaintain(request *models.AssetsRequest) (status bool, err error) {
+	_, err = asset.assetRepo.UpdateMaintain(request)
+	return true, err
 }
 
 // Delete implements AssetDefinition
