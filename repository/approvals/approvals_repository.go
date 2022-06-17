@@ -17,6 +17,7 @@ type ApprovalDefinition interface {
 	Store(request *models.Approvals) (responses *models.Approvals, err error)
 	Update(request *models.ApprovalsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
+	DeleteApprovals(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) ApprovalRepository
 }
 type ApprovalRepository struct {
@@ -79,4 +80,9 @@ func (approval ApprovalRepository) Update(request *models.ApprovalsRequest) (res
 // Delete implements ApprovalDefinition
 func (approval ApprovalRepository) Delete(id int64) (err error) {
 	return approval.db.DB.Where("id = ?", id).Delete(&models.ApprovalsResponse{}).Error
+}
+
+// Delete implements ApprovalDefinition
+func (approval ApprovalRepository) DeleteApprovals(id int64) (err error) {
+	return approval.db.DB.Delete(&models.ApprovalsResponse{}).Error
 }
