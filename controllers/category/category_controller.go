@@ -41,13 +41,13 @@ func (category CategoryController) GetOne(c *gin.Context) {
 		return
 	}
 
-	_, err = category.service.GetOne(int64(id))
+	data, err := category.service.GetOne(int64(id))
 	if err != nil {
 		category.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", true)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 
 func (category CategoryController) Store(c *gin.Context) {

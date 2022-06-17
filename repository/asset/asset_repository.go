@@ -65,7 +65,51 @@ func (asset AssetRepository) GetAll() (responses []models.AssetsResponse, err er
 
 // GetOne implements AssetDefinition
 func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, err error) {
-	return responses, asset.db.DB.Where("id = ?", id).Find(&responses).Error
+	// db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
+	//    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
+	// return responses, asset.db.DB.Where("id = ?", id).Find(&responses).Error
+	err = asset.db.DB.Raw(`
+	SELECT 
+		ast.id,
+		ast.type,
+		ast.kpknl_id,
+		ast.auction_date,
+		ast.auction_time,
+		ast.auction_link,
+		ast.category_id,
+		ast.sub_category_id,
+		ast.name,
+		ast.price,
+		ast.description,
+		ast.maker_id,
+		ast.maker_desc,
+		ast.maker_date,
+		ast.last_maker_id,
+		ast.last_maker_desc,
+		ast.last_maker_date,
+		ast.published,
+		ast.deleted,
+		ast.publish_date,
+		ast.expired_date,
+		ast.status,
+		ast.action,
+		ast.updated_at,
+		ast.created_at,
+		rk.desc  kpknl_name,
+		c.name category_name,
+		sc.name sub_category_name,
+		rs.namaStatus status_name
+		FROM assets ast 
+		LEFT JOIN categories c on ast.category_id = c.id 
+		LEFT JOIN sub_categories sc on ast.sub_category_id = sc.id
+		LEFT JOIN ref_status rs on ast.status  = rs.kodeStatus
+		LEFT JOIN ref_kpknl rk  on ast.kpknl_id  = rk.id`).Where("ast.id = ?", id).Find(&responses).Error
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return responses, err
+	}
+	return responses, err
 }
 
 // GetOneAsset implements AssetDefinition
