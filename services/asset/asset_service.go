@@ -39,12 +39,12 @@ type AssetDefinition interface {
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (err error)
-	Delete(id int64) (err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
-	UpdatePublish(request *models.AssetsRequest) (status bool, err error)
-	UpdateApproval(request *models.AssetsRequest) (status bool, err error)
+	UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error)
+	UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error)
 	UpdateMaintain(request *models.AssetsRequest) (status bool, err error)
+	Delete(request *models.AssetsRequestUpdate) (responses bool, err error)
 }
 type AssetService struct {
 	minio            minio.Minio
@@ -146,7 +146,6 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 		Status:         assets.Status,
 		MakerID:        assets.MakerID,
 		MakerDesc:      assets.MakerDesc,
-		MakerComment:   assets.MakerComment,
 		MakerDate:      assets.MakerDate,
 		LastMakerID:    assets.LastMakerID,
 		LastMakerDesc:  assets.LastMakerDesc,
@@ -195,7 +194,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		Status:        "01a", // pending checker
 		MakerID:       request.MakerID,
 		MakerDesc:     request.MakerDesc,
-		MakerComment:  request.MakerComment,
 		MakerDate:     request.MakerDate,
 		LastMakerID:   request.LastMakerID,
 		LastMakerDesc: request.LastMakerDesc,
@@ -457,27 +455,371 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	return err
 }
 
-// UpdatePublish implements AssetDefinition
-func (asset AssetService) UpdatePublish(request *models.AssetsRequest) (status bool, err error) {
-	_, err = asset.assetRepo.UpdatePublish(request)
-	return true, err
+// UpdateApproval implements AssetDefinition
+func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error) {
+
+	switch request.Type {
+	case "approve checker":
+		// update checker
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published: ,
+			// PublishDate: ,
+			Status:    "01c", // approve checker
+			Action:    "UpdateApproval",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				// SignerComment:  request.Approvals.SignerComment,
+				// SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt: &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+	case "approve signer":
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID:          request.ID,
+			Published:   true,
+			PublishDate: &timeNow,
+			ExpiredDate: lib.AddTime(0, 6, 0),
+			Status:      "01e", // approve signer
+			Action:      "UpdateApproval",
+			UpdatedAt:   &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				SignerComment:  request.Approvals.SignerComment,
+				SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt:      &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+	case "tolak checker":
+		// update checker
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published: ,
+			// PublishDate: ,
+			Status:    "01b", // tolak checker
+			Action:    "UpdateApproval",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				// SignerComment:  request.Approvals.SignerComment,
+				// SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt: &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+		// update tolak checker
+	case "tolak signer":
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published:   true,
+			// PublishDate: &timeNow,
+			// ExpiredDate: lib.AddTime(0, 6, 0),
+			Status:    "01d", // tolak signer
+			Action:    "UpdateApproval",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				SignerComment:  request.Approvals.SignerComment,
+				SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt:      &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+	default:
+		return false, err
+	}
 }
 
-// UpdateApproval implements AssetDefinition
-func (asset AssetService) UpdateApproval(request *models.AssetsRequest) (status bool, err error) {
-	_, err = asset.assetRepo.UpdateApproval(request)
-	return true, err
+// UpdatePublish implements AssetDefinition
+func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error) {
+	switch request.Type {
+	case "approve checker":
+		// update checker
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published: ,
+			// PublishDate: ,
+			Status:    "01c", // approve checker
+			Action:    "UpdatePublish",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				// SignerComment:  request.Approvals.SignerComment,
+				// SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt: &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+	case "approve signer":
+
+		if request.Type == "publish" {
+			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
+				ID:            request.ID,
+				Published:     true,
+				PublishDate:   &timeNow,
+				ExpiredDate:   lib.AddTime(0, 6, 0),
+				LastMakerID:   request.LastMakerID,
+				LastMakerDesc: request.LastMakerDesc,
+				LastMakerDate: request.LastMakerDate,
+				Action:        "UpdatePublish",
+				UpdatedAt:     &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			// approval
+			asset.approvalRepo.Delete(request.Approvals.ID)
+			_, err := asset.approvalRepo.Store(
+				&requestApprovals.Approvals{
+					AssetID:        request.ID,
+					CheckerID:      request.Approvals.CheckerID,
+					CheckerDesc:    request.Approvals.CheckerDesc,
+					CheckerComment: request.Approvals.CheckerComment,
+					CheckerDate:    request.Approvals.CheckerDate,
+					SignerID:       request.Approvals.SignerID,
+					SignerDesc:     request.Approvals.SignerDesc,
+					SignerComment:  request.Approvals.SignerComment,
+					SignerDate:     request.Approvals.SignerDate,
+					UpdatedAt:      &timeNow})
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		} else if request.Type == "unpublish" {
+			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
+				ID:            request.ID,
+				Published:     false,
+				LastMakerID:   request.LastMakerID,
+				LastMakerDesc: request.LastMakerDesc,
+				LastMakerDate: request.LastMakerDate,
+				Action:        "UpdateUnPublish",
+				UpdatedAt:     &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			// approval
+			asset.approvalRepo.Delete(request.Approvals.ID)
+			_, err := asset.approvalRepo.Store(
+				&requestApprovals.Approvals{
+					AssetID:        request.ID,
+					CheckerID:      request.Approvals.CheckerID,
+					CheckerDesc:    request.Approvals.CheckerDesc,
+					CheckerComment: request.Approvals.CheckerComment,
+					CheckerDate:    request.Approvals.CheckerDate,
+					SignerID:       request.Approvals.SignerID,
+					SignerDesc:     request.Approvals.SignerDesc,
+					SignerComment:  request.Approvals.SignerComment,
+					SignerDate:     request.Approvals.SignerDate,
+					UpdatedAt:      &timeNow})
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+
+		return true, err
+	case "tolak checker":
+		// update checker
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published: ,
+			// PublishDate: ,
+			Status:    "01b", // tolak checker
+			Action:    "UpdatePublish",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				// SignerComment:  request.Approvals.SignerComment,
+				// SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt: &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+		// update tolak checker
+	case "tolak signer":
+		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+			ID: request.ID,
+			// Published:   true,
+			// PublishDate: &timeNow,
+			// ExpiredDate: lib.AddTime(0, 6, 0),
+			Status:    "01d", // tolak signer
+			Action:    "UpdatePublish",
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		// approval
+		asset.approvalRepo.Delete(request.Approvals.ID)
+		_, err := asset.approvalRepo.Store(
+			&requestApprovals.Approvals{
+				AssetID:        request.ID,
+				CheckerID:      request.Approvals.CheckerID,
+				CheckerDesc:    request.Approvals.CheckerDesc,
+				CheckerComment: request.Approvals.CheckerComment,
+				CheckerDate:    request.Approvals.CheckerDate,
+				SignerID:       request.Approvals.SignerID,
+				SignerDesc:     request.Approvals.SignerDesc,
+				SignerComment:  request.Approvals.SignerComment,
+				SignerDate:     request.Approvals.SignerDate,
+				UpdatedAt:      &timeNow})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		return true, err
+	default:
+		return false, err
+	}
 }
 
 // Update implements AssetDefinition
 func (asset AssetService) UpdateMaintain(request *models.AssetsRequest) (status bool, err error) {
-	_, err = asset.assetRepo.UpdateMaintain(request)
-	return true, err
+	status, err = asset.assetRepo.UpdateMaintain(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+	return status, err
 }
 
 // Delete implements AssetDefinition
-func (asset AssetService) Delete(id int64) (err error) {
-	return asset.assetRepo.Delete(id)
+func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bool, err error) {
+	status, err = asset.assetRepo.Delete(&models.AssetsUpdateDelete{
+		ID:            request.ID,
+		LastMakerID:   request.LastMakerID,
+		LastMakerDesc: request.LastMakerDesc,
+		LastMakerDate: request.LastMakerDate,
+		Deleted:       true,
+		Action:        "Delete",
+		UpdatedAt:     &timeNow,
+	})
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+	return status, err
 }
 
 func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {

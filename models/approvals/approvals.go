@@ -5,11 +5,11 @@ type Approvals struct {
 	AssetID        int64
 	CheckerID      string
 	CheckerDesc    string
-	CheckerComment *string
+	CheckerComment string
 	CheckerDate    *string
 	SignerID       string
 	SignerDesc     string
-	SignerComment  *string
+	SignerComment  string
 	SignerDate     *string
 	UpdatedAt      *string
 	CreatedAt      *string

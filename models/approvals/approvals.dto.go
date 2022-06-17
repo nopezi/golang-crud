@@ -1,14 +1,15 @@
 package models
 
 type ApprovalsRequest struct {
+	ID             int64   `json:"id"`
 	AssetID        int64   `json:"asset_id"`
 	CheckerID      string  `json:"checker_id"`
 	CheckerDesc    string  `json:"checker_desc"`
-	CheckerComment *string `json:"checker_domment"`
+	CheckerComment string  `json:"checker_comment"`
 	CheckerDate    *string `json:"checker_date"`
 	SignerID       string  `json:"signer_id"`
 	SignerDesc     string  `json:"signer_desc"`
-	SignerComment  *string `json:"signer_comment"`
+	SignerComment  string  `json:"signer_comment"`
 	SignerDate     *string `json:"signer_date"`
 	CreatedAt      *string `json:"created_at"`
 	UpdatedAt      *string `json:"updated_at"`
@@ -19,11 +20,11 @@ type ApprovalsResponse struct {
 	AssetID        int64   `json:"asset_id"`
 	CheckerID      string  `json:"checker_id"`
 	CheckerDesc    string  `json:"checker_desc"`
-	CheckerComment *string `json:"checkerd_domment"`
+	CheckerComment string  `json:"checker_comment"`
 	CheckerDate    *string `json:"checker_date"`
 	SignerID       string  `json:"signer_id"`
 	SignerDesc     string  `json:"signer_desc"`
-	SignerComment  *string `json:"signer_comment"`
+	SignerComment  string  `json:"signer_comment"`
 	SignerDate     *string `json:"signer_date"`
 	CreatedAt      *string `json:"created_at"`
 	UpdatedAt      *string `json:"updated_at"`

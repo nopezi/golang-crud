@@ -66,9 +66,8 @@ func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.
 func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []facilitiesModel.FacilitiesResponse, err error) {
 	// return responses, AssetFacility.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 	rows, err := AssetFacility.db.DB.Raw(`select f.id,f.name, 
-				f.icon , af.status,f.description  from 
-				asset_facilities af join facilities f on af.id 
-				= f.id where asset_id = ? `, id).Rows()
+	f.icon , af.status,f.description  from 
+	asset_facilities af join facilities f on af.facility_id  = f.id  where af.asset_id = ? `, id).Rows()
 
 	defer rows.Close()
 

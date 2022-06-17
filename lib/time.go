@@ -35,5 +35,12 @@ func GetTimeNow(param string) string {
 		fmt.Println("masukan parameter")
 		return ""
 	}
+}
 
+func AddTime(year int, month int, days int) *string {
+	currentTime := time.Now()
+	time.LoadLocation("Asia/Jakarta")
+
+	addtime := fmt.Sprint(currentTime.AddDate(year, month, days).Format("2006-01-02 15:04:05"))
+	return &addtime
 }

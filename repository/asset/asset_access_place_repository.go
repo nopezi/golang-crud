@@ -66,10 +66,10 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOne(id int64) (responses m
 func (assetAccessPlace AssetAccessPlaceRepository) GetOneAsset(id int64) (responses []accessPlace.AccessPlacesResponse, err error) {
 	// return responses, assetAccessPlace.db.DB.Where("aid = ?", id).Find(&responses).Error
 
-	rows, err := assetAccessPlace.db.DB.Raw(`select f.id,f.name, 
-				f.icon , af.status,f.description  from 
-				asset_facilities af join facilities f on af.id 
-				= f.id where asset_id = ? `, id).Rows()
+	rows, err := assetAccessPlace.db.DB.Raw(`select ap.id,ap.name, 
+				ap.icon , ap.status, ap.description  from 
+				asset_access_places aap join access_places ap  on ap.id 
+				= aap.access_place_id  where aap.asset_id = ? `, id).Rows()
 
 	defer rows.Close()
 

@@ -86,7 +86,7 @@ func (asset AssetController) Store(c *gin.Context) {
 }
 
 func (asset AssetController) UpdatePublish(c *gin.Context) {
-	data := models.AssetsRequest{}
+	data := models.AssetsRequestUpdate{}
 
 	if err := c.BindJSON(&data); err != nil {
 		asset.logger.Zap.Error(err)
@@ -111,9 +111,9 @@ func (asset AssetController) UpdatePublish(c *gin.Context) {
 }
 
 func (asset AssetController) UpdateApproval(c *gin.Context) {
-	data := models.AssetsRequest{}
+	data := models.AssetsRequestUpdate{}
 
-	if err := c.BindJSON(&data); err != nil {
+	if err := c.Bind(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
@@ -122,15 +122,16 @@ func (asset AssetController) UpdateApproval(c *gin.Context) {
 	status, err := asset.service.UpdateApproval(&data)
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
+
 	if !status {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Update data Gagal", err)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", false)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", status)
 }
 
 func (asset AssetController) UpdateMaintain(c *gin.Context) {
@@ -148,6 +149,7 @@ func (asset AssetController) UpdateMaintain(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
 		return
 	}
+
 	if !status {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Update data Gagal", data)
@@ -157,20 +159,28 @@ func (asset AssetController) UpdateMaintain(c *gin.Context) {
 }
 
 func (asset AssetController) Delete(c *gin.Context) {
-	paramID := c.Param("id")
-	id, err := strconv.Atoi(paramID)
-	if err != nil {
+	data := models.AssetsRequestUpdate{}
+
+	if err := c.Bind(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
 
-	if err := asset.service.Delete(int64(id)); err != nil {
+	status, err := asset.service.Delete(&data)
+	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", "")
+
+	if !status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal disimpan", false)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", true)
 }
 
 func (asset AssetController) GetApproval(c *gin.Context) {

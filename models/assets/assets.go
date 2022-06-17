@@ -15,15 +15,50 @@ type Assets struct {
 	Status        string
 	MakerID       string
 	MakerDesc     string
-	MakerComment  string
 	MakerDate     *string
 	LastMakerID   string
 	LastMakerDesc string
 	LastMakerDate *string
 	Published     bool
+	PublishDate   *string
 	Deleted       bool
 	ExpiredDate   *string
 	Action        string // create, updateApproval, updateMaintain, delete, publish, unpublish
 	UpdatedAt     *string
 	CreatedAt     *string
+}
+
+type AssetsUpdateApproval struct {
+	ID          int64
+	Published   bool
+	PublishDate *string
+	ExpiredDate *string
+	Status      string
+	Action      string
+	UpdatedAt   *string
+}
+
+type AssetsUpdatePublish struct {
+	ID            int64
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Published     bool
+	PublishDate   *string
+	ExpiredDate   *string
+	Action        string
+	UpdatedAt     *string
+}
+type AssetsUpdateDelete struct {
+	ID            int64
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Deleted       bool
+	Action        string
+	UpdatedAt     *string
+}
+
+func (a AssetsUpdateApproval) TableName() string {
+	return "assets"
 }

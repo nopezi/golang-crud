@@ -18,13 +18,13 @@ type AssetDefinition interface {
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
-	Delete(id int64) (err error)
 	StoreElastic(request *models.AssetsResponse) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
-	UpdatePublish(request *models.AssetsRequest) (responses bool, err error)
-	UpdateApproval(request *models.AssetsRequest) (responses bool, err error)
+	UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error)
+	UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error)
 	UpdateMaintain(request *models.AssetsRequest) (responses bool, err error)
+	Delete(request *models.AssetsUpdateDelete) (responses bool, err error)
 }
 type AssetRepository struct {
 	db      lib.Database
@@ -78,24 +78,24 @@ func (asset AssetRepository) Store(request *models.Assets) (responses *models.As
 	return request, asset.db.DB.Save(&request).Error
 }
 
-// UpdatePublish implements AssetDefinition
-func (asset AssetRepository) UpdatePublish(request *models.AssetsRequest) (responses bool, err error) {
-	return true, asset.db.DB.Save(&responses).Error
+// UpdateApproval implements AssetDefinition
+func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
+	return true, asset.db.DB.Save(&request).Error
 }
 
-// UpdateApproval implements AssetDefinition
-func (asset AssetRepository) UpdateApproval(request *models.AssetsRequest) (responses bool, err error) {
-	return true, asset.db.DB.Save(&responses).Error
+// UpdatePublish implements AssetDefinition
+func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error) {
+	return true, asset.db.DB.Save(&request).Error
 }
 
 // Update implements AssetDefinition
 func (asset AssetRepository) UpdateMaintain(request *models.AssetsRequest) (responses bool, err error) {
-	return true, asset.db.DB.Save(&responses).Error
+	return true, asset.db.DB.Save(&request).Error
 }
 
 // Delete implements AssetDefinition
-func (asset AssetRepository) Delete(id int64) (err error) {
-	return asset.db.DB.Where("id = ?", id).Delete(&models.AssetsResponse{}).Error
+func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete) (responses bool, err error) {
+	return true, asset.db.DB.Save(&request).Error
 }
 
 func (asset AssetRepository) StoreElastic(request *models.AssetsResponse) (response bool, err error) {

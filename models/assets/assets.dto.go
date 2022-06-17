@@ -28,7 +28,6 @@ type AssetsRequest struct {
 	Status         string                         `json:"status"`
 	MakerID        string                         `json:"maker_id"`
 	MakerDesc      string                         `json:"maker_desc"`
-	MakerComment   string                         `json:"maker_comment"`
 	MakerDate      *string                        `json:"maker_date"`
 	LastMakerID    string                         `json:"last_maker_id"`
 	LastMakerDesc  string                         `json:"last_maker_desc"`
@@ -100,7 +99,6 @@ type AssetsResponseGetOne struct {
 	Status         string                          `json:"status"`
 	MakerID        string                          `json:"maker_id"`
 	MakerDesc      string                          `json:"maker_desc"`
-	MakerComment   string                          `json:"maker_comment"`
 	MakerDate      *string                         `json:"maker_date"`
 	LastMakerID    string                          `json:"last_maker_id"`
 	LastMakerDesc  string                          `json:"last_maker_desc"`
@@ -167,6 +165,15 @@ type AssetsResponses struct {
 	SignerID    string `json:"signer_id"`
 	UpdatedAt   string `json:"updated_at"`
 	CreatedAt   string `json:"created_at"`
+}
+
+type AssetsRequestUpdate struct {
+	ID            int64                      `json:"id"`
+	Type          string                     `json:"type"`
+	LastMakerID   string                     `json:"last_maker_id"`
+	LastMakerDesc string                     `json:"last_maker_desc"`
+	LastMakerDate *string                    `json:"last_maker_date"`
+	Approvals     approvals.ApprovalsRequest `json:"approvals"`
 }
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
