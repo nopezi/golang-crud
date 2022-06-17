@@ -130,11 +130,11 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 			ast.name,ast.price, ast.status, c2.pic_name, ast.published,
 			a.checker_id, a.signer_id
 			from assets ast 
-			join categories c on ast.category_id = c.id 
-			join sub_categories sc on ast.sub_category_id = sc.id
-			join ref_status rs on ast.status  = rs.kodeStatus
-			join contacts c2 on ast.id = c2.asset_id
-			join approvals a on ast.id = a.asset_id ` + where + ` LIMIT ? OFFSET ?`
+			left join categories c on ast.category_id = c.id 
+			left join sub_categories sc on ast.sub_category_id = sc.id
+			left join ref_status rs on ast.status  = rs.kodeStatus
+			left join contacts c2 on ast.id = c2.asset_id
+			left join approvals a on ast.id = a.asset_id ` + where + ` order by id desc LIMIT ? OFFSET ?`
 	asset.logger.Zap.Info(query)
 	rows, err := asset.db2.DB.Query(query, request.Limit, request.Offset)
 
@@ -166,11 +166,11 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 	}
 
 	paginateQuery := `SELECT count(*) as total from assets  ast 
-					join categories c on ast.category_id = c.id 
-					join sub_categories sc on ast.sub_category_id = sc.id
-					join ref_status rs on ast.status  = rs.kodeStatus
-					join contacts c2 on ast.id = c2.asset_id
-					join approvals a on ast.id = a.asset_id ` + whereCount
+					left join categories c on ast.category_id = c.id 
+					left join sub_categories sc on ast.sub_category_id = sc.id
+					left join ref_status rs on ast.status  = rs.kodeStatus
+					left join contacts c2 on ast.id = c2.asset_id
+					left join approvals a on ast.id = a.asset_id ` + whereCount
 	// fmt.Println("paginateQuery", paginateQuery)
 	err = asset.db2.DB.QueryRow(paginateQuery).Scan(&totalRows)
 
@@ -198,7 +198,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 			join categories c on ast.category_id = c.id 
 			join sub_categories sc on ast.sub_category_id = sc.id
 			join ref_status rs on ast.status  = rs.kodeStatus
-			join contacts c2 on ast.id = c2.asset_id ` + where + ` LIMIT ? OFFSET ?`
+			join contacts c2 on ast.id = c2.asset_id ` + where + ` order by id desc LIMIT ? OFFSET ?`
 
 	rows, err := asset.db2.DB.Query(query, request.Limit, request.Offset)
 

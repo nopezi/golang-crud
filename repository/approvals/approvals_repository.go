@@ -84,5 +84,5 @@ func (approval ApprovalRepository) Delete(id int64) (err error) {
 
 // Delete implements ApprovalDefinition
 func (approval ApprovalRepository) DeleteApprovals(id int64) (err error) {
-	return approval.db.DB.Delete(&models.ApprovalsResponse{}).Error
+	return approval.db.DB.Where("asset_id = ?", id).Delete(&models.ApprovalsResponse{}).Error
 }

@@ -110,25 +110,31 @@ func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error
 
 // GetOne implements AssetDefinition
 func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, err error) {
+	// join table
 	assets, err := asset.assetRepo.GetOne(id)
-	// get address
+
+	// join table
 	address, err := asset.addressRepo.GetOneAsset(assets.ID)
-	// get building
+
+	// join table
 	building, err := asset.buildingRepo.GetOneAsset(assets.ID)
-	// get vehicle
+
+	// join table
 	vehicle, err := asset.vehicleRepo.GetOneAsset(assets.ID)
 
-	// get asset facilities
+	// join table
 	facilities, err := asset.assetFacility.GetOneAsset(assets.ID)
-	// get access place
+
+	// join table
 	accessPlace, err := asset.assetAccessPlace.GetOneAsset(assets.ID)
-	// get contact
+
+	// join table
 	contact, err := asset.contactRepo.GetOneAsset(assets.ID)
 
-	// get images
+	// join table
 	images, err := asset.imagesRepo.GetOneAsset(assets.ID)
 
-	// get approval
+	// join table
 	approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
 
 	responses = models.AssetsResponseGetOne{
@@ -287,6 +293,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	fmt.Println("facilities=>", request.Facilities)
 
+	// check apabila array image error return false
 	for _, value := range request.Facilities {
 		_, err := asset.assetFacility.Store(
 			&models.AssetFacilities{
@@ -302,6 +309,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	}
 
 	// asset_access_places
+	// check apabila array facilitie error return false
 	fmt.Println("Access Places=>", request.AccessPlaces)
 	for _, value := range request.AccessPlaces {
 		_, err = asset.assetAccessPlace.Store(
@@ -336,6 +344,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	var images []requestImage.ImagesRequest
 
 	// images
+	// check apabila array image error return false
 	for _, value := range request.Images {
 
 		var destinationPath string
@@ -476,7 +485,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -511,7 +520,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -546,7 +555,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -582,7 +591,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -625,7 +634,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -664,7 +673,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			}
 
 			// approval
-			asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+			asset.approvalRepo.DeleteApprovals(request.ID)
 			_, err := asset.approvalRepo.Store(
 				&requestApprovals.Approvals{
 					AssetID:        request.ID,
@@ -698,7 +707,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			}
 
 			// approval
-			asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+			asset.approvalRepo.DeleteApprovals(request.ID)
 			_, err := asset.approvalRepo.Store(
 				&requestApprovals.Approvals{
 					AssetID:        request.ID,
@@ -735,7 +744,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -771,7 +780,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.Approvals.ID)
+		asset.approvalRepo.DeleteApprovals(request.ID)
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
