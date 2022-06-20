@@ -5,6 +5,7 @@ import (
 	asset "infolelang/services/asset"
 	category "infolelang/services/category"
 	certificate_type "infolelang/services/certificate_type"
+	cif "infolelang/services/cif"
 	facility "infolelang/services/facility"
 	faq "infolelang/services/faq"
 	file "infolelang/services/file_manager"
@@ -42,4 +43,5 @@ var Module = fx.Options(
 	fx.Provide(vehicle_category.NewVehicleCategoryService),
 	fx.Provide(vehicle_color.NewVehicleColorService),
 	fx.Provide(vehicle_transmission.NewVehicleTransmissionService),
+	fx.Provide(cif.NewCifService),
 )

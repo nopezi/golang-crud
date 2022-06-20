@@ -26,7 +26,7 @@ type (
 		Auth    bool
 	}
 	Header struct {
-		key   string
+		Key   string
 		Value string
 	}
 	Resp map[string]interface{}
@@ -74,7 +74,7 @@ func AuthBearer(options Options, auth Auth) (response Resp, err error) {
 	// }
 
 	for _, header := range options.Header {
-		req.Header.Add(header.key, header.Value)
+		req.Header.Add(header.Key, header.Value)
 	}
 
 	res, err := client.Do(req)

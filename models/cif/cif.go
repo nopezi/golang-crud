@@ -1,0 +1,56 @@
+package models
+
+type Cif struct {
+	ERRORCODE               string
+	RESPONSECODE            string
+	RESPONSEMESSAGE         string
+	NIK                     string
+	CIF                     string
+	BRANCH                  string
+	CUSTNAME                string
+	HPNO                    string
+	EMAIL                   string
+	ADDRESS1                string
+	ADDRESS2                string
+	ADDRESS3                string
+	ADDRESS4                string
+	ZIPCODE                 string
+	RTNO                    string
+	RWNO                    string
+	PLACEOFBIRTH            string
+	DATEOFBIRTH             string
+	SEX                     string
+	CITIZENSHIP             string
+	IDTYPE                  string
+	IDNO                    string
+	RELIGION                string
+	MARTIALSTATUS           string
+	MARITALSTATUS           string
+	MOTHERNAME              string
+	NPWP                    string
+	TUJUANPEMBUKAANREKENING string
+	TYPEOFWORK              string
+	PENDIDIKANCODE          string
+	PENDIDIKANDESC          string
+	ALAMATSURATMENYURAT     string
+	CITY                    string
+	KECAMATAN               string
+	KELURAHAN               string
+	OFFICEADDRESS           string
+	OFFICECITY              string
+	OFFICEKELURAHAN         string
+	OFFICEKECAMATAN         string
+	OFFICENAME              string
+	OFFICENOTELPON          string
+	OFFICEZIPCODE           string
+	PENGHASILAN             string
+	PROVINSI                string
+	SUMBERUTAMA             string
+	SUMBERUTAMADECS         string
+	PEKERJAAN               string
+	PEKERJAANDECS           string
+	DAILYTRX                string
+	JABATAN                 string
+	JABATANDECS             string
+	CCCODE                  string
+}
