@@ -192,52 +192,37 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
 
 -- ==========================================================
 ## PR Backend
--- auth onegate => done ,( incognito not down)
+-- auth onegate => done ,( incognito not done)
 -- getMCS => done 
     -- - checker list
     -- - signer list
-    
-select * from vehicle_brand;
-id
-vehicle_category_id
-name
-icon
-description
-created_at
-updated_at
 
-select * from vehicle_capacity;
-id
-name
-icon
-description
-created_at
-updated_at
+  - handle get table error, 
+  - get data empty, belum semua
+  - pagination done
+  - api inquiry cif ke esb = done
 
-select * from vehicle_category;
-id
-name
-icon
-description
-created_at
-updated_at
-
-select * from vehicle_color;
-id
-name
-icon
-description
-created_at
-updated_at
-
-select * from vehicle_transmission;
-id
-name
-icon
-description
-created_at
-updated_at
-
--- handle get table error, get data empty, pagination
--- api inquiry cif ke esb
--- ==========================================================
+   - create vehicle
+        - certificate_type to certificate_type_id
+        - series_id
+        - brand_id
+        - transmission_id
+        - machineCapacity_id to machine_capacity_id
+        - color_id
+        - get one vehicle join details above
+   - api get menu by role
+   - create to elastic
+   - create api auction_schedule/ jadwal lelang,
+   - create get all asset to elastic
+   - create get all with filter to elastic
+   - api crud maintain banners
+   - activity logger
+   - runtime logger
+# next development
+   - module user integration register with google or email,
+   - create whitelist asset
+   - mobile infolelang
+   - notification created asset to approvals
+   - integration geotaging google maps
+   - 
+ ==========================================================

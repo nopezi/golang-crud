@@ -38,7 +38,7 @@ type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
-	Store(request *models.AssetsRequest) (err error)
+	Store(request *models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error)
@@ -179,7 +179,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 }
 
 // Store implements AssetDefinition
-func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
+func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err error) {
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
 	// -- / asset
@@ -217,7 +217,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return err
+		return false, err
 	}
 	fmt.Println("dataAsset", dataAsset)
 
@@ -237,7 +237,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return err
+		return false, err
 	}
 
 	// var building *requestBuilding.BuildingAssets
@@ -263,7 +263,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 		fmt.Println("building=>", building)
 	default:
@@ -289,7 +289,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		})
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 		fmt.Println("vehicle=>", vehicle)
 
@@ -308,7 +308,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			})
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 	}
 
@@ -325,7 +325,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 	}
 
@@ -341,7 +341,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 	})
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return err
+		return false, err
 	}
 	fmt.Println("contact=>", contact)
 
@@ -398,7 +398,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 
 		_, err = asset.assetImage.Store(&models.AssetImages{
@@ -409,7 +409,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
-			return err
+			return false, err
 		}
 	}
 	fmt.Println("images=>", images)
@@ -429,43 +429,22 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 			CreatedAt: &timeNow})
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return err
+		return false, err
 	}
 	fmt.Println("approval=>", approval)
 
 	// create elastic
-	// dataAssets := models.AssetsResponse{
-	// 	ID:             dataAsset.ID,
-	// 	Type:           dataAsset.Type,
-	// 	KpknlID:        dataAsset.KpknlID,
-	// 	AuctionDate:    dataAsset.AuctionDate,
-	// 	AuctionTime:    dataAsset.AuctionTime,
-	// 	AuctionLink:    dataAsset.AuctionLink,
-	// 	CategoryID:     dataAsset.CategoryID,
-	// 	SubCategoryID:  dataAsset.SubCategoryID,
-	// 	Name:           dataAsset.Name,
-	// 	Price:          dataAsset.Price,
-	// 	Description:    dataAsset.Description,
-	// 	Addresses:      *address,
-	// 	BuildingAssets: *building,
-	// 	VehicleAssets:  *vehicle,
-	// 	Facilities:     request.Facilities,
-	// 	AccessPlaces:   request.AccessPlaces,
-	// 	Contacts:       request.Contacts,
-	// 	Images:         images,
-	// 	Approvals:      *approvals,
-	// 	UpdatedAt:      dataAsset.UpdatedAt,
-	// 	CreatedAt:      dataAsset.CreatedAt,
-	// }
+	getOneAsset, err := asset.GetOne(dataAsset.ID)
 
-	// fmt.Println("TES")
-	// fmt.Println(dataAssets)
-	// _, err = asset.assetRepo.StoreElastic(dataAssets)
-	// if err != nil {
-	// 	asset.logger.Zap.Error(err)
-	// 	return responses, err
-	// }
-	return err
+	fmt.Println("getOneAsset", getOneAsset)
+	_, err = asset.assetRepo.StoreElastic(getOneAsset)
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	return true, err
 }
 
 // UpdateApproval implements AssetDefinition

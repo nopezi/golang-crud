@@ -18,7 +18,7 @@ type AssetDefinition interface {
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
-	StoreElastic(request *models.AssetsResponse) (response bool, err error)
+	StoreElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error)
@@ -143,10 +143,6 @@ func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete) (respons
 	return true, asset.db.DB.Save(&request).Error
 }
 
-func (asset AssetRepository) StoreElastic(request *models.AssetsResponse) (response bool, err error) {
-	return true, err
-}
-
 func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error) {
 	where := " WHERE 1+1 "
 	whereCount := " WHERE 1+1 "
@@ -216,13 +212,10 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 					left join ref_status rs on ast.status  = rs.kodeStatus
 					left join contacts c2 on ast.id = c2.asset_id
 					left join approvals a on ast.id = a.asset_id ` + whereCount
-	// fmt.Println("paginateQuery", paginateQuery)
 	err = asset.db2.DB.QueryRow(paginateQuery).Scan(&totalRows)
 
 	result := float64(totalRows) / float64(request.Limit)
 	resultFinal := int(math.Ceil(result))
-
-	// fmt.Println("OK=>", responses, resultFinal)
 
 	return responses, resultFinal, err
 }
@@ -286,4 +279,24 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 
 	return responses, resultFinal, err
 
+}
+
+func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (response bool, err error) {
+	store, err := asset.elastic.Store(elastic.RequestElastic{
+		DocumentID: lib.UUID(false),
+		Index:      "assets",
+		Body:       request,
+	})
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	if !store {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	return true, err
 }
