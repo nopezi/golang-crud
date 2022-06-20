@@ -3,7 +3,7 @@ package models
 type VehicleAssets struct {
 	ID                int64
 	AssetID           int64
-	VehicleType       string
+	VehicleTypeID     int64
 	CertificateTypeID int64
 	CertificateNumber string
 	Series            string

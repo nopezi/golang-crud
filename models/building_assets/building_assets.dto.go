@@ -8,7 +8,7 @@ type BuildingAssetsRequest struct {
 	SurfaceArea       int64   `json:"burface_area"`
 	BuildingArea      int64   `json:"building_area"`
 	Direction         string  `json:"direction"`
-	NumberOfFloors    int64   `json:"number_of_floors`
+	NumberOfFloors    int64   `json:"number_of_floors"`
 	NumberOfBedrooms  int64   `json:"number_of_bedrooms"`
 	NumberOfBathrooms int64   `json:"number_of_bathrooms"`
 	ElectricalPower   int64   `json:"electrical_power"`
@@ -26,7 +26,7 @@ type BuildingAssetsResponse struct {
 	SurfaceArea       int64   `json:"burface_area"`
 	BuildingArea      int64   `json:"building_area"`
 	Direction         string  `json:"direction"`
-	NumberOfFloors    int64   `json:"number_of_floors`
+	NumberOfFloors    int64   `json:"number_of_floors"`
 	NumberOfBedrooms  int64   `json:"number_of_bedrooms"`
 	NumberOfBathrooms int64   `json:"number_of_bathrooms"`
 	ElectricalPower   int64   `json:"electrical_power"`

@@ -270,7 +270,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (err error) {
 		// vehicle asset
 		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
 			AssetID:           dataAsset.ID,
-			VehicleType:       request.VehicleAssets.VehicleType,
+			VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
 			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
 			CertificateNumber: request.VehicleAssets.CertificateNumber,
 			Series:            request.VehicleAssets.Series,

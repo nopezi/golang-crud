@@ -2,7 +2,7 @@ package models
 
 type VehicleAssetsRequest struct {
 	AssetID           int64   `json:"asset_id"`
-	VehicleType       string  `json:"vehicle_type"`
+	VehicleTypeID     int64   `json:"vehicle_type_id"`
 	CertificateTypeID int64   `json:"certificate_type_id"`
 	CertificateNumber string  `json:"certificate_number"`
 	Series            string  `json:"series"`
@@ -24,7 +24,7 @@ type VehicleAssetsRequest struct {
 type VehicleAssetsResponse struct {
 	ID                int64   `json:"id"`
 	AssetID           int64   `json:"asset_id"`
-	VehicleType       string  `json:"vehicle_type"`
+	VehicleTypeID     int64   `json:"vehicle_type_id"`
 	CertificateTypeID int64   `json:"certificate_type_id"`
 	CertificateNumber string  `json:"certificate_number"`
 	Series            string  `json:"series"`
@@ -46,7 +46,7 @@ type VehicleAssetsResponse struct {
 func (p VehicleAssetsRequest) ParseRequest() VehicleAssets {
 	return VehicleAssets{
 		AssetID:           p.AssetID,
-		VehicleType:       p.VehicleType,
+		VehicleTypeID:     p.VehicleTypeID,
 		CertificateTypeID: p.CertificateTypeID,
 		CertificateNumber: p.CertificateNumber,
 		Series:            p.Series,
@@ -68,7 +68,7 @@ func (p VehicleAssetsResponse) ParseResponse() VehicleAssets {
 	return VehicleAssets{
 		ID:                p.ID,
 		AssetID:           p.AssetID,
-		VehicleType:       p.VehicleType,
+		VehicleTypeID:     p.VehicleTypeID,
 		CertificateTypeID: p.CertificateTypeID,
 		CertificateNumber: p.CertificateNumber,
 		Series:            p.Series,
