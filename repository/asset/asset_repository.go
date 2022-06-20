@@ -68,6 +68,7 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 	// db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
 	//    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 	// return responses, asset.db.DB.Where("id = ?", id).Find(&responses).Error
+	fmt.Println("===>ID ", id)
 	err = asset.db.DB.Raw(`
 	SELECT 
 		ast.id,
@@ -103,7 +104,7 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 		LEFT JOIN categories c on ast.category_id = c.id 
 		LEFT JOIN sub_categories sc on ast.sub_category_id = sc.id
 		LEFT JOIN ref_status rs on ast.status  = rs.kodeStatus
-		LEFT JOIN ref_kpknl rk  on ast.kpknl_id  = rk.id`).Where("ast.id = ?", id).Find(&responses).Error
+		LEFT JOIN ref_kpknl rk  on ast.kpknl_id  = rk.id where ast.id = ?`, id).Find(&responses).Error
 
 	if err != nil {
 		asset.logger.Zap.Error(err)
