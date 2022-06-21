@@ -172,6 +172,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 		Contacts:        contact,
 		Images:          images,
 		Approvals:       approval,
+		DocumentID:      assets.DocumentID,
 		UpdatedAt:       assets.UpdatedAt,
 		CreatedAt:       assets.CreatedAt,
 	}
@@ -433,17 +434,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 	}
 	fmt.Println("approval=>", approval)
 
-	// create elastic
-	getOneAsset, err := asset.GetOne(dataAsset.ID)
-
-	fmt.Println("getOneAsset", getOneAsset)
-	_, err = asset.assetRepo.StoreElastic(getOneAsset)
-
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		return false, err
-	}
-
 	return true, err
 }
 
@@ -520,6 +510,19 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+
+		// create elastic
+		//  update document id to asset, untuk menghapus asset ketika di unpublish
+		getOneAsset, err := asset.GetOne(request.ID)
+
+		fmt.Println("getOneAsset", getOneAsset)
+		_, err = asset.assetRepo.StoreElastic(getOneAsset)
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
 		return true, err
 	case "tolak checker":
 		// update checker
@@ -599,7 +602,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 
 // UpdatePublish implements AssetDefinition
 func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error) {
-	switch request.Type {
+	switch request.TypeChecker {
 	case "approve checker":
 		// update checker
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
@@ -673,6 +676,15 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
+
+			// update, err := asset.assetRepo.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
+			// 	ID:         getOneAsset.ID,
+			// 	DocumentID: getOneAsset.DocumentID,
+			// })
+			// if !update || err != nil {
+			// 	return false, err
+			// }
+
 		} else if request.Type == "unpublish" {
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
 				ID:            request.ID,
@@ -707,6 +719,15 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
+
+			// remove, err := asset.assetRepo.UpdateRemoveDocumentID(&models.AssetsRequestUpdateElastic{
+			// 	ID:         getOneAsset.ID,
+			// 	DocumentID: getOneAsset.DocumentID,
+			// })
+
+			// if !remove || err != nil {
+			// 	return false, err
+			// }
 		}
 
 		return true, err

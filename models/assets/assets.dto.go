@@ -77,6 +77,7 @@ type AssetsResponse struct {
 	CategoryName    string  `json:"category_name"`
 	SubCategoryName string  `json:"sub_category_name"`
 	StatusName      string  `json:"status_name"`
+	DocumentID      string  `json:"document_id"`
 
 	// Addresses      address.Addresses              `json:"addresses"`
 	// BuildingAssets building.BuildingAssets        `json:"building_assets"`
@@ -122,6 +123,7 @@ type AssetsResponseGetOne struct {
 	AccessPlaces    []access.AccessPlacesResponse   `json:"access_places"`
 	Contacts        contact.ContactsResponse        `json:"contacts"`
 	Images          []images.ImagesResponses        `json:"images"`
+	DocumentID      string                          `json:"document_id"`
 	Approvals       approvals.ApprovalsResponse     `json:"approvals"`
 	UpdatedAt       *string                         `json:"updated_at"`
 	CreatedAt       *string                         `json:"created_at"`
@@ -178,10 +180,16 @@ type AssetsResponses struct {
 type AssetsRequestUpdate struct {
 	ID            int64                      `json:"id"`
 	Type          string                     `json:"type"`
+	TypeChecker   string                     `json:"type_checker"`
 	LastMakerID   string                     `json:"last_maker_id"`
 	LastMakerDesc string                     `json:"last_maker_desc"`
 	LastMakerDate *string                    `json:"last_maker_date"`
 	Approvals     approvals.ApprovalsRequest `json:"approvals"`
+}
+
+type AssetsRequestUpdateElastic struct {
+	ID         int64  `json:"id"`
+	DocumentID string `json:"document_id"`
 }
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
@@ -229,5 +237,9 @@ func (a AssetsResponse) TableName() string {
 }
 
 func (a AssetsRequestMaintain) TableName() string {
+	return "assets"
+}
+
+func (a AssetsRequestUpdateElastic) TableName() string {
 	return "assets"
 }

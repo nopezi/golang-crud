@@ -25,6 +25,8 @@ type AssetDefinition interface {
 	UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error)
 	UpdateMaintain(request *models.AssetsRequest) (responses bool, err error)
 	Delete(request *models.AssetsUpdateDelete) (responses bool, err error)
+	UpdateDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error)
+	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error)
 }
 type AssetRepository struct {
 	db      lib.Database
@@ -99,7 +101,8 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 		rk.desc  kpknl_name,
 		c.name category_name,
 		sc.name sub_category_name,
-		rs.namaStatus status_name
+		rs.namaStatus status_name,
+		ast.document_id
 		FROM assets ast 
 		LEFT JOIN categories c on ast.category_id = c.id 
 		LEFT JOIN sub_categories sc on ast.sub_category_id = sc.id
@@ -299,4 +302,14 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (
 	}
 
 	return true, err
+}
+
+// UpdateDocumentID implements AssetDefinition
+func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error) {
+	return true, asset.db.DB.Save(&request).Error
+}
+
+// UpdateRemoveDocumentID implements AssetDefinition
+func (asset AssetRepository) UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error) {
+	return true, asset.db.DB.Save(&request).Error
 }

@@ -224,5 +224,5 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - mobile infolelang
    - notification created asset to approvals
    - integration geotaging google maps
-   - 
+   - get all status, name and desc
  ==========================================================
