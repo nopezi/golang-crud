@@ -6,6 +6,7 @@ type SubCategoriesRequest struct {
 	Name       string  `json:"name"`
 	Form       string  `json:"form"`
 	Status     bool    `json:"status" `
+	Icon       string  `json:"icon" `
 	CreatedAt  *string `json:"created_at"`
 	UpdatedAt  *string `json:"updated_at"`
 }
@@ -16,6 +17,7 @@ type SubCategoriesResponse struct {
 	Name       string  `json:"name"`
 	Form       string  `json:"form"`
 	Status     bool    `json:"status"`
+	Icon       string  `json:"icon" `
 	CreatedAt  *string `json:"created_at"`
 	UpdatedAt  *string `json:"updated_at"`
 }
