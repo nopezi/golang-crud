@@ -79,7 +79,7 @@ func (address AddressRepository) GetOneAsset(id int64) (responses models.Address
 		a.created_at,
 		a.updated_at
 		from addresses a 
-		left join ref_postal_code rpc on a.postalcode_id = rpc.postal_code
+		left join ref_postal_code rpc on a.postalcode_id = rpc.id
 		where asset_id = ?`, id).Find(&responses).Error
 }
 

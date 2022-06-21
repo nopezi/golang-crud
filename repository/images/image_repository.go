@@ -81,7 +81,7 @@ func (image ImageRepository) GetOneAsset(id int64) (responses []models.ImagesRes
 	var images models.ImagesResponses
 	for rows.Next() {
 		// ScanRows scan a row into user
-		image.db.DB.ScanRows(rows, &image)
+		image.db.DB.ScanRows(rows, &images)
 		responses = append(responses, images)
 		// do something
 	}
