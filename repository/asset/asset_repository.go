@@ -19,6 +19,7 @@ type AssetDefinition interface {
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
 	StoreElastic(request models.AssetsResponseGetOne) (response bool, err error)
+	DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error)
@@ -285,8 +286,9 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 }
 
 func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (response bool, err error) {
+	documentID := lib.UUID(false)
 	store, err := asset.elastic.Store(elastic.RequestElastic{
-		DocumentID: lib.UUID(false),
+		DocumentID: documentID,
 		Index:      "assets",
 		Body:       request,
 	})
@@ -299,6 +301,45 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (
 	if !store {
 		asset.logger.Zap.Error(err)
 		return false, err
+	}
+
+	if store {
+		update, err := asset.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
+			ID:         request.ID,
+			DocumentID: documentID,
+		})
+		if !update || err != nil {
+			return false, err
+		}
+	}
+
+	return true, err
+}
+
+func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error) {
+	store, err := asset.elastic.Delete(elastic.RequestElastic{
+		DocumentID: request.DocumentID,
+		Index:      "assets",
+	})
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	if !store {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	if store {
+		update, err := asset.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
+			ID:         request.ID,
+			DocumentID: "",
+		})
+		if !update || err != nil {
+			return false, err
+		}
 	}
 
 	return true, err

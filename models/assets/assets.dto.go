@@ -180,11 +180,12 @@ type AssetsResponses struct {
 type AssetsRequestUpdate struct {
 	ID            int64                      `json:"id"`
 	Type          string                     `json:"type"`
-	TypeChecker   string                     `json:"type_checker"`
+	TypePublish   string                     `json:"type_publish"`
 	LastMakerID   string                     `json:"last_maker_id"`
 	LastMakerDesc string                     `json:"last_maker_desc"`
 	LastMakerDate *string                    `json:"last_maker_date"`
 	Approvals     approvals.ApprovalsRequest `json:"approvals"`
+	DocumentID    string                     `json:"document_id"`
 }
 
 type AssetsRequestUpdateElastic struct {

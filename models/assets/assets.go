@@ -29,13 +29,16 @@ type Assets struct {
 }
 
 type AssetsUpdateApproval struct {
-	ID          int64
-	Published   bool
-	PublishDate *string
-	ExpiredDate *string
-	Status      string
-	Action      string
-	UpdatedAt   *string
+	ID            int64
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Published     bool
+	PublishDate   *string
+	ExpiredDate   *string
+	Status        string
+	Action        string
+	UpdatedAt     *string
 }
 
 type AssetsUpdatePublish struct {
@@ -47,6 +50,7 @@ type AssetsUpdatePublish struct {
 	PublishDate   *string
 	ExpiredDate   *string
 	Action        string
+	Status        string
 	UpdatedAt     *string
 }
 type AssetsUpdateDelete struct {
@@ -55,10 +59,17 @@ type AssetsUpdateDelete struct {
 	LastMakerDesc string
 	LastMakerDate *string
 	Deleted       bool
+	Published     bool
+	PublishDate   *string
 	Action        string
+	Status        string
 	UpdatedAt     *string
 }
 
 func (a AssetsUpdateApproval) TableName() string {
+	return "assets"
+}
+
+func (a AssetsUpdatePublish) TableName() string {
 	return "assets"
 }

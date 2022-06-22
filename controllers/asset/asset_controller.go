@@ -104,17 +104,17 @@ func (asset AssetController) UpdatePublish(c *gin.Context) {
 	status, err := asset.service.UpdatePublish(&data)
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
 
 	if !status {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Update data Gagal", data)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", false)
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", status)
 }
 
 func (asset AssetController) UpdateApproval(c *gin.Context) {
