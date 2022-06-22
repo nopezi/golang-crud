@@ -8,9 +8,8 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/jinzhu/copier v0.3.5
 	github.com/joho/godotenv v1.4.0
-	github.com/rs/cors/wrapper/gin v0.0.0-20220223021805-a4a5ce87d5a2
-	gitlab.com/golang-package-library/elasticsearch v0.0.0-20220522190157-dec731449078
-	gitlab.com/golang-package-library/goresums v0.0.0-20220613053124-b5fbfc4e4827
+	github.com/rs/cors/wrapper/gin v0.0.0-20220619195839-da52b0701de5
+	gitlab.com/golang-package-library/elasticsearch v0.0.0-20220622041001-0c3b0e8a4af8
 	gitlab.com/golang-package-library/logger v0.0.0-20220522181613-012fdadbbc7d
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
@@ -41,8 +40,8 @@ require (
 	github.com/pressly/goose v2.7.0+incompatible
 	github.com/rs/cors v1.8.2 // indirect
 	github.com/sirupsen/logrus v1.8.1
-	github.com/spf13/cobra v1.4.0
-	github.com/stretchr/testify v1.7.2
+	github.com/spf13/cobra v1.5.0
+	github.com/stretchr/testify v1.7.4
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/ziutek/mymysql v1.5.4
 	gitlab.com/golang-package-library/env v0.0.0-20220522085307-1f1e68f337d0
@@ -51,7 +50,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/dig v1.14.1 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	golang.org/x/sys v0.0.0-20220610221304-9f5ed59c137d // indirect
+	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
@@ -68,10 +67,10 @@ require (
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.6 // indirect
-	github.com/klauspost/cpuid/v2 v2.0.13 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.14 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/minio/md5-simd v1.1.2 // indirect
-	github.com/minio/minio-go/v7 v7.0.28 // indirect
+	github.com/minio/minio-go/v7 v7.0.29 // indirect
 	github.com/minio/sha256-simd v1.0.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
@@ -82,8 +81,9 @@ require (
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
+	gitlab.com/golang-package-library/goresums v0.0.0-20220613053124-b5fbfc4e4827 // indirect
 	go.uber.org/goleak v1.1.12 // indirect
-	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
+	golang.org/x/net v0.0.0-20220621193019-9d032be2e588 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	gopkg.in/ini.v1 v1.66.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
