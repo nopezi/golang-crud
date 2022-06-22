@@ -183,13 +183,6 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err error) {
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
-	// -- / asset
-	// --  add maker_id. maker_desc, maker_comment, maker_date, last_maker_id. last_maker_desc, last_maker_date, -- jadi pas create maker = last_maker, update dll input ke last_maker
-	// -- done add action varchar(100) misal approve hapus, approve create. approve, dia update terus
-	// -- done add field deleted tinyint(1) -- ini buat soft delete
-	// -- done add expired_date datetime  = published_date datetime= now() pas approve + 6 bulan ketika update approve
-	// -- apabila lebih dari 6 bulan dan status publish maka scheduler jalan untuk me unpublis status
-	// -- / asset
 
 	dataAsset, err := asset.assetRepo.Store(&models.Assets{
 		Type:          request.Type,
@@ -853,7 +846,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			LastMakerDesc: request.LastMakerDesc,
 			LastMakerDate: request.LastMakerDate,
 			Status:        "01c", // pending signer
-			Action:        "UpdatePublish",
+			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
 		})
 
@@ -891,7 +884,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			LastMakerDesc: request.LastMakerDesc,
 			LastMakerDate: request.LastMakerDate,
 			Deleted:       true,
-			Action:        "Delete",
+			Action:        "updateDelete",
 			Status:        "02b", // selesai
 			Published:     false,
 			PublishDate:   nil,
@@ -942,7 +935,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			LastMakerDesc: request.LastMakerDesc,
 			LastMakerDate: request.LastMakerDate,
 			Status:        "01b", // tolak checker
-			Action:        "UpdatePublish",
+			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
 		})
 
@@ -979,7 +972,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			LastMakerDesc: request.LastMakerDesc,
 			LastMakerDate: request.LastMakerDate,
 			Status:        "01d", // tolak signer
-			Action:        "UpdatePublish",
+			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
 		})
 
@@ -1018,7 +1011,7 @@ func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (res
 	request.Order = order
 	request.Sort = sort
 
-	dataAssets, totalRows, err := asset.assetRepo.GetApproval(request)
+	dataAssets, totalRows, totalData, err := asset.assetRepo.GetApproval(request)
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return responses, pagination, err
@@ -1040,7 +1033,7 @@ func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (res
 		})
 	}
 
-	pagination = lib.SetPaginationResponse(page, limit, totalRows)
+	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
 	return responses, pagination, err
 }
 
@@ -1049,7 +1042,7 @@ func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (res
 	request.Offset = offset
 	request.Order = order
 	request.Sort = sort
-	dataAssets, totalRows, err := asset.assetRepo.GetMaintain(request)
+	dataAssets, totalRows, totalData, err := asset.assetRepo.GetMaintain(request)
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return responses, pagination, err
@@ -1069,7 +1062,7 @@ func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (res
 		})
 	}
 
-	pagination = lib.SetPaginationResponse(page, limit, totalRows)
+	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
 	return responses, pagination, err
 
 }

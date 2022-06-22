@@ -187,7 +187,7 @@ func (asset AssetController) Delete(c *gin.Context) {
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "200", "Data berhasil dihapus", true)
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", true)
 }
 
 func (asset AssetController) GetApproval(c *gin.Context) {

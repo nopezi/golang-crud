@@ -20,8 +20,8 @@ type AssetDefinition interface {
 	Store(request *models.Assets) (responses *models.Assets, err error)
 	StoreElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error)
-	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
-	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error)
+	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
+	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error)
 	UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error)
 	UpdateMaintain(request *models.AssetsRequest) (responses bool, err error)
@@ -128,9 +128,26 @@ func (asset AssetRepository) Store(request *models.Assets) (responses *models.As
 }
 
 // UpdateApproval implements AssetDefinition
+// db.Omit("Name", "Age", "CreatedAt").Create(&user)
+// ID: request.ID,
+// Status:    "01c", // pending signer
+// Action:    "UpdateApproval",
+// UpdatedAt: &timeNow,
+// db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
-	return true, asset.db.DB.Save(&request).Error
+	return true, asset.db.DB.Omit(
+		"last_maker_id",
+		"last_maker_desc",
+		"last_maker_date",
+		"published",
+		"publish_date",
+		"expired_date",
+	).Updates(&request).Error
 }
+
+// func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
+// 	return true, asset.db.DB.Save(&request).Error
+// }
 
 // UpdatePublish implements AssetDefinition
 func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error) {
@@ -147,7 +164,7 @@ func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete) (respons
 	return true, asset.db.DB.Save(&request).Error
 }
 
-func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error) {
+func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error) {
 	where := " WHERE 1+1 "
 	whereCount := " WHERE 1+1 "
 	if request.CheckerID != "" {
@@ -185,7 +202,7 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 
 	asset.logger.Zap.Info("rows ", rows)
 	if err != nil {
-		return responses, totalRows, err
+		return responses, totalRows, totalData, err
 	}
 
 	response := models.AssetsResponseMaintain{}
@@ -207,7 +224,7 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 	}
 
 	if err = rows.Err(); err != nil {
-		return responses, totalRows, err
+		return responses, totalRows, totalData, err
 	}
 
 	paginateQuery := `SELECT count(*) as total from assets  ast 
@@ -221,10 +238,10 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 	result := float64(totalRows) / float64(request.Limit)
 	resultFinal := int(math.Ceil(result))
 
-	return responses, resultFinal, err
+	return responses, resultFinal, totalRows, err
 }
 
-func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, err error) {
+func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error) {
 	where := ""
 	whereCount := ""
 
@@ -245,7 +262,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 	rows, err := asset.db2.DB.Query(query, request.Limit, request.Offset)
 
 	if err != nil {
-		return responses, totalRows, err
+		return responses, totalRows, totalData, err
 	}
 
 	response := models.AssetsResponseMaintain{}
@@ -265,7 +282,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 	}
 
 	if err = rows.Err(); err != nil {
-		return responses, totalRows, err
+		return responses, totalRows, totalData, err
 	}
 
 	paginateQuery := `SELECT count(*) as total from assets  ast 
@@ -281,7 +298,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 
 	fmt.Println("OK=>", responses, resultFinal)
 
-	return responses, resultFinal, err
+	return responses, resultFinal, totalRows, err
 
 }
 

@@ -69,6 +69,7 @@ func (approval ApprovalRepository) GetOneAsset(id int64) (responses models.Appro
 
 // Store implements ApprovalDefinition
 func (approval ApprovalRepository) Store(request *models.Approvals) (responses *models.Approvals, err error) {
+	// db.Omit("Name", "Age", "CreatedAt").Create(&user)
 	return request, approval.db.DB.Save(&request).Error
 }
 
