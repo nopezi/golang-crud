@@ -218,6 +218,7 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - api crud maintain banners
    - activity logger
    - runtime logger
+   - create endpoint api delete image
 # next development
    - module user integration register with google or email,
    - create whitelist asset
