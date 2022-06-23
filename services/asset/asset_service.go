@@ -37,6 +37,7 @@ var (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
+	GetAuctionSchedule(request models.AuctionSchedule) (responses models.AssetsResponseGetOne, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
@@ -107,6 +108,45 @@ func (asset AssetService) WithTrx(trxHandle *gorm.DB) AssetService {
 // GetAll implements AssetDefinition
 func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error) {
 	return asset.assetRepo.GetAll()
+}
+
+// GetOne implements AssetDefinition
+func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (responses models.AssetsResponseGetOne, err error) {
+	// join table
+	assets, err := asset.assetRepo.GetAuctionSchedule(request)
+
+	responses = models.AssetsResponseGetOne{
+		ID:              assets.ID,
+		Type:            assets.Type,
+		KpknlID:         assets.KpknlID,
+		AuctionDate:     assets.AuctionDate,
+		AuctionTime:     assets.AuctionTime,
+		AuctionLink:     assets.AuctionLink,
+		CategoryID:      assets.CategoryID,
+		SubCategoryID:   assets.SubCategoryID,
+		Name:            assets.Name,
+		Price:           assets.Price,
+		Description:     assets.Description,
+		Status:          assets.Status,
+		MakerID:         assets.MakerID,
+		MakerDesc:       assets.MakerDesc,
+		MakerDate:       assets.MakerDate,
+		LastMakerID:     assets.LastMakerID,
+		LastMakerDesc:   assets.LastMakerDesc,
+		LastMakerDate:   assets.LastMakerDate,
+		Published:       assets.Published,
+		Deleted:         assets.Deleted,
+		ExpiredDate:     assets.ExpiredDate,
+		Action:          assets.Action,
+		KpknlName:       assets.KpknlName,
+		CategoryName:    assets.CategoryName,
+		SubCategoryName: assets.SubCategoryName,
+		StatusName:      assets.StatusName,
+		DocumentID:      assets.DocumentID,
+		UpdatedAt:       assets.UpdatedAt,
+		CreatedAt:       assets.CreatedAt,
+	}
+	return responses, err
 }
 
 // GetOne implements AssetDefinition

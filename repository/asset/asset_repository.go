@@ -15,6 +15,7 @@ import (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetRepository
 	GetAll() (responses []models.AssetsResponse, err error)
+	GetAuctionSchedule(request models.AuctionSchedule) (responses models.AssetsResponse, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
@@ -110,6 +111,70 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 		LEFT JOIN sub_categories sc on ast.sub_category_id = sc.id
 		LEFT JOIN ref_status rs on ast.status  = rs.kodeStatus
 		LEFT JOIN ref_kpknl rk  on ast.kpknl_id  = rk.id where ast.id = ?`, id).Find(&responses).Error
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return responses, err
+	}
+	return responses, err
+}
+
+// select a.id, a.name, a.auction_date, a.auction_time, a.kpknl_id,
+// rk.`desc` kpknl_name,
+// c.pic_name pic_lelang,
+// a2.address
+// from assets a
+// left join ref_kpknl rk on a.kpknl_id = rk.id
+// left join contacts c on a.id = c.asset_id
+// left join addresses a2 on a.id = a2.asset_id
+// where
+// a.kpknl_id = 41
+// and MONTH(auction_date) = '07'
+// and name LIKE '%ba%';
+
+// GetOne implements AssetDefinition
+func (asset AssetRepository) GetAuctionSchedule(request models.AuctionSchedule) (responses models.AssetsResponse, err error) {
+	// db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
+	//    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
+	// return responses, asset.db.DB.Where("id = ?", id).Find(&responses).Error
+	// fmt.Println("===>ID ", id)
+	err = asset.db.DB.Raw(`
+	SELECT 
+		ast.id,
+		ast.type,
+		ast.kpknl_id,
+		ast.auction_date,
+		ast.auction_time,
+		ast.auction_link,
+		ast.category_id,
+		ast.sub_category_id,
+		ast.name,
+		ast.price,
+		ast.description,
+		ast.maker_id,
+		ast.maker_desc,
+		ast.maker_date,
+		ast.last_maker_id,
+		ast.last_maker_desc,
+		ast.last_maker_date,
+		ast.published,
+		ast.deleted,
+		ast.publish_date,
+		ast.expired_date,
+		ast.status,
+		ast.action,
+		ast.updated_at,
+		ast.created_at,
+		rk.desc  kpknl_name,
+		c.name category_name,
+		sc.name sub_category_name,
+		rs.namaStatus status_name,
+		ast.document_id
+		FROM assets ast 
+		LEFT JOIN categories c on ast.category_id = c.id 
+		LEFT JOIN sub_categories sc on ast.sub_category_id = sc.id
+		LEFT JOIN ref_status rs on ast.status  = rs.kodeStatus
+		LEFT JOIN ref_kpknl rk  on ast.kpknl_id  = rk.id where ast.id = ?`).Find(&responses).Error
 
 	if err != nil {
 		asset.logger.Zap.Error(err)

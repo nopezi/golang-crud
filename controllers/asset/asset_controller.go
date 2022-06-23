@@ -48,6 +48,25 @@ func (asset AssetController) GetAll(c *gin.Context) {
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
 }
 
+func (asset AssetController) GetAuctionSchedule(c *gin.Context) {
+	request := models.AuctionSchedule{}
+	// trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
+
+	if err := c.Bind(&request); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	data, err := asset.service.GetAuctionSchedule(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+}
+
 func (asset AssetController) GetOne(c *gin.Context) {
 	paramId := c.Param("id")
 	id, err := strconv.Atoi(paramId)
