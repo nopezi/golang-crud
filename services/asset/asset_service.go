@@ -859,6 +859,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 // Update implements AssetDefinition
 func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error) {
 
+	// update here
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
 
@@ -1140,6 +1141,69 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 	return true, err
 }
 
+// GetApproval implements AssetDefinition
+func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
+	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
+	request.Offset = offset
+	request.Order = order
+	request.Sort = sort
+
+	dataAssets, totalRows, totalData, err := asset.assetRepo.GetApproval(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return responses, pagination, err
+	}
+
+	for _, response := range dataAssets {
+		responses = append(responses, models.AssetsResponses{
+			ID:          response.ID.Int64,
+			Type:        response.Type.String,
+			Category:    response.Category.String,
+			SubCategory: response.SubCategory.String,
+			Name:        response.Name.String,
+			Price:       response.Price.Int64,
+			Status:      response.Status.String,
+			PicName:     response.PicName.String,
+			Published:   response.Published.String,
+			CheckerID:   response.CheckerID.String,
+			SignerID:    response.SignerID.String,
+		})
+	}
+
+	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
+	return responses, pagination, err
+}
+
+// GetMaintain implements AssetDefinition
+func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
+	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
+	request.Offset = offset
+	request.Order = order
+	request.Sort = sort
+	dataAssets, totalRows, totalData, err := asset.assetRepo.GetMaintain(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return responses, pagination, err
+	}
+
+	for _, response := range dataAssets {
+		responses = append(responses, models.AssetsResponses{
+			ID:          response.ID.Int64,
+			Type:        response.Type.String,
+			Category:    response.Category.String,
+			SubCategory: response.SubCategory.String,
+			Name:        response.Name.String,
+			Price:       response.Price.Int64,
+			Status:      response.Status.String,
+			PicName:     response.PicName.String,
+			Published:   response.Published.String,
+		})
+	}
+
+	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
+	return responses, pagination, err
+}
+
 // Delete implements AssetDefinition
 func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bool, err error) {
 	switch request.Type {
@@ -1345,69 +1409,6 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 	default:
 		return false, err
 	}
-}
-
-// GetApproval implements AssetDefinition
-func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
-	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
-	request.Offset = offset
-	request.Order = order
-	request.Sort = sort
-
-	dataAssets, totalRows, totalData, err := asset.assetRepo.GetApproval(request)
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		return responses, pagination, err
-	}
-
-	for _, response := range dataAssets {
-		responses = append(responses, models.AssetsResponses{
-			ID:          response.ID.Int64,
-			Type:        response.Type.String,
-			Category:    response.Category.String,
-			SubCategory: response.SubCategory.String,
-			Name:        response.Name.String,
-			Price:       response.Price.Int64,
-			Status:      response.Status.String,
-			PicName:     response.PicName.String,
-			Published:   response.Published.String,
-			CheckerID:   response.CheckerID.String,
-			SignerID:    response.SignerID.String,
-		})
-	}
-
-	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
-	return responses, pagination, err
-}
-
-// GetMaintain implements AssetDefinition
-func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
-	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
-	request.Offset = offset
-	request.Order = order
-	request.Sort = sort
-	dataAssets, totalRows, totalData, err := asset.assetRepo.GetMaintain(request)
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		return responses, pagination, err
-	}
-
-	for _, response := range dataAssets {
-		responses = append(responses, models.AssetsResponses{
-			ID:          response.ID.Int64,
-			Type:        response.Type.String,
-			Category:    response.Category.String,
-			SubCategory: response.SubCategory.String,
-			Name:        response.Name.String,
-			Price:       response.Price.Int64,
-			Status:      response.Status.String,
-			PicName:     response.PicName.String,
-			Published:   response.Published.String,
-		})
-	}
-
-	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
-	return responses, pagination, err
 }
 
 // DeleteAssetImage implements AssetDefinition
