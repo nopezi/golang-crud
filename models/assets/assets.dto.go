@@ -23,7 +23,7 @@ type AssetsRequest struct {
 	CategoryID     int64                          `json:"category_id"`
 	SubCategoryID  int64                          `json:"sub_category_id"`
 	Name           string                         `json:"name"`
-	Price          int64                          `json:"price"`
+	Price          float32                        `json:"price"`
 	Description    string                         `json:"description"`
 	Status         string                         `json:"status"`
 	MakerID        string                         `json:"maker_id"`
@@ -57,7 +57,7 @@ type AssetsResponse struct {
 	CategoryID      int64   `json:"category_id"`
 	SubCategoryID   int64   `json:"sub_category_id"`
 	Name            string  `json:"name"`
-	Price           int64   `json:"price"`
+	Price           float32 `json:"price"`
 	Description     string  `json:"description"`
 	MakerID         string  `json:"maker_id"`
 	MakerDesc       string  `json:"maker_desc"`
@@ -100,7 +100,7 @@ type AssetsResponseGetOne struct {
 	CategoryID      int64                           `json:"category_id"`
 	SubCategoryID   int64                           `json:"sub_category_id"`
 	Name            string                          `json:"name"`
-	Price           int64                           `json:"price"`
+	Price           float32                         `json:"price"`
 	Description     string                          `json:"description"`
 	Status          string                          `json:"status"`
 	MakerID         string                          `json:"maker_id"`
@@ -131,51 +131,51 @@ type AssetsResponseGetOne struct {
 }
 
 type AssetsRequestMaintain struct {
-	Order     string `json:"order"`
-	Sort      string `json:"sort"`
-	Offset    int    `json:"offset"`
-	Limit     int    `json:"limit"`
-	Page      int    `json:"page"`
-	Type      string `json:"type"`
-	Category  string `json:"category"`
-	Name      string `json:"name"`
-	Price     int    `json:"price"`
-	PicName   string `json:"pic_name"`
-	Status    string `json:"status"`
-	CheckerID string `json:"checker_id"`
-	SignerID  string `json:"signer_id"`
+	Order     string  `json:"order"`
+	Sort      string  `json:"sort"`
+	Offset    int     `json:"offset"`
+	Limit     int     `json:"limit"`
+	Page      int     `json:"page"`
+	Type      string  `json:"type"`
+	Category  string  `json:"category"`
+	Name      string  `json:"name"`
+	Price     float32 `json:"price"`
+	PicName   string  `json:"pic_name"`
+	Status    string  `json:"status"`
+	CheckerID string  `json:"checker_id"`
+	SignerID  string  `json:"signer_id"`
 }
 
 type AssetsResponseMaintain struct {
-	ID          lib.NullInt64  `json:"id"`
-	Type        lib.NullString `json:"type"`
-	Category    lib.NullString `json:"category"`
-	SubCategory lib.NullString `json:"sub_category"`
-	Name        lib.NullString `json:"name"`
-	Price       lib.NullInt64  `json:"price"`
-	Status      lib.NullString `json:"status"`
-	PicName     lib.NullString `json:"pic_name"`
-	Published   lib.NullString `json:"published"`
-	CheckerID   lib.NullString `json:"checker_id"`
-	SignerID    lib.NullString `json:"signer_id"`
-	UpdatedAt   lib.NullTime   `json:"updated_at"`
-	CreatedAt   lib.NullTime   `json:"created_at"`
+	ID          lib.NullInt64   `json:"id"`
+	Type        lib.NullString  `json:"type"`
+	Category    lib.NullString  `json:"category"`
+	SubCategory lib.NullString  `json:"sub_category"`
+	Name        lib.NullString  `json:"name"`
+	Price       lib.NullFloat64 `json:"price"`
+	Status      lib.NullString  `json:"status"`
+	PicName     lib.NullString  `json:"pic_name"`
+	Published   lib.NullString  `json:"published"`
+	CheckerID   lib.NullString  `json:"checker_id"`
+	SignerID    lib.NullString  `json:"signer_id"`
+	UpdatedAt   lib.NullTime    `json:"updated_at"`
+	CreatedAt   lib.NullTime    `json:"created_at"`
 }
 
 type AssetsResponses struct {
-	ID          int64  `json:"id"`
-	Type        string `json:"type"`
-	Category    string `json:"category"`
-	SubCategory string `json:"sub_category"`
-	Name        string `json:"name"`
-	Price       int64  `json:"price"`
-	PicName     string `json:"pic_name"`
-	Status      string `json:"status"`
-	Published   string `json:"published"`
-	CheckerID   string `json:"checker_id"`
-	SignerID    string `json:"signer_id"`
-	UpdatedAt   string `json:"updated_at"`
-	CreatedAt   string `json:"created_at"`
+	ID          int64   `json:"id"`
+	Type        string  `json:"type"`
+	Category    string  `json:"category"`
+	SubCategory string  `json:"sub_category"`
+	Name        string  `json:"name"`
+	Price       float32 `json:"price"`
+	PicName     string  `json:"pic_name"`
+	Status      string  `json:"status"`
+	Published   string  `json:"published"`
+	CheckerID   string  `json:"checker_id"`
+	SignerID    string  `json:"signer_id"`
+	UpdatedAt   string  `json:"updated_at"`
+	CreatedAt   string  `json:"created_at"`
 }
 
 type AssetsRequestUpdate struct {

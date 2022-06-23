@@ -11,7 +11,7 @@ type Assets struct {
 	CategoryID    int64
 	SubCategoryID int64
 	Name          string
-	Price         int64
+	Price         float32
 	Description   string
 	Status        string
 	MakerID       string

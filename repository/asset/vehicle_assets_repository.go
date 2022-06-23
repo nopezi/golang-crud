@@ -88,7 +88,7 @@ func (vehicleAsset VehicleAssetRepository) GetOneAsset(id int64) (responses mode
 	vb.name brand_name,
 	vt.name transmission_name,
 	vc.name machine_capacity_name,
-	vc2.name color_name,
+	vc2.name color_name
 	from vehicle_assets va 
 	left join certificate_type ct on va.certificate_type_id = ct.id 
 	left join vehicle_brand vb on va.brand_id = vb.id 
