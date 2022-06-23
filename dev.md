@@ -226,3 +226,31 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - integration geotaging google maps
    - get all status, name and desc
  ==========================================================
+
+
+ ### ORM
+ - Tipe Update
+ ```
+ -- only include field to update
+ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval, include []string) (responses bool, err error) {
+	return true, asset.db.DB.Select(include).Updates(&request).Error
+
+}
+
+exclude := []string{
+ 	"last_maker_id",
+ 		"last_maker_desc",
+ 		"last_maker_date",
+ 		"published",
+ 		"publish_date",
+ 		"expired_date",
+ }
+-- Exclude field
+func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval,exclude []string) (responses bool, err error) {
+     	return true, asset.db.DB.Omit(strings.Join(exclude, ","))Updates(&request).Error
+ }
+
+func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
+     	return true, asset.db.DB.Save(&request).Error
+ }
+ ``` 
