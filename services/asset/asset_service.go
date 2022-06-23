@@ -43,7 +43,7 @@ type AssetDefinition interface {
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error)
 	UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error)
-	UpdateMaintain(request *models.AssetsRequest) (status bool, err error)
+	UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error)
 	Delete(request *models.AssetsRequestUpdate) (responses bool, err error)
 }
 type AssetService struct {
@@ -185,6 +185,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 	bucket := os.Getenv("BUCKET_NAME")
 
 	dataAsset, err := asset.assetRepo.Store(&models.Assets{
+		FormType:      request.FormType,
 		Type:          request.Type,
 		KpknlID:       request.KpknlID,
 		AuctionDate:   request.AuctionDate,
@@ -219,12 +220,12 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 
 	address, err := asset.addressRepo.Store(
 		&requestAddress.Addresses{
-			AssetID:      dataAsset.ID,
-			PostalcodeID: request.Addresses.PostalcodeID,
-			Address:      request.Addresses.Address,
-			Longitude:    request.Addresses.Longitude,
-			Langitude:    request.Addresses.Langitude,
-			CreatedAt:    &timeNow,
+			AssetID:    dataAsset.ID,
+			PostalCode: request.Addresses.PostalCode,
+			Address:    request.Addresses.Address,
+			Longitude:  request.Addresses.Longitude,
+			Langitude:  request.Addresses.Langitude,
+			CreatedAt:  &timeNow,
 		})
 
 	fmt.Println("this is address => ", address)
@@ -437,13 +438,13 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 	//===================== Approve Checker =====================
 	case "approve checker":
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
-			ID: request.ID,
-			// Published: ,
-			// PublishDate: ,
+			ID:        request.ID,
 			Status:    "01c", // pending signer
 			Action:    "UpdateApproval",
 			UpdatedAt: &timeNow,
-		})
+		},
+			[]string{"status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -481,7 +482,9 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			Status:      "01e", // published
 			Action:      "UpdateApproval",
 			UpdatedAt:   &timeNow,
-		})
+		},
+			[]string{"published", "publish_date", "expired_date", "status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -531,7 +534,9 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			Status:    "01b", // ditolak checker
 			Action:    "UpdateApproval",
 			UpdatedAt: &timeNow,
-		})
+		},
+			[]string{"status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -569,7 +574,9 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			Status:    "01d", // ditolak signer
 			Action:    "UpdateApproval",
 			UpdatedAt: &timeNow,
-		})
+		},
+			[]string{"status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -615,7 +622,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			Status:        "01c", // pending signer
 			Action:        "UpdatePublish",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{"last_maker_id", "last_maker_desc", "last_maker_date", "status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -657,7 +666,18 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				Action:        "UpdatePublish",
 				Status:        "01e", // published
 				UpdatedAt:     &timeNow,
-			})
+			},
+				[]string{
+					"last_maker_id",
+					"last_maker_desc",
+					"last_aker_date",
+					"published",
+					"publish_date",
+					"expired_date",
+					"action",
+					"status",
+					"updated_at",
+				})
 
 			if err != nil {
 				asset.logger.Zap.Error(err)
@@ -707,7 +727,18 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				Action:        "UpdateUnPublish",
 				Status:        "02a", // unpublished
 				UpdatedAt:     &timeNow,
-			})
+			},
+				[]string{
+					"last_maker_id",
+					"last_maker_desc",
+					"last_aker_date",
+					"published",
+					"publish_date",
+					"expired_date",
+					"action",
+					"status",
+					"updated_at",
+				})
 
 			if err != nil {
 				asset.logger.Zap.Error(err)
@@ -757,7 +788,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			Status:        "01b", // tolak checker
 			Action:        "UpdatePublish",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{"last_maker_id", "last_maker_desc", "last_maker_date", "status", "action", "updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -794,7 +827,16 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			Status:        "01d", // tolak signer
 			Action:        "UpdatePublish",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at",
+			}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -826,13 +868,304 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 }
 
 // Update implements AssetDefinition
-func (asset AssetService) UpdateMaintain(request *models.AssetsRequest) (status bool, err error) {
-	status, err = asset.assetRepo.UpdateMaintain(request)
+func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error) {
+
+	// create assets
+	bucket := os.Getenv("BUCKET_NAME")
+
+	dataAsset, err := asset.assetRepo.UpdateMaintain(&models.Assets{
+		ID:            request.ID,
+		Type:          request.Type,
+		KpknlID:       request.KpknlID,
+		AuctionDate:   request.AuctionDate,
+		AuctionTime:   request.AuctionTime,
+		AuctionLink:   request.AuctionLink,
+		CategoryID:    request.CategoryID,
+		SubCategoryID: request.SubCategoryID,
+		Name:          request.Name,
+		Price:         request.Price,
+		Description:   request.Description,
+		// Status:        "01a", // pending checker
+		// MakerID:       request.MakerID,
+		// MakerDesc:     request.MakerDesc,
+		// MakerDate:     request.MakerDate,
+		LastMakerID:   request.LastMakerID,
+		LastMakerDesc: request.LastMakerDesc,
+		LastMakerDate: request.LastMakerDate,
+		// Published:     request.Published,
+		// Deleted:       request.Deleted,
+		// ExpiredDate:   request.ExpiredDate,
+		Action:    "UpdateMaintain",
+		UpdatedAt: &timeNow,
+	},
+		[]string{
+			"type",
+			"kpknl_id",
+			"auction_date",
+			"auction_time",
+			"auction_link",
+			"category_id",
+			"sub_category_id",
+			"name",
+			"price",
+			"description",
+			// "status",
+			// "maker_id",
+			// "maker_desc",
+			// "maker_date",
+			"last_maker_id",
+			"last_maker_desc",
+			"last_maker_date",
+			// "published",
+			// "deleted",
+			// "expired_date",
+			"action",
+			"updated_at",
+		})
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
-	return status, err
+
+	fmt.Println("dataAsset", dataAsset)
+
+	// address
+
+	address, err := asset.addressRepo.Store(
+		&requestAddress.Addresses{
+			ID:         request.Addresses.ID,
+			AssetID:    dataAsset.ID,
+			PostalCode: request.Addresses.PostalCode,
+			Address:    request.Addresses.Address,
+			Longitude:  request.Addresses.Longitude,
+			Langitude:  request.Addresses.Langitude,
+			UpdatedAt:  &timeNow,
+		})
+
+	fmt.Println("this is address => ", address)
+
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	// var building *requestBuilding.BuildingAssets
+	// var vehicle *requestVehicle.VehicleAssets
+
+	switch request.FormType {
+	case "form-b1":
+		// buildingasset
+		building, err := asset.buildingRepo.Store(&requestBuilding.BuildingAssets{
+			ID:                request.BuildingAssets.ID,
+			AssetID:           dataAsset.ID,
+			CertificateTypeID: request.BuildingAssets.CertificateTypeID,
+			CertificateNumber: request.BuildingAssets.CertificateNumber,
+			BuildYear:         request.BuildingAssets.BuildYear,
+			SurfaceArea:       request.BuildingAssets.SurfaceArea,
+			BuildingArea:      request.BuildingAssets.BuildingArea,
+			Direction:         request.BuildingAssets.Direction,
+			NumberOfFloors:    request.BuildingAssets.NumberOfFloors,
+			NumberOfBedrooms:  request.BuildingAssets.NumberOfBedrooms,
+			NumberOfBathrooms: request.BuildingAssets.NumberOfBathrooms,
+			ElectricalPower:   request.BuildingAssets.ElectricalPower,
+			Carport:           request.BuildingAssets.Carport,
+			UpdatedAt:         &timeNow,
+		})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		fmt.Println("building=>", building)
+	default:
+		// vehicle asset
+		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
+			ID:                request.BuildingAssets.ID,
+			AssetID:           dataAsset.ID,
+			VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
+			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
+			CertificateNumber: request.VehicleAssets.CertificateNumber,
+			Series:            request.VehicleAssets.Series,
+			BrandID:           request.VehicleAssets.BrandID,
+			Type:              request.VehicleAssets.Type,
+			ProductionYear:    request.VehicleAssets.ProductionYear,
+			TransmissionID:    request.VehicleAssets.TransmissionID,
+			MachineCapacityID: request.VehicleAssets.MachineCapacityID,
+			ColorID:           request.VehicleAssets.ColorID,
+			NumberOfSeat:      request.VehicleAssets.NumberOfSeat,
+			NumberOfUsage:     request.VehicleAssets.NumberOfUsage,
+			MachineNumber:     request.VehicleAssets.MachineNumber,
+			BodyNumber:        request.VehicleAssets.BodyNumber,
+			LicenceDate:       request.VehicleAssets.LicenceDate,
+			UpdatedAt:         &timeNow,
+		})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+		fmt.Println("vehicle=>", vehicle)
+
+	}
+
+	fmt.Println("facilities=>", request.Facilities)
+
+	// check apabila array image error return false
+	for _, value := range request.Facilities {
+		_, err := asset.assetFacility.Store(
+			&models.AssetFacilities{
+				ID:         value.ID,
+				AssetID:    dataAsset.ID,
+				FacilityID: value.ID,
+				Status:     value.Status,
+				UpdatedAt:  &timeNow,
+			})
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+
+	// asset_access_places
+	// check apabila array facilitie error return false
+	fmt.Println("Access Places=>", request.AccessPlaces)
+	for _, value := range request.AccessPlaces {
+		_, err = asset.assetAccessPlace.Store(
+			&models.AssetAccessPlaces{
+				ID:            value.ID,
+				AssetID:       dataAsset.ID,
+				AccessPlaceID: value.ID,
+				UpdatedAt:     &timeNow,
+			})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+
+	// contact
+	contact, err := asset.contactRepo.Store(&requestContact.Contacts{
+		ID:          request.Contacts.ID,
+		AssetID:     dataAsset.ID,
+		DebiturName: request.Contacts.DebiturName,
+		PicName:     request.Contacts.PicName,
+		PicPhone:    request.Contacts.PicPhone,
+		PicEmail:    request.Contacts.PicEmail,
+		Cif:         request.Contacts.Cif,
+		UpdatedAt:   &timeNow,
+	})
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+	fmt.Println("contact=>", contact)
+
+	var images []requestImage.ImagesRequest
+
+	// images
+	// check apabila array image error return false
+	for _, value := range request.Images {
+
+		var destinationPath string
+		bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
+
+		pathSplit := strings.Split(value.Path, "/")
+		sourcePath := fmt.Sprint(value.Path)
+		destinationPath = pathSplit[1] + "/" +
+			dataAsset.Type + "/" +
+			lib.GetTimeNow("year") + "/" +
+			lib.GetTimeNow("month") + "/" +
+			lib.GetTimeNow("day") + "/" +
+			pathSplit[2] + "/" +
+			value.Filename
+		// assets/formb1/2022/June/01/uuid/gambar.jpg
+
+		if pathSplit[0] == "tmp" {
+			// copy to origin directory and create image to db
+		} else {
+			// else update path to db with relation asset_image
+		}
+
+		if bucketExist {
+			fmt.Println("Exist")
+			fmt.Println(bucket)
+			fmt.Println(destinationPath)
+			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+
+		} else {
+			fmt.Println("Not Exist")
+			fmt.Println(bucket)
+			fmt.Println(destinationPath)
+			asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
+			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+		}
+
+		image, err := asset.imagesRepo.Store(&requestImage.Images{
+			ID:        value.ID,
+			Filename:  value.Filename,
+			Path:      destinationPath,
+			Extension: value.Extension,
+			Size:      value.Size,
+			UpdatedAt: &timeNow,
+		})
+
+		images = append(images, requestImage.ImagesRequest{
+			ID:        image.ID,
+			Filename:  value.Filename,
+			Path:      destinationPath,
+			Extension: value.Extension,
+			Size:      value.Size,
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		_, err = asset.assetImage.Store(&models.AssetImages{
+			ID:        image.ID,
+			AssetID:   dataAsset.ID,
+			ImageID:   image.ID,
+			UpdatedAt: &timeNow,
+		})
+
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+	fmt.Println("images=>", images)
+
+	// approval
+	approval, err := asset.approvalRepo.Store(
+		&requestApprovals.Approvals{
+			ID:          request.Approvals.ID,
+			AssetID:     dataAsset.ID,
+			CheckerID:   request.Approvals.CheckerID,
+			CheckerDesc: request.Approvals.CheckerDesc,
+			// CheckerComment: request.Approvals.CheckerComment,
+			// CheckerDate:    request.Approvals.CheckerDate,
+			SignerID:   request.Approvals.SignerID,
+			SignerDesc: request.Approvals.SignerDesc,
+			// SignerComment:  request.Approvals.SignerComment,
+			// SignerDate:     request.Approvals.SignerDate,
+			CreatedAt: &timeNow})
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+	fmt.Println("approval=>", approval)
+
+	return true, err
+
+	// update Addresses
+	// update BuildingAssets
+	// update VehicleAssets
+	// update Facilities
+	// update AccessPlaces
+	// update Contacts
+	// update Images
+	// update Approvals
 }
 
 // Delete implements AssetDefinition
@@ -848,7 +1181,15 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			Status:        "01c", // pending signer
 			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -888,8 +1229,21 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			Status:        "02b", // selesai
 			Published:     false,
 			PublishDate:   nil,
+			ExpiredDate:   nil,
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_aker_date",
+				"deleted",
+				"action",
+				"status",
+				"published",
+				"publish_date",
+				"expired_date",
+				"updated_at",
+			})
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -937,7 +1291,15 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			Status:        "01b", // tolak checker
 			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)
@@ -974,7 +1336,15 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			Status:        "01d", // tolak signer
 			Action:        "updateDelete",
 			UpdatedAt:     &timeNow,
-		})
+		},
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at"}, // define field to update
+		)
 
 		if err != nil {
 			asset.logger.Zap.Error(err)

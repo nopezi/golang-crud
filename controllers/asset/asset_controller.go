@@ -142,7 +142,7 @@ func (asset AssetController) UpdateApproval(c *gin.Context) {
 }
 
 func (asset AssetController) UpdateMaintain(c *gin.Context) {
-	data := models.AssetsRequest{}
+	data := models.AssetsResponseGetOne{}
 
 	if err := c.BindJSON(&data); err != nil {
 		asset.logger.Zap.Error(err)

@@ -22,12 +22,12 @@ type AssetDefinition interface {
 	DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
-	UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error)
-	UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error)
-	UpdateMaintain(request *models.AssetsRequest) (responses bool, err error)
-	Delete(request *models.AssetsUpdateDelete) (responses bool, err error)
-	UpdateDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error)
-	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error)
+	UpdateApproval(request *models.AssetsUpdateApproval, include []string) (responses bool, err error)
+	UpdatePublish(request *models.AssetsUpdatePublish, include []string) (responses bool, err error)
+	UpdateMaintain(request *models.Assets, include []string) (responses *models.Assets, err error)
+	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
+	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
+	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
 }
 type AssetRepository struct {
 	db      lib.Database
@@ -128,39 +128,23 @@ func (asset AssetRepository) Store(request *models.Assets) (responses *models.As
 }
 
 // UpdateApproval implements AssetDefinition
-// db.Omit("Name", "Age", "CreatedAt").Create(&user)
-// ID: request.ID,
-// Status:    "01c", // pending signer
-// Action:    "UpdateApproval",
-// UpdatedAt: &timeNow,
-// db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
-func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
-	return true, asset.db.DB.Omit(
-		"last_maker_id",
-		"last_maker_desc",
-		"last_maker_date",
-		"published",
-		"publish_date",
-		"expired_date",
-	).Updates(&request).Error
+func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval, include []string) (responses bool, err error) {
+	return true, asset.db.DB.Select(include).Updates(&request).Error
+
 }
 
-// func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval) (responses bool, err error) {
-// 	return true, asset.db.DB.Save(&request).Error
-// }
-
 // UpdatePublish implements AssetDefinition
-func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish) (responses bool, err error) {
+func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish, include []string) (responses bool, err error) {
 	return true, asset.db.DB.Save(&request).Error
 }
 
 // Update implements AssetDefinition
-func (asset AssetRepository) UpdateMaintain(request *models.AssetsRequest) (responses bool, err error) {
-	return true, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) UpdateMaintain(request *models.Assets, include []string) (responses *models.Assets, err error) {
+	return request, asset.db.DB.Save(&request).Error
 }
 
 // Delete implements AssetDefinition
-func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete) (responses bool, err error) {
+func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error) {
 	return true, asset.db.DB.Save(&request).Error
 }
 
@@ -324,7 +308,10 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (
 		update, err := asset.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
 			ID:         request.ID,
 			DocumentID: documentID,
-		})
+		},
+			[]string{
+				"document_id",
+			})
 		if !update || err != nil {
 			return false, err
 		}
@@ -353,7 +340,10 @@ func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) 
 		update, err := asset.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
 			ID:         request.ID,
 			DocumentID: "",
-		})
+		},
+			[]string{
+				"document_id",
+			})
 		if !update || err != nil {
 			return false, err
 		}
@@ -363,11 +353,11 @@ func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) 
 }
 
 // UpdateDocumentID implements AssetDefinition
-func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error) {
+func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error) {
 	return true, asset.db.DB.Save(&request).Error
 }
 
 // UpdateRemoveDocumentID implements AssetDefinition
-func (asset AssetRepository) UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic) (responses bool, err error) {
+func (asset AssetRepository) UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error) {
 	return true, asset.db.DB.Save(&request).Error
 }

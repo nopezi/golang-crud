@@ -25,7 +25,7 @@ type ImagesResponses struct {
 	Filename  string `json:"filename"`
 	Path      string `json:"path"`
 	Extension string `json:"extension"`
-	Size      string `json:"size"`
+	Size      int64  `json:"size"`
 }
 
 func (p ImagesRequest) ParseRequest() Images {

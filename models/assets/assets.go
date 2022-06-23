@@ -2,6 +2,7 @@ package models
 
 type Assets struct {
 	ID            int64
+	FormType      string
 	Type          string
 	KpknlID       int64
 	AuctionDate   string
@@ -61,15 +62,23 @@ type AssetsUpdateDelete struct {
 	Deleted       bool
 	Published     bool
 	PublishDate   *string
+	ExpiredDate   *string
 	Action        string
 	Status        string
 	UpdatedAt     *string
 }
 
+func (a Assets) TableName() string {
+	return "assets"
+}
 func (a AssetsUpdateApproval) TableName() string {
 	return "assets"
 }
 
 func (a AssetsUpdatePublish) TableName() string {
+	return "assets"
+}
+
+func (a AssetsUpdateDelete) TableName() string {
 	return "assets"
 }
