@@ -30,6 +30,7 @@ func (s AssetRoutes) Setup() {
 		api.POST("/updateApproval", s.AssetController.UpdateApproval)
 		api.POST("/updateMaintain", s.AssetController.UpdateMaintain)
 		api.POST("/delete", s.AssetController.Delete)
+		api.POST("/deleteAssetImage", s.AssetController.DeleteAssetImage)
 	}
 }
 

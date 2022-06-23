@@ -194,6 +194,12 @@ type AssetsRequestUpdateElastic struct {
 	DocumentID string `json:"document_id"`
 }
 
+type AssetImageRequest struct {
+	ImageID      int64  `json:"image_id"`
+	AssetImageID int64  `json:"asset_image_id"`
+	Path         string `json:"path"`
+}
+
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
 	timeNow := lib.GetTimeNow("timestime")
 	return &Assets{

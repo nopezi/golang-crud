@@ -45,6 +45,7 @@ type AssetDefinition interface {
 	UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error)
 	UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error)
 	Delete(request *models.AssetsRequestUpdate) (responses bool, err error)
+	DeleteAssetImage(request *models.AssetImageRequest) (status bool, err error)
 }
 type AssetService struct {
 	minio            minio.Minio
@@ -340,8 +341,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 	}
 	fmt.Println("contact=>", contact)
 
-	var images []requestImage.ImagesRequest
-
 	// images
 	// check apabila array image error return false
 	for _, value := range request.Images {
@@ -382,15 +381,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			CreatedAt: &timeNow,
 		})
 
-		images = append(images, requestImage.ImagesRequest{
-			ID:        image.ID,
-			Filename:  value.Filename,
-			Path:      destinationPath,
-			Extension: value.Extension,
-			Size:      value.Size,
-			CreatedAt: &timeNow,
-		})
-
 		if err != nil {
 			asset.logger.Zap.Error(err)
 			return false, err
@@ -407,7 +397,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			return false, err
 		}
 	}
-	fmt.Println("images=>", images)
 
 	// approval
 	approval, err := asset.approvalRepo.Store(
@@ -1358,6 +1347,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 	}
 }
 
+// GetApproval implements AssetDefinition
 func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
 	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
 	request.Offset = offset
@@ -1390,6 +1380,7 @@ func (asset AssetService) GetApproval(request models.AssetsRequestMaintain) (res
 	return responses, pagination, err
 }
 
+// GetMaintain implements AssetDefinition
 func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error) {
 	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
 	request.Offset = offset
@@ -1417,5 +1408,27 @@ func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (res
 
 	pagination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
 	return responses, pagination, err
+}
 
+// DeleteAssetImage implements AssetDefinition
+func (asset AssetService) DeleteAssetImage(request *models.AssetImageRequest) (status bool, err error) {
+	bucket := os.Getenv("BUCKET_NAME")
+	ok := asset.minio.RemoveObject(asset.minio.Client(), bucket, request.Path)
+	if !ok {
+		return false, err
+	} else {
+		err = asset.imagesRepo.Delete(request.ImageID)
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
+		err = asset.assetRepo.DeleteAssetImage(request.AssetImageID)
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+
+	return true, err
 }

@@ -28,6 +28,7 @@ type AssetDefinition interface {
 	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
 	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
 	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
+	DeleteAssetImage(id int64) (err error)
 }
 type AssetRepository struct {
 	db      lib.Database
@@ -360,4 +361,9 @@ func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdat
 // UpdateRemoveDocumentID implements AssetDefinition
 func (asset AssetRepository) UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error) {
 	return true, asset.db.DB.Save(&request).Error
+}
+
+// DeleteAssetImage implements ImageDefinition
+func (asset AssetRepository) DeleteAssetImage(id int64) (err error) {
+	return asset.db.DB.Where("id = ?", id).Delete(&models.AssetImagesRequest{}).Error
 }

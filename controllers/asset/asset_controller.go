@@ -237,3 +237,28 @@ func (asset AssetController) GetMaintain(c *gin.Context) {
 
 	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquiry data berhasil", datas, pagination)
 }
+
+func (asset AssetController) DeleteAssetImage(c *gin.Context) {
+	data := models.AssetImageRequest{}
+
+	if err := c.Bind(&data); err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
+		return
+	}
+
+	status, err := asset.service.DeleteAssetImage(&data)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if !status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal disimpan", false)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Delete data berhasil", true)
+}
