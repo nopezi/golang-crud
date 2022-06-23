@@ -949,9 +949,6 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 		return false, err
 	}
 
-	// var building *requestBuilding.BuildingAssets
-	// var vehicle *requestVehicle.VehicleAssets
-
 	switch request.FormType {
 	case "form-b1":
 		// buildingasset
@@ -1059,8 +1056,6 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 	}
 	fmt.Println("contact=>", contact)
 
-	var images []requestImage.ImagesRequest
-
 	// images
 	// check apabila array image error return false
 	for _, value := range request.Images {
@@ -1080,92 +1075,80 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 		// assets/formb1/2022/June/01/uuid/gambar.jpg
 
 		if pathSplit[0] == "tmp" {
+			asset.logger.Zap.Info("============> new images")
 			// copy to origin directory and create image to db
+			if bucketExist {
+				fmt.Println("Exist")
+				fmt.Println(bucket)
+				fmt.Println(destinationPath)
+				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+
+			} else {
+				fmt.Println("Not Exist")
+				fmt.Println(bucket)
+				fmt.Println(destinationPath)
+				asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
+				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+			}
+
+			image, err := asset.imagesRepo.Store(&requestImage.Images{
+				ID:        value.ID,
+				Filename:  value.Filename,
+				Path:      destinationPath,
+				Extension: value.Extension,
+				Size:      value.Size,
+				UpdatedAt: &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			_, err = asset.assetImage.Store(&models.AssetImages{
+				ID:        image.ID,
+				AssetID:   dataAsset.ID,
+				ImageID:   image.ID,
+				UpdatedAt: &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
 		} else {
 			// else update path to db with relation asset_image
+			asset.logger.Zap.Info("============> old images")
+			image, err := asset.imagesRepo.Store(&requestImage.Images{
+				ID:        value.ID,
+				Filename:  value.Filename,
+				Path:      value.Path,
+				Extension: value.Extension,
+				Size:      value.Size,
+				UpdatedAt: &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			_, err = asset.assetImage.Store(&models.AssetImages{
+				ID:        image.ID,
+				AssetID:   dataAsset.ID,
+				ImageID:   image.ID,
+				UpdatedAt: &timeNow,
+			})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
 		}
 
-		if bucketExist {
-			fmt.Println("Exist")
-			fmt.Println(bucket)
-			fmt.Println(destinationPath)
-			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-
-		} else {
-			fmt.Println("Not Exist")
-			fmt.Println(bucket)
-			fmt.Println(destinationPath)
-			asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
-			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-		}
-
-		image, err := asset.imagesRepo.Store(&requestImage.Images{
-			ID:        value.ID,
-			Filename:  value.Filename,
-			Path:      destinationPath,
-			Extension: value.Extension,
-			Size:      value.Size,
-			UpdatedAt: &timeNow,
-		})
-
-		images = append(images, requestImage.ImagesRequest{
-			ID:        image.ID,
-			Filename:  value.Filename,
-			Path:      destinationPath,
-			Extension: value.Extension,
-			Size:      value.Size,
-			UpdatedAt: &timeNow,
-		})
-
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
-
-		_, err = asset.assetImage.Store(&models.AssetImages{
-			ID:        image.ID,
-			AssetID:   dataAsset.ID,
-			ImageID:   image.ID,
-			UpdatedAt: &timeNow,
-		})
-
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
 	}
-	fmt.Println("images=>", images)
-
-	// approval
-	approval, err := asset.approvalRepo.Store(
-		&requestApprovals.Approvals{
-			ID:          request.Approvals.ID,
-			AssetID:     dataAsset.ID,
-			CheckerID:   request.Approvals.CheckerID,
-			CheckerDesc: request.Approvals.CheckerDesc,
-			// CheckerComment: request.Approvals.CheckerComment,
-			// CheckerDate:    request.Approvals.CheckerDate,
-			SignerID:   request.Approvals.SignerID,
-			SignerDesc: request.Approvals.SignerDesc,
-			// SignerComment:  request.Approvals.SignerComment,
-			// SignerDate:     request.Approvals.SignerDate,
-			CreatedAt: &timeNow})
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		return false, err
-	}
-	fmt.Println("approval=>", approval)
 
 	return true, err
-
-	// update Addresses
-	// update BuildingAssets
-	// update VehicleAssets
-	// update Facilities
-	// update AccessPlaces
-	// update Contacts
-	// update Images
-	// update Approvals
 }
 
 // Delete implements AssetDefinition
