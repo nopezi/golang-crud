@@ -79,7 +79,7 @@ func (fm FileManagerService) MakeUpload(request models.FileManagerRequest) (resp
 	bucketExist := fm.minio.BucketExist(fm.minio.Client(), bucketName)
 
 	uuid := uuid.New()
-	minioPath = "tmp/" + request.Subdir + lib.GetTimeNow("year") + "/" + lib.GetTimeNow("month") + "/" + lib.GetTimeNow("day") + "/" + uuid.String() + "/" + filename
+	minioPath = "tmp/" + request.Subdir + "/" + lib.GetTimeNow("year") + "/" + lib.GetTimeNow("month") + "/" + lib.GetTimeNow("day") + "/" + uuid.String() + "/" + filename
 
 	if bucketExist {
 		// Get Content Type
