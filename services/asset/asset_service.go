@@ -221,12 +221,12 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 
 	address, err := asset.addressRepo.Store(
 		&requestAddress.Addresses{
-			AssetID:    dataAsset.ID,
-			PostalCode: request.Addresses.PostalCode,
-			Address:    request.Addresses.Address,
-			Longitude:  request.Addresses.Longitude,
-			Langitude:  request.Addresses.Langitude,
-			CreatedAt:  &timeNow,
+			AssetID:      dataAsset.ID,
+			PostalcodeID: request.Addresses.PostalcodeID,
+			Address:      request.Addresses.Address,
+			Longitude:    request.Addresses.Longitude,
+			Langitude:    request.Addresses.Langitude,
+			CreatedAt:    &timeNow,
 		})
 
 	fmt.Println("this is address => ", address)
@@ -235,9 +235,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
-
-	// var building *requestBuilding.BuildingAssets
-	// var vehicle *requestVehicle.VehicleAssets
 
 	switch request.FormType {
 	case "form-b1":
@@ -316,6 +313,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			&models.AssetAccessPlaces{
 				AssetID:       dataAsset.ID,
 				AccessPlaceID: value.ID,
+				Status:        value.Status,
 				CreatedAt:     &timeNow,
 			})
 
@@ -564,7 +562,10 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			Action:    "UpdateApproval",
 			UpdatedAt: &timeNow,
 		},
-			[]string{"status", "action", "updated_at"}, // define field to update
+			[]string{
+				"status",
+				"action",
+				"updated_at"}, // define field to update
 		)
 
 		if err != nil {
@@ -612,7 +613,13 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			Action:        "UpdatePublish",
 			UpdatedAt:     &timeNow,
 		},
-			[]string{"last_maker_id", "last_maker_desc", "last_maker_date", "status", "action", "updated_at"}, // define field to update
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at"}, // define field to update
 		)
 
 		if err != nil {
@@ -778,7 +785,13 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			Action:        "UpdatePublish",
 			UpdatedAt:     &timeNow,
 		},
-			[]string{"last_maker_id", "last_maker_desc", "last_maker_date", "status", "action", "updated_at"}, // define field to update
+			[]string{
+				"last_maker_id",
+				"last_maker_desc",
+				"last_maker_date",
+				"status",
+				"action",
+				"updated_at"}, // define field to update
 		)
 
 		if err != nil {
@@ -923,13 +936,13 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 
 	address, err := asset.addressRepo.Store(
 		&requestAddress.Addresses{
-			ID:         request.Addresses.ID,
-			AssetID:    dataAsset.ID,
-			PostalCode: request.Addresses.PostalCode,
-			Address:    request.Addresses.Address,
-			Longitude:  request.Addresses.Longitude,
-			Langitude:  request.Addresses.Langitude,
-			UpdatedAt:  &timeNow,
+			ID:           request.Addresses.ID,
+			AssetID:      dataAsset.ID,
+			PostalcodeID: request.Addresses.PostalcodeID,
+			Address:      request.Addresses.Address,
+			Longitude:    request.Addresses.Longitude,
+			Langitude:    request.Addresses.Langitude,
+			UpdatedAt:    &timeNow,
 		})
 
 	fmt.Println("this is address => ", address)

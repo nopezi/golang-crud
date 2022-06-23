@@ -21,7 +21,7 @@ func (s AssetRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/asset")
 	// .Use(s.authMiddleware.Handler())
 	{
-		api.POST("/getAll", s.AssetController.GetAll)
+		// api.POST("/getAll", s.AssetController.GetAll)
 		api.GET("/getOne/:id", s.AssetController.GetOne)
 		api.POST("/store", s.AssetController.Store)
 		api.POST("/getApproval", s.AssetController.GetApproval)

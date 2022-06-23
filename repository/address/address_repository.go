@@ -71,6 +71,7 @@ func (address AddressRepository) GetOneAsset(id int64) (responses models.Address
 		a.longitude, 
 		a.langitude, 
 		CONCAT(a.longitude,',',a.langitude)  longlat, 
+		a.postalcode_id,
 		rpc.postal_code,
 		rpc.region, 
 		rpc.district, 
