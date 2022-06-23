@@ -20,4 +20,8 @@ type VehicleAssets struct {
 	LicenceDate       string
 	UpdatedAt         *string
 	CreatedAt         *string
+	// BrandName           string
+	// TransmissionName    string
+	// MachineCapacityName string
+	// ColorName           string
 }
