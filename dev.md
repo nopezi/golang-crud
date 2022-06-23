@@ -198,20 +198,20 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
     -- - signer list
 
   - handle get table error, 
-  - get data empty, belum semua
+  - get data empty, belum semua di controller
   - pagination done
   - api inquiry cif ke esb = done
 
    - create vehicle
-        - certificate_type to certificate_type_id
-        - series_id
-        - brand_id
-        - transmission_id
+        - certificate_type to certificate_type_id done
+        - series_id done
+        - brand_id done
+        - transmission_id done
         - machineCapacity_id to machine_capacity_id
-        - color_id
+        - color_id done
         - get one vehicle join details above
    - api get menu by role
-   - create to elastic
+   - create to elastic done
    - create api auction_schedule/ jadwal lelang,
    - create get all asset to elastic
    - create get all with filter to elastic
@@ -219,6 +219,7 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - activity logger
    - runtime logger
    - create endpoint api delete image
+   - adding midleware jwt to controller
 # next development
    - module user integration register with google or email,
    - create whitelist asset
