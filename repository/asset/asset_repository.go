@@ -15,7 +15,7 @@ import (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetRepository
 	GetAll() (responses []models.AssetsResponse, err error)
-	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, err error)
+	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, totalRows int64, totalData int64, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets) (responses *models.Assets, err error)
@@ -33,7 +33,7 @@ type AssetDefinition interface {
 }
 type AssetRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -41,12 +41,12 @@ type AssetRepository struct {
 
 func NewAssetReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) AssetDefinition {
 	return AssetRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
@@ -120,7 +120,24 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 }
 
 // GetOne implements AssetDefinition
-func (asset AssetRepository) GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, err error) {
+func (asset AssetRepository) GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, totalRows int64, totalData int64, err error) {
+	where := " WHERE 1+1 "
+	whereCount := " 1+1 "
+	if request.Name != "" {
+		where += " AND a.name LIKE '%" + request.Name + "%'"
+		whereCount += " AND name LIKE '%" + request.Name + "%'"
+	}
+
+	if request.KpknlID != 0 {
+		where += " AND a.kpknl_id = " + request.AuctionDate
+		whereCount += " AND kpknl_id = " + request.AuctionDate
+	}
+
+	if request.AuctionDate != "" {
+		where += " AND MONTH(a.auction_date) = " + request.AuctionDate
+		whereCount += " AND MONTH(auction_date) = " + request.AuctionDate
+	}
+
 	query := `
 	SELECT a.id, a.name, 
 	a.auction_date, 
@@ -131,20 +148,9 @@ func (asset AssetRepository) GetAuctionSchedule(request models.AuctionSchedule) 
 	a2.address from assets a
 	LEFT JOIN ref_kpknl rk on a.kpknl_id = rk.id
 	LEFT JOIN contacts c on a.id = c.asset_id
-	LEFT JOIN addresses a2 on a.id = a2.asset_id WHERE 1+1`
-	if request.Name != "" {
-		query += " AND a.name LIKE '%" + request.Name + "%'"
-	}
+	LEFT JOIN addresses a2 on a.id = a2.asset_id ` + where
 
-	if request.KpknlID != 0 {
-		query += " AND a.kpknl_id = " + request.AuctionDate
-	}
-
-	if request.AuctionDate != "" {
-		query += " AND MONTH(a.auction_date) = " + request.AuctionDate
-	}
-
-	rows, err := asset.db.DB.Raw(query, request.KpknlID, request.AuctionDate, request.Name).Rows()
+	rows, err := asset.db.DB.Raw(query).Rows()
 	defer rows.Close()
 
 	var auctionScheduleResponse models.AuctionScheduleResponse
@@ -155,9 +161,14 @@ func (asset AssetRepository) GetAuctionSchedule(request models.AuctionSchedule) 
 
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		return responses, err
+		return responses, totalRows, totalData, err
 	}
-	return responses, err
+
+	asset.db.DB.Table("assets").Where(whereCount).Count(&totalData)
+	result := float64(totalData) / float64(request.Limit)
+	totalRows = int64(math.Ceil(result))
+
+	return responses, totalRows, totalData, err
 }
 
 // GetOneAsset implements AssetDefinition
@@ -225,7 +236,7 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 			left join contacts c2 on ast.id = c2.asset_id
 			left join approvals a on ast.id = a.asset_id ` + where + ` order by id desc LIMIT ? OFFSET ?`
 	asset.logger.Zap.Info(query)
-	rows, err := asset.db2.DB.Query(query, request.Limit, request.Offset)
+	rows, err := asset.dbRaw.DB.Query(query, request.Limit, request.Offset)
 
 	asset.logger.Zap.Info("rows ", rows)
 	if err != nil {
@@ -260,7 +271,7 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 					left join ref_status rs on ast.status  = rs.kodeStatus
 					left join contacts c2 on ast.id = c2.asset_id
 					left join approvals a on ast.id = a.asset_id ` + whereCount
-	err = asset.db2.DB.QueryRow(paginateQuery).Scan(&totalRows)
+	err = asset.dbRaw.DB.QueryRow(paginateQuery).Scan(&totalRows)
 
 	result := float64(totalRows) / float64(request.Limit)
 	resultFinal := int(math.Ceil(result))
@@ -286,7 +297,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 			join ref_status rs on ast.status  = rs.kodeStatus
 			join contacts c2 on ast.id = c2.asset_id ` + where + ` order by id desc LIMIT ? OFFSET ?`
 
-	rows, err := asset.db2.DB.Query(query, request.Limit, request.Offset)
+	rows, err := asset.dbRaw.DB.Query(query, request.Limit, request.Offset)
 
 	if err != nil {
 		return responses, totalRows, totalData, err
@@ -318,7 +329,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 						join ref_status rs on ast.status  = rs.kodeStatus
 						join contacts c2 on ast.id = c2.asset_id ` + whereCount
 
-	err = asset.db2.DB.QueryRow(paginateQuery).Scan(&totalRows)
+	err = asset.dbRaw.DB.QueryRow(paginateQuery).Scan(&totalRows)
 
 	result := float64(totalRows) / float64(request.Limit)
 	resultFinal := int(math.Ceil(result))

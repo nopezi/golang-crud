@@ -58,13 +58,19 @@ func (asset AssetController) GetAuctionSchedule(c *gin.Context) {
 		return
 	}
 
-	data, err := asset.service.GetAuctionSchedule(request)
+	datas, pagination, err := asset.service.GetAuctionSchedule(request)
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", datas)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
+
+	if pagination.Total == 0 {
+		lib.ReturnToJson(c, 200, "404", "Data Kosong", datas)
+		return
+	}
+
+	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquiry data berhasil", datas, pagination)
 }
 
 func (asset AssetController) GetOne(c *gin.Context) {

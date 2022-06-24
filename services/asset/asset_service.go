@@ -37,7 +37,7 @@ var (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
-	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, err error)
+	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
@@ -111,8 +111,18 @@ func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error
 }
 
 // GetOne implements AssetDefinition
-func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, err error) {
-	return asset.assetRepo.GetAuctionSchedule(request)
+func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error) {
+	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
+	request.Offset = offset
+	request.Order = order
+	request.Sort = sort
+	responses, totalRows, totalData, err := asset.assetRepo.GetAuctionSchedule(request)
+	if err != nil {
+		asset.logger.Zap.Error(err)
+		return responses, pagination, err
+	}
+	pagination = lib.SetPaginationResponse(page, limit, int(totalRows), int(totalData))
+	return responses, pagination, err
 }
 
 // GetOne implements AssetDefinition
