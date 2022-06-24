@@ -201,9 +201,19 @@ type AssetImageRequest struct {
 }
 
 type AuctionSchedule struct {
-	ImageID      int64  `json:"image_id"`
-	AssetImageID int64  `json:"asset_image_id"`
-	Path         string `json:"path"`
+	KpknlID     int64  `json:"kpknl_id"`
+	AuctionDate string `json:"auction_date"`
+	Name        string `json:"name"`
+}
+type AuctionScheduleResponse struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	AuctionDate string `json:"auction_date"`
+	AuctionTime string `json:"auction_time"`
+	KpknlID     string `json:"kpknl_id"`
+	KpknlName   string `json:"kpknl_name"`
+	PicLelang   string `json:"pic_lelang "`
+	Address     string `json:"address"`
 }
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
