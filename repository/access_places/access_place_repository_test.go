@@ -35,9 +35,9 @@ func NewMock() (*sql.DB, sqlmock.Sqlmock) {
 
 func TestGetAll(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
@@ -53,9 +53,9 @@ func TestGetAll(t *testing.T) {
 
 func TestGetAllError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
@@ -70,9 +70,9 @@ func TestGetAllError(t *testing.T) {
 
 func TestGetOne(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at where id = \\?"
@@ -86,9 +86,9 @@ func TestGetOne(t *testing.T) {
 
 func TestGetOneError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "SELECT id, name, icon, description, updated_at, created_at"
@@ -101,9 +101,9 @@ func TestGetOneError(t *testing.T) {
 }
 func TestStore(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "INSERT into access_places (name, icon, description, created_at) VALUES (?,?,?,?)"
@@ -115,9 +115,9 @@ func TestStore(t *testing.T) {
 
 func TestStoreError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "INSERT into access_places (name, icon, description, created_at) VALUES (?,?,?,?)"
@@ -128,9 +128,9 @@ func TestStoreError(t *testing.T) {
 }
 func TestUpdate(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "UPDATE access_places SET name = \\?, icon = \\?, description = \\?, updated_at = \\? WHERE id = \\?"
@@ -144,9 +144,9 @@ func TestUpdate(t *testing.T) {
 
 func TestUpdateError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "UPDATE access_places SET name = \\?, icon = \\?, description = \\?, updated_at = \\? WHERE id = \\?"
@@ -159,9 +159,9 @@ func TestUpdateError(t *testing.T) {
 }
 func TestDelete(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "DELETE FROM access_places WHERE id = \\?"
@@ -175,9 +175,9 @@ func TestDelete(t *testing.T) {
 
 func TestDeleteError(t *testing.T) {
 	db, mock := NewMock()
-	repo := &AccessPlaceRepository{db2: db}
+	repo := &AccessPlaceRepository{dbRaw: db}
 	defer func() {
-		repo.db2.Close()
+		repo.dbRaw.Close()
 	}()
 
 	query := "DELETE FROM access_places WHERE id = \\?"

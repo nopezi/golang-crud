@@ -21,7 +21,7 @@ type FacilitiesDefinition interface {
 }
 type FacilitiesRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -29,12 +29,12 @@ type FacilitiesRepository struct {
 
 func NewFacilitiesReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) FacilitiesDefinition {
 	return FacilitiesRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

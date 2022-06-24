@@ -20,7 +20,7 @@ type AccessPlaceDefinition interface {
 }
 type AccessPlaceRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -28,12 +28,12 @@ type AccessPlaceRepository struct {
 
 func NewAccessPlaceReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) AccessPlaceDefinition {
 	return AccessPlaceRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

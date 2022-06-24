@@ -21,7 +21,7 @@ type PostalcodeDefinition interface {
 }
 type PostalcodeRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -29,12 +29,12 @@ type PostalcodeRepository struct {
 
 func NewPostalcodeReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) PostalcodeDefinition {
 	return PostalcodeRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

@@ -20,7 +20,7 @@ type VehicleAssetDefinition interface {
 }
 type VehicleAssetRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -28,12 +28,12 @@ type VehicleAssetRepository struct {
 
 func NewVehicleAssetReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) VehicleAssetDefinition {
 	return VehicleAssetRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

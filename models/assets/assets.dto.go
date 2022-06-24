@@ -201,6 +201,11 @@ type AssetImageRequest struct {
 }
 
 type AuctionSchedule struct {
+	Order       string `json:"order"`
+	Sort        string `json:"sort"`
+	Offset      int    `json:"offset"`
+	Limit       int    `json:"limit"`
+	Page        int    `json:"page"`
 	KpknlID     int64  `json:"kpknl_id"`
 	AuctionDate string `json:"auction_date"`
 	Name        string `json:"name"`

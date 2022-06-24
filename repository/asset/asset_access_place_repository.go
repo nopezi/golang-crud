@@ -22,7 +22,7 @@ type AssetAccessPlaceDefinition interface {
 }
 type AssetAccessPlaceRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -30,12 +30,12 @@ type AssetAccessPlaceRepository struct {
 
 func NewAssetAccessPlaceReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) AssetAccessPlaceDefinition {
 	return AssetAccessPlaceRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

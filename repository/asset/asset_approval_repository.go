@@ -20,7 +20,7 @@ type AssetApprovalDefinition interface {
 }
 type AssetApprovalRepository struct {
 	db      lib.Database
-	db2     lib.Databases
+	dbRaw   lib.Databases
 	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
@@ -28,12 +28,12 @@ type AssetApprovalRepository struct {
 
 func NewAssetApprovalReporitory(
 	db lib.Database,
-	db2 lib.Databases,
+	dbRaw lib.Databases,
 	elastic elastic.Elasticsearch,
 	logger logger.Logger) AssetApprovalDefinition {
 	return AssetApprovalRepository{
 		db:      db,
-		db2:     db2,
+		dbRaw:   dbRaw,
 		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,

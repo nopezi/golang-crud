@@ -14,7 +14,7 @@ import (
 func TestAssetRepository_GetApproval(t *testing.T) {
 	type fields struct {
 		db      lib.Database
-		db2     lib.Databases
+		dbRaw   lib.Databases
 		elastic elastic.Elasticsearch
 		logger  logger.Logger
 		timeout time.Duration
@@ -35,7 +35,7 @@ func TestAssetRepository_GetApproval(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			asset := AssetRepository{
 				db:      tt.fields.db,
-				db2:     tt.fields.db2,
+				dbRaw:   tt.fields.dbRaw,
 				elastic: tt.fields.elastic,
 				logger:  tt.fields.logger,
 				timeout: tt.fields.timeout,
