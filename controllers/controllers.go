@@ -3,6 +3,7 @@ package controllers
 import (
 	ap "infolelang/controllers/access_places"
 	asset "infolelang/controllers/asset"
+	banner "infolelang/controllers/banner"
 	category "infolelang/controllers/category"
 	certificate_type "infolelang/controllers/certificate_type"
 	cif "infolelang/controllers/cif"
@@ -44,4 +45,5 @@ var Module = fx.Options(
 	fx.Provide(vehicle_color.NewVehicleColorController),
 	fx.Provide(vehicle_transmission.NewVehicleTransmissionController),
 	fx.Provide(cif.NewCifController),
+	fx.Provide(banner.NewBannerController),
 )

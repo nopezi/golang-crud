@@ -5,6 +5,7 @@ import (
 	address "infolelang/repository/address"
 	approval "infolelang/repository/approvals"
 	asset "infolelang/repository/asset"
+	banner "infolelang/repository/banner"
 	category "infolelang/repository/categories"
 	certificate_type "infolelang/repository/certificate_type"
 	contact "infolelang/repository/contacts"
@@ -51,4 +52,5 @@ var Module = fx.Options(
 	fx.Provide(vehicle_category.NewVehicleCategoryReporitory),
 	fx.Provide(vehicle_color.NewVehicleColorReporitory),
 	fx.Provide(vehicle_transmission.NewVehicleTransmissionReporitory),
+	fx.Provide(banner.NewBannerReporitory),
 )

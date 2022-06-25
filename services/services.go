@@ -3,6 +3,7 @@ package services
 import (
 	ap "infolelang/services/access_places"
 	asset "infolelang/services/asset"
+	banner "infolelang/services/banner"
 	category "infolelang/services/category"
 	certificate_type "infolelang/services/certificate_type"
 	cif "infolelang/services/cif"
@@ -44,4 +45,5 @@ var Module = fx.Options(
 	fx.Provide(vehicle_color.NewVehicleColorService),
 	fx.Provide(vehicle_transmission.NewVehicleTransmissionService),
 	fx.Provide(cif.NewCifService),
+	fx.Provide(banner.NewBannerService),
 )
