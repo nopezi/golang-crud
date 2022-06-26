@@ -247,3 +247,37 @@ func (s UserService) UpdateUser(id uint, user models.User) error {
 func (s UserService) DeleteUser(id uint) error {
 	return s.repository.Delete(id)
 }
+
+// Store implements CategoryDefinition
+func (s UserService) GetMenu() (responses []models.MenuResponse, err error) {
+	menus, err := s.repository.GetMenu()
+	if err != nil {
+		s.logger.Zap.Error(err)
+		return responses, err
+	}
+
+	for _, menu := range menus {
+		var childMenus []models.ChildMenuResponse
+		childDatas, err := s.repository.GetChildMenu(menu.MenuID)
+		if err != nil {
+			s.logger.Zap.Error(err)
+			return responses, err
+		}
+
+		for _, childData := range childDatas {
+			childMenus = append(childMenus, models.ChildMenuResponse{
+				Title: childData.Title,
+				Url:   childData.Url,
+				Icon:  childData.Icon,
+			})
+		}
+
+		responses = append(responses, models.MenuResponse{
+			Title: menu.Title,
+			Url:   menu.Url,
+			Icon:  menu.Icon,
+			Child: childMenus,
+		})
+	}
+	return responses, err
+}

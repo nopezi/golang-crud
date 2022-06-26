@@ -3,6 +3,7 @@ package controllers
 import (
 	ap "infolelang/controllers/access_places"
 	asset "infolelang/controllers/asset"
+	auth "infolelang/controllers/auth"
 	banner "infolelang/controllers/banner"
 	category "infolelang/controllers/category"
 	certificate_type "infolelang/controllers/certificate_type"
@@ -27,7 +28,7 @@ import (
 // Module exported for initializing application
 var Module = fx.Options(
 	fx.Provide(user.NewUserController),
-	fx.Provide(NewJWTAuthController),
+	fx.Provide(auth.NewJWTAuthController),
 	fx.Provide(ap.NewAccessPlaceController),
 	fx.Provide(faq.NewFaqController),
 	fx.Provide(kpknl.NewKpknlController),

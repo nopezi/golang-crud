@@ -185,3 +185,14 @@ func (u UserController) DeleteUser(c *gin.Context) {
 
 	c.JSON(200, gin.H{"data": "user deleted"})
 }
+
+func (u UserController) GetMenu(c *gin.Context) {
+	menus, err := u.service.GetMenu()
+	if err != nil {
+		u.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", menus)
+}

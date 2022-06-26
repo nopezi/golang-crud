@@ -1,4 +1,4 @@
-package access_places
+package categories
 
 import (
 	"fmt"

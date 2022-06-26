@@ -1,4 +1,4 @@
-package repoCategory
+package category
 
 import (
 	"fmt"

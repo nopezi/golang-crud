@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"infolelang/services"
+	services "infolelang/services/auth"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"

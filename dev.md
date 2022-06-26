@@ -213,6 +213,7 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - create to elastic done
    - create endpoint api delete image done
    - create api auction_schedule/ jadwal lelang, done query
+   - api crud maintain banners done
  # UNDONE  ====================================== 
    - create get all asset to elastic
    - create get all with filter to elastic
@@ -221,7 +222,6 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - runtime logger
    - handle get table error, 
 
-   - api crud maintain banners
    - api get menu by role
    - adding midleware jwt to controller
 

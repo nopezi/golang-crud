@@ -61,3 +61,41 @@ func (r UserRepository) GetUserByEmail(email *string) (user models.User, err err
 func (r UserRepository) Delete(id uint) error {
 	return r.db.DB.Where("id = ?", id).Delete(&models.User{}).Error
 }
+
+// GetOneAsset implements AssetAccessPlaceDefinition
+func (u UserRepository) GetMenu() (responses models.Menus, err error) {
+	rows, err := u.db.DB.Raw(`
+	SELECT DISTINCT m.* FROM mst_menu m INNER JOIN 
+	mst_access_menu n ON m.IDMenu=n.IDMenu WHERE m.
+	RoleAccess=1 AND m.Status=1 AND m.IDParent = 0 AND (
+	(n.LevelUker='' AND n.LevelID='') OR (n.
+	LevelUker='ALL' AND n.LevelID='ALL') OR (n.
+	LevelUker='ALL' AND n.LevelID='') OR (n.
+	LevelUker='' AND n.LevelID='ALL')) 
+	ORDER BY IDMenu ASC`).Rows()
+
+	defer rows.Close()
+
+	var menu models.Menu
+	for rows.Next() {
+		u.db.DB.ScanRows(rows, &menu)
+		responses = append(responses, menu)
+	}
+	return responses, err
+}
+
+// GetOneAsset implements AssetAccessPlaceDefinition
+func (u UserRepository) GetChildMenu(menuID int64) (responses []models.ChildMenuResponse, err error) {
+	rows, err := u.db.DB.Raw(`
+	SELECT Title, Url, Icon 
+	FROM mst_menu WHERE IDParent = ?`, menuID).Rows()
+
+	defer rows.Close()
+
+	var menu models.ChildMenuResponse
+	for rows.Next() {
+		u.db.DB.ScanRows(rows, &menu)
+		responses = append(responses, menu)
+	}
+	return responses, err
+}

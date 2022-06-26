@@ -4,6 +4,7 @@ type LoginRequest struct {
 	Pernr    string `json:"pernr"`
 	Password string `json:"password"`
 }
+
 type Login struct {
 	ClientID     string `json:"clientid"`
 	ClientSecret string `json:"clientsecret"`
@@ -70,4 +71,36 @@ type UserSessionIncognito struct {
 	HTEXT      string `json:"HTEXT"`
 	HTEXTPGS   string `json:"HTEXT_PGS"`
 	CORPTITLE  string `json:"CORP_TITLE"`
+}
+
+type Menu struct {
+	MenuID     int64  `json:"menu_id"`
+	Title      string `json:"title"`
+	Url        string `json:"url"`
+	Deskripsi  string `json:"deskripsi"`
+	Icon       string `json:"icon"`
+	Atribut    string `json:"atribut"`
+	Badge      int64  `json:"badge"`
+	ParentID   int64  `json:"parent_id"`
+	Target     string `json:"target"`
+	Urutan     int64  `json:"urutan"`
+	RoleAccess int64  `json:"role_access"`
+	KanpusOnly int64  `json:"kanpus_only"`
+	Jenis      int64  `json:"jenis"`
+	Posisi     int64  `json:"posisi"`
+	Status     int64  `json:"status"`
+}
+
+type Menus []Menu
+
+type MenuResponse struct {
+	Title string              `json:"title"`
+	Url   string              `json:"url"`
+	Icon  string              `json:"icon"`
+	Child []ChildMenuResponse `json:"child"`
+}
+type ChildMenuResponse struct {
+	Title string `json:"title"`
+	Url   string `json:"url"`
+	Icon  string `json:"icon"`
 }

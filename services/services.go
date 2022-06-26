@@ -3,6 +3,7 @@ package services
 import (
 	ap "infolelang/services/access_places"
 	asset "infolelang/services/asset"
+	auth "infolelang/services/auth"
 	banner "infolelang/services/banner"
 	category "infolelang/services/category"
 	certificate_type "infolelang/services/certificate_type"
@@ -27,7 +28,7 @@ import (
 // Module exports services present
 var Module = fx.Options(
 	fx.Provide(user.NewUserService),
-	fx.Provide(NewJWTAuthService),
+	fx.Provide(auth.NewJWTAuthService),
 	fx.Provide(ap.NewAccessPlaceService),
 	fx.Provide(faq.NewFaqService),
 	fx.Provide(kpknl.NewKpknlService),

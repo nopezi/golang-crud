@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"infolelang/controllers"
+	controllers "infolelang/controllers/auth"
 	"infolelang/lib"
 
 	"gitlab.com/golang-package-library/logger"
@@ -19,8 +19,8 @@ func (s AuthRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
 	auth := s.handler.Gin.Group("/auth")
 	{
-		auth.POST("/login", s.authController.SignIn)
-		auth.POST("/register", s.authController.Register)
+		auth.POST("/generateToken", s.authController.GenerateToken)
+		// auth.POST("/register", s.authController.Register)
 	}
 }
 
