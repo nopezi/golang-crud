@@ -241,7 +241,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 	fmt.Println("dataAsset", dataAsset)
 
 	// address
-
+	fmt.Println("request.Addresses.PostalcodeID", request.Addresses)
 	address, err := asset.addressRepo.Store(
 		&requestAddress.Addresses{
 			AssetID:      dataAsset.ID,
@@ -623,7 +623,6 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 
 // UpdatePublish implements AssetDefinition
 func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error) {
-	fmt.Println()
 	switch request.Type {
 	//===================== Approve Checker =====================
 	case "approve checker":

@@ -64,11 +64,11 @@ func (asset AssetController) GetAssetElastic(c *gin.Context) {
 		return
 	}
 
-	// if len(datas) == 0 {
-	// 	asset.logger.Zap.Error(err)
-	// 	lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
-	// 	return
-	// }
+	if len(datas) == 0 {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
+		return
+	}
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
 }
 
