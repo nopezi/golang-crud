@@ -32,6 +32,7 @@ func (s AssetRoutes) Setup() {
 		api.POST("/delete", s.AssetController.Delete)
 		api.POST("/deleteAssetImage", s.AssetController.DeleteAssetImage)
 		api.POST("/getAuctionSchedule", s.AssetController.GetAuctionSchedule)
+		api.POST("/getAssetElastic", s.AssetController.GetAssetElastic)
 	}
 }
 

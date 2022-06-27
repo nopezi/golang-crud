@@ -37,6 +37,7 @@ var (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
+	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error)
 	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
 	Store(request *models.AssetsRequest) (status bool, err error)
@@ -110,6 +111,11 @@ func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error
 	return asset.assetRepo.GetAll()
 }
 
+// GetAll implements AssetDefinition
+func (asset AssetService) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error) {
+	return asset.assetRepo.GetAssetElastic(request)
+}
+
 // GetOne implements AssetDefinition
 func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error) {
 	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
@@ -156,6 +162,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 
 	responses = models.AssetsResponseGetOne{
 		ID:              assets.ID,
+		FormType:        assets.FormType,
 		Type:            assets.Type,
 		KpknlID:         assets.KpknlID,
 		AuctionDate:     assets.AuctionDate,

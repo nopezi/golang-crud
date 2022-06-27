@@ -8,13 +8,13 @@ import (
 	elastic "github.com/elastic/go-elasticsearch/v8"
 )
 
-type Elasticsearch struct {
+type ElasticsearchOld struct {
 	Client *elastic.Client
 	// index  string
 	// alias  string
 }
 
-func NewElastic(env env.Env, zapLogger Logger) Elasticsearch {
+func NewElasticOld(env env.Env, zapLogger Logger) Elasticsearch {
 	url := env.DBEHost
 	username := env.DBEUsername
 	password := env.DBEPassword

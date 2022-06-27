@@ -39,6 +39,7 @@ func bootstrap(
 	middlewares middlewares.Middlewares,
 	database lib.Database,
 	elastic elastic.Elasticsearch,
+	elasticsearch lib.Elasticsearch,
 	databases lib.Databases,
 	minioEnv minioEnv.Env,
 	minio storageMinio.Minio,

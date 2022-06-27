@@ -47,8 +47,8 @@ type AssetsRequest struct {
 }
 
 type AssetsResponse struct {
-	// FormType      string  `json:"form_type"`
 	ID              int64   `json:"id"`
+	FormType        string  `json:"form_type"`
 	Type            string  `json:"type"`
 	KpknlID         int64   `json:"kpknl_id"`
 	AuctionDate     string  `json:"auction_date"`
@@ -220,6 +220,8 @@ type AuctionScheduleResponse struct {
 	PicLelang   string `json:"pic_lelang "`
 	Address     string `json:"address"`
 }
+
+type AssetRequestElastic map[string]interface{}
 
 func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
 	timeNow := lib.GetTimeNow("timestime")

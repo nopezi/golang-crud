@@ -214,25 +214,6 @@ docker exec df2152ab9116 /usr/bin/mysqldump -u root --password=P@ssw0rd infolela
    - create endpoint api delete image done
    - create api auction_schedule/ jadwal lelang, done query
    - api crud maintain banners done
- # UNDONE  ====================================== 
-   - create get all asset to elastic
-   - create get all with filter to elastic
-   
-   - activity logger
-   - runtime logger
-   - handle get table error, 
-
-   - api get menu by role
-   - adding midleware jwt to controller
-
-# next development
-   - module user integration register with google or email,
-   - create whitelist asset
-   - mobile infolelang
-   - notification created asset to approvals
-   - integration geotaging google maps
-   - get all status, name and desc
- ==========================================================
 
 
  ### ORM
@@ -261,3 +242,29 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
      	return true, asset.db.DB.Save(&request).Error
  }
  ``` 
+
+  # UNDONE  ====================================== 
+   - create get all asset to elastic
+   - create get all with filter to elastic
+   
+   - activity logger
+   - runtime logger
+   - handle get table error, 
+
+   - api get menu by role , 
+        # get Menu done, by role not done
+   - adding midleware jwt to controller | for admin only
+   - adding golang scheduler manager
+   - build to docker
+
+# next development
+   - module user integration register with google or email,
+   - create whitelist asset
+   - mobile infolelang
+   - notification created asset to approvals
+   - integration geotaging google maps
+   - get all status, name and desc
+ ==========================================================
+
+bripsb
+P@ssw0rd113

@@ -43,42 +43,6 @@ Trying to implement clean architecture with gin framework.
 - [x] Dockerize Application with Debugging Support Enabled. Debugger runs at `5002`. Vs code configuration is at `.vscode/launch.json` which will attach debugger to remote application.
 
 
-### Eform Gateway Checklist
-- [x] CreateTransaction
-      - Insert:
-        - validasi prefix misal harus 5 huruf, validasi date format yyyy-mm-dd
-      - fields request body
-        - appname
-        - data 
-          - datanya bentuk json dari request
-        - prefix
-        - expired date
-      - generate reference code
-- [x] UpdateToExecuted
-      - create index transactionExecuteds and remove index transactions
-- [x] Inquiry search by reference number
-      - inquery where reference_code and status = Open
-      - Note : 
-      - [x] querynya baru by ref_code,
-- [x] Cronjob update expired date by timestime, Not including this service api, registered on crontab linux
-      - search index where documen if expired_date = now , create to transactionExpireds and delete index from transactions
-- [x] crontjob remove index reference_sequence
-- [x] revisi code to status http
-- [ ] Create TDD testing random refcode loop sejuta
-- [ ] Create cmd docker
-      - [ ] check connection elasticsearch
-      - [ ] check connection mysql
-- [ ] create endpoint to update env with authorization
-### Feature Eform
-- index elastic, 
-  - logs
-  - transaction
-    - appname, object, prefix, expired date, reference_code, status
-        - status 
-            - Open,
-            - Expired 
-            - Executed
-
 ### Elasticsearch Reference
 http://www.inanzzz.com/index.php/post/6drl/a-simple-elasticsearch-crud-example-in-golang
 https://github.com/codenoid/golang-elasticsearch-crud
