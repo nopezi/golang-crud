@@ -86,8 +86,8 @@ func (banner BannerRepository) Store(request *models.Banner) (responses models.B
 // StoreBannerImage implements BannerDefinition
 func (banner BannerRepository) StoreBannerImage(request *models.BannerRequest) (responses bool, err error) {
 	err = banner.db.DB.Save(&models.BannerImage{
-		BannerID:      request.BannerID,
-		BannerImageID: request.BannerImageID,
+		BannerID: request.BannerID,
+		ImageID:  request.ImageID,
 	}).Error
 	fmt.Println(err)
 	return true, err

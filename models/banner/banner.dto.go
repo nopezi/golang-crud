@@ -5,11 +5,11 @@ import (
 )
 
 type BannerRequest struct {
-	ID            int64                  `json:"id"`
-	BannerName    string                 `json:"banner_name"`
-	BannerID      int64                  `json:"banner_id"`
-	BannerImageID int64                  `json:"banner_image_id"`
-	Images        []images.ImagesRequest `json:"images"`
+	ID         int64                  `json:"id"`
+	BannerName string                 `json:"banner_name"`
+	BannerID   int64                  `json:"banner_id"`
+	ImageID    int64                  `json:"image_id"`
+	Images     []images.ImagesRequest `json:"images"`
 }
 
 type BannerImageRequest struct {

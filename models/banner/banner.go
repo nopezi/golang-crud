@@ -8,7 +8,7 @@ type Banner struct {
 }
 
 type BannerImage struct {
-	ID            int64
-	BannerID      int64
-	BannerImageID int64
+	ID       int64
+	BannerID int64
+	ImageID  int64
 }

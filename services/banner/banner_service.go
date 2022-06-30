@@ -104,8 +104,8 @@ func (banner BannerService) Store(request *models.BannerRequest) (status bool, e
 		}
 
 		_, err = banner.repository.StoreBannerImage(&models.BannerRequest{
-			BannerID:      banners.ID,
-			BannerImageID: image.ID,
+			BannerID: banners.ID,
+			ImageID:  image.ID,
 		})
 
 		if err != nil {
