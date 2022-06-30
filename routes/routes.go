@@ -24,6 +24,7 @@ var Module = fx.Options(
 	fx.Provide(NewVehicleColorRoutes),
 	fx.Provide(NewVehicleTransmissionRoutes),
 	fx.Provide(NewCifRoutes),
+	fx.Provide(NewBannerRoutes),
 )
 
 // Routes contains multiple routes
@@ -55,6 +56,7 @@ func NewRoutes(
 	vehicleColor VehicleColorRoutes,
 	vehicleTransmission VehicleTransmissionRoutes,
 	cif CifRoutes,
+	banner BannerRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -76,6 +78,7 @@ func NewRoutes(
 		vehicleColor,
 		vehicleTransmission,
 		cif,
+		banner,
 	}
 }
 

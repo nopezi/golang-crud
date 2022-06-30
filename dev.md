@@ -244,8 +244,8 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
  ``` 
 
   # UNDONE  ====================================== 
-   - create get all asset to elastic
-   - create get all with filter to elastic
+   - create get all asset to elastic done endpoint , riset query
+   - create get all with filter to elastic done endpoint , riset query
    
    - activity logger
    - runtime logger
@@ -265,6 +265,3 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
    - integration geotaging google maps
    - get all status, name and desc
  ==========================================================
-
-bripsb
-P@ssw0rd113
