@@ -22,7 +22,7 @@ func (s UserRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/user")
 	// .Use(s.authMiddleware.Handler())
 	{
-		// api.POST("/login", s.userController.Login)
+		api.POST("/login", s.userController.Login)
 		// api.GET("/getAll", s.userController.GetUser)
 		// api.GET("/getOne/:id", s.userController.GetOneUser)
 		// api.POST("/store", s.userController.SaveUser)
