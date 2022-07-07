@@ -253,7 +253,7 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
 
    - api get menu by role , 
         # get Menu done, by role not done
-   - adding midleware jwt to controller | for admin only
+   <!-- - adding midleware jwt to controller | for admin only -->
    - adding golang scheduler manager
    - build to docker
 

@@ -104,37 +104,37 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 			return responses, err
 		}
 
-		// statusResponseSession := responseObjectSession["success"]
-		// dataResponseSession := responseObjectSession["message"]
-		// fmt.Println("statusResponseSession", statusResponseSession)
-		// fmt.Println("dataResponseSession", dataResponseSession)
+		statusResponseSession := responseObjectSession["success"]
+		dataResponseSession := responseObjectSession["message"]
+		fmt.Println("statusResponseSession", statusResponseSession)
 		fmt.Println("==================================================")
+		fmt.Println("responseObjectSession", responseObjectSession)
 		fmt.Println("Login Pekerja Incognito=====================================")
 
 		responses = models.UserSessionIncognito{
-			PERNR:      responseObjectSession["success"].(map[string]interface{})["PERNR"].(string),
-			WERKS:      responseObjectSession["success"].(map[string]interface{})["WERKS"].(string),
-			BTRTL:      responseObjectSession["success"].(map[string]interface{})["BTRTL"].(string),
-			KOSTL:      responseObjectSession["success"].(map[string]interface{})["KOSTL"].(string),
-			ORGEH:      responseObjectSession["success"].(map[string]interface{})["ORGEH"].(string),
-			ORGEHPGS:   responseObjectSession["success"].(map[string]interface{})["ORGEHPGS"].(string),
-			STELL:      responseObjectSession["success"].(map[string]interface{})["STELL"].(string),
-			SNAME:      responseObjectSession["success"].(map[string]interface{})["SNAME"].(string),
-			WERKSTX:    responseObjectSession["success"].(map[string]interface{})["WERKSTX"].(string),
-			BTRTLTX:    responseObjectSession["success"].(map[string]interface{})["BTRTLTX"].(string),
-			KOSTLTX:    responseObjectSession["success"].(map[string]interface{})["KOSTLTX"].(string),
-			ORGEHTX:    responseObjectSession["success"].(map[string]interface{})["ORGEHTX"].(string),
-			ORGEHPGSTX: responseObjectSession["success"].(map[string]interface{})["ORGEHPGSTX"].(string),
-			STELLTX:    responseObjectSession["success"].(map[string]interface{})["STELLTX"].(string),
-			BRANCH:     responseObjectSession["success"].(map[string]interface{})["BRANCH"].(string),
-			TIPEUKER:   responseObjectSession["success"].(map[string]interface{})["TIPEUKER"].(string),
-			HILFM:      responseObjectSession["success"].(map[string]interface{})["HILFM"].(string),
-			HILFMPGS:   responseObjectSession["success"].(map[string]interface{})["HILFMPGS"].(string),
-			HTEXT:      responseObjectSession["success"].(map[string]interface{})["HTEXT"].(string),
-			HTEXTPGS:   responseObjectSession["success"].(map[string]interface{})["HTEXTPGS"].(string),
-			CORPTITLE:  responseObjectSession["success"].(map[string]interface{})["CORPTITLE"].(string),
+			PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
+			WERKS:      dataResponseSession.(map[string]interface{})["WERKS"].(string),
+			BTRTL:      dataResponseSession.(map[string]interface{})["BTRTL"].(string),
+			KOSTL:      dataResponseSession.(map[string]interface{})["KOSTL"].(string),
+			ORGEH:      dataResponseSession.(map[string]interface{})["ORGEH"].(string),
+			ORGEHPGS:   dataResponseSession.(map[string]interface{})["ORGEH_PGS"].(string),
+			STELL:      dataResponseSession.(map[string]interface{})["STELL"].(string),
+			SNAME:      dataResponseSession.(map[string]interface{})["SNAME"].(string),
+			WERKSTX:    dataResponseSession.(map[string]interface{})["WERKS_TX"].(string),
+			BTRTLTX:    dataResponseSession.(map[string]interface{})["BTRTL_TX"].(string),
+			KOSTLTX:    dataResponseSession.(map[string]interface{})["KOSTL_TX"].(string),
+			ORGEHTX:    dataResponseSession.(map[string]interface{})["ORGEH_TX"].(string),
+			ORGEHPGSTX: dataResponseSession.(map[string]interface{})["ORGEH_PGS_TX"].(string),
+			STELLTX:    dataResponseSession.(map[string]interface{})["STELL_TX"].(string),
+			BRANCH:     dataResponseSession.(map[string]interface{})["BRANCH"].(string),
+			TIPEUKER:   dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string),
+			HILFM:      dataResponseSession.(map[string]interface{})["HILFM"].(string),
+			HILFMPGS:   dataResponseSession.(map[string]interface{})["HILFM_PGS"].(string),
+			HTEXT:      dataResponseSession.(map[string]interface{})["HTEXT"].(string),
+			HTEXTPGS:   dataResponseSession.(map[string]interface{})["HTEXT_PGS"].(string),
+			CORPTITLE:  dataResponseSession.(map[string]interface{})["CORP_TITLE"].(string),
 		}
-		s.logger.Zap.Info(responses)
+		s.logger.Zap.Info("Incognito", responses)
 		return responses, err
 	} else {
 		s.logger.Zap.Info("Login Normal")
