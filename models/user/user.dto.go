@@ -10,6 +10,16 @@ type Login struct {
 	ClientSecret string `json:"clientsecret"`
 }
 
+type MenuRequest struct {
+	Search    string `json:"search"`
+	Order     string `json:"order"`
+	Sort      string `json:"sort"`
+	Limit     int    `json:"limit"`
+	Page      int    `json:"page"`
+	LevelUker string `json:"levelUker"`
+	LevelID   string `json:"levelId"`
+}
+
 type UserSession struct {
 	PERNR      string `json:"PERNR"`
 	NIP        string `json:"NIP"`

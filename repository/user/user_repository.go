@@ -63,16 +63,13 @@ func (r UserRepository) Delete(id uint) error {
 }
 
 // GetOneAsset implements AssetAccessPlaceDefinition
-func (u UserRepository) GetMenu() (responses models.Menus, err error) {
+func (u UserRepository) GetMenu(request models.MenuRequest) (responses models.Menus, err error) {
 	rows, err := u.db.DB.Raw(`
-	SELECT DISTINCT m.* FROM mst_menu m INNER JOIN 
-	mst_access_menu n ON m.IDMenu=n.IDMenu WHERE m.
-	RoleAccess=1 AND m.Status=1 AND m.IDParent = 0 AND (
-	(n.LevelUker='' AND n.LevelID='') OR (n.
-	LevelUker='ALL' AND n.LevelID='ALL') OR (n.
-	LevelUker='ALL' AND n.LevelID='') OR (n.
-	LevelUker='' AND n.LevelID='ALL')) 
-	ORDER BY IDMenu ASC`).Rows()
+	SELECT DISTINCT m.* FROM mst_menu m INNER JOIN mst_access_menu n 
+	ON m.IDMenu=n.IDMenu WHERE m.RoleAccess=1 AND m.Status=1 AND m.IDParent = 0 
+	AND ((n.LevelUker='` + request.LevelUker + `' AND n.LevelID='` + request.LevelID + `') 
+	OR (n.LevelUker='ALL' AND n.LevelID='ALL') OR (n.LevelUker='ALL' 
+	AND n.LevelID='` + request.LevelID + `') OR (n.LevelUker='` + request.LevelUker + `' AND n.LevelID='ALL')) AND LOWER(m.Title)`).Rows()
 
 	defer rows.Close()
 
@@ -85,10 +82,16 @@ func (u UserRepository) GetMenu() (responses models.Menus, err error) {
 }
 
 // GetOneAsset implements AssetAccessPlaceDefinition
-func (u UserRepository) GetChildMenu(menuID int64) (responses []models.ChildMenuResponse, err error) {
+func (u UserRepository) GetChildMenu(menuID int64, request models.MenuRequest) (responses []models.ChildMenuResponse, err error) {
 	rows, err := u.db.DB.Raw(`
-	SELECT Title, Url, Icon 
-	FROM mst_menu WHERE IDParent = ?`, menuID).Rows()
+	SELECT Title, Url, Icon FROM mst_menu m 
+	INNER JOIN mst_access_menu n ON m.IDMenu=n.IDMenu 
+	WHERE m.RoleAccess=1 AND m.Status=1 AND
+	m.IDParent = ? AND ((n.LevelUker='`+request.LevelUker+
+		`' AND n.LevelID='`+request.LevelID+`') OR (n.LevelUker='ALL' 
+	AND n.LevelID='ALL') OR (n.LevelUker='ALL' AND n.LevelID='`+
+		request.LevelID+`') OR (n.LevelUker='`+request.LevelUker+
+		`' AND n.LevelID='ALL'))`, menuID).Rows()
 
 	defer rows.Close()
 

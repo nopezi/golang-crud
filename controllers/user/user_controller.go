@@ -187,7 +187,16 @@ func (u UserController) DeleteUser(c *gin.Context) {
 }
 
 func (u UserController) GetMenu(c *gin.Context) {
-	menus, err := u.service.GetMenu()
+	request := models.MenuRequest{}
+
+	if err := c.Bind(&request); err != nil {
+		u.logger.Zap.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error bind JSON": err.Error(),
+		})
+		return
+	}
+	menus, err := u.service.GetMenu(request)
 	if err != nil {
 		u.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
