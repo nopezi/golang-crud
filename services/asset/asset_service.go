@@ -671,7 +671,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 
 	//===================== Approve Signer =====================
 	case "approve signer":
-
+		statusUpdate := false
 		if request.TypePublish == "publish" {
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
 				ID:            request.ID,
@@ -699,7 +699,11 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 
 			if err != nil {
 				asset.logger.Zap.Error(err)
+				statusUpdate = false
 				return false, err
+			}
+			if status {
+				statusUpdate = true
 			}
 
 			// approval
@@ -718,20 +722,42 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 					UpdatedAt:      &timeNow})
 			if err != nil {
 				asset.logger.Zap.Error(err)
+				statusUpdate = false
 				return false, err
+			} else {
+				statusUpdate = true
 			}
 
 			getOneAsset, err := asset.GetOne(request.ID)
 
-			fmt.Println("getOneAsset", getOneAsset)
-			_, err = asset.assetRepo.StoreElastic(getOneAsset)
-
 			if err != nil {
 				asset.logger.Zap.Error(err)
+				statusUpdate = false
 				return false, err
+			} else {
+				statusUpdate = true
 			}
 
-			return true, err
+			fmt.Println("getOneAsset")
+			status, err = asset.assetRepo.StoreElastic(getOneAsset)
+
+			fmt.Println("status elastic", status)
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				statusUpdate = false
+				return false, err
+			}
+			if status {
+				statusUpdate = true
+			} else {
+				statusUpdate = false
+			}
+
+			if statusUpdate {
+				return true, err
+			} else {
+				return false, err
+			}
 
 		} else if request.TypePublish == "unpublish" {
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{

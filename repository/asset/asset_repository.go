@@ -537,12 +537,13 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 
 func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (response bool, err error) {
 	documentID := lib.UUID(false)
-	store, err := asset.elastic.Store(elastic.RequestElastic{
+	// fmt.Println(request)
+	store, err := asset.elasticsearch.Store(lib.RequestElastic{
 		DocumentID: documentID,
 		Index:      "assets",
 		Body:       request,
 	})
-
+	// fmt.Println(err)
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return false, err
@@ -564,9 +565,11 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (
 		if !update || err != nil {
 			return false, err
 		}
+		return true, err
+	} else {
+		return false, err
 	}
 
-	return true, err
 }
 
 func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error) {

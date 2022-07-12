@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"reflect"
@@ -82,11 +83,21 @@ func (e Elasticsearch) Store(request RequestElastic) (response bool, err error) 
 	defer cancel()
 
 	res, err := req.Do(ctx, e.Client)
+	fmt.Println(res)
 	if err != nil {
+		fmt.Println("error", reflect.TypeOf(err))
 		e.zapLogger.Zap.Error(err)
 		return false, err
 	}
+	errExeeded := fmt.Sprint(err)
+	if errExeeded == "context.deadlineExceededError" {
+		fmt.Println("error", err)
+		e.zapLogger.Zap.Error(err)
+		return false, err
+	}
+
 	defer res.Body.Close()
+	fmt.Println(res)
 
 	if res.IsError() {
 		e.zapLogger.Zap.Error(res.String())
