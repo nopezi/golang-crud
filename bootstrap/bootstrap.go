@@ -2,11 +2,10 @@ package bootstrap
 
 import (
 	"context"
-
 	"infolelang/controllers"
+	cronjob "infolelang/jobs"
 	"infolelang/lib"
 	env "infolelang/lib/env"
-
 	"infolelang/middlewares"
 	"infolelang/repository"
 	"infolelang/routes"
@@ -67,6 +66,15 @@ func bootstrap(
 			conn.SetMaxOpenConns(10)
 			connection.SetMaxOpenConns(10)
 			connection.SetMaxIdleConns(10)
+
+			/**
+			* * Concurrent Proccess for parameterize Jobs
+			**/
+			go cronjob.JobsInit(connection)
+			go cronjob.ParameterizeJobsFlagRun(connection)
+			/**
+			* * Concurrent Proccess for parameterize Jobs
+			**/
 
 			go func() {
 				middlewares.Setup()
