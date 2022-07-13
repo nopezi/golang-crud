@@ -246,6 +246,10 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
   # UNDONE  ====================================== 
    - create get all asset to elastic done endpoint , riset query
    - create get all with filter to elastic done endpoint , riset query
+      - filters
+        1. properti
+            - name
+            - addresses.citys`
    
    - activity logger
    - runtime logger
@@ -254,7 +258,7 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
    - api get menu by role , 
         # get Menu done, by role not done
    <!-- - adding midleware jwt to controller | for admin only -->
-   - adding golang scheduler manager
+   - adding golang scheduler manager done
    - build to docker
 
 # next development
