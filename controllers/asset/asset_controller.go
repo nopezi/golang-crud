@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"infolelang/lib"
 	models "infolelang/models/assets"
-
 	services "infolelang/services/asset"
 	"strconv"
 
@@ -63,12 +62,17 @@ func (asset AssetController) GetAssetElastic(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
 		return
 	}
+	if datas == nil {
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
+		return
+	}
 
 	if len(datas) == 0 {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
 		return
 	}
+
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
 }
 

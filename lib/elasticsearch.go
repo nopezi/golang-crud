@@ -11,11 +11,10 @@ import (
 	"reflect"
 	"time"
 
-	Env "gitlab.com/golang-package-library/env"
-	logger "gitlab.com/golang-package-library/logger"
-
 	elastic "github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	Env "gitlab.com/golang-package-library/env"
+	logger "gitlab.com/golang-package-library/logger"
 )
 
 type RequestElastic struct {
@@ -192,40 +191,19 @@ func (e Elasticsearch) Search(request RequestElastic) (response interface{}, err
 	}
 
 	// Print the response status, number of results, and request duration.
+	// e.zapLogger.Zap.Info("Data is empty!!")
 	log.Printf(
 		"[%s] %d hits; took: %dms",
 		res.Status(),
 		int(dataTrx["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
 		int(dataTrx["took"].(float64)),
 	)
-
-	// Print the ID and document source for each hit.
-	// fmt.Println("hits =>", dataTrx["hits"].(map[string]interface{})["hits"].([]interface{}))
-	data := dataTrx["hits"].(map[string]interface{})["hits"].([]interface{})
-	// for _, hit := range response.([]interface{}) {
-	// 	log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
-	// 	log.Println(strings.Repeat("=>", 37))
-	// 	source := hit.(map[string]interface{})["_source"]
-	// 	fmt.Println(source)
-	// 	// id := hit.(map[string]interface{})["_id"]
-	// 	// appname := source.(map[string]interface{})["appname"]
-	// 	// data := source.(map[string]interface{})["data"]
-	// 	// prefix := source.(map[string]interface{})["prefix"]
-	// 	// expiredDate := source.(map[string]interface{})["expiredDate"]
-	// 	// referenceCode := source.(map[string]interface{})["referenceCode"]
-	// 	// status := source.(map[string]interface{})["status"]
-	// 	// created := source.(map[string]interface{})["created"]
-	// 	// lastUpdate := source.(map[string]interface{})["lastUpdate"]
-
-	// }
-	// fmt.Println(data)
-
-	count := reflect.ValueOf(data)
-	if count.Len() == 0 {
-		e.zapLogger.Zap.Info("Data is empty!!")
+	total := dataTrx["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)
+	log.Println(int(total))
+	if total == 0 {
 		return response, err
 	}
-
+	data := dataTrx["hits"].(map[string]interface{})["hits"].([]interface{})
 	return data, err
 }
 

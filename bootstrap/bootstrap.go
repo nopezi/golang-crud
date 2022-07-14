@@ -71,7 +71,7 @@ func bootstrap(
 			* * Concurrent Proccess for parameterize Jobs
 			**/
 			go cronjob.JobsInit(connection)
-			go cronjob.ParameterizeJobsFlagRun(connection)
+			// go cronjob.ParameterizeJobsFlagRun(connection)
 			/**
 			* * Concurrent Proccess for parameterize Jobs
 			**/

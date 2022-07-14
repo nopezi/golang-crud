@@ -249,7 +249,7 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
       - filters
         1. properti
             - name
-            - addresses.citys`
+            - addresses.city
    
    - activity logger
    - runtime logger

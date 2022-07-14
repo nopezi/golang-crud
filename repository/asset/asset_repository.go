@@ -3,18 +3,15 @@ package asset
 import (
 	"fmt"
 	"infolelang/lib"
+	access "infolelang/models/access_places"
 	address "infolelang/models/addresses"
 	models "infolelang/models/assets"
-
-	access "infolelang/models/access_places"
 	// approval "infolelang/models/approvals"
 	building "infolelang/models/building_assets"
 	contact "infolelang/models/contacts"
 	facility "infolelang/models/facilities"
-
 	image "infolelang/models/images"
 	vehicle "infolelang/models/vehicle_assets"
-
 	"log"
 	"math"
 	"strings"
@@ -96,7 +93,11 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		asset.logger.Zap.Error(err)
 		return responses, err
 	}
-	// fmt.Println(result)
+	// fmt.Println("elastic", result)
+	if result == nil {
+		return responses, err
+	}
+
 	for _, hit := range result.([]interface{}) {
 		// log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 		log.Println(strings.Repeat("=>", 37))
@@ -248,15 +249,6 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 			Images:          Images,
 		})
 
-		// fmt.Println("responses", responses)
-		// fmt.Println("===============================")
-		// fmt.Println(Addresses)
-		// fmt.Println(BuildingAssets)
-		// fmt.Println(VehicleAssets)
-		// fmt.Println(Facilities)
-		// fmt.Println(AccessPlaces)
-		// fmt.Println(Contacts)
-		// fmt.Println(Images)
 	}
 
 	if err != nil {
