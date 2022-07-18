@@ -257,9 +257,9 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
 
    - api get menu by role , 
         # get Menu done, by role not done
-   <!-- - adding midleware jwt to controller | for admin only -->
    - adding golang scheduler manager done
    - build to docker
+   - prepare icon facilities, access places
 
 # next development
    - module user integration register with google or email,
@@ -269,3 +269,9 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
    - integration geotaging google maps
    - get all status, name and desc
  ==========================================================
+
+# New Stack
+- Schema retry coding
+  - https://stackoverflow.com/questions/67069723/keep-retrying-a-function-in-golang
+  - https://upgear.io/blog/simple-golang-retry-function/
+    - disetiap ada integrasi api keluar berikan retry

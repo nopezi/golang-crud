@@ -65,7 +65,7 @@ func (address AddressRepository) GetOne(id int64) (responses models.AddressesRes
 func (address AddressRepository) GetOneAsset(id int64) (responses models.AddressesResponse, err error) {
 
 	return responses, address.db.DB.Raw(`
-		select a.id, 
+		SELECT a.id, 
 		a.asset_id,
 		a.address, 
 		a.longitude, 
@@ -79,9 +79,9 @@ func (address AddressRepository) GetOneAsset(id int64) (responses models.Address
 		rpc.province,
 		a.created_at,
 		a.updated_at
-		from addresses a 
-		left join ref_postal_code rpc on a.postalcode_id = rpc.id
-		where asset_id = ?`, id).Find(&responses).Error
+		FROM addresses a 
+		LEFT JOIN ref_postal_code rpc on a.postalcode_id = rpc.id
+		WHERE asset_id = ?`, id).Find(&responses).Error
 }
 
 // Store implements AddressDefinition

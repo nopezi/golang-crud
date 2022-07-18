@@ -58,12 +58,52 @@ func (buildingAsset BuildingAssetRepository) GetAll() (responses []models.Buildi
 
 // GetOne implements BuildingAssetDefinition
 func (buildingAsset BuildingAssetRepository) GetOne(id int64) (responses models.BuildingAssetsResponse, err error) {
-	return responses, buildingAsset.db.DB.Where("id = ?", id).Find(&responses).Error
+	return responses, buildingAsset.db.DB.Raw(`
+		SELECT
+		ba.id,
+		ba.asset_id,
+		ba.certificate_type_id,
+		ct.name certificate_type_name,
+		ba.certificate_number,
+		ba.build_year,
+		ba.surface_area,
+		ba.building_area,
+		ba.direction,
+		ba.number_of_floors,
+		ba.number_of_bedrooms,
+		ba.number_of_bathrooms,
+		ba.electrical_power,
+		ba.carport,
+		ba.created_at,
+		ba.updated_at
+		FROM building_assets ba 
+		JOIN certificate_type ct on ba.certificate_type_id  = ct.id 
+		WHERE  ba.asset_id = ? `, id).Find(&responses).Error
 }
 
 // GetOneAsset implements BuildingAssetDefinition
 func (buildingAsset BuildingAssetRepository) GetOneAsset(id int64) (responses models.BuildingAssetsResponse, err error) {
-	return responses, buildingAsset.db.DB.Where("asset_id = ?", id).Find(&responses).Error
+	return responses, buildingAsset.db.DB.Raw(`
+	SELECT
+	ba.id,
+	ba.asset_id,
+	ba.certificate_type_id,
+	ct.name certificate_type_name,
+	ba.certificate_number,
+	ba.build_year,
+	ba.surface_area,
+	ba.building_area,
+	ba.direction,
+	ba.number_of_floors,
+	ba.number_of_bedrooms,
+	ba.number_of_bathrooms,
+	ba.electrical_power,
+	ba.carport,
+	ba.created_at,
+	ba.updated_at
+	FROM building_assets ba 
+	JOIN certificate_type ct on ba.certificate_type_id  = ct.id 
+	WHERE  ba.asset_id = ? `, id).Find(&responses).Error
 }
 
 // Store implements BuildingAssetDefinition

@@ -58,7 +58,39 @@ func (vehicleAsset VehicleAssetRepository) GetAll() (responses []models.VehicleA
 
 // GetOne implements VehicleAssetDefinition
 func (vehicleAsset VehicleAssetRepository) GetOne(id int64) (responses models.VehicleAssetsResponse, err error) {
-	return responses, vehicleAsset.db.DB.Where("id = ?", id).Find(&responses).Error
+	return responses, vehicleAsset.db.DB.Raw(`
+		SELECT
+		va.id,
+		va.asset_id,
+		va.vehicle_type,
+		va.certificate_type_id,
+		va.certificate_number,
+		va.series,
+		va.brand_id,
+		va.type,
+		va.production_year,
+		va.transmission_id,
+		va.machine_capacity_id,
+		va.color_id,
+		va.number_of_seat,
+		va.number_of_usage,
+		va.machine_number,
+		va.body_number,
+		va.licence_date,
+		va.created_at,
+		va.updated_at,
+		ct.name certificate_type_name,
+		vb.name brand_name,
+		vt.name transmission_name,
+		vc.name machine_capacity_name,
+		vc2.name color_name
+		from vehicle_assets va 
+		left join certificate_type ct on va.certificate_type_id = ct.id 
+		left join vehicle_brand vb on va.brand_id = vb.id 
+		left join vehicle_transmission vt on va.transmission_id = vt.id 
+		left join vehicle_capacity vc on va.machine_capacity_id = vc.id 
+		left join vehicle_color vc2 on va.color_id = vc2.id 
+		WHERE va.id = ?`, id).Find(&responses).Error
 }
 
 // GetOneAsset implements VehicleAssetDefinition
@@ -95,7 +127,7 @@ func (vehicleAsset VehicleAssetRepository) GetOneAsset(id int64) (responses mode
 	left join vehicle_transmission vt on va.transmission_id = vt.id 
 	left join vehicle_capacity vc on va.machine_capacity_id = vc.id 
 	left join vehicle_color vc2 on va.color_id = vc2.id 
-	where asset_id = ?`, id).Find(&responses).Error
+	where va.asset_id = ?`, id).Find(&responses).Error
 
 	if err != nil {
 		vehicleAsset.logger.Zap.Error(err)

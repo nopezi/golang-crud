@@ -59,21 +59,29 @@ func (AssetFacility AssetFacilityRepository) GetAll() (responses []models.AssetF
 
 // GetOne implements AssetFacilityDefinition
 func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.AssetFacilitiesResponse, err error) {
-	return responses, AssetFacility.db.DB.Where("id = ?", id).Find(&responses).Error
+	return responses, AssetFacility.db.DB.Raw(`
+			SELECT f.id,f.name, 
+			f.icon , af.status,
+			f.description  from 
+			asset_facilities af 
+			LEFT JOIN facilities f 
+			on af.facility_id  = f.id 
+			WHERE af.id = ? 
+			order by f.id  asc`, id).Find(&responses).Error
 }
 
 // GetOneAsset implements AssetFacilityDefinition
 func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []facilitiesModel.FacilitiesResponse, err error) {
 	// return responses, AssetFacility.db.DB.Where("asset_id = ?", id).Find(&responses).Error
 	rows, err := AssetFacility.db.DB.Raw(`
-	select f.id,f.name, 
-	f.icon , af.status,
-	f.description  from 
-	asset_facilities af 
-	left join facilities f 
-	on af.facility_id  = f.id 
-	where af.asset_id = ? 
-	order by f.id  asc`, id).Rows()
+			SELECT f.id,f.name, 
+			f.icon , af.status,
+			f.description  from 
+			asset_facilities af 
+			LEFT JOIN facilities f 
+			on af.facility_id  = f.id 
+			WHERE af.asset_id = ? 
+			order by f.id  asc`, id).Rows()
 
 	defer rows.Close()
 
