@@ -1,0 +1,1109 @@
+POST assets/_doc/1
+{
+    "id": "1"
+    "form_type": "form-b1",
+    "type": "lelang",
+    "kpknl_id": 52,
+    "auction_date": "2022-06-22",
+    "auction_time": "14:00",
+    "auction_time_hour": "14",
+    "auction_time_minute": "00",
+    "auction_link": "https://confluence.bri.co.id/pages/viewpage.action?pageId=192605829",
+    "category_id": 1,
+    "sub_category_id": 1,
+    "name": "Rumah 4 lantai 1",
+    "price": 120000033,
+    "description": "Rumah 4 lantai daerah Bandung",
+    "addresses": {
+
+        "id":1,
+        "asset_id": 1,
+        "address": "Jl. Diponegoro No.22, Citarum, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40115",
+        "longitude": "-6.902471590707224",
+        "langitude": "107.61866696810122"
+        "longlat":"-6.902471590707224, 107.61866696810122",
+        "postalcode_id": 2,
+        "postal_code":"57152",
+        "region":"JAYENGAN KEL.            ",
+        "district":"SERENGAN                 ",
+        "city":"SURAKARTA (SOLO) KOT.    ",
+        "province":"JAWA TENGAH              ",
+        "created_at":"2022-06-10 13:38:52",
+        "updated_at":"",
+    },
+    "building_assets": {
+        "certificate_type_id": 3,
+        "certificate_number": "SHM.000001-003",
+        "build_year": 2016,
+        "burface_area": 1000,
+        "building_area": 1200,
+        "derection": "barat",
+        "number_of_floors": 4,
+        "number_of_bedrooms": 6,
+        "number_of_bathrooms": 4,
+        "electrical_power": 120000,
+        "carport": 3
+    },
+    "facilities": [
+        {
+            "id": 1,
+            "name": "Furnised",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 2,
+            "name": "Sambungan telepon",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 3,
+            "name": "Kolam renang",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 4,
+            "name": "Parkir / Carpot",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 5,
+            "name": "Keamanan",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 6,
+            "name": "Lift",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 7,
+            "name": "Garasi",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 8,
+            "name": "Gym",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 9,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "access_places": [
+        {
+            "id": 1,
+            "name": "Rumah Sakit",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 2,
+            "name": "Jalan Tol",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 3,
+            "name": "Sekolah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 4,
+            "name": "Mall",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 5,
+            "name": "Bank/ATM",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 6,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 7,
+            "name": "Pasarv",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 8,
+            "name": "Farmasi",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 9,
+            "name": "Rumah Ibadah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 10,
+            "name": "Restoran",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 11,
+            "name": "Bioskop",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 12,
+            "name": "Bar",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 13,
+            "name": "Halte",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 14,
+            "name": "Stasiun",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 15,
+            "name": "Bandara",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 16,
+            "name": "SPBU",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 17,
+            "name": "GYM",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "contacts": {
+        "id": "1",
+        "asset_id": "1",
+        "debitur_name": "Randa",
+        "pic_name": "Kemang",
+        "pic_phone": "081289424",
+        "pic_email": "test@gmail.com",
+        "cif": "CIF0004"
+    },
+    "images": [
+        {
+            "filename": "3.jpeg",
+            "path": "infolelang/assets/2022/7/18/3.jpeg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62bd9de8752a5-13695QIH-foto-597939F-1.jpg",
+            "path": "infolelang/assets/2022/7/18/62bd9de8752a5-13695QIH-foto-597939F-1.jpg",
+            "extension": "image/jpg",
+            "size": 117239
+        },
+        {
+            "filename": "62be6b50de9d4-77552LWj-foto-59803529.jpeg",
+            "path": "infolelang/assets/2022/7/18/62be6b50de9d4-77552LWj-foto-59803529.jpeg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62becd3cd7fa0-71326YeJ-foto-59825412.jpeg",
+            "path": "infolelang/assets/2022/7/18/62becd3cd7fa0-71326YeJ-foto-59825412.jpeg",
+            "extension": "image/jpg",
+            "size": 117239
+        }
+    ],
+    "approvals": {
+        "checker_id": "00304155",
+        "checker_desc": "00304155 | Feb'hana Faradilla Bimantari | Teller",
+        "checker_comment": "",
+        "checker_date": "",
+        "signer_id": "00304585",
+        "signer_desc": "00304585 | Bima Ramadhan | Teller",
+        "signer_comment": "",
+        "signer_date": ""
+    }
+}
+
+POST assets/_doc/1
+{
+    "id": "1"
+    "form_type": "form-b1",
+    "type": "lelang",
+    "kpknl_id": 52,
+    "auction_date": "2022-06-22",
+    "auction_time": "14:00",
+    "auction_time_hour": "14",
+    "auction_time_minute": "00",
+    "auction_link": "https://confluence.bri.co.id/pages/viewpage.action?pageId=192605829",
+    "category_id": 1,
+    "sub_category_id": 1,
+    "name": "Rumah 4 lantai 1",
+    "price": 120000000,
+    "description": "Rumah 4 lantai daerah Bandung",
+    "addresses": {
+
+        "id":1,
+        "asset_id": 1,
+        "address": "Jl. Diponegoro No.22, Citarum, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40115",
+        "longitude": "-6.902471590707224",
+        "langitude": "107.61866696810122"
+        "longlat":"-6.902471590707224, 107.61866696810122",
+        "postalcode_id": 2,
+        "postal_code":"57152",
+        "region":"JAYENGAN KEL.            ",
+        "district":"SERENGAN                 ",
+        "city":"SURAKARTA (SOLO) KOT.    ",
+        "province":"JAWA TENGAH              ",
+        "created_at":"2022-06-10 13:38:52",
+        "updated_at":"",
+    },
+    "building_assets": {
+        "certificate_type_id": 3,
+        "certificate_number": "SHM.000001-003",
+        "build_year": 2016,
+        "burface_area": 1000,
+        "building_area": 1200,
+        "derection": "barat",
+        "number_of_floors": 4,
+        "number_of_bedrooms": 6,
+        "number_of_bathrooms": 4,
+        "electrical_power": 120000,
+        "carport": 3
+    },
+    "facilities": [
+        {
+            "id": 1,
+            "name": "Furnised",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 2,
+            "name": "Sambungan telepon",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 3,
+            "name": "Kolam renang",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 4,
+            "name": "Parkir / Carpot",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 5,
+            "name": "Keamanan",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 6,
+            "name": "Lift",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 7,
+            "name": "Garasi",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 8,
+            "name": "Gym",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 9,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "access_places": [
+        {
+            "id": 1,
+            "name": "Rumah Sakit",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 2,
+            "name": "Jalan Tol",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 3,
+            "name": "Sekolah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 4,
+            "name": "Mall",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 5,
+            "name": "Bank/ATM",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 6,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 7,
+            "name": "Pasarv",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 8,
+            "name": "Farmasi",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 9,
+            "name": "Rumah Ibadah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 10,
+            "name": "Restoran",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 11,
+            "name": "Bioskop",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 12,
+            "name": "Bar",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 13,
+            "name": "Halte",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 14,
+            "name": "Stasiun",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 15,
+            "name": "Bandara",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 16,
+            "name": "SPBU",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 17,
+            "name": "GYM",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "contacts": {
+        "id": "1",
+        "asset_id": "1",
+        "debitur_name": "Randa",
+        "pic_name": "Kemang",
+        "pic_phone": "081289424",
+        "pic_email": "test@gmail.com",
+        "cif": "CIF0004"
+    },
+    "images": [
+        {
+            "filename": "62bf05b2decd1-88716EeU-foto-5982762_1.jpgjpeg",
+            "path": "infolelang/assets/2022/7/18/62bf05b2decd1-88716EeU-foto-5982762_1.jpg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62c2576c889dd-66056dVi-foto-59844333.jpeg",
+            "path": "infolelang/assets/2022/7/18/62c2576c889dd-66056dVi-foto-59844333.jpeg",
+            "extension": "image/jpg",
+            "size": 117239
+        },
+        {
+            "filename": "62c259e11e490-21182DuN-foto-598451PM.jpeg",
+            "path": "infolelang/assets/2022/7/18/62c259e11e490-21182DuN-foto-598451PM.jpeg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62c260f79f364-89561NGE-foto-5984697-2.jpg",
+            "path": "infolelang/assets/2022/7/18/62c260f79f364-89561NGE-foto-5984697-2.jpg",
+            "extension": "image/jpg",
+            "size": 117239
+        }
+    ],
+    "approvals": {
+        "checker_id": "00304155",
+        "checker_desc": "00304155 | Feb'hana Faradilla Bimantari | Teller",
+        "checker_comment": "",
+        "checker_date": "",
+        "signer_id": "00304585",
+        "signer_desc": "00304585 | Bima Ramadhan | Teller",
+        "signer_comment": "",
+        "signer_date": ""
+    }
+}
+
+POST assets/_doc/1
+{
+    "id": "1"
+    "form_type": "form-b1",
+    "type": "lelang",
+    "kpknl_id": 52,
+    "auction_date": "2022-06-22",
+    "auction_time": "14:00",
+    "auction_time_hour": "14",
+    "auction_time_minute": "00",
+    "auction_link": "https://confluence.bri.co.id/pages/viewpage.action?pageId=192605829",
+    "category_id": 1,
+    "sub_category_id": 1,
+    "name": "Rumah 4 lantai 1",
+    "price": 120000033,
+    "description": "Rumah 4 lantai daerah Bandung",
+    "addresses": {
+
+        "id":1,
+        "asset_id": 1,
+        "address": "Jl. Diponegoro No.22, Citarum, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40115",
+        "longitude": "-6.902471590707224",
+        "langitude": "107.61866696810122"
+        "longlat":"-6.902471590707224, 107.61866696810122",
+        "postalcode_id": 2,
+        "postal_code":"57152",
+        "region":"JAYENGAN KEL.            ",
+        "district":"SERENGAN                 ",
+        "city":"SURAKARTA (SOLO) KOT.    ",
+        "province":"JAWA TENGAH              ",
+        "created_at":"2022-06-10 13:38:52",
+        "updated_at":"",
+    },
+    "building_assets": {
+        "certificate_type_id": 3,
+        "certificate_number": "SHM.000001-003",
+        "build_year": 2016,
+        "burface_area": 1000,
+        "building_area": 1200,
+        "derection": "barat",
+        "number_of_floors": 4,
+        "number_of_bedrooms": 6,
+        "number_of_bathrooms": 4,
+        "electrical_power": 120000,
+        "carport": 3
+    },
+    "facilities": [
+        {
+            "id": 1,
+            "name": "Furnised",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 2,
+            "name": "Sambungan telepon",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 3,
+            "name": "Kolam renang",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 4,
+            "name": "Parkir / Carpot",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 5,
+            "name": "Keamanan",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 6,
+            "name": "Lift",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 7,
+            "name": "Garasi",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 8,
+            "name": "Gym",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 9,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "access_places": [
+        {
+            "id": 1,
+            "name": "Rumah Sakit",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 2,
+            "name": "Jalan Tol",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 3,
+            "name": "Sekolah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 4,
+            "name": "Mall",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 5,
+            "name": "Bank/ATM",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 6,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 7,
+            "name": "Pasarv",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 8,
+            "name": "Farmasi",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 9,
+            "name": "Rumah Ibadah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 10,
+            "name": "Restoran",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 11,
+            "name": "Bioskop",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 12,
+            "name": "Bar",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 13,
+            "name": "Halte",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 14,
+            "name": "Stasiun",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 15,
+            "name": "Bandara",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 16,
+            "name": "SPBU",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 17,
+            "name": "GYM",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "contacts": {
+        "id": "1",
+        "asset_id": "1",
+        "debitur_name": "Randa",
+        "pic_name": "Kemang",
+        "pic_phone": "081289424",
+        "pic_email": "test@gmail.com",
+        "cif": "CIF0004"
+    },
+    "images": [
+        {
+            "filename": "62c3c0a5aac1e-31154jBG-foto-599004232.jpg",
+            "path": "infolelang/assets/2022/7/18/62c3c0a5aac1e-31154jBG-foto-599004232.jpg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62c454eb0e8ea-54970dDm-foto-599354.png",
+            "path": "infolelang/assets/2022/7/18/62c454eb0e8ea-54970dDm-foto-599354.png",
+            "extension": "image/jpg",
+            "size": 117239
+        },
+        {
+            "filename": "62d00d02ed23f-80707Il0-foto-603473NDA.jpg",
+            "path": "infolelang/assets/2022/7/18/62d00d02ed23f-80707Il0-foto-603473NDA.jpg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62d01c9de9e4f-44895Xw3-foto-603476DAH.jpg",
+            "path": "infolelang/assets/2022/7/18/62d01c9de9e4f-44895Xw3-foto-603476DAH.jpg",
+            "extension": "image/jpg",
+            "size": 117239
+        }
+    ],
+    "approvals": {
+        "checker_id": "00304155",
+        "checker_desc": "00304155 | Feb'hana Faradilla Bimantari | Teller",
+        "checker_comment": "",
+        "checker_date": "",
+        "signer_id": "00304585",
+        "signer_desc": "00304585 | Bima Ramadhan | Teller",
+        "signer_comment": "",
+        "signer_date": ""
+    }
+}
+
+POST assets/_doc/1
+{
+    "id": "1"
+    "form_type": "form-b1",
+    "type": "lelang",
+    "kpknl_id": 52,
+    "auction_date": "2022-06-22",
+    "auction_time": "14:00",
+    "auction_time_hour": "14",
+    "auction_time_minute": "00",
+    "auction_link": "https://confluence.bri.co.id/pages/viewpage.action?pageId=192605829",
+    "category_id": 1,
+    "sub_category_id": 1,
+    "name": "Rumah 4 lantai 1",
+    "price": 120000033,
+    "description": "Rumah 4 lantai daerah Bandung",
+    "addresses": {
+
+        "id":1,
+        "asset_id": 1,
+        "address": "Jl. Diponegoro No.22, Citarum, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40115",
+        "longitude": "-6.902471590707224",
+        "langitude": "107.61866696810122"
+        "longlat":"-6.902471590707224, 107.61866696810122",
+        "postalcode_id": 2,
+        "postal_code":"57152",
+        "region":"JAYENGAN KEL.            ",
+        "district":"SERENGAN                 ",
+        "city":"SURAKARTA (SOLO) KOT.    ",
+        "province":"JAWA TENGAH              ",
+        "created_at":"2022-06-10 13:38:52",
+        "updated_at":"",
+    },
+    "building_assets": {
+        "certificate_type_id": 3,
+        "certificate_number": "SHM.000001-003",
+        "build_year": 2016,
+        "burface_area": 1000,
+        "building_area": 1200,
+        "derection": "barat",
+        "number_of_floors": 4,
+        "number_of_bedrooms": 6,
+        "number_of_bathrooms": 4,
+        "electrical_power": 120000,
+        "carport": 3
+    },
+    "facilities": [
+        {
+            "id": 1,
+            "name": "Furnised",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 2,
+            "name": "Sambungan telepon",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 3,
+            "name": "Kolam renang",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 4,
+            "name": "Parkir / Carpot",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 5,
+            "name": "Keamanan",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 6,
+            "name": "Lift",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 7,
+            "name": "Garasi",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 8,
+            "name": "Gym",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 9,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "access_places": [
+        {
+            "id": 1,
+            "name": "Rumah Sakit",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 2,
+            "name": "Jalan Tol",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 3,
+            "name": "Sekolah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 4,
+            "name": "Mall",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 5,
+            "name": "Bank/ATM",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 6,
+            "name": "Taman",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 7,
+            "name": "Pasarv",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 8,
+            "name": "Farmasi",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 9,
+            "name": "Rumah Ibadah",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 10,
+            "name": "Restoran",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 11,
+            "name": "Bioskop",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 12,
+            "name": "Bar",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 13,
+            "name": "Halte",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 14,
+            "name": "Stasiun",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 15,
+            "name": "Bandara",
+            "icon": "",
+            "description": "",
+            "status": false
+        },
+        {
+            "id": 16,
+            "name": "SPBU",
+            "icon": "",
+            "description": "",
+            "status": true
+        },
+        {
+            "id": 17,
+            "name": "GYM",
+            "icon": "",
+            "description": "",
+            "status": true
+        }
+    ],
+    "contacts": {
+        "id": "1",
+        "asset_id": "1",
+        "debitur_name": "Randa",
+        "pic_name": "Kemang",
+        "pic_phone": "081289424",
+        "pic_email": "test@gmail.com",
+        "cif": "CIF0004"
+    },
+    "images": [
+        {
+            "filename": "62d0fb2dedf00-96405pl3-foto-603813ANI.jpg",
+            "path": "infolelang/assets/2022/7/18/62d0fb2dedf00-96405pl3-foto-603813ANI.jpg",
+            "extension": "image/jpg",
+            "size": 87836
+        },
+        {
+            "filename": "62d2746d4ec59-33812PMG-foto-604108war.png",
+            "path": "infolelang/assets/2022/7/18/62d2746d4ec59-33812PMG-foto-604108war.png",
+            "extension": "image/jpg",
+            "size": 117239
+        },
+        {
+            "filename": "62d2a6ff1bd22-22446FOw-foto-60412500.jpeg",
+            "path": "infolelang/assets/2022/7/18/62d2a6ff1bd22-22446FOw-foto-60412500.jpeg",
+            "extension": "image/jpg",
+            "size": 87836
+        }
+    ],
+    "approvals": {
+        "checker_id": "00304155",
+        "checker_desc": "00304155 | Feb'hana Faradilla Bimantari | Teller",
+        "checker_comment": "",
+        "checker_date": "",
+        "signer_id": "00304585",
+        "signer_desc": "00304585 | Bima Ramadhan | Teller",
+        "signer_comment": "",
+        "signer_date": ""
+    }
+}
