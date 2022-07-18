@@ -18,21 +18,22 @@ type BuildingAssetsRequest struct {
 }
 
 type BuildingAssetsResponse struct {
-	ID                int64   `json:"id"`
-	AssetID           int64   `json:"asset_id"`
-	CertificateTypeID int64   `json:"certificate_type_id"`
-	CertificateNumber string  `json:"certificate_number"`
-	BuildYear         int64   `json:"build_year"`
-	SurfaceArea       int64   `json:"burface_area"`
-	BuildingArea      int64   `json:"building_area"`
-	Direction         string  `json:"direction"`
-	NumberOfFloors    int64   `json:"number_of_floors"`
-	NumberOfBedrooms  int64   `json:"number_of_bedrooms"`
-	NumberOfBathrooms int64   `json:"number_of_bathrooms"`
-	ElectricalPower   int64   `json:"electrical_power"`
-	Carport           int64   `json:"carport"`
-	CreatedAt         *string `json:"created_at"`
-	UpdatedAt         *string `json:"updated_at"`
+	ID                  int64   `json:"id"`
+	AssetID             int64   `json:"asset_id"`
+	CertificateTypeID   int64   `json:"certificate_type_id"`
+	CertificateTypeName int64   `json:"certificate_type_name"`
+	CertificateNumber   string  `json:"certificate_number"`
+	BuildYear           int64   `json:"build_year"`
+	SurfaceArea         int64   `json:"burface_area"`
+	BuildingArea        int64   `json:"building_area"`
+	Direction           string  `json:"direction"`
+	NumberOfFloors      int64   `json:"number_of_floors"`
+	NumberOfBedrooms    int64   `json:"number_of_bedrooms"`
+	NumberOfBathrooms   int64   `json:"number_of_bathrooms"`
+	ElectricalPower     int64   `json:"electrical_power"`
+	Carport             int64   `json:"carport"`
+	CreatedAt           *string `json:"created_at"`
+	UpdatedAt           *string `json:"updated_at"`
 }
 
 func (p BuildingAssetsRequest) ParseRequest() BuildingAssets {

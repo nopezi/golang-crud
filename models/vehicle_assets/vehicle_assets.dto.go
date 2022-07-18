@@ -45,6 +45,7 @@ type VehicleAssetsResponse struct {
 	LicenceDate         string  `json:"licence_date"`
 	CreatedAt           *string `json:"created_at"`
 	UpdatedAt           *string `json:"updated_at"`
+	CertificateTypeName string  `json:"certificate_type_name"`
 	BrandName           string  `json:"brand_name"`
 	TransmissionName    string  `json:"transmission_name"`
 	MachineCapacityName string  `json:"machine_capacity_name"`
