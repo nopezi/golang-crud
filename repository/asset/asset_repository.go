@@ -6,6 +6,7 @@ import (
 	access "infolelang/models/access_places"
 	address "infolelang/models/addresses"
 	models "infolelang/models/assets"
+
 	// approval "infolelang/models/approvals"
 	building "infolelang/models/building_assets"
 	contact "infolelang/models/contacts"
@@ -227,7 +228,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 			FormType:        source.(map[string]interface{})["form_type"].(string),
 			Type:            source.(map[string]interface{})["type"].(string),
 			KpknlID:         int64(source.(map[string]interface{})["kpknl_id"].(float64)),
-			AuctionDate:     source.(map[string]interface{})["auction_date"].(string),
+			AuctionDate:     source.(map[string]interface{})["auction_date"].(*string),
 			AuctionTime:     source.(map[string]interface{})["auction_time"].(string),
 			AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
 			CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),
@@ -407,6 +408,21 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 		}
 	}
 
+	if request.Status != "" {
+		where += " AND ast.status = '" + request.Status + "'"
+		whereCount += " AND ast.status = '" + request.Status + "'"
+	}
+
+	if request.Published != "" {
+		where += " AND ast.published = '" + request.Published + "'"
+		whereCount += " AND ast.published = '" + request.Published + "'"
+	}
+
+	if request.Deleted != "" {
+		where += " AND ast.deleted = '" + request.Deleted + "'"
+		whereCount += " AND ast.deleted = '" + request.Deleted + "'"
+	}
+
 	if request.Name != "" {
 		where += " AND ast.name LIKE '%" + request.Name + "%'"
 		whereCount += " AND ast.name LIKE '%" + request.Name + "%'"
@@ -469,6 +485,11 @@ func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (
 func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error) {
 	where := ""
 	whereCount := ""
+
+	if request.MakerID != "" {
+		where += " AND ast.last_maker_id = '" + request.MakerID + "'"
+		whereCount += " AND ast.last_maker_id = '" + request.MakerID + "'"
+	}
 
 	if request.Name != "" {
 		where += " AND ast.name LIKE '%" + request.Name + "%'"

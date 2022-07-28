@@ -5,7 +5,7 @@ type Assets struct {
 	FormType      string
 	Type          string
 	KpknlID       int64
-	AuctionDate   string
+	AuctionDate   *string
 	AuctionTime   string
 	AuctionLink   string
 	CategoryID    int64
