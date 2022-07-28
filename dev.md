@@ -243,8 +243,8 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
  }
  ``` 
 
-  # UNDONE  ====================================== 
    - create get all asset to elastic done endpoint , riset query
+  # UNDONE  ====================================== 
    - create get all with filter to elastic done endpoint , riset query
       - filters
         1. properti
@@ -255,11 +255,16 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
    - runtime logger
    - handle get table error, 
 
-   - api get menu by role , 
+   - api get menu by role , user matrix
         # get Menu done, by role not done
    - adding golang scheduler manager done
    - build to docker
    - prepare icon facilities, access places
+   - handle getassetelastic 
+     - access_place, facilities, bisa null di elastic
+   - getOne ada data yg ga ke save, vehicle asset
+   - encryptor response request AES 
+   - 
 
 # next development
    - module user integration register with google or email,
@@ -275,3 +280,4 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
   - https://stackoverflow.com/questions/67069723/keep-retrying-a-function-in-golang
   - https://upgear.io/blog/simple-golang-retry-function/
     - disetiap ada integrasi api keluar berikan retry
+
