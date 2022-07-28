@@ -5,7 +5,7 @@ type AccessPlacesRequest struct {
 	Name        string  `json:"name"`
 	Icon        string  `json:"icon"`
 	Description string  `json:"description"`
-	Status      bool    `json:"status"`
+	Status      string  `json:"status"`
 	CreatedAt   *string `json:"created_at"`
 	UpdatedAt   *string `json:"updated_at"`
 }
@@ -17,30 +17,30 @@ type AccessPlacesResponse struct {
 	Name        string  `json:"name"`
 	Icon        string  `json:"icon"`
 	Description string  `json:"description"`
-	Status      bool    `json:"status"`
+	Status      string  `json:"status"`
 	CreatedAt   *string `json:"created_at"`
 	UpdatedAt   *string `json:"updated_at"`
 }
 
-func (p AccessPlacesRequest) ParseRequest() AccessPlaces {
-	return AccessPlaces{
-		ID:          p.ID,
-		Name:        p.Name,
-		Icon:        p.Icon,
-		Description: p.Description,
-	}
-}
+// func (p AccessPlacesRequest) ParseRequest() AccessPlaces {
+// 	return AccessPlaces{
+// 		ID:          p.ID,
+// 		Name:        p.Name,
+// 		Icon:        p.Icon,
+// 		Description: p.Description,
+// 	}
+// }
 
-func (p AccessPlacesResponse) ParseResponse() AccessPlaces {
-	return AccessPlaces{
-		ID:          p.ID,
-		Name:        p.Name,
-		Icon:        p.Icon,
-		Description: p.Description,
-		CreatedAt:   p.CreatedAt,
-		UpdatedAt:   p.UpdatedAt,
-	}
-}
+// func (p AccessPlacesResponse) ParseResponse() AccessPlaces {
+// 	return AccessPlaces{
+// 		ID:          p.ID,
+// 		Name:        p.Name,
+// 		Icon:        p.Icon,
+// 		Description: p.Description,
+// 		CreatedAt:   p.CreatedAt,
+// 		UpdatedAt:   p.UpdatedAt,
+// 	}
+// }
 
 func (kr AccessPlacesRequest) TableName() string {
 	return "access_places"

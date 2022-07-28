@@ -5,7 +5,7 @@ type AccessPlaces struct {
 	Name        string
 	Icon        string
 	Description string
-	Status      bool
+	Status      string
 	UpdatedAt   *string
 	CreatedAt   *string
 }

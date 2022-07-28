@@ -6,6 +6,7 @@ import (
 	access "infolelang/models/access_places"
 	address "infolelang/models/addresses"
 	models "infolelang/models/assets"
+	"reflect"
 
 	// approval "infolelang/models/approvals"
 	building "infolelang/models/building_assets"
@@ -86,10 +87,12 @@ func (asset AssetRepository) GetAll() (responses []models.AssetsResponse, err er
 
 // GetAll implements AssetDefinition
 func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error) {
+	fmt.Println(request)
 	result, err := asset.elasticsearch.Search(lib.RequestElastic{
 		Index: "assets",
 		Body:  request,
 	})
+
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		return responses, err
@@ -176,11 +179,12 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		Facilities := []facility.FacilitiesResponse{}
 		for _, row := range facilities.([]interface{}) {
 			// rowFacility := row.(map[string]interface{})["facilities"]
+			// fmt.Println("typeof=>", reflect.TypeOf(row.(map[string]interface{})["status"]))
 			Facilities = append(Facilities, facility.FacilitiesResponse{
 				ID:          int64(row.(map[string]interface{})["id"].(float64)),
 				Name:        row.(map[string]interface{})["name"].(string),
 				Icon:        row.(map[string]interface{})["icon"].(string),
-				Status:      row.(map[string]interface{})["status"].(bool),
+				Status:      row.(map[string]interface{})["status"].(string),
 				Description: row.(map[string]interface{})["description"].(string),
 			})
 		}
@@ -192,7 +196,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 				ID:          int64(row.(map[string]interface{})["id"].(float64)),
 				Name:        row.(map[string]interface{})["name"].(string),
 				Icon:        row.(map[string]interface{})["icon"].(string),
-				Status:      row.(map[string]interface{})["status"].(bool),
+				Status:      row.(map[string]interface{})["status"].(string),
 				Description: row.(map[string]interface{})["description"].(string),
 			})
 		}
@@ -222,13 +226,18 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		}
 
 		// fmt.Println(Images)
+		auctionDate := ""
+		// source.(map[string]interface{})["auction_date"].(string)
+		typeof := reflect.TypeOf(auctionDate)
+
+		fmt.Println("typeof=>", typeof)
 
 		responses = append(responses, models.AssetsResponseGetOne{
 			ID:              int64(source.(map[string]interface{})["id"].(float64)),
 			FormType:        source.(map[string]interface{})["form_type"].(string),
 			Type:            source.(map[string]interface{})["type"].(string),
 			KpknlID:         int64(source.(map[string]interface{})["kpknl_id"].(float64)),
-			AuctionDate:     source.(map[string]interface{})["auction_date"].(*string),
+			AuctionDate:     source.(map[string]interface{})["auction_date"].(string),
 			AuctionTime:     source.(map[string]interface{})["auction_time"].(string),
 			AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
 			CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),

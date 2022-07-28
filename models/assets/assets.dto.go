@@ -17,7 +17,7 @@ type AssetsRequest struct {
 	FormType       string                         `json:"form_type"`
 	Type           string                         `json:"type"`
 	KpknlID        int64                          `json:"kpknl_id"`
-	AuctionDate    *string                        `json:"auction_date"`
+	AuctionDate    string                         `json:"auction_date"`
 	AuctionTime    string                         `json:"auction_time"`
 	AuctionLink    string                         `json:"auction_link"`
 	CategoryID     int64                          `json:"category_id"`
@@ -51,7 +51,7 @@ type AssetsResponse struct {
 	FormType        string  `json:"form_type"`
 	Type            string  `json:"type"`
 	KpknlID         int64   `json:"kpknl_id"`
-	AuctionDate     *string `json:"auction_date"`
+	AuctionDate     string  `json:"auction_date"`
 	AuctionTime     string  `json:"auction_time"`
 	AuctionLink     string  `json:"auction_link"`
 	CategoryID      int64   `json:"category_id"`
@@ -94,7 +94,7 @@ type AssetsResponseGetOne struct {
 	FormType        string                          `json:"form_type"`
 	Type            string                          `json:"type"`
 	KpknlID         int64                           `json:"kpknl_id"`
-	AuctionDate     *string                         `json:"auction_date"`
+	AuctionDate     string                          `json:"auction_date"`
 	AuctionTime     string                          `json:"auction_time"`
 	AuctionLink     string                          `json:"auction_link"`
 	CategoryID      int64                           `json:"category_id"`
