@@ -25,6 +25,11 @@ import (
 	facilityRepo "infolelang/repository/facilities"
 	imageRepo "infolelang/repository/images"
 
+	accessPlaceModel "infolelang/models/access_places"
+	buildingModel "infolelang/models/building_assets"
+	facilitiesModel "infolelang/models/facilities"
+	VehicleModel "infolelang/models/vehicle_assets"
+
 	"gitlab.com/golang-package-library/logger"
 	minio "gitlab.com/golang-package-library/minio"
 )
@@ -39,7 +44,7 @@ type AssetDefinition interface {
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error)
 	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error)
-	GetOne(id int64) (responses models.AssetsResponseGetOne, err error)
+	GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error)
 	Store(request *models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
@@ -132,75 +137,86 @@ func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (re
 }
 
 // GetOne implements AssetDefinition
-func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, err error) {
+func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error) {
 	// join table
 	assets, err := asset.assetRepo.GetOne(id)
+	if assets.ID != 0 {
 
-	// join table
-	address, err := asset.addressRepo.GetOneAsset(assets.ID)
+		// join table
+		address, err := asset.addressRepo.GetOneAsset(assets.ID)
+		building := buildingModel.BuildingAssetsResponse{}
+		facilities := []facilitiesModel.FacilitiesResponse{}
+		accessPlace := []accessPlaceModel.AccessPlacesResponse{}
+		vehicle := VehicleModel.VehicleAssetsResponse{}
 
-	// join table
-	building, err := asset.buildingRepo.GetOneAsset(assets.ID)
+		if assets.FormType == "form-b1" {
+			// join table
+			building, err = asset.buildingRepo.GetOneAsset(assets.ID)
 
-	// join table
-	vehicle, err := asset.vehicleRepo.GetOneAsset(assets.ID)
+			// join table
+			facilities, err = asset.assetFacility.GetOneAsset(assets.ID)
 
-	// join table
-	facilities, err := asset.assetFacility.GetOneAsset(assets.ID)
+			// join table
+			accessPlace, err = asset.assetAccessPlace.GetOneAsset(assets.ID)
+		} else {
 
-	// join table
-	accessPlace, err := asset.assetAccessPlace.GetOneAsset(assets.ID)
+			// join table
+			vehicle, err = asset.vehicleRepo.GetOneAsset(assets.ID)
+		}
 
-	// join table
-	contact, err := asset.contactRepo.GetOneAsset(assets.ID)
+		// join table
+		contact, err := asset.contactRepo.GetOneAsset(assets.ID)
 
-	// join table
-	images, err := asset.imagesRepo.GetOneAsset(assets.ID)
+		// join table
+		images, err := asset.imagesRepo.GetOneAsset(assets.ID)
 
-	// join table
-	approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
+		// join table
+		approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
 
-	responses = models.AssetsResponseGetOne{
-		ID:              assets.ID,
-		FormType:        assets.FormType,
-		Type:            assets.Type,
-		KpknlID:         assets.KpknlID,
-		AuctionDate:     assets.AuctionDate,
-		AuctionTime:     assets.AuctionTime,
-		AuctionLink:     assets.AuctionLink,
-		CategoryID:      assets.CategoryID,
-		SubCategoryID:   assets.SubCategoryID,
-		Name:            assets.Name,
-		Price:           assets.Price,
-		Description:     assets.Description,
-		Status:          assets.Status,
-		MakerID:         assets.MakerID,
-		MakerDesc:       assets.MakerDesc,
-		MakerDate:       assets.MakerDate,
-		LastMakerID:     assets.LastMakerID,
-		LastMakerDesc:   assets.LastMakerDesc,
-		LastMakerDate:   assets.LastMakerDate,
-		Published:       assets.Published,
-		Deleted:         assets.Deleted,
-		ExpiredDate:     assets.ExpiredDate,
-		Action:          assets.Action,
-		KpknlName:       assets.KpknlName,
-		CategoryName:    assets.CategoryName,
-		SubCategoryName: assets.SubCategoryName,
-		StatusName:      assets.StatusName,
-		Addresses:       address,
-		BuildingAssets:  building,
-		VehicleAssets:   vehicle,
-		Facilities:      facilities,
-		AccessPlaces:    accessPlace,
-		Contacts:        contact,
-		Images:          images,
-		Approvals:       approval,
-		DocumentID:      assets.DocumentID,
-		UpdatedAt:       assets.UpdatedAt,
-		CreatedAt:       assets.CreatedAt,
+		responses = models.AssetsResponseGetOne{
+			ID:              assets.ID,
+			FormType:        assets.FormType,
+			Type:            assets.Type,
+			KpknlID:         assets.KpknlID,
+			AuctionDate:     assets.AuctionDate,
+			AuctionTime:     assets.AuctionTime,
+			AuctionLink:     assets.AuctionLink,
+			CategoryID:      assets.CategoryID,
+			SubCategoryID:   assets.SubCategoryID,
+			Name:            assets.Name,
+			Price:           assets.Price,
+			Description:     assets.Description,
+			Status:          assets.Status,
+			MakerID:         assets.MakerID,
+			MakerDesc:       assets.MakerDesc,
+			MakerDate:       assets.MakerDate,
+			LastMakerID:     assets.LastMakerID,
+			LastMakerDesc:   assets.LastMakerDesc,
+			LastMakerDate:   assets.LastMakerDate,
+			Published:       assets.Published,
+			Deleted:         assets.Deleted,
+			ExpiredDate:     assets.ExpiredDate,
+			Action:          assets.Action,
+			KpknlName:       assets.KpknlName,
+			CategoryName:    assets.CategoryName,
+			SubCategoryName: assets.SubCategoryName,
+			StatusName:      assets.StatusName,
+			Addresses:       address,
+			BuildingAssets:  building,
+			VehicleAssets:   vehicle,
+			Facilities:      facilities,
+			AccessPlaces:    accessPlace,
+			Contacts:        contact,
+			Images:          images,
+			Approvals:       approval,
+			DocumentID:      assets.DocumentID,
+			UpdatedAt:       assets.UpdatedAt,
+			CreatedAt:       assets.CreatedAt,
+		}
+
+		return responses, true, err
 	}
-	return responses, err
+	return responses, false, err
 }
 
 // Store implements AssetDefinition
@@ -282,6 +298,42 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			return false, err
 		}
 		fmt.Println("building=>", building)
+
+		fmt.Println("facilities=>", request.Facilities)
+
+		// check apabila array image error return false
+		for _, value := range request.Facilities {
+			_, err := asset.assetFacility.Store(
+				&models.AssetFacilities{
+					AssetID:    dataAsset.ID,
+					FacilityID: value.ID,
+					Status:     value.Status,
+					CreatedAt:  &timeNow,
+				})
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+
+		// asset_access_places
+		// check apabila array facilitie error return false
+		fmt.Println("Access Places=>", request.AccessPlaces)
+		for _, value := range request.AccessPlaces {
+			_, err = asset.assetAccessPlace.Store(
+				&models.AssetAccessPlaces{
+					AssetID:       dataAsset.ID,
+					AccessPlaceID: value.ID,
+					Status:        value.Status,
+					CreatedAt:     &timeNow,
+				})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+
 	default:
 		// vehicle asset
 		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
@@ -309,41 +361,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 		}
 		fmt.Println("vehicle=>", vehicle)
 
-	}
-
-	fmt.Println("facilities=>", request.Facilities)
-
-	// check apabila array image error return false
-	for _, value := range request.Facilities {
-		_, err := asset.assetFacility.Store(
-			&models.AssetFacilities{
-				AssetID:    dataAsset.ID,
-				FacilityID: value.ID,
-				Status:     value.Status,
-				CreatedAt:  &timeNow,
-			})
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
-	}
-
-	// asset_access_places
-	// check apabila array facilitie error return false
-	fmt.Println("Access Places=>", request.AccessPlaces)
-	for _, value := range request.AccessPlaces {
-		_, err = asset.assetAccessPlace.Store(
-			&models.AssetAccessPlaces{
-				AssetID:       dataAsset.ID,
-				AccessPlaceID: value.ID,
-				Status:        value.Status,
-				CreatedAt:     &timeNow,
-			})
-
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
 	}
 
 	// contact
@@ -521,17 +538,20 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 		}
 
 		// create elastic
-		getOneAsset, err := asset.GetOne(request.ID)
+		getOneAsset, status, err := asset.GetOne(request.ID)
 
-		fmt.Println("getOneAsset", getOneAsset)
-		_, err = asset.assetRepo.StoreElastic(getOneAsset)
+		if status {
+			fmt.Println("getOneAsset", getOneAsset)
+			_, err = asset.assetRepo.StoreElastic(getOneAsset)
 
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			return true, err
 		}
-
-		return true, err
+		return false, err
 		//===================== Approve Signer End =====================
 
 	//===================== Tolak Checker =====================
@@ -728,36 +748,40 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				statusUpdate = true
 			}
 
-			getOneAsset, err := asset.GetOne(request.ID)
+			getOneAsset, exist, err := asset.GetOne(request.ID)
 
-			if err != nil {
-				asset.logger.Zap.Error(err)
-				statusUpdate = false
-				return false, err
-			} else {
-				statusUpdate = true
-			}
+			if exist {
+				if err != nil {
+					asset.logger.Zap.Error(err)
+					statusUpdate = false
+					return false, err
+				} else {
+					statusUpdate = true
+				}
 
-			fmt.Println("getOneAsset")
-			status, err = asset.assetRepo.StoreElastic(getOneAsset)
+				fmt.Println("getOneAsset")
+				status, err = asset.assetRepo.StoreElastic(getOneAsset)
 
-			fmt.Println("status elastic", status)
-			if err != nil {
-				asset.logger.Zap.Error(err)
-				statusUpdate = false
-				return false, err
-			}
-			if status {
-				statusUpdate = true
-			} else {
-				statusUpdate = false
-			}
+				fmt.Println("status elastic", status)
+				if err != nil {
+					asset.logger.Zap.Error(err)
+					statusUpdate = false
+					return false, err
+				}
+				if status {
+					statusUpdate = true
+				} else {
+					statusUpdate = false
+				}
 
-			if statusUpdate {
-				return true, err
-			} else {
-				return false, err
+				if statusUpdate {
+					return true, err
+				} else {
+					return false, err
+				}
 			}
+			statusUpdate = false
+			return false, err
 
 		} else if request.TypePublish == "unpublish" {
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
@@ -807,16 +831,19 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
-			getOneAsset, err := asset.GetOne(request.ID)
+			getOneAsset, exist, err := asset.GetOne(request.ID)
 
-			fmt.Println("getOneAsset", getOneAsset)
-			_, err = asset.assetRepo.DeleteElastic(getOneAsset)
+			if exist {
+				fmt.Println("getOneAsset", getOneAsset)
+				_, err = asset.assetRepo.DeleteElastic(getOneAsset)
 
-			if err != nil {
-				asset.logger.Zap.Error(err)
-				return false, err
+				if err != nil {
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
+				return true, err
 			}
-			return true, err
+			return false, err
 		}
 
 		return true, err
@@ -1024,6 +1051,42 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 			return false, err
 		}
 		fmt.Println("building=>", building)
+
+		fmt.Println("facilities=>", request.Facilities)
+
+		// check apabila array image error return false
+		for _, value := range request.Facilities {
+			_, err := asset.assetFacility.Store(
+				&models.AssetFacilities{
+					ID:         value.ID,
+					AssetID:    dataAsset.ID,
+					FacilityID: value.ID,
+					Status:     value.Status,
+					UpdatedAt:  &timeNow,
+				})
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+
+		// asset_access_places
+		// check apabila array facilitie error return false
+		fmt.Println("Access Places=>", request.AccessPlaces)
+		for _, value := range request.AccessPlaces {
+			_, err = asset.assetAccessPlace.Store(
+				&models.AssetAccessPlaces{
+					ID:            value.ID,
+					AssetID:       dataAsset.ID,
+					AccessPlaceID: value.ID,
+					UpdatedAt:     &timeNow,
+				})
+
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+		}
 	default:
 		// vehicle asset
 		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
@@ -1052,42 +1115,6 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 		}
 		fmt.Println("vehicle=>", vehicle)
 
-	}
-
-	fmt.Println("facilities=>", request.Facilities)
-
-	// check apabila array image error return false
-	for _, value := range request.Facilities {
-		_, err := asset.assetFacility.Store(
-			&models.AssetFacilities{
-				ID:         value.ID,
-				AssetID:    dataAsset.ID,
-				FacilityID: value.ID,
-				Status:     value.Status,
-				UpdatedAt:  &timeNow,
-			})
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
-	}
-
-	// asset_access_places
-	// check apabila array facilitie error return false
-	fmt.Println("Access Places=>", request.AccessPlaces)
-	for _, value := range request.AccessPlaces {
-		_, err = asset.assetAccessPlace.Store(
-			&models.AssetAccessPlaces{
-				ID:            value.ID,
-				AssetID:       dataAsset.ID,
-				AccessPlaceID: value.ID,
-				UpdatedAt:     &timeNow,
-			})
-
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
 	}
 
 	// contact
@@ -1365,17 +1392,20 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			return false, err
 		}
 
-		getOneAsset, err := asset.GetOne(request.ID)
+		getOneAsset, exist, err := asset.GetOne(request.ID)
 
-		fmt.Println("getOneAsset", getOneAsset)
-		_, err = asset.assetRepo.DeleteElastic(getOneAsset)
+		if exist {
+			fmt.Println("getOneAsset", getOneAsset)
+			_, err = asset.assetRepo.DeleteElastic(getOneAsset)
 
-		if err != nil {
-			asset.logger.Zap.Error(err)
-			return false, err
+			if err != nil {
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			return true, err
 		}
-
-		return true, err
+		return false, err
 		//===================== Approve Signer End =====================
 
 	//===================== Tolak Checker =====================

@@ -110,12 +110,19 @@ func (asset AssetController) GetOne(c *gin.Context) {
 		return
 	}
 
-	data, err := asset.service.GetOne(int64(id))
+	data, status, err := asset.service.GetOne(int64(id))
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
 		return
 	}
+
+	if status {
+		asset.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", data)
+		return
+	}
+
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 

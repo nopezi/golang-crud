@@ -313,6 +313,7 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 		asset.logger.Zap.Error(err)
 		return responses, err
 	}
+	fmt.Println("responses", responses)
 	return responses, err
 }
 
