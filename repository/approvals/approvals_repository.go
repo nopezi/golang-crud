@@ -14,7 +14,7 @@ type ApprovalDefinition interface {
 	GetAll() (responses []models.ApprovalsResponse, err error)
 	GetOne(id int64) (responses models.ApprovalsResponse, err error)
 	GetOneAsset(id int64) (responses models.ApprovalsResponse, err error)
-	Store(request *models.Approvals) (responses *models.Approvals, err error)
+	Store(request *models.Approvals, tx *gorm.DB) (responses *models.Approvals, err error)
 	Update(request *models.ApprovalsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	DeleteApprovals(id int64) (err error)
@@ -68,9 +68,9 @@ func (approval ApprovalRepository) GetOneAsset(id int64) (responses models.Appro
 }
 
 // Store implements ApprovalDefinition
-func (approval ApprovalRepository) Store(request *models.Approvals) (responses *models.Approvals, err error) {
+func (approval ApprovalRepository) Store(request *models.Approvals, tx *gorm.DB) (responses *models.Approvals, err error) {
 	// db.Omit("Name", "Age", "CreatedAt").Create(&user)
-	return request, approval.db.DB.Save(&request).Error
+	return request, tx.Save(&request).Error
 }
 
 // Update implements ApprovalDefinition

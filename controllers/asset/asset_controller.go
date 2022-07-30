@@ -118,7 +118,6 @@ func (asset AssetController) GetOne(c *gin.Context) {
 	}
 
 	if status {
-		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", data)
 		return
 	}
@@ -129,14 +128,14 @@ func (asset AssetController) GetOne(c *gin.Context) {
 func (asset AssetController) Store(c *gin.Context) {
 	data := models.AssetsRequest{}
 	// trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
-
 	if err := c.Bind(&data); err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
+	fmt.Println(data.BuildingAssets.Direction)
 
-	status, err := asset.service.Store(&data)
+	status, err := asset.service.Store(data)
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", err.Error())
@@ -210,7 +209,7 @@ func (asset AssetController) UpdateMaintain(c *gin.Context) {
 		return
 	}
 
-	status, err := asset.service.UpdateMaintain(&data)
+	status, err := asset.service.UpdateMaintain(data)
 	if err != nil {
 		asset.logger.Zap.Error(err)
 		lib.ReturnToJson(c, 200, "500", "Internal Error", data)

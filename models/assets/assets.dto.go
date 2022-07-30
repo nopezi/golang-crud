@@ -17,8 +17,8 @@ type AssetsRequest struct {
 	FormType       string                         `json:"form_type"`
 	Type           string                         `json:"type"`
 	KpknlID        int64                          `json:"kpknl_id"`
-	AuctionDate    string                         `json:"auction_date"`
-	AuctionTime    string                         `json:"auction_time"`
+	AuctionDate    *string                        `json:"auction_date"`
+	AuctionTime    *string                        `json:"auction_time"`
 	AuctionLink    string                         `json:"auction_link"`
 	CategoryID     int64                          `json:"category_id"`
 	SubCategoryID  int64                          `json:"sub_category_id"`
@@ -51,8 +51,8 @@ type AssetsResponse struct {
 	FormType        string  `json:"form_type"`
 	Type            string  `json:"type"`
 	KpknlID         int64   `json:"kpknl_id"`
-	AuctionDate     string  `json:"auction_date"`
-	AuctionTime     string  `json:"auction_time"`
+	AuctionDate     *string `json:"auction_date"`
+	AuctionTime     *string `json:"auction_time"`
 	AuctionLink     string  `json:"auction_link"`
 	CategoryID      int64   `json:"category_id"`
 	SubCategoryID   int64   `json:"sub_category_id"`
@@ -94,8 +94,8 @@ type AssetsResponseGetOne struct {
 	FormType        string                          `json:"form_type"`
 	Type            string                          `json:"type"`
 	KpknlID         int64                           `json:"kpknl_id"`
-	AuctionDate     string                          `json:"auction_date"`
-	AuctionTime     string                          `json:"auction_time"`
+	AuctionDate     *string                         `json:"auction_date"`
+	AuctionTime     *string                         `json:"auction_time"`
 	AuctionLink     string                          `json:"auction_link"`
 	CategoryID      int64                           `json:"category_id"`
 	SubCategoryID   int64                           `json:"sub_category_id"`
@@ -128,6 +128,47 @@ type AssetsResponseGetOne struct {
 	Approvals       approvals.ApprovalsResponse     `json:"approvals"`
 	UpdatedAt       *string                         `json:"updated_at"`
 	CreatedAt       *string                         `json:"created_at"`
+}
+
+type AssetsResponseGetOneElastic struct {
+	ID              int64                                `json:"id"`
+	FormType        string                               `json:"form_type"`
+	Type            string                               `json:"type"`
+	KpknlID         int64                                `json:"kpknl_id"`
+	AuctionDate     string                               `json:"auction_date"`
+	AuctionTime     string                               `json:"auction_time"`
+	AuctionLink     string                               `json:"auction_link"`
+	CategoryID      int64                                `json:"category_id"`
+	SubCategoryID   int64                                `json:"sub_category_id"`
+	Name            string                               `json:"name"`
+	Price           float32                              `json:"price"`
+	Description     string                               `json:"description"`
+	Status          string                               `json:"status"`
+	MakerID         string                               `json:"maker_id"`
+	MakerDesc       string                               `json:"maker_desc"`
+	MakerDate       string                               `json:"maker_date"`
+	LastMakerID     string                               `json:"last_maker_id"`
+	LastMakerDesc   string                               `json:"last_maker_desc"`
+	LastMakerDate   string                               `json:"last_maker_date"`
+	Published       bool                                 `json:"published"`
+	Deleted         bool                                 `json:"deleted"`
+	ExpiredDate     string                               `json:"expired_date"`
+	Action          string                               `json:"action"`
+	KpknlName       string                               `json:"kpknl_name"`
+	CategoryName    string                               `json:"category_name"`
+	SubCategoryName string                               `json:"sub_category_name"`
+	StatusName      string                               `json:"status_name"`
+	Addresses       address.AddressesResponse            `json:"addresses"`
+	BuildingAssets  building.BuildingAssetsResponse      `json:"building_assets"`
+	VehicleAssets   vehicle.VehicleAssetsResponseElastic `json:"vehicle_assets"`
+	Facilities      []facilities.FacilitiesResponse      `json:"facilities"`
+	AccessPlaces    []access.AccessPlacesResponse        `json:"access_places"`
+	Contacts        contact.ContactsResponse             `json:"contacts"`
+	Images          []images.ImagesResponses             `json:"images"`
+	DocumentID      string                               `json:"document_id"`
+	Approvals       approvals.ApprovalsResponse          `json:"approvals"`
+	UpdatedAt       *string                              `json:"updated_at"`
+	CreatedAt       *string                              `json:"created_at"`
 }
 
 type AssetsRequestMaintain struct {
@@ -214,53 +255,53 @@ type AuctionSchedule struct {
 	Name        string `json:"name"`
 }
 type AuctionScheduleResponse struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	AuctionDate string `json:"auction_date"`
-	AuctionTime string `json:"auction_time"`
-	KpknlID     string `json:"kpknl_id"`
-	KpknlName   string `json:"kpknl_name"`
-	PicLelang   string `json:"pic_lelang "`
-	Address     string `json:"address"`
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	AuctionDate *string `json:"auction_date"`
+	AuctionTime *string `json:"auction_time"`
+	KpknlID     string  `json:"kpknl_id"`
+	KpknlName   string  `json:"kpknl_name"`
+	PicLelang   string  `json:"pic_lelang "`
+	Address     string  `json:"address"`
 }
 
 type AssetRequestElastic map[string]interface{}
 
-func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
-	timeNow := lib.GetTimeNow("timestime")
-	return &Assets{
-		ID:            request.ID,
-		Type:          request.Type,
-		KpknlID:       request.KpknlID,
-		AuctionDate:   request.AuctionDate,
-		AuctionTime:   request.AuctionTime,
-		AuctionLink:   request.AuctionLink,
-		CategoryID:    request.CategoryID,
-		SubCategoryID: request.SubCategoryID,
-		Name:          request.Name,
-		Price:         request.Price,
-		Description:   request.Description,
-		CreatedAt:     &timeNow,
-	}
-}
+// func (p AssetsRequest) ParseCreate(request AssetsRequest) *Assets {
+// 	timeNow := lib.GetTimeNow("timestime")
+// 	return &Assets{
+// 		ID:            request.ID,
+// 		Type:          request.Type,
+// 		KpknlID:       request.KpknlID,
+// 		AuctionDate:   request.AuctionDate,
+// 		AuctionTime:   request.AuctionTime,
+// 		AuctionLink:   request.AuctionLink,
+// 		CategoryID:    request.CategoryID,
+// 		SubCategoryID: request.SubCategoryID,
+// 		Name:          request.Name,
+// 		Price:         request.Price,
+// 		Description:   request.Description,
+// 		CreatedAt:     &timeNow,
+// 	}
+// }
 
-func (p AssetsResponse) ParseResponse() Assets {
-	return Assets{
-		ID:            p.ID,
-		Type:          p.Type,
-		KpknlID:       p.KpknlID,
-		AuctionDate:   p.AuctionDate,
-		AuctionTime:   p.AuctionTime,
-		AuctionLink:   p.AuctionLink,
-		CategoryID:    p.CategoryID,
-		SubCategoryID: p.SubCategoryID,
-		Name:          p.Name,
-		Price:         p.Price,
-		Description:   p.Description,
-		CreatedAt:     p.CreatedAt,
-		UpdatedAt:     p.UpdatedAt,
-	}
-}
+// func (p AssetsResponse) ParseResponse() Assets {
+// 	return Assets{
+// 		ID:            p.ID,
+// 		Type:          p.Type,
+// 		KpknlID:       p.KpknlID,
+// 		AuctionDate:   p.AuctionDate,
+// 		AuctionTime:   p.AuctionTime,
+// 		AuctionLink:   p.AuctionLink,
+// 		CategoryID:    p.CategoryID,
+// 		SubCategoryID: p.SubCategoryID,
+// 		Name:          p.Name,
+// 		Price:         p.Price,
+// 		Description:   p.Description,
+// 		CreatedAt:     p.CreatedAt,
+// 		UpdatedAt:     p.UpdatedAt,
+// 	}
+// }
 
 func (a AssetsRequest) TableName() string {
 	return "assets"

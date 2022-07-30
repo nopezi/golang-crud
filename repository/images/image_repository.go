@@ -14,7 +14,7 @@ type ImageDefinition interface {
 	GetAll() (responses []models.ImagesResponse, err error)
 	GetOne(id int64) (responses models.ImagesResponse, err error)
 	GetOneAsset(id int64) (responses []models.ImagesResponses, err error)
-	Store(request *models.Images) (responses *models.Images, err error)
+	Store(request *models.Images, tx *gorm.DB) (responses *models.Images, err error)
 	Update(request *models.ImagesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) ImageRepository
@@ -78,8 +78,8 @@ func (image ImageRepository) GetOneAsset(id int64) (responses []models.ImagesRes
 }
 
 // Store implements ImageDefinition
-func (image ImageRepository) Store(request *models.Images) (responses *models.Images, err error) {
-	return request, image.db.DB.Save(&request).Error
+func (image ImageRepository) Store(request *models.Images, tx *gorm.DB) (responses *models.Images, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // Update implements ImageDefinition

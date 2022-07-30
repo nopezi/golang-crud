@@ -28,16 +28,16 @@ import (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetRepository
 	GetAll() (responses []models.AssetsResponse, err error)
-	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error)
+	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOneElastic, err error)
 	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, totalRows int64, totalData int64, err error)
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
-	Store(request *models.Assets) (responses *models.Assets, err error)
+	Store(request *models.Assets, tx *gorm.DB) (responses *models.Assets, err error)
 	StoreElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
-	UpdateApproval(request *models.AssetsUpdateApproval, include []string) (responses bool, err error)
+	UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdatePublish(request *models.AssetsUpdatePublish, include []string) (responses bool, err error)
 	UpdateMaintain(request *models.Assets, include []string) (responses *models.Assets, err error)
 	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
@@ -86,7 +86,7 @@ func (asset AssetRepository) GetAll() (responses []models.AssetsResponse, err er
 }
 
 // GetAll implements AssetDefinition
-func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error) {
+func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOneElastic, err error) {
 	fmt.Println(request)
 	result, err := asset.elasticsearch.Search(lib.RequestElastic{
 		Index: "assets",
@@ -150,8 +150,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 			Carport:           int64(buildingAssets.(map[string]interface{})["carport"].(float64)),
 		}
 		// fmt.Println(BuildingAssets)
-
-		VehicleAssets := vehicle.VehicleAssetsResponse{
+		VehicleAssets := vehicle.VehicleAssetsResponseElastic{
 			ID:                  int64(vehicleAssets.(map[string]interface{})["id"].(float64)),
 			AssetID:             int64(vehicleAssets.(map[string]interface{})["asset_id"].(float64)),
 			VehicleTypeID:       int64(vehicleAssets.(map[string]interface{})["vehicle_type_id"].(float64)),
@@ -232,7 +231,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 
 		fmt.Println("typeof=>", typeof)
 
-		responses = append(responses, models.AssetsResponseGetOne{
+		responses = append(responses, models.AssetsResponseGetOneElastic{
 			ID:              int64(source.(map[string]interface{})["id"].(float64)),
 			FormType:        source.(map[string]interface{})["form_type"].(string),
 			Type:            source.(map[string]interface{})["type"].(string),
@@ -375,13 +374,13 @@ func (asset AssetRepository) GetOneAsset(id int64) (responses models.AssetsRespo
 }
 
 // Store implements AssetDefinition
-func (asset AssetRepository) Store(request *models.Assets) (responses *models.Assets, err error) {
-	return request, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) Store(request *models.Assets, tx *gorm.DB) (responses *models.Assets, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // UpdateApproval implements AssetDefinition
-func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval, include []string) (responses bool, err error) {
-	return true, asset.db.DB.Select(include).Updates(&request).Error
+func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Select(include).Updates(&request).Error
 
 }
 

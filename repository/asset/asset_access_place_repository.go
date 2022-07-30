@@ -15,7 +15,7 @@ type AssetAccessPlaceDefinition interface {
 	GetAll() (responses []models.AssetAccessPlacesResponse, err error)
 	GetOne(id int64) (responses models.AssetAccessPlacesResponse, err error)
 	GetOneAsset(id int64) (responses []accessPlace.AccessPlacesResponse, err error)
-	Store(request *models.AssetAccessPlaces) (responses *models.AssetAccessPlaces, err error)
+	Store(request *models.AssetAccessPlaces, tx *gorm.DB) (responses *models.AssetAccessPlaces, err error)
 	Update(request *models.AssetAccessPlacesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetAccessPlaceRepository
@@ -62,7 +62,7 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOne(id int64) (responses m
 	return responses, assetAccessPlace.db.DB.Raw(`
 			SELECT ap.id,ap.name, 
 			ap.icon , ap.status, 
-			ap.description  
+			ap.description , aap.created_at, aap.updated_at
 			FROM asset_access_places aap 
 			JOIN access_places ap  on ap.id = aap.access_place_id  
 			WHERE id = ? `, id).Find(&responses).Error
@@ -75,7 +75,7 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOneAsset(id int64) (respon
 	rows, err := assetAccessPlace.db.DB.Raw(`
 			SELECT ap.id,ap.name, 
 			ap.icon , ap.status, 
-			ap.description  
+			ap.description , aap.created_at, aap.updated_at
 			FROM asset_access_places aap 
 			JOIN access_places ap  on ap.id = aap.access_place_id  
 			WHERE aap.asset_id = ? `, id).Rows()
@@ -93,8 +93,8 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOneAsset(id int64) (respon
 }
 
 // Store implements AssetAccessPlaceDefinition
-func (assetAccessPlace AssetAccessPlaceRepository) Store(request *models.AssetAccessPlaces) (responses *models.AssetAccessPlaces, err error) {
-	return request, assetAccessPlace.db.DB.Save(&request).Error
+func (assetAccessPlace AssetAccessPlaceRepository) Store(request *models.AssetAccessPlaces, tx *gorm.DB) (responses *models.AssetAccessPlaces, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // Update implements AssetAccessPlaceDefinition

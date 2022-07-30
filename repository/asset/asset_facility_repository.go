@@ -15,7 +15,7 @@ type AssetFacilityDefinition interface {
 	GetAll() (responses []models.AssetFacilitiesResponse, err error)
 	GetOne(id int64) (responses models.AssetFacilitiesResponse, err error)
 	GetOneAsset(id int64) (responses []facilitiesModel.FacilitiesResponse, err error)
-	Store(request *models.AssetFacilities) (responses *models.AssetFacilities, err error)
+	Store(request *models.AssetFacilities, tx *gorm.DB) (responses *models.AssetFacilities, err error)
 	Update(request *models.AssetFacilitiesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetFacilityRepository
@@ -62,8 +62,8 @@ func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.
 	return responses, AssetFacility.db.DB.Raw(`
 			SELECT f.id,f.name, 
 			f.icon , af.status,
-			f.description  from 
-			asset_facilities af 
+			f.description , af.created_at, af.updated_at 
+			FROM asset_facilities af
 			LEFT JOIN facilities f 
 			on af.facility_id  = f.id 
 			WHERE af.id = ? 
@@ -76,8 +76,8 @@ func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []
 	rows, err := AssetFacility.db.DB.Raw(`
 			SELECT f.id,f.name, 
 			f.icon , af.status,
-			f.description  from 
-			asset_facilities af 
+			f.description , af.created_at, af.updated_at
+			FROM asset_facilities af 
 			LEFT JOIN facilities f 
 			on af.facility_id  = f.id 
 			WHERE af.asset_id = ? 
@@ -96,8 +96,8 @@ func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []
 }
 
 // Store implements AssetFacilityDefinition
-func (AssetFacility AssetFacilityRepository) Store(request *models.AssetFacilities) (responses *models.AssetFacilities, err error) {
-	return request, AssetFacility.db.DB.Save(&request).Error
+func (AssetFacility AssetFacilityRepository) Store(request *models.AssetFacilities, tx *gorm.DB) (responses *models.AssetFacilities, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // Update implements AssetFacilityDefinition

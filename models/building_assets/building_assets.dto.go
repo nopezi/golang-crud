@@ -21,7 +21,7 @@ type BuildingAssetsResponse struct {
 	ID                  int64   `json:"id"`
 	AssetID             int64   `json:"asset_id"`
 	CertificateTypeID   int64   `json:"certificate_type_id"`
-	CertificateTypeName int64   `json:"certificate_type_name"`
+	CertificateTypeName string  `json:"certificate_type_name"`
 	CertificateNumber   string  `json:"certificate_number"`
 	BuildYear           int64   `json:"build_year"`
 	SurfaceArea         int64   `json:"burface_area"`

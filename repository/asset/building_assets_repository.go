@@ -14,7 +14,7 @@ type BuildingAssetDefinition interface {
 	GetAll() (responses []models.BuildingAssetsResponse, err error)
 	GetOne(id int64) (responses models.BuildingAssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.BuildingAssetsResponse, err error)
-	Store(request *models.BuildingAssets) (responses *models.BuildingAssets, err error)
+	Store(request *models.BuildingAssets, tx *gorm.DB) (responses *models.BuildingAssets, err error)
 	Update(request *models.BuildingAssetsRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	WithTrx(trxHandle *gorm.DB) BuildingAssetRepository
@@ -107,8 +107,8 @@ func (buildingAsset BuildingAssetRepository) GetOneAsset(id int64) (responses mo
 }
 
 // Store implements BuildingAssetDefinition
-func (buildingAsset BuildingAssetRepository) Store(request *models.BuildingAssets) (responses *models.BuildingAssets, err error) {
-	return request, buildingAsset.db.DB.Save(&request).Error
+func (buildingAsset BuildingAssetRepository) Store(request *models.BuildingAssets, tx *gorm.DB) (responses *models.BuildingAssets, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // Update implements BuildingAssetDefinition

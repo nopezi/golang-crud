@@ -1,9 +1,9 @@
 package models
 
 type VehicleAssets struct {
-	ID                int64
-	AssetID           int64
-	VehicleTypeID     int64
+	ID      int64
+	AssetID int64
+	// VehicleTypeID     int64
 	CertificateTypeID int64
 	CertificateNumber string
 	Series            string
@@ -17,7 +17,7 @@ type VehicleAssets struct {
 	NumberOfUsage     string
 	MachineNumber     string
 	BodyNumber        string
-	LicenceDate       string
+	LicenceDate       *string
 	UpdatedAt         *string
 	CreatedAt         *string
 	// BrandName           string

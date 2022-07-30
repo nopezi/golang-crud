@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"infolelang/lib"
 	"os"
+	"reflect"
 	"strings"
 
 	"github.com/google/uuid"
@@ -42,19 +43,20 @@ var (
 type AssetDefinition interface {
 	WithTrx(trxHandle *gorm.DB) AssetService
 	GetAll() (responses []models.AssetsResponse, err error)
-	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error)
+	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOneElastic, err error)
 	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error)
 	GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error)
-	Store(request *models.AssetsRequest) (status bool, err error)
+	Store(request models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error)
 	UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error)
-	UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error)
+	UpdateMaintain(request models.AssetsResponseGetOne) (status bool, err error)
 	Delete(request *models.AssetsRequestUpdate) (responses bool, err error)
 	DeleteAssetImage(request *models.AssetImageRequest) (status bool, err error)
 }
 type AssetService struct {
+	db               lib.Database
 	minio            minio.Minio
 	logger           logger.Logger
 	assetRepo        assetRepo.AssetDefinition
@@ -72,6 +74,7 @@ type AssetService struct {
 }
 
 func NewAssetService(
+	db lib.Database,
 	minio minio.Minio,
 	logger logger.Logger,
 	assetRepo assetRepo.AssetDefinition,
@@ -88,6 +91,7 @@ func NewAssetService(
 	accessPlace accessPlace.AccessPlaceDefinition,
 ) AssetDefinition {
 	return AssetService{
+		db:               db,
 		minio:            minio,
 		logger:           logger,
 		assetRepo:        assetRepo,
@@ -117,7 +121,7 @@ func (asset AssetService) GetAll() (responses []models.AssetsResponse, err error
 }
 
 // GetAll implements AssetDefinition
-func (asset AssetService) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOne, err error) {
+func (asset AssetService) GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOneElastic, err error) {
 	return asset.assetRepo.GetAssetElastic(request)
 }
 
@@ -152,14 +156,13 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 		if assets.FormType == "form-b1" {
 			// join table
 			building, err = asset.buildingRepo.GetOneAsset(assets.ID)
-
+			fmt.Println("building.CertificateNumber", building.CertificateNumber)
 			// join table
 			facilities, err = asset.assetFacility.GetOneAsset(assets.ID)
 
 			// join table
 			accessPlace, err = asset.assetAccessPlace.GetOneAsset(assets.ID)
 		} else {
-
 			// join table
 			vehicle, err = asset.vehicleRepo.GetOneAsset(assets.ID)
 		}
@@ -220,37 +223,67 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 }
 
 // Store implements AssetDefinition
-func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err error) {
+func (asset AssetService) Store(request models.AssetsRequest) (status bool, err error) {
+	tx := asset.db.DB.Begin()
+	// , tx *gorm.DB
+	// tx.Rollback()
+	// tx.Commit()
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
+	assets := &models.Assets{}
 
-	dataAsset, err := asset.assetRepo.Store(&models.Assets{
-		FormType:      request.FormType,
-		Type:          request.Type,
-		KpknlID:       request.KpknlID,
-		AuctionDate:   request.AuctionDate,
-		AuctionTime:   request.AuctionTime,
-		AuctionLink:   request.AuctionLink,
-		CategoryID:    request.CategoryID,
-		SubCategoryID: request.SubCategoryID,
-		Name:          request.Name,
-		Price:         request.Price,
-		Description:   request.Description,
-		Status:        "01a", // pending checker
-		MakerID:       request.MakerID,
-		MakerDesc:     request.MakerDesc,
-		MakerDate:     request.MakerDate,
-		LastMakerID:   request.LastMakerID,
-		LastMakerDesc: request.LastMakerDesc,
-		LastMakerDate: request.LastMakerDate,
-		// Published:     request.Published,
-		// Deleted:       request.Deleted,
-		// ExpiredDate:   request.ExpiredDate,
-		Action:    "Create",
-		CreatedAt: &timeNow,
-	})
+	if request.Type == "Lelang" {
+		assets = &models.Assets{
+			FormType:      request.FormType,
+			Type:          request.Type,
+			KpknlID:       request.KpknlID,
+			AuctionDate:   request.AuctionDate,
+			AuctionTime:   request.AuctionTime,
+			AuctionLink:   request.AuctionLink,
+			CategoryID:    request.CategoryID,
+			SubCategoryID: request.SubCategoryID,
+			Name:          request.Name,
+			Price:         request.Price,
+			Description:   request.Description,
+			Status:        "01a", // pending checker
+			MakerID:       request.MakerID,
+			MakerDesc:     request.MakerDesc,
+			MakerDate:     request.MakerDate,
+			LastMakerID:   request.LastMakerID,
+			LastMakerDesc: request.LastMakerDesc,
+			LastMakerDate: request.LastMakerDate,
+			Action:        "Create",
+			CreatedAt:     &timeNow,
+		}
+	} else {
+		assets = &models.Assets{
+			FormType:      request.FormType,
+			Type:          request.Type,
+			KpknlID:       request.KpknlID,
+			AuctionDate:   nil,
+			AuctionTime:   nil,
+			AuctionLink:   request.AuctionLink,
+			CategoryID:    request.CategoryID,
+			SubCategoryID: request.SubCategoryID,
+			Name:          request.Name,
+			Price:         request.Price,
+			Description:   request.Description,
+			Status:        "01a", // pending checker
+			MakerID:       request.MakerID,
+			MakerDesc:     request.MakerDesc,
+			MakerDate:     request.MakerDate,
+			LastMakerID:   request.LastMakerID,
+			LastMakerDesc: request.LastMakerDesc,
+			LastMakerDate: request.LastMakerDate,
+			Action:        "Create",
+			CreatedAt:     &timeNow,
+		}
+	}
+
+	dataAsset, err := asset.assetRepo.Store(assets, tx)
 
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
@@ -266,11 +299,12 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			Longitude:    request.Addresses.Longitude,
 			Langitude:    request.Addresses.Langitude,
 			CreatedAt:    &timeNow,
-		})
+		}, tx)
 
 	fmt.Println("this is address => ", address)
 
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
@@ -292,8 +326,9 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			ElectricalPower:   request.BuildingAssets.ElectricalPower,
 			Carport:           request.BuildingAssets.Carport,
 			CreatedAt:         &timeNow,
-		})
+		}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -309,8 +344,9 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 					FacilityID: value.ID,
 					Status:     value.Status,
 					CreatedAt:  &timeNow,
-				})
+				}, tx)
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -326,9 +362,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 					AccessPlaceID: value.ID,
 					Status:        value.Status,
 					CreatedAt:     &timeNow,
-				})
+				}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -337,8 +374,8 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 	default:
 		// vehicle asset
 		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
-			AssetID:           dataAsset.ID,
-			VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
+			AssetID: dataAsset.ID,
+			// VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
 			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
 			CertificateNumber: request.VehicleAssets.CertificateNumber,
 			Series:            request.VehicleAssets.Series,
@@ -354,8 +391,9 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			BodyNumber:        request.VehicleAssets.BodyNumber,
 			LicenceDate:       request.VehicleAssets.LicenceDate,
 			CreatedAt:         &timeNow,
-		})
+		}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -372,12 +410,13 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 		PicEmail:    request.Contacts.PicEmail,
 		Cif:         request.Contacts.Cif,
 		CreatedAt:   &timeNow,
-	})
+	}, tx)
+	fmt.Println("contact", contact)
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
-	fmt.Println("contact=>", contact)
 
 	// images
 	// check apabila array image error return false
@@ -385,7 +424,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 
 		var destinationPath string
 		bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
-
 		pathSplit := strings.Split(value.Path, "/")
 		sourcePath := fmt.Sprint(value.Path)
 		destinationPath = pathSplit[1] + "/" +
@@ -395,6 +433,7 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			lib.GetTimeNow("day") + "/" +
 			pathSplit[2] + "/" +
 			value.Filename
+		fmt.Println("bucketExist=>", reflect.TypeOf(bucketExist))
 		// assets/formb1/2022/June/01/uuid/gambar.jpg
 
 		if bucketExist {
@@ -402,7 +441,6 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			fmt.Println(bucket)
 			fmt.Println(destinationPath)
 			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-
 		} else {
 			fmt.Println("Not Exist")
 			fmt.Println(bucket)
@@ -417,9 +455,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			Extension: value.Extension,
 			Size:      value.Size,
 			CreatedAt: &timeNow,
-		})
+		}, tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -428,9 +467,10 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			AssetID:   dataAsset.ID,
 			ImageID:   image.ID,
 			CreatedAt: &timeNow,
-		})
+		}, tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -448,19 +488,21 @@ func (asset AssetService) Store(request *models.AssetsRequest) (status bool, err
 			SignerDesc: request.Approvals.SignerDesc,
 			// SignerComment:  request.Approvals.SignerComment,
 			// SignerDate:     request.Approvals.SignerDate,
-			CreatedAt: &timeNow})
+			CreatedAt: &timeNow}, tx)
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
 	fmt.Println("approval=>", approval)
 
+	tx.Commit()
 	return true, err
 }
 
 // UpdateApproval implements AssetDefinition
 func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error) {
-
+	tx := asset.db.DB.Begin()
 	switch request.Type {
 	//===================== Approve Checker =====================
 	case "approve checker":
@@ -471,6 +513,7 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			UpdatedAt: &timeNow,
 		},
 			[]string{"status", "action", "updated_at"}, // define field to update
+		tx
 		)
 
 		if err != nil {
@@ -945,37 +988,55 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 }
 
 // Update implements AssetDefinition
-func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (status bool, err error) {
+func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (status bool, err error) {
 
 	// update here
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
+	assets := &models.Assets{}
+	if request.Type == "Lelang" {
 
-	dataAsset, err := asset.assetRepo.UpdateMaintain(&models.Assets{
-		ID:            request.ID,
-		Type:          request.Type,
-		KpknlID:       request.KpknlID,
-		AuctionDate:   request.AuctionDate,
-		AuctionTime:   request.AuctionTime,
-		AuctionLink:   request.AuctionLink,
-		CategoryID:    request.CategoryID,
-		SubCategoryID: request.SubCategoryID,
-		Name:          request.Name,
-		Price:         request.Price,
-		Description:   request.Description,
-		// Status:        "01a", // pending checker
-		// MakerID:       request.MakerID,
-		// MakerDesc:     request.MakerDesc,
-		// MakerDate:     request.MakerDate,
-		LastMakerID:   request.LastMakerID,
-		LastMakerDesc: request.LastMakerDesc,
-		LastMakerDate: request.LastMakerDate,
-		// Published:     request.Published,
-		// Deleted:       request.Deleted,
-		// ExpiredDate:   request.ExpiredDate,
-		Action:    "UpdateMaintain",
-		UpdatedAt: &timeNow,
-	},
+		assets = &models.Assets{
+			ID:            request.ID,
+			Type:          request.Type,
+			KpknlID:       request.KpknlID,
+			AuctionDate:   request.AuctionDate,
+			AuctionTime:   request.AuctionTime,
+			AuctionLink:   request.AuctionLink,
+			CategoryID:    request.CategoryID,
+			SubCategoryID: request.SubCategoryID,
+			Name:          request.Name,
+			Price:         request.Price,
+			Description:   request.Description,
+			LastMakerID:   request.LastMakerID,
+			LastMakerDesc: request.LastMakerDesc,
+			LastMakerDate: request.LastMakerDate,
+			Action:        "UpdateMaintain",
+			UpdatedAt:     &timeNow,
+		}
+	} else {
+		assets = &models.Assets{
+			ID:            request.ID,
+			Type:          request.Type,
+			KpknlID:       request.KpknlID,
+			AuctionDate:   nil,
+			AuctionTime:   nil,
+			AuctionLink:   request.AuctionLink,
+			CategoryID:    request.CategoryID,
+			SubCategoryID: request.SubCategoryID,
+			Name:          request.Name,
+			Price:         request.Price,
+			Description:   request.Description,
+			LastMakerID:   request.LastMakerID,
+			LastMakerDesc: request.LastMakerDesc,
+			LastMakerDate: request.LastMakerDate,
+			Action:        "UpdateMaintain",
+			UpdatedAt:     &timeNow,
+		}
+	}
+
+	dataAsset, err := asset.assetRepo.UpdateMaintain(
+		assets,
 		[]string{
 			"type",
 			"kpknl_id",
@@ -987,16 +1048,9 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 			"name",
 			"price",
 			"description",
-			// "status",
-			// "maker_id",
-			// "maker_desc",
-			// "maker_date",
 			"last_maker_id",
 			"last_maker_desc",
 			"last_maker_date",
-			// "published",
-			// "deleted",
-			// "expired_date",
 			"action",
 			"updated_at",
 		})
@@ -1090,9 +1144,9 @@ func (asset AssetService) UpdateMaintain(request *models.AssetsResponseGetOne) (
 	default:
 		// vehicle asset
 		vehicle, err := asset.vehicleRepo.Store(&requestVehicle.VehicleAssets{
-			ID:                request.BuildingAssets.ID,
-			AssetID:           dataAsset.ID,
-			VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
+			ID:      request.BuildingAssets.ID,
+			AssetID: dataAsset.ID,
+			// VehicleTypeID:     request.VehicleAssets.VehicleTypeID,
 			CertificateTypeID: request.VehicleAssets.CertificateTypeID,
 			CertificateNumber: request.VehicleAssets.CertificateNumber,
 			Series:            request.VehicleAssets.Series,
