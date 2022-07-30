@@ -28,6 +28,7 @@ type BannerDefinition interface {
 	Delete(request models.BannerImageRequest) (status bool, err error)
 }
 type BannerService struct {
+	db         lib.Database
 	minio      minio.Minio
 	logger     logger.Logger
 	repository repository.BannerDefinition
@@ -35,12 +36,14 @@ type BannerService struct {
 }
 
 func NewBannerService(
+	db lib.Database,
 	minio minio.Minio,
 	logger logger.Logger,
 	repository repository.BannerDefinition,
 	imagesRepo imageRepo.ImageDefinition,
 ) BannerDefinition {
 	return BannerService{
+		db:         db,
 		minio:      minio,
 		logger:     logger,
 		repository: repository,
@@ -55,13 +58,14 @@ func (banner BannerService) GetAll() (responses []models.BannerImageResponse, er
 
 // Store implements BannerDefinition
 func (banner BannerService) Store(request *models.BannerRequest) (status bool, err error) {
+	tx := banner.db.DB.Begin()
 	bucket := os.Getenv("BUCKET_NAME")
 	banners, err := banner.repository.Store(&models.Banner{
 		ID:        1,
 		Name:      "banner",
 		CreatedAt: &timeNow,
 		UpdatedAt: &timeNow,
-	})
+	}, tx)
 	for _, value := range request.Images {
 
 		var destinationPath string
@@ -96,9 +100,10 @@ func (banner BannerService) Store(request *models.BannerRequest) (status bool, e
 			Extension: value.Extension,
 			Size:      value.Size,
 			CreatedAt: &timeNow,
-		})
+		}, tx)
 
 		if err != nil {
+			tx.Rollback()
 			banner.logger.Zap.Error(err)
 			return false, err
 		}
@@ -106,9 +111,10 @@ func (banner BannerService) Store(request *models.BannerRequest) (status bool, e
 		_, err = banner.repository.StoreBannerImage(&models.BannerRequest{
 			BannerID: banners.ID,
 			ImageID:  image.ID,
-		})
+		}, tx)
 
 		if err != nil {
+			tx.Rollback()
 			banner.logger.Zap.Error(err)
 			return false, err
 		}

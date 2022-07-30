@@ -513,17 +513,23 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			UpdatedAt: &timeNow,
 		},
 			[]string{"status", "action", "updated_at"}, // define field to update
-		tx
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.ID)
-		_, err := asset.approvalRepo.Store(
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
+
+		_, err = asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
 				CheckerID:      request.Approvals.CheckerID,
@@ -534,8 +540,9 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -554,15 +561,22 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			UpdatedAt:   &timeNow,
 		},
 			[]string{"published", "publish_date", "expired_date", "status", "action", "updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
+
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -574,25 +588,31 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 				SignerDesc:     request.Approvals.SignerDesc,
 				SignerComment:  request.Approvals.SignerComment,
 				SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt:      &timeNow})
+				UpdatedAt:      &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
 		// create elastic
 		getOneAsset, status, err := asset.GetOne(request.ID)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		} else {
+			if status {
+				fmt.Println("getOneAsset", getOneAsset)
+				_, err = asset.assetRepo.StoreElastic(getOneAsset)
 
-		if status {
-			fmt.Println("getOneAsset", getOneAsset)
-			_, err = asset.assetRepo.StoreElastic(getOneAsset)
+				if err != nil {
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
 
-			if err != nil {
-				asset.logger.Zap.Error(err)
-				return false, err
+				return true, err
 			}
-
-			return true, err
 		}
 		return false, err
 		//===================== Approve Signer End =====================
@@ -609,15 +629,22 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			UpdatedAt: &timeNow,
 		},
 			[]string{"status", "action", "updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
+
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -629,8 +656,9 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -652,16 +680,17 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
 		// approval
-		asset.approvalRepo.DeleteApprovals(request.ID)
-		_, err := asset.approvalRepo.Store(
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		_, err = asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
 				CheckerID:      request.Approvals.CheckerID,
@@ -672,20 +701,25 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 				SignerDesc:     request.Approvals.SignerDesc,
 				SignerComment:  request.Approvals.SignerComment,
 				SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt:      &timeNow})
+				UpdatedAt:      &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Tolak Signer End =====================
 	default:
+		tx.Rollback()
 		return false, err
 	}
+
 }
 
 // UpdatePublish implements AssetDefinition
 func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (status bool, err error) {
+	tx := asset.db.DB.Begin()
 	switch request.Type {
 	//===================== Approve Checker =====================
 	case "approve checker":
@@ -705,14 +739,20 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -724,8 +764,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -758,9 +799,10 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 					"action",
 					"status",
 					"updated_at",
-				})
+				}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				statusUpdate = false
 				return false, err
@@ -770,7 +812,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			}
 
 			// approval
-			asset.approvalRepo.DeleteApprovals(request.ID)
+			err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
 			_, err := asset.approvalRepo.Store(
 				&requestApprovals.Approvals{
 					AssetID:        request.ID,
@@ -782,8 +824,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 					SignerDesc:     request.Approvals.SignerDesc,
 					SignerComment:  request.Approvals.SignerComment,
 					SignerDate:     request.Approvals.SignerDate,
-					UpdatedAt:      &timeNow})
+					UpdatedAt:      &timeNow}, tx)
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				statusUpdate = false
 				return false, err
@@ -793,14 +836,16 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 
 			getOneAsset, exist, err := asset.GetOne(request.ID)
 
+			if err != nil {
+				tx.Rollback()
+				asset.logger.Zap.Error(err)
+				statusUpdate = false
+				return false, err
+			} else {
+				statusUpdate = true
+			}
+
 			if exist {
-				if err != nil {
-					asset.logger.Zap.Error(err)
-					statusUpdate = false
-					return false, err
-				} else {
-					statusUpdate = true
-				}
 
 				fmt.Println("getOneAsset")
 				status, err = asset.assetRepo.StoreElastic(getOneAsset)
@@ -849,15 +894,16 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 					"action",
 					"status",
 					"updated_at",
-				})
+				}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
 
 			// approval
-			asset.approvalRepo.DeleteApprovals(request.ID)
+			err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
 			_, err := asset.approvalRepo.Store(
 				&requestApprovals.Approvals{
 					AssetID:        request.ID,
@@ -869,8 +915,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 					SignerDesc:     request.Approvals.SignerDesc,
 					SignerComment:  request.Approvals.SignerComment,
 					SignerDate:     request.Approvals.SignerDate,
-					UpdatedAt:      &timeNow})
+					UpdatedAt:      &timeNow}, tx)
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -910,14 +957,20 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -929,8 +982,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -956,14 +1010,20 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				"action",
 				"updated_at",
 			}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -975,8 +1035,9 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				SignerDesc:     request.Approvals.SignerDesc,
 				SignerComment:  request.Approvals.SignerComment,
 				SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt:      &timeNow})
+				UpdatedAt:      &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -989,7 +1050,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 
 // Update implements AssetDefinition
 func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (status bool, err error) {
-
+	tx := asset.db.DB.Begin()
 	// update here
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
@@ -1053,8 +1114,9 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			"last_maker_date",
 			"action",
 			"updated_at",
-		})
+		}, tx)
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
@@ -1072,11 +1134,12 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			Longitude:    request.Addresses.Longitude,
 			Langitude:    request.Addresses.Langitude,
 			UpdatedAt:    &timeNow,
-		})
+		}, tx)
 
 	fmt.Println("this is address => ", address)
 
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
@@ -1099,8 +1162,9 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			ElectricalPower:   request.BuildingAssets.ElectricalPower,
 			Carport:           request.BuildingAssets.Carport,
 			UpdatedAt:         &timeNow,
-		})
+		}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -1117,8 +1181,9 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 					FacilityID: value.ID,
 					Status:     value.Status,
 					UpdatedAt:  &timeNow,
-				})
+				}, tx)
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -1134,9 +1199,10 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 					AssetID:       dataAsset.ID,
 					AccessPlaceID: value.ID,
 					UpdatedAt:     &timeNow,
-				})
+				}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -1162,8 +1228,9 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			BodyNumber:        request.VehicleAssets.BodyNumber,
 			LicenceDate:       request.VehicleAssets.LicenceDate,
 			UpdatedAt:         &timeNow,
-		})
+		}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -1181,8 +1248,9 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 		PicEmail:    request.Contacts.PicEmail,
 		Cif:         request.Contacts.Cif,
 		UpdatedAt:   &timeNow,
-	})
+	}, tx)
 	if err != nil {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
@@ -1230,9 +1298,10 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 				Extension: value.Extension,
 				Size:      value.Size,
 				UpdatedAt: &timeNow,
-			})
+			}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -1242,9 +1311,10 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 				AssetID:   dataAsset.ID,
 				ImageID:   image.ID,
 				UpdatedAt: &timeNow,
-			})
+			}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -1258,9 +1328,10 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 				Extension: value.Extension,
 				Size:      value.Size,
 				UpdatedAt: &timeNow,
-			})
+			}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
@@ -1270,16 +1341,17 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 				AssetID:   dataAsset.ID,
 				ImageID:   image.ID,
 				UpdatedAt: &timeNow,
-			})
+			}, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
 		}
 
 	}
-
+	tx.Commit()
 	return true, err
 }
 
@@ -1348,6 +1420,7 @@ func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (res
 
 // Delete implements AssetDefinition
 func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bool, err error) {
+	tx := asset.db.DB.Begin()
 	switch request.Type {
 	//===================== Approve Checker =====================
 	case "approve checker":
@@ -1367,14 +1440,20 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -1386,8 +1465,9 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -1428,7 +1508,12 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -1440,8 +1525,9 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				SignerDesc:     request.Approvals.SignerDesc,
 				SignerComment:  request.Approvals.SignerComment,
 				SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt:      &timeNow})
+				UpdatedAt:      &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -1456,9 +1542,10 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
-
+			tx.Commit()
 			return true, err
 		}
+		tx.Rollback()
 		return false, err
 		//===================== Approve Signer End =====================
 
@@ -1480,14 +1567,20 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error()
+			return false, err
+		}
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -1499,11 +1592,13 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				SignerDesc:     request.Approvals.SignerDesc,
 				// SignerComment:  request.Approvals.SignerComment,
 				// SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt: &timeNow})
+				UpdatedAt: &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Tolak Checker End =====================
 
@@ -1525,14 +1620,21 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				"status",
 				"action",
 				"updated_at"}, // define field to update
-		)
+			tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		asset.approvalRepo.DeleteApprovals(request.ID)
+		err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
 		_, err := asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
@@ -1544,14 +1646,17 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				SignerDesc:     request.Approvals.SignerDesc,
 				SignerComment:  request.Approvals.SignerComment,
 				SignerDate:     request.Approvals.SignerDate,
-				UpdatedAt:      &timeNow})
+				UpdatedAt:      &timeNow}, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Tolak Signer End =====================
 	default:
+		tx.Rollback()
 		return false, err
 	}
 }

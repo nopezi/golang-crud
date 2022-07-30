@@ -38,8 +38,8 @@ type AssetDefinition interface {
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error)
-	UpdatePublish(request *models.AssetsUpdatePublish, include []string) (responses bool, err error)
-	UpdateMaintain(request *models.Assets, include []string) (responses *models.Assets, err error)
+	UpdatePublish(request *models.AssetsUpdatePublish, include []string, tx *gorm.DB) (responses bool, err error)
+	UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error)
 	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
 	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
 	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
@@ -385,13 +385,13 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
 }
 
 // UpdatePublish implements AssetDefinition
-func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish, include []string) (responses bool, err error) {
-	return true, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish, include []string, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 // Update implements AssetDefinition
-func (asset AssetRepository) UpdateMaintain(request *models.Assets, include []string) (responses *models.Assets, err error) {
-	return request, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error) {
+	return request, tx.Save(&request).Error
 }
 
 // Delete implements AssetDefinition

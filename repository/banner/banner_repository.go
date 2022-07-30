@@ -14,8 +14,8 @@ import (
 type BannerDefinition interface {
 	GetAll() (responses []models.Banner, err error)
 	GetAllBannerImage(bannerID int64) (responses []models.BannerImageResponse, err error)
-	Store(request *models.Banner) (responses models.Banner, err error)
-	StoreBannerImage(request *models.BannerRequest) (responses bool, err error)
+	Store(request *models.Banner, tx *gorm.DB) (responses models.Banner, err error)
+	StoreBannerImage(request *models.BannerRequest, tx *gorm.DB) (responses bool, err error)
 	Delete(request models.BannerImageRequest) (status bool, err error)
 	WithTrx(trxHandle *gorm.DB) BannerRepository
 }
@@ -79,13 +79,13 @@ func (banner BannerRepository) GetAllBannerImage(bannerID int64) (responses []mo
 }
 
 // Store implements BannerDefinition
-func (banner BannerRepository) Store(request *models.Banner) (responses models.Banner, err error) {
-	return *request, banner.db.DB.Save(&request).Error
+func (banner BannerRepository) Store(request *models.Banner, tx *gorm.DB) (responses models.Banner, err error) {
+	return *request, tx.Save(&request).Error
 }
 
 // StoreBannerImage implements BannerDefinition
-func (banner BannerRepository) StoreBannerImage(request *models.BannerRequest) (responses bool, err error) {
-	err = banner.db.DB.Save(&models.BannerImage{
+func (banner BannerRepository) StoreBannerImage(request *models.BannerRequest, tx *gorm.DB) (responses bool, err error) {
+	err = tx.Save(&models.BannerImage{
 		BannerID: request.BannerID,
 		ImageID:  request.ImageID,
 	}).Error
