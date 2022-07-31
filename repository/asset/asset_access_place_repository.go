@@ -61,11 +61,11 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetAll() (responses []models.
 func (assetAccessPlace AssetAccessPlaceRepository) GetOne(id int64) (responses models.AssetAccessPlacesResponse, err error) {
 	return responses, assetAccessPlace.db.DB.Raw(`
 			SELECT ap.id,ap.name, 
-			ap.icon , ap.status, 
+			ap.icon , aap.status, 
 			ap.description , aap.created_at, aap.updated_at
 			FROM asset_access_places aap 
 			JOIN access_places ap  on ap.id = aap.access_place_id  
-			WHERE id = ? `, id).Find(&responses).Error
+			WHERE aap.asset_id  = ? `, id).Find(&responses).Error
 }
 
 // GetOneAsset implements AssetAccessPlaceDefinition
@@ -74,7 +74,7 @@ func (assetAccessPlace AssetAccessPlaceRepository) GetOneAsset(id int64) (respon
 
 	rows, err := assetAccessPlace.db.DB.Raw(`
 			SELECT ap.id,ap.name, 
-			ap.icon , ap.status, 
+			ap.icon , aap.status, 
 			ap.description , aap.created_at, aap.updated_at
 			FROM asset_access_places aap 
 			JOIN access_places ap  on ap.id = aap.access_place_id  

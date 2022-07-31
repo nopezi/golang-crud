@@ -66,7 +66,7 @@ func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.
 			FROM asset_facilities af
 			LEFT JOIN facilities f 
 			on af.facility_id  = f.id 
-			WHERE af.id = ? 
+			WHERE af.asset_id = ? 
 			order by f.id  asc`, id).Find(&responses).Error
 }
 
