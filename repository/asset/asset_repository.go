@@ -33,15 +33,15 @@ type AssetDefinition interface {
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets, tx *gorm.DB) (responses *models.Assets, err error)
-	StoreElastic(request models.AssetsResponseGetOne) (response bool, err error)
-	DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error)
+	StoreElastic(request models.AssetsResponseGetOne, documentID string, tx *gorm.DB) (response bool, err error)
+	DeleteElastic(request models.AssetsResponseGetOne, tx *gorm.DB) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdatePublish(request *models.AssetsUpdatePublish, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error)
 	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
-	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
+	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
 	DeleteAssetImage(id int64) (err error)
 }
@@ -116,6 +116,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		accessPlaces := source.(map[string]interface{})["access_places"] // array
 		contacts := source.(map[string]interface{})["contacts"]
 		images := source.(map[string]interface{})["images"] // array
+
 		fmt.Println("================================")
 		fmt.Println("================================")
 
@@ -136,38 +137,39 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		// fmt.Println(Addresses)
 
 		BuildingAssets := building.BuildingAssetsResponse{
-			AssetID:           int64(buildingAssets.(map[string]interface{})["asset_id"].(float64)),
-			CertificateTypeID: int64(buildingAssets.(map[string]interface{})["certificate_type_id"].(float64)),
-			CertificateNumber: buildingAssets.(map[string]interface{})["certificate_number"].(string),
-			BuildYear:         int64(buildingAssets.(map[string]interface{})["build_year"].(float64)),
-			SurfaceArea:       int64(buildingAssets.(map[string]interface{})["burface_area"].(float64)),
-			BuildingArea:      int64(buildingAssets.(map[string]interface{})["building_area"].(float64)),
-			Direction:         buildingAssets.(map[string]interface{})["direction"].(string),
-			NumberOfFloors:    int64(buildingAssets.(map[string]interface{})["number_of_floors"].(float64)),
-			NumberOfBedrooms:  int64(buildingAssets.(map[string]interface{})["number_of_bedrooms"].(float64)),
-			NumberOfBathrooms: int64(buildingAssets.(map[string]interface{})["number_of_bathrooms"].(float64)),
-			ElectricalPower:   int64(buildingAssets.(map[string]interface{})["electrical_power"].(float64)),
-			Carport:           int64(buildingAssets.(map[string]interface{})["carport"].(float64)),
+			AssetID:             int64(buildingAssets.(map[string]interface{})["asset_id"].(float64)),
+			CertificateTypeID:   int64(buildingAssets.(map[string]interface{})["certificate_type_id"].(float64)),
+			CertificateTypeName: buildingAssets.(map[string]interface{})["certificate_type_name"].(string), //certificate_type_name
+			CertificateNumber:   buildingAssets.(map[string]interface{})["certificate_number"].(string),
+			BuildYear:           int64(buildingAssets.(map[string]interface{})["build_year"].(float64)),
+			SurfaceArea:         int64(buildingAssets.(map[string]interface{})["burface_area"].(float64)),
+			BuildingArea:        int64(buildingAssets.(map[string]interface{})["building_area"].(float64)),
+			Direction:           buildingAssets.(map[string]interface{})["direction"].(string),
+			NumberOfFloors:      int64(buildingAssets.(map[string]interface{})["number_of_floors"].(float64)),
+			NumberOfBedrooms:    int64(buildingAssets.(map[string]interface{})["number_of_bedrooms"].(float64)),
+			NumberOfBathrooms:   int64(buildingAssets.(map[string]interface{})["number_of_bathrooms"].(float64)),
+			ElectricalPower:     int64(buildingAssets.(map[string]interface{})["electrical_power"].(float64)),
+			Carport:             int64(buildingAssets.(map[string]interface{})["carport"].(float64)),
 		}
 		// fmt.Println(BuildingAssets)
 		VehicleAssets := vehicle.VehicleAssetsResponseElastic{
-			ID:                  int64(vehicleAssets.(map[string]interface{})["id"].(float64)),
-			AssetID:             int64(vehicleAssets.(map[string]interface{})["asset_id"].(float64)),
-			VehicleTypeID:       int64(vehicleAssets.(map[string]interface{})["vehicle_type_id"].(float64)),
-			CertificateTypeID:   int64(vehicleAssets.(map[string]interface{})["certificate_type_id"].(float64)),
-			CertificateNumber:   vehicleAssets.(map[string]interface{})["certificate_number"].(string),
-			Series:              vehicleAssets.(map[string]interface{})["series"].(string),
-			BrandID:             int64(vehicleAssets.(map[string]interface{})["brand_id"].(float64)),
-			Type:                vehicleAssets.(map[string]interface{})["type"].(string),
-			ProductionYear:      vehicleAssets.(map[string]interface{})["production_year"].(string),
-			TransmissionID:      int64(vehicleAssets.(map[string]interface{})["transmission_id"].(float64)),
-			MachineCapacityID:   int64(vehicleAssets.(map[string]interface{})["machine_capacity_id"].(float64)),
-			ColorID:             int64(vehicleAssets.(map[string]interface{})["color_id"].(float64)),
-			NumberOfSeat:        int64(vehicleAssets.(map[string]interface{})["number_of_seat"].(float64)),
-			NumberOfUsage:       vehicleAssets.(map[string]interface{})["number_of_usage"].(string),
-			MachineNumber:       vehicleAssets.(map[string]interface{})["machine_number"].(string),
-			BodyNumber:          vehicleAssets.(map[string]interface{})["body_number"].(string),
-			LicenceDate:         vehicleAssets.(map[string]interface{})["licence_date"].(string),
+			ID:                int64(vehicleAssets.(map[string]interface{})["id"].(float64)),
+			AssetID:           int64(vehicleAssets.(map[string]interface{})["asset_id"].(float64)),
+			VehicleTypeID:     int64(vehicleAssets.(map[string]interface{})["vehicle_type_id"].(float64)),
+			CertificateTypeID: int64(vehicleAssets.(map[string]interface{})["certificate_type_id"].(float64)),
+			CertificateNumber: vehicleAssets.(map[string]interface{})["certificate_number"].(string),
+			Series:            vehicleAssets.(map[string]interface{})["series"].(string),
+			BrandID:           int64(vehicleAssets.(map[string]interface{})["brand_id"].(float64)),
+			Type:              vehicleAssets.(map[string]interface{})["type"].(string),
+			ProductionYear:    vehicleAssets.(map[string]interface{})["production_year"].(string),
+			TransmissionID:    int64(vehicleAssets.(map[string]interface{})["transmission_id"].(float64)),
+			MachineCapacityID: int64(vehicleAssets.(map[string]interface{})["machine_capacity_id"].(float64)),
+			ColorID:           int64(vehicleAssets.(map[string]interface{})["color_id"].(float64)),
+			NumberOfSeat:      int64(vehicleAssets.(map[string]interface{})["number_of_seat"].(float64)),
+			NumberOfUsage:     vehicleAssets.(map[string]interface{})["number_of_usage"].(string),
+			MachineNumber:     vehicleAssets.(map[string]interface{})["machine_number"].(string),
+			BodyNumber:        vehicleAssets.(map[string]interface{})["body_number"].(string),
+			// LicenceDate:         vehicleAssets.(map[string]interface{})["licence_date"].(string), //null handle
 			BrandName:           vehicleAssets.(map[string]interface{})["brand_name"].(string),
 			TransmissionName:    vehicleAssets.(map[string]interface{})["transmission_name"].(string),
 			MachineCapacityName: vehicleAssets.(map[string]interface{})["machine_capacity_name"].(string),
@@ -225,9 +227,9 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		}
 
 		// fmt.Println(Images)
-		auctionDate := ""
+		// auctionDate := ""
 		// source.(map[string]interface{})["auction_date"].(string)
-		typeof := reflect.TypeOf(auctionDate)
+		typeof := reflect.TypeOf(source.(map[string]interface{})["auction_date"])
 
 		fmt.Println("typeof=>", typeof)
 
@@ -236,8 +238,8 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 			FormType:        source.(map[string]interface{})["form_type"].(string),
 			Type:            source.(map[string]interface{})["type"].(string),
 			KpknlID:         int64(source.(map[string]interface{})["kpknl_id"].(float64)),
-			AuctionDate:     source.(map[string]interface{})["auction_date"].(string),
-			AuctionTime:     source.(map[string]interface{})["auction_time"].(string),
+			AuctionDate:     fmt.Sprint(source.(map[string]interface{})["auction_date"]),
+			AuctionTime:     fmt.Sprint(source.(map[string]interface{})["auction_time"].(string)),
 			AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
 			CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),
 			SubCategoryID:   int64(source.(map[string]interface{})["sub_category_id"].(float64)),
@@ -249,6 +251,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 			CategoryName:    source.(map[string]interface{})["category_name"].(string),
 			SubCategoryName: source.(map[string]interface{})["sub_category_name"].(string),
 			StatusName:      source.(map[string]interface{})["status_name"].(string),
+			DocumentID:      source.(map[string]interface{})["document_id"].(string),
 			Addresses:       Addresses,
 			BuildingAssets:  BuildingAssets,
 			VehicleAssets:   VehicleAssets,
@@ -557,8 +560,8 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 
 }
 
-func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (response bool, err error) {
-	documentID := lib.UUID(false)
+func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne, documentID string, tx *gorm.DB) (response bool, err error) {
+	// documentID := lib.UUID(false)
 	// fmt.Println(request)
 	store, err := asset.elasticsearch.Store(lib.RequestElastic{
 		DocumentID: documentID,
@@ -572,29 +575,21 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne) (
 	}
 
 	if !store {
+		tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
 
 	if store {
-		update, err := asset.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
-			ID:         request.ID,
-			DocumentID: documentID,
-		},
-			[]string{
-				"document_id",
-			})
-		if !update || err != nil {
-			return false, err
-		}
 		return true, err
 	} else {
+		tx.Rollback()
 		return false, err
 	}
 
 }
 
-func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) (response bool, err error) {
+func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne, tx *gorm.DB) (response bool, err error) {
 	store, err := asset.elastic.Delete(elastic.RequestElastic{
 		DocumentID: request.DocumentID,
 		Index:      "assets",
@@ -617,7 +612,7 @@ func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) 
 		},
 			[]string{
 				"document_id",
-			})
+			}, tx)
 		if !update || err != nil {
 			return false, err
 		}
@@ -627,8 +622,8 @@ func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne) 
 }
 
 // UpdateDocumentID implements AssetDefinition
-func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error) {
-	return true, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 // UpdateRemoveDocumentID implements AssetDefinition

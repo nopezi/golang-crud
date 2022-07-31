@@ -501,6 +501,7 @@ func (asset AssetService) Store(request models.AssetsRequest) (status bool, err 
 }
 
 // UpdateApproval implements AssetDefinition
+// get document id and update to table asset not handled
 func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (status bool, err error) {
 	tx := asset.db.DB.Begin()
 	switch request.Type {
@@ -595,6 +596,19 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			return false, err
 		}
 
+		documentID := lib.UUID(false)
+		update, err := asset.assetRepo.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
+			ID:         request.ID,
+			DocumentID: documentID,
+		},
+			[]string{
+				"document_id",
+			}, tx)
+		if !update || err != nil {
+			tx.Rollback()
+			return false, err
+		}
+
 		// create elastic
 		getOneAsset, status, err := asset.GetOne(request.ID)
 		if err != nil {
@@ -603,10 +617,12 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			return false, err
 		} else {
 			if status {
+
 				fmt.Println("getOneAsset", getOneAsset)
-				_, err = asset.assetRepo.StoreElastic(getOneAsset)
+				_, err = asset.assetRepo.StoreElastic(getOneAsset, documentID, tx)
 
 				if err != nil {
+					tx.Rollback()
 					asset.logger.Zap.Error(err)
 					return false, err
 				}
@@ -834,6 +850,19 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				statusUpdate = true
 			}
 
+			documentID := lib.UUID(false)
+			update, err := asset.assetRepo.UpdateDocumentID(&models.AssetsRequestUpdateElastic{
+				ID:         request.ID,
+				DocumentID: documentID,
+			},
+				[]string{
+					"document_id",
+				}, tx)
+			if !update || err != nil {
+				tx.Rollback()
+				return false, err
+			}
+
 			getOneAsset, exist, err := asset.GetOne(request.ID)
 
 			if err != nil {
@@ -848,7 +877,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			if exist {
 
 				fmt.Println("getOneAsset")
-				status, err = asset.assetRepo.StoreElastic(getOneAsset)
+				status, err = asset.assetRepo.StoreElastic(getOneAsset, documentID, tx)
 
 				fmt.Println("status elastic", status)
 				if err != nil {
@@ -925,7 +954,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 
 			if exist {
 				fmt.Println("getOneAsset", getOneAsset)
-				_, err = asset.assetRepo.DeleteElastic(getOneAsset)
+				_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
 
 				if err != nil {
 					asset.logger.Zap.Error(err)
@@ -1536,7 +1565,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 
 		if exist {
 			fmt.Println("getOneAsset", getOneAsset)
-			_, err = asset.assetRepo.DeleteElastic(getOneAsset)
+			_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
 
 			if err != nil {
 				asset.logger.Zap.Error(err)

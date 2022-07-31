@@ -266,6 +266,7 @@ func (asset AssetRepository) UpdateApproval(request *models.AssetsUpdateApproval
    - encryptor response request AES 
    - nitip mas, endpoint updateApproval, pas update signer, loading nya lama, respon nya internal error, tp data nya masuk di elastic
    - yg getOne, kyknya data status akses nya, masih string 1 smua
+   - get document id and update to table asset not handled
 
 # next development
    - module user integration register with google or email,
