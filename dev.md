@@ -579,3 +579,5 @@ MINIO_SECRET_KEY="P@ssw0rd"
 ## BUG API
 - aku coba, tolak nya dah bisa, dari tolak checker, statusnya brubah ditolak checker, cman api nya kudu di reload dlu, baru lancar
 - dari approver checker, statusnya gk brubah ke pending signer
+
+- expired date diisi saat apa ?

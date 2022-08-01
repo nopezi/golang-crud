@@ -172,22 +172,23 @@ type AssetsResponseGetOneElastic struct {
 }
 
 type AssetsRequestMaintain struct {
-	Order     string  `json:"order"`
-	Sort      string  `json:"sort"`
-	Offset    int     `json:"offset"`
-	Limit     int     `json:"limit"`
-	Page      int     `json:"page"`
-	Type      string  `json:"type"`
-	Category  string  `json:"category"`
-	Name      string  `json:"name"`
-	Price     float32 `json:"price"`
-	PicName   string  `json:"pic_name"`
-	MakerID   string  `json:"maker_id"`
-	CheckerID string  `json:"checker_id"`
-	SignerID  string  `json:"signer_id"`
-	Status    string  `json:"status"`
-	Published string  `json:"published"`
-	Deleted   string  `json:"deleted"`
+	Order       string  `json:"order"`
+	Sort        string  `json:"sort"`
+	Offset      int     `json:"offset"`
+	Limit       int     `json:"limit"`
+	Page        int     `json:"page"`
+	Type        string  `json:"type"`
+	Category    string  `json:"category"`
+	SubCategory string  `json:"sub_category"`
+	Name        string  `json:"name"`
+	Price       float32 `json:"price"`
+	PicName     string  `json:"pic_name"`
+	MakerID     string  `json:"maker_id"`
+	CheckerID   string  `json:"checker_id"`
+	SignerID    string  `json:"signer_id"`
+	Status      string  `json:"status"`
+	Published   string  `json:"published"`
+	Deleted     string  `json:"deleted"`
 }
 
 type AssetsResponseMaintain struct {

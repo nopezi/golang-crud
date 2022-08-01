@@ -537,6 +537,36 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 		whereCount += " AND ast.last_maker_id = '" + request.MakerID + "'"
 	}
 
+	if request.Published != "" {
+		where += " AND ast.published = " + request.Published + ""
+		whereCount += " AND ast.published = " + request.Published + ""
+	}
+
+	if request.Deleted != "" {
+		where += " AND ast.deleted = " + request.Deleted + ""
+		whereCount += " AND ast.deleted = " + request.Deleted + ""
+	}
+
+	if request.Type != "" {
+		where += " AND ast.type = '" + request.Type + "'"
+		whereCount += " AND ast.type '= " + request.Type + "'"
+	}
+
+	if request.Status != "" {
+		where += " AND ast.status = '" + request.Status + "'"
+		whereCount += " AND ast.status '= " + request.Status + "'"
+	}
+
+	if request.Category != "" {
+		where += " AND c.name = '" + request.Category + "'"
+		whereCount += " AND c.name '= " + request.Category + "'"
+	}
+
+	if request.SubCategory != "" {
+		where += " AND sc.name = '" + request.SubCategory + "'"
+		whereCount += " AND sc.name '= " + request.SubCategory + "'"
+	}
+
 	if request.Name != "" {
 		where += " AND ast.name LIKE '%" + request.Name + "%'"
 		whereCount += " AND ast.name LIKE '%" + request.Name + "%'"
