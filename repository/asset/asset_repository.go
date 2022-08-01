@@ -40,10 +40,10 @@ type AssetDefinition interface {
 	UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdatePublish(request *models.AssetsUpdatePublish, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error)
-	Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error)
+	Delete(request *models.AssetsUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
-	DeleteAssetImage(id int64) (err error)
+	DeleteAssetImage(id int64, tx *gorm.DB) (err error)
 }
 type AssetRepository struct {
 	db            lib.Database
@@ -231,35 +231,69 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		// source.(map[string]interface{})["auction_date"].(string)
 		typeof := reflect.TypeOf(source.(map[string]interface{})["auction_date"])
 
-		fmt.Println("typeof=>", typeof)
+		fmt.Println("auction_date=>", fmt.Sprint(typeof))
+		typeAsset := source.(map[string]interface{})["type"]
+		dataAsset := models.AssetsResponseGetOneElastic{}
 
-		responses = append(responses, models.AssetsResponseGetOneElastic{
-			ID:              int64(source.(map[string]interface{})["id"].(float64)),
-			FormType:        source.(map[string]interface{})["form_type"].(string),
-			Type:            source.(map[string]interface{})["type"].(string),
-			KpknlID:         int64(source.(map[string]interface{})["kpknl_id"].(float64)),
-			AuctionDate:     fmt.Sprint(source.(map[string]interface{})["auction_date"]),
-			AuctionTime:     fmt.Sprint(source.(map[string]interface{})["auction_time"].(string)),
-			AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
-			CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),
-			SubCategoryID:   int64(source.(map[string]interface{})["sub_category_id"].(float64)),
-			Name:            source.(map[string]interface{})["name"].(string),
-			Price:           float32(source.(map[string]interface{})["price"].(float64)),
-			Description:     source.(map[string]interface{})["description"].(string),
-			Status:          source.(map[string]interface{})["status"].(string),
-			KpknlName:       source.(map[string]interface{})["kpknl_name"].(string),
-			CategoryName:    source.(map[string]interface{})["category_name"].(string),
-			SubCategoryName: source.(map[string]interface{})["sub_category_name"].(string),
-			StatusName:      source.(map[string]interface{})["status_name"].(string),
-			DocumentID:      source.(map[string]interface{})["document_id"].(string),
-			Addresses:       Addresses,
-			BuildingAssets:  BuildingAssets,
-			VehicleAssets:   VehicleAssets,
-			Facilities:      Facilities,
-			AccessPlaces:    AccessPlaces,
-			Contacts:        Contacts,
-			Images:          Images,
-		})
+		if typeAsset.(string) == "Lelang" {
+			dataAsset = models.AssetsResponseGetOneElastic{
+				ID:              int64(source.(map[string]interface{})["id"].(float64)),
+				FormType:        source.(map[string]interface{})["form_type"].(string),
+				Type:            source.(map[string]interface{})["type"].(string),
+				KpknlID:         int64(source.(map[string]interface{})["kpknl_id"].(float64)),
+				AuctionDate:     fmt.Sprint(source.(map[string]interface{})["auction_date"]),
+				AuctionTime:     fmt.Sprint(source.(map[string]interface{})["auction_time"].(string)),
+				AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
+				CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),
+				SubCategoryID:   int64(source.(map[string]interface{})["sub_category_id"].(float64)),
+				Name:            source.(map[string]interface{})["name"].(string),
+				Price:           float32(source.(map[string]interface{})["price"].(float64)),
+				Description:     source.(map[string]interface{})["description"].(string),
+				Status:          source.(map[string]interface{})["status"].(string),
+				KpknlName:       source.(map[string]interface{})["kpknl_name"].(string),
+				CategoryName:    source.(map[string]interface{})["category_name"].(string),
+				SubCategoryName: source.(map[string]interface{})["sub_category_name"].(string),
+				StatusName:      source.(map[string]interface{})["status_name"].(string),
+				DocumentID:      source.(map[string]interface{})["document_id"].(string),
+				Addresses:       Addresses,
+				BuildingAssets:  BuildingAssets,
+				VehicleAssets:   VehicleAssets,
+				Facilities:      Facilities,
+				AccessPlaces:    AccessPlaces,
+				Contacts:        Contacts,
+				Images:          Images,
+			}
+		} else {
+			dataAsset = models.AssetsResponseGetOneElastic{
+				ID:       int64(source.(map[string]interface{})["id"].(float64)),
+				FormType: source.(map[string]interface{})["form_type"].(string),
+				Type:     source.(map[string]interface{})["type"].(string),
+				KpknlID:  int64(source.(map[string]interface{})["kpknl_id"].(float64)),
+				// AuctionDate:     fmt.Sprint(source.(map[string]interface{})["auction_date"]),
+				// AuctionTime:     fmt.Sprint(source.(map[string]interface{})["auction_time"].(string)),
+				// AuctionLink:     source.(map[string]interface{})["auction_link"].(string),
+				CategoryID:      int64(source.(map[string]interface{})["category_id"].(float64)),
+				SubCategoryID:   int64(source.(map[string]interface{})["sub_category_id"].(float64)),
+				Name:            source.(map[string]interface{})["name"].(string),
+				Price:           float32(source.(map[string]interface{})["price"].(float64)),
+				Description:     source.(map[string]interface{})["description"].(string),
+				Status:          source.(map[string]interface{})["status"].(string),
+				KpknlName:       source.(map[string]interface{})["kpknl_name"].(string),
+				CategoryName:    source.(map[string]interface{})["category_name"].(string),
+				SubCategoryName: source.(map[string]interface{})["sub_category_name"].(string),
+				StatusName:      source.(map[string]interface{})["status_name"].(string),
+				DocumentID:      source.(map[string]interface{})["document_id"].(string),
+				Addresses:       Addresses,
+				BuildingAssets:  BuildingAssets,
+				VehicleAssets:   VehicleAssets,
+				Facilities:      Facilities,
+				AccessPlaces:    AccessPlaces,
+				Contacts:        Contacts,
+				Images:          Images,
+			}
+		}
+
+		responses = append(responses, dataAsset)
 
 	}
 
@@ -398,8 +432,8 @@ func (asset AssetRepository) UpdateMaintain(request *models.Assets, include []st
 }
 
 // Delete implements AssetDefinition
-func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete, include []string) (responses bool, err error) {
-	return true, asset.db.DB.Save(&request).Error
+func (asset AssetRepository) Delete(request *models.AssetsUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 func (asset AssetRepository) GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error) {
@@ -632,6 +666,6 @@ func (asset AssetRepository) UpdateRemoveDocumentID(request *models.AssetsReques
 }
 
 // DeleteAssetImage implements ImageDefinition
-func (asset AssetRepository) DeleteAssetImage(id int64) (err error) {
-	return asset.db.DB.Where("id = ?", id).Delete(&models.AssetImagesRequest{}).Error
+func (asset AssetRepository) DeleteAssetImage(id int64, tx *gorm.DB) (err error) {
+	return tx.Where("id = ?", id).Delete(&models.AssetImagesRequest{}).Error
 }

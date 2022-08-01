@@ -117,8 +117,8 @@ func (asset AssetController) GetOne(c *gin.Context) {
 		return
 	}
 
-	if status {
-		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", data)
+	if !status {
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", nil)
 		return
 	}
 
@@ -185,6 +185,7 @@ func (asset AssetController) UpdateApproval(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(data)
 	status, err := asset.service.UpdateApproval(&data)
 	if err != nil {
 		asset.logger.Zap.Error(err)

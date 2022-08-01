@@ -144,6 +144,7 @@ func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (re
 func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error) {
 	// join table
 	assets, err := asset.assetRepo.GetOne(id)
+	fmt.Println(assets)
 	if assets.ID != 0 {
 
 		// join table
@@ -547,11 +548,13 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Approve Checker End =====================
 
 	//===================== Approve Signer =====================
 	case "approve signer":
+		tx = asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:          request.ID,
 			Published:   true,
@@ -626,15 +629,17 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 					asset.logger.Zap.Error(err)
 					return false, err
 				}
-
+				tx.Commit()
 				return true, err
 			}
 		}
+		tx.Rollback()
 		return false, err
 		//===================== Approve Signer End =====================
 
 	//===================== Tolak Checker =====================
 	case "tolak checker":
+		tx := asset.db.DB.Begin()
 		// update checker
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID: request.ID,
@@ -678,11 +683,13 @@ func (asset AssetService) UpdateApproval(request *models.AssetsRequestUpdate) (s
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 	//===================== Tolak Checker End =====================
 
 	//===================== Tolak Signer      =====================
 	case "tolak signer":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID: request.ID,
 			// Published:   true,
@@ -786,6 +793,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Approve Checker End =====================
 
@@ -793,6 +801,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 	case "approve signer":
 		statusUpdate := false
 		if request.TypePublish == "publish" {
+			tx := asset.db.DB.Begin()
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
 				ID:            request.ID,
 				LastMakerID:   request.LastMakerID,
@@ -892,15 +901,19 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				}
 
 				if statusUpdate {
+					tx.Commit()
 					return true, err
 				} else {
+					tx.Rollback()
 					return false, err
 				}
 			}
 			statusUpdate = false
+			tx.Rollback()
 			return false, err
 
 		} else if request.TypePublish == "unpublish" {
+			tx := asset.db.DB.Begin()
 			status, err = asset.assetRepo.UpdatePublish(&models.AssetsUpdatePublish{
 				ID:            request.ID,
 				Published:     false,
@@ -957,19 +970,23 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 				_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
 
 				if err != nil {
+					tx.Rollback()
 					asset.logger.Zap.Error(err)
 					return false, err
 				}
+				tx.Commit()
 				return true, err
 			}
+			tx.Rollback()
 			return false, err
 		}
 
-		return true, err
+		return false, err
 		//===================== Approve Signer End =====================
 
 	//===================== Tolak Checker =====================
 	case "tolak checker":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1017,11 +1034,13 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Tolak Checker End =====================
 
 	//===================== Tolak Signer =====================
 	case "tolak signer":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1070,6 +1089,7 @@ func (asset AssetService) UpdatePublish(request *models.AssetsRequestUpdate) (st
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Tolak Signer End =====================
 	default:
@@ -1449,10 +1469,10 @@ func (asset AssetService) GetMaintain(request models.AssetsRequestMaintain) (res
 
 // Delete implements AssetDefinition
 func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bool, err error) {
-	tx := asset.db.DB.Begin()
 	switch request.Type {
 	//===================== Approve Checker =====================
 	case "approve checker":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1500,12 +1520,13 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 		return true, err
 		//===================== Approve Checker End =====================
 
 	//===================== Approve Signer =====================
 	case "approve signer":
-
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.Delete(&models.AssetsUpdateDelete{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1530,9 +1551,10 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 				"publish_date",
 				"expired_date",
 				"updated_at",
-			})
+			}, tx)
 
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
@@ -1580,6 +1602,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 
 	//===================== Tolak Checker =====================
 	case "tolak checker":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1633,6 +1656,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 
 	//===================== Tolak Signer =====================
 	case "tolak signer":
+		tx := asset.db.DB.Begin()
 		_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
 			ID:            request.ID,
 			LastMakerID:   request.LastMakerID,
@@ -1685,7 +1709,6 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 		return true, err
 		//===================== Tolak Signer End =====================
 	default:
-		tx.Rollback()
 		return false, err
 	}
 }
@@ -1697,17 +1720,21 @@ func (asset AssetService) DeleteAssetImage(request *models.AssetImageRequest) (s
 	if !ok {
 		return false, err
 	} else {
-		err = asset.imagesRepo.Delete(request.ImageID)
+		tx := asset.db.DB.Begin()
+		err = asset.imagesRepo.Delete(request.ImageID, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
 
-		err = asset.assetRepo.DeleteAssetImage(request.AssetImageID)
+		err = asset.assetRepo.DeleteAssetImage(request.AssetImageID, tx)
 		if err != nil {
+			tx.Rollback()
 			asset.logger.Zap.Error(err)
 			return false, err
 		}
+		tx.Commit()
 	}
 
 	return true, err

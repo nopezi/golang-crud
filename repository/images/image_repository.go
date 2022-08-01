@@ -16,7 +16,7 @@ type ImageDefinition interface {
 	GetOneAsset(id int64) (responses []models.ImagesResponses, err error)
 	Store(request *models.Images, tx *gorm.DB) (responses *models.Images, err error)
 	Update(request *models.ImagesRequest) (responses bool, err error)
-	Delete(id int64) (err error)
+	Delete(id int64, tx *gorm.DB) (err error)
 	WithTrx(trxHandle *gorm.DB) ImageRepository
 }
 type ImageRepository struct {
@@ -88,6 +88,6 @@ func (image ImageRepository) Update(request *models.ImagesRequest) (responses bo
 }
 
 // Delete implements ImageDefinition
-func (image ImageRepository) Delete(id int64) (err error) {
-	return image.db.DB.Where("id = ?", id).Delete(&models.ImagesResponse{}).Error
+func (image ImageRepository) Delete(id int64, tx *gorm.DB) (err error) {
+	return tx.Where("id = ?", id).Delete(&models.ImagesResponse{}).Error
 }

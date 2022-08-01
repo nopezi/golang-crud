@@ -124,16 +124,20 @@ func (banner BannerService) Store(request *models.BannerRequest) (status bool, e
 
 // Delete implements BannerDefinition
 func (banner BannerService) Delete(request models.BannerImageRequest) (status bool, err error) {
+	tx := banner.db.DB.Begin()
 	status, err = banner.repository.Delete(request)
 	if err != nil {
+		tx.Rollback()
 		banner.logger.Zap.Error(err)
 		return false, err
 	}
 
-	err = banner.imagesRepo.Delete(request.ImageID)
+	err = banner.imagesRepo.Delete(request.ImageID, tx)
 	if err != nil {
+		tx.Rollback()
 		banner.logger.Zap.Error(err)
 		return false, err
 	}
+	tx.Commit()
 	return true, err
 }
