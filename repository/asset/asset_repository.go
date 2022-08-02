@@ -235,7 +235,7 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		typeAsset := source.(map[string]interface{})["type"]
 		dataAsset := models.AssetsResponseGetOneElastic{}
 
-		if typeAsset.(string) == "Lelang" {
+		if typeAsset.(string) == "Lelang" || typeAsset.(string) == "lelang" {
 			dataAsset = models.AssetsResponseGetOneElastic{
 				ID:              int64(source.(map[string]interface{})["id"].(float64)),
 				FormType:        source.(map[string]interface{})["form_type"].(string),
@@ -678,6 +678,7 @@ func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne, 
 				"document_id",
 			}, tx)
 		if !update || err != nil {
+			tx.Rollback()
 			return false, err
 		}
 	}

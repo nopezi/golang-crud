@@ -1590,13 +1590,14 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
 
 			if err != nil {
+				tx.Rollback()
 				asset.logger.Zap.Error(err)
 				return false, err
 			}
 			tx.Commit()
 			return true, err
 		}
-		tx.Rollback()
+		// tx.Rollback()
 		return false, err
 		//===================== Approve Signer End =====================
 
