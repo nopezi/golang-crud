@@ -291,11 +291,11 @@ func (asset AssetController) Delete(c *gin.Context) {
 
 	if !status {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Data Gagal disimpan", false)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal dihapus", false)
 		return
 	}
 
-	lib.ReturnToJson(c, 200, "200", "Update data berhasil", true)
+	lib.ReturnToJson(c, 200, "200", "Hapus data berhasil", true)
 }
 
 func (asset AssetController) DeleteAssetImage(c *gin.Context) {

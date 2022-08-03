@@ -145,8 +145,9 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 	// join table
 	assets, err := asset.assetRepo.GetOne(id)
 	fmt.Println(assets)
-	if assets.ID != 0 {
 
+	if assets.ID != 0 {
+		fmt.Println("Bukan 0")
 		// join table
 		address, err := asset.addressRepo.GetOneAsset(assets.ID)
 		building := buildingModel.BuildingAssetsResponse{}
@@ -1527,19 +1528,49 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 	//===================== Approve Signer =====================
 	case "approve signer":
 		tx := asset.db.DB.Begin()
-		_, err = asset.assetRepo.Delete(&models.AssetsUpdateDelete{
-			ID:            request.ID,
-			LastMakerID:   request.LastMakerID,
-			LastMakerDesc: request.LastMakerDesc,
-			LastMakerDate: request.LastMakerDate,
-			Deleted:       true,
-			Action:        "updateDelete",
-			Status:        "02b", // selesai
-			Published:     false,
-			PublishDate:   nil,
-			ExpiredDate:   nil,
-			UpdatedAt:     &timeNow,
-		},
+		getOneAsset, exist, err := asset.GetOne(request.ID)
+		if err != nil {
+			asset.logger.Zap.Error(err)
+			tx.Rollback()
+			return false, err
+		}
+		fmt.Println("service", getOneAsset)
+		fmt.Println("exist", exist)
+		fmt.Println("if published false", getOneAsset.Published)
+
+		updateData := &models.AssetsUpdateDelete{}
+
+		if getOneAsset.DocumentID == "" {
+			updateData = &models.AssetsUpdateDelete{
+				ID:            request.ID,
+				LastMakerID:   request.LastMakerID,
+				LastMakerDesc: request.LastMakerDesc,
+				LastMakerDate: request.LastMakerDate,
+				Deleted:       true,
+				Action:        "updateDelete",
+				Status:        "02b", // selesai
+				Published:     false,
+				PublishDate:   nil,
+				ExpiredDate:   nil,
+				UpdatedAt:     &timeNow,
+			}
+		} else {
+			updateData = &models.AssetsUpdateDelete{
+				ID:            request.ID,
+				LastMakerID:   request.LastMakerID,
+				LastMakerDesc: request.LastMakerDesc,
+				LastMakerDate: request.LastMakerDate,
+				Deleted:       true,
+				Action:        "updateDelete",
+				Status:        "02b", // selesai
+				Published:     false,
+				PublishDate:   nil,
+				ExpiredDate:   nil,
+				UpdatedAt:     &timeNow,
+			}
+		}
+
+		_, err = asset.assetRepo.Delete(updateData,
 			[]string{
 				"last_maker_id",
 				"last_maker_desc",
@@ -1565,7 +1596,7 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			asset.logger.Zap.Error()
 			return false, err
 		}
-		_, err := asset.approvalRepo.Store(
+		_, err = asset.approvalRepo.Store(
 			&requestApprovals.Approvals{
 				AssetID:        request.ID,
 				CheckerID:      request.Approvals.CheckerID,
@@ -1583,21 +1614,24 @@ func (asset AssetService) Delete(request *models.AssetsRequestUpdate) (status bo
 			return false, err
 		}
 
-		getOneAsset, exist, err := asset.GetOne(request.ID)
-
 		if exist {
 			fmt.Println("getOneAsset", getOneAsset)
-			_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
 
-			if err != nil {
-				tx.Rollback()
-				asset.logger.Zap.Error(err)
-				return false, err
+			if getOneAsset.Published {
+				_, err = asset.assetRepo.DeleteElastic(getOneAsset, tx)
+
+				if err != nil {
+					tx.Rollback()
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
+				tx.Commit()
+				return true, err
 			}
 			tx.Commit()
 			return true, err
 		}
-		// tx.Rollback()
+
 		return false, err
 		//===================== Approve Signer End =====================
 

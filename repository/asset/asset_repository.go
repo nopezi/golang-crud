@@ -349,7 +349,7 @@ func (asset AssetRepository) GetOne(id int64) (responses models.AssetsResponse, 
 		asset.logger.Zap.Error(err)
 		return responses, err
 	}
-	fmt.Println("responses", responses)
+	// fmt.Println("responses", responses)
 	return responses, err
 }
 
@@ -654,17 +654,20 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne, d
 }
 
 func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne, tx *gorm.DB) (response bool, err error) {
+	fmt.Println("Delete asset request.DocumentID", request.DocumentID)
 	store, err := asset.elastic.Delete(elastic.RequestElastic{
 		DocumentID: request.DocumentID,
 		Index:      "assets",
 	})
 
 	if err != nil {
+		// tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
 
 	if !store {
+		// tx.Rollback()
 		asset.logger.Zap.Error(err)
 		return false, err
 	}
