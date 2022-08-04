@@ -17,13 +17,18 @@ type ApiDefinition interface {
 
 type (
 	Options struct {
-		BaseUrl string
-		SSL     bool
-		Payload interface{}
-		Request *bytes.Buffer
-		Method  string
-		Header  []Header
-		Auth    bool
+		BaseUrl  string
+		SSL      bool
+		Payload  interface{}
+		Request  *bytes.Buffer
+		Method   string
+		Header   []Header
+		Auth     bool
+		ClientID ClientID
+	}
+	ClientID struct {
+		Clientid     string
+		Clientsecret string
 	}
 	Header struct {
 		Key   string
@@ -46,7 +51,7 @@ func AuthBearer(options Options, auth Auth) (response Resp, err error) {
 	// fmt.Println(resByte)
 
 	options.Request = bytes.NewBuffer(resByte)
-	// fmt.Println("request", options.Request)
+	fmt.Println("request", options.Request)
 
 	transCfg := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: options.SSL}, // ignore expired SSL certificates

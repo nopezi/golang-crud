@@ -36,5 +36,11 @@ func (Mcs McsController) GetMcs(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
+	if len(response) == 0 {
+		Mcs.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Data Tidak Ditemukan", false)
+		return
+	}
+
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", response)
 }
