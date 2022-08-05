@@ -581,3 +581,45 @@ MINIO_SECRET_KEY="P@ssw0rd"
 - dari approver checker, statusnya gk brubah ke pending signer
 
 - expired date diisi saat apa ?
+
+==============================
+- integrasi api mas tomi, mcs, login
+- nambah uker ke table asset dari data login
+- integrasi esb buat ambildata cif
+- user matrix database,
+- login by onegate, 
+- get user by onegate
+- get menu by jabatan
+
+update publish signer, status ilang di getall maintain
+dmin publish, unpublish, delete, update edit gaperlu cs, 
+maker publish, unpublish perlu cs, delete  perlu cs
+
+### prioritas 2
+updateMaintain
+- status hilang done
+- address ga ke update
+- buildingAsset ilang
+- vehicleAsset ilang
+- facilities
+- aksesPlace
+- contact
+- document_id done
+- images bisa
+-  approvals ga ke update
+
+## prioritas 1 done
+- getAllApproval
+ - published di by pn checker dan by pn signer = published dikosongin
+ - pending checker by pn masing2,  pending signer by pn masing2 
+ - deleted (engga jadi)
+
+ ## get file minio lewat backend
+
+ ## cek jwt kalo muti app bisa di check valid ga
+ ## cryoto response dan request
+
+ ## di get elastic datanya batasin
+ hilangkan:
+   - data nasabah
+   - data approval

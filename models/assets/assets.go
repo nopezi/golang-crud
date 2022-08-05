@@ -25,6 +25,7 @@ type Assets struct {
 	Deleted       bool
 	ExpiredDate   *string
 	Action        string // create, updateApproval, updateMaintain, delete, publish, unpublish
+	DocumentID    string
 	UpdatedAt     *string
 	CreatedAt     *string
 }
