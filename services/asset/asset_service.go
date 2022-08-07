@@ -31,6 +31,7 @@ import (
 	facilitiesModel "infolelang/models/facilities"
 	VehicleModel "infolelang/models/vehicle_assets"
 
+	"github.com/golang-module/carbon"
 	"gitlab.com/golang-package-library/logger"
 	minio "gitlab.com/golang-package-library/minio"
 )
@@ -45,7 +46,7 @@ type AssetDefinition interface {
 	GetAll() (responses []models.AssetsResponse, err error)
 	GetAssetElastic(request models.AssetRequestElastic) (responses []models.AssetsResponseGetOneElastic, err error)
 	GetAuctionSchedule(request models.AuctionSchedule) (responses []models.AuctionScheduleResponse, pagination lib.Pagination, err error)
-	GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error)
+	GetOne(id int64) (responses models.AssetsResponseGetOneString, status bool, err error)
 	Store(request models.AssetsRequest) (status bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponses, pagination lib.Pagination, err error)
@@ -141,7 +142,7 @@ func (asset AssetService) GetAuctionSchedule(request models.AuctionSchedule) (re
 }
 
 // GetOne implements AssetDefinition
-func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOne, status bool, err error) {
+func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOneString, status bool, err error) {
 	// join table
 	assets, err := asset.assetRepo.GetOne(id)
 	fmt.Println(assets)
@@ -154,8 +155,9 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 		facilities := []facilitiesModel.FacilitiesResponse{}
 		accessPlace := []accessPlaceModel.AccessPlacesResponse{}
 		vehicle := VehicleModel.VehicleAssetsResponse{}
-
+		fmt.Println("assets.FormType", assets.FormType)
 		if assets.FormType == "form-b1" {
+			fmt.Println("building")
 			// join table
 			building, err = asset.buildingRepo.GetOneAsset(assets.ID)
 			fmt.Println("building.CertificateNumber", building.CertificateNumber)
@@ -165,6 +167,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 			// join table
 			accessPlace, err = asset.assetAccessPlace.GetOneAsset(assets.ID)
 		} else {
+			fmt.Println("vehicle")
 			// join table
 			vehicle, err = asset.vehicleRepo.GetOneAsset(assets.ID)
 		}
@@ -178,13 +181,13 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 		// join table
 		approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
 
-		responses = models.AssetsResponseGetOne{
+		responses = models.AssetsResponseGetOneString{
 			ID:              assets.ID,
 			FormType:        assets.FormType,
 			Type:            assets.Type,
 			KpknlID:         assets.KpknlID,
-			AuctionDate:     assets.AuctionDate,
-			AuctionTime:     assets.AuctionTime,
+			AuctionDate:     carbon.Parse(fmt.Sprint(assets.AuctionDate)).ToDateTimeString(),
+			AuctionTime:     carbon.Parse(fmt.Sprint(assets.AuctionTime)).ToDateTimeString(),
 			AuctionLink:     assets.AuctionLink,
 			CategoryID:      assets.CategoryID,
 			SubCategoryID:   assets.SubCategoryID,
@@ -194,13 +197,13 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 			Status:          assets.Status,
 			MakerID:         assets.MakerID,
 			MakerDesc:       assets.MakerDesc,
-			MakerDate:       assets.MakerDate,
+			MakerDate:       carbon.Parse(fmt.Sprint(assets.MakerDate)).ToDateTimeString(),
 			LastMakerID:     assets.LastMakerID,
 			LastMakerDesc:   assets.LastMakerDesc,
-			LastMakerDate:   assets.LastMakerDate,
+			LastMakerDate:   carbon.Parse(fmt.Sprint(assets.LastMakerDate)).ToDateTimeString(),
 			Published:       assets.Published,
 			Deleted:         assets.Deleted,
-			ExpiredDate:     assets.ExpiredDate,
+			ExpiredDate:     carbon.Parse(fmt.Sprint(assets.ExpiredDate)).ToDateTimeString(),
 			Action:          assets.Action,
 			KpknlName:       assets.KpknlName,
 			CategoryName:    assets.CategoryName,
@@ -215,8 +218,8 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 			Images:          images,
 			Approvals:       approval,
 			DocumentID:      assets.DocumentID,
-			UpdatedAt:       assets.UpdatedAt,
-			CreatedAt:       assets.CreatedAt,
+			UpdatedAt:       carbon.Parse(fmt.Sprint(assets.UpdatedAt)).ToDateTimeString(),
+			CreatedAt:       carbon.Parse(fmt.Sprint(assets.CreatedAt)).ToDateTimeString(),
 		}
 
 		return responses, true, err
@@ -422,60 +425,66 @@ func (asset AssetService) Store(request models.AssetsRequest) (status bool, err 
 
 	// images
 	// check apabila array image error return false
-	for _, value := range request.Images {
+	if len(request.Images) != 0 {
+		for _, value := range request.Images {
 
-		var destinationPath string
-		bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
-		pathSplit := strings.Split(value.Path, "/")
-		sourcePath := fmt.Sprint(value.Path)
-		destinationPath = pathSplit[1] + "/" +
-			dataAsset.Type + "/" +
-			lib.GetTimeNow("year") + "/" +
-			lib.GetTimeNow("month") + "/" +
-			lib.GetTimeNow("day") + "/" +
-			pathSplit[2] + "/" +
-			value.Filename
-		fmt.Println("bucketExist=>", reflect.TypeOf(bucketExist))
-		// assets/formb1/2022/June/01/uuid/gambar.jpg
+			var destinationPath string
+			bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
+			pathSplit := strings.Split(value.Path, "/")
+			sourcePath := fmt.Sprint(value.Path)
+			destinationPath = pathSplit[1] + "/" +
+				dataAsset.Type + "/" +
+				lib.GetTimeNow("year") + "/" +
+				lib.GetTimeNow("month") + "/" +
+				lib.GetTimeNow("day") + "/" +
+				pathSplit[2] + "/" +
+				value.Filename
+			fmt.Println("bucketExist=>", reflect.TypeOf(bucketExist))
+			// assets/formb1/2022/June/01/uuid/gambar.jpg
 
-		if bucketExist {
-			fmt.Println("Exist")
-			fmt.Println(bucket)
-			fmt.Println(destinationPath)
-			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-		} else {
-			fmt.Println("Not Exist")
-			fmt.Println(bucket)
-			fmt.Println(destinationPath)
-			asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
-			asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+			if bucketExist {
+				fmt.Println("Exist")
+				fmt.Println(bucket)
+				fmt.Println(destinationPath)
+				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+			} else {
+				fmt.Println("Not Exist")
+				fmt.Println(bucket)
+				fmt.Println(destinationPath)
+				asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
+				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+			}
+
+			image, err := asset.imagesRepo.Store(&requestImage.Images{
+				Filename:  value.Filename,
+				Path:      destinationPath,
+				Extension: value.Extension,
+				Size:      value.Size,
+				CreatedAt: &timeNow,
+			}, tx)
+
+			if err != nil {
+				tx.Rollback()
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
+
+			_, err = asset.assetImage.Store(&models.AssetImages{
+				AssetID:   dataAsset.ID,
+				ImageID:   image.ID,
+				CreatedAt: &timeNow,
+			}, tx)
+
+			if err != nil {
+				tx.Rollback()
+				asset.logger.Zap.Error(err)
+				return false, err
+			}
 		}
-
-		image, err := asset.imagesRepo.Store(&requestImage.Images{
-			Filename:  value.Filename,
-			Path:      destinationPath,
-			Extension: value.Extension,
-			Size:      value.Size,
-			CreatedAt: &timeNow,
-		}, tx)
-
-		if err != nil {
-			tx.Rollback()
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
-
-		_, err = asset.assetImage.Store(&models.AssetImages{
-			AssetID:   dataAsset.ID,
-			ImageID:   image.ID,
-			CreatedAt: &timeNow,
-		}, tx)
-
-		if err != nil {
-			tx.Rollback()
-			asset.logger.Zap.Error(err)
-			return false, err
-		}
+	} else {
+		tx.Rollback()
+		asset.logger.Zap.Error("Images Empty")
+		return false, err
 	}
 
 	// approval
@@ -1104,19 +1113,20 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 	// update here
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
-	assets := &models.Assets{}
+	assets := &models.AssetsRequestUpdateMaintain{}
 	if request.Type == "Lelang" {
 
-		assets = &models.Assets{
-			ID:            request.ID,
-			Type:          request.Type,
+		assets = &models.AssetsRequestUpdateMaintain{
+			ID:   request.ID,
+			Type: request.Type,
+			// FormType:      request.FormType,
 			KpknlID:       request.KpknlID,
 			AuctionDate:   request.AuctionDate,
 			AuctionTime:   request.AuctionTime,
 			AuctionLink:   request.AuctionLink,
 			CategoryID:    request.CategoryID,
 			SubCategoryID: request.SubCategoryID,
-			Status:        request.Status,
+			// Status:        request.Status,
 			Name:          request.Name,
 			Price:         request.Price,
 			Description:   request.Description,
@@ -1128,16 +1138,16 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			UpdatedAt:     &timeNow,
 		}
 	} else {
-		assets = &models.Assets{
+		assets = &models.AssetsRequestUpdateMaintain{
 			ID:            request.ID,
 			Type:          request.Type,
 			KpknlID:       request.KpknlID,
 			AuctionDate:   nil,
 			AuctionTime:   nil,
-			AuctionLink:   request.AuctionLink,
+			AuctionLink:   "",
 			CategoryID:    request.CategoryID,
 			SubCategoryID: request.SubCategoryID,
-			Status:        request.Status,
+			// Status:        request.Status,
 			Name:          request.Name,
 			Price:         request.Price,
 			Description:   request.Description,
@@ -1252,6 +1262,7 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 					ID:            value.ID,
 					AssetID:       dataAsset.ID,
 					AccessPlaceID: value.ID,
+					Status:        value.Status,
 					UpdatedAt:     &timeNow,
 				}, tx)
 
@@ -1312,99 +1323,106 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 
 	// images
 	// check apabila array image error return false
-	for _, value := range request.Images {
+	if len(request.Images) != 0 {
+		for _, value := range request.Images {
 
-		var destinationPath string
-		bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
+			var destinationPath string
+			bucketExist := asset.minio.BucketExist(asset.minio.Client(), bucket)
 
-		pathSplit := strings.Split(value.Path, "/")
-		sourcePath := fmt.Sprint(value.Path)
-		destinationPath = pathSplit[1] + "/" +
-			dataAsset.Type + "/" +
-			lib.GetTimeNow("year") + "/" +
-			lib.GetTimeNow("month") + "/" +
-			lib.GetTimeNow("day") + "/" +
-			pathSplit[2] + "/" +
-			value.Filename
-		// assets/formb1/2022/June/01/uuid/gambar.jpg
+			pathSplit := strings.Split(value.Path, "/")
+			sourcePath := fmt.Sprint(value.Path)
+			destinationPath = pathSplit[1] + "/" +
+				dataAsset.Type + "/" +
+				lib.GetTimeNow("year") + "/" +
+				lib.GetTimeNow("month") + "/" +
+				lib.GetTimeNow("day") + "/" +
+				pathSplit[2] + "/" +
+				value.Filename
+			// assets/formb1/2022/June/01/uuid/gambar.jpg
 
-		if pathSplit[0] == "tmp" {
-			asset.logger.Zap.Info("============> new images")
-			// copy to origin directory and create image to db
-			if bucketExist {
-				fmt.Println("Exist")
-				fmt.Println(bucket)
-				fmt.Println(destinationPath)
-				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+			if pathSplit[0] == "tmp" {
+				asset.logger.Zap.Info("============> new images")
+				// copy to origin directory and create image to db
+				if bucketExist {
+					fmt.Println("Exist")
+					fmt.Println(bucket)
+					fmt.Println(destinationPath)
+					asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
 
+				} else {
+					fmt.Println("Not Exist")
+					fmt.Println(bucket)
+					fmt.Println(destinationPath)
+					asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
+					asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+				}
+
+				image, err := asset.imagesRepo.Store(&requestImage.Images{
+					ID:        value.ID,
+					Filename:  value.Filename,
+					Path:      destinationPath,
+					Extension: value.Extension,
+					Size:      value.Size,
+					UpdatedAt: &timeNow,
+				}, tx)
+
+				if err != nil {
+					tx.Rollback()
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
+
+				_, err = asset.assetImage.Store(&models.AssetImages{
+					ID:        image.ID,
+					AssetID:   dataAsset.ID,
+					ImageID:   image.ID,
+					UpdatedAt: &timeNow,
+				}, tx)
+
+				if err != nil {
+					tx.Rollback()
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
 			} else {
-				fmt.Println("Not Exist")
-				fmt.Println(bucket)
-				fmt.Println(destinationPath)
-				asset.minio.MakeBucket(asset.minio.Client(), bucket, "")
-				asset.minio.CopyObject(asset.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+				// else update path to db with relation asset_image
+				asset.logger.Zap.Info("============> old images")
+				image, err := asset.imagesRepo.Store(&requestImage.Images{
+					ID:        value.ID,
+					Filename:  value.Filename,
+					Path:      value.Path,
+					Extension: value.Extension,
+					Size:      value.Size,
+					UpdatedAt: &timeNow,
+				}, tx)
+
+				if err != nil {
+					tx.Rollback()
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
+
+				_, err = asset.assetImage.Store(&models.AssetImages{
+					ID:        image.ID,
+					AssetID:   dataAsset.ID,
+					ImageID:   image.ID,
+					UpdatedAt: &timeNow,
+				}, tx)
+
+				if err != nil {
+					tx.Rollback()
+					asset.logger.Zap.Error(err)
+					return false, err
+				}
 			}
 
-			image, err := asset.imagesRepo.Store(&requestImage.Images{
-				ID:        value.ID,
-				Filename:  value.Filename,
-				Path:      destinationPath,
-				Extension: value.Extension,
-				Size:      value.Size,
-				UpdatedAt: &timeNow,
-			}, tx)
-
-			if err != nil {
-				tx.Rollback()
-				asset.logger.Zap.Error(err)
-				return false, err
-			}
-
-			_, err = asset.assetImage.Store(&models.AssetImages{
-				ID:        image.ID,
-				AssetID:   dataAsset.ID,
-				ImageID:   image.ID,
-				UpdatedAt: &timeNow,
-			}, tx)
-
-			if err != nil {
-				tx.Rollback()
-				asset.logger.Zap.Error(err)
-				return false, err
-			}
-		} else {
-			// else update path to db with relation asset_image
-			asset.logger.Zap.Info("============> old images")
-			image, err := asset.imagesRepo.Store(&requestImage.Images{
-				ID:        value.ID,
-				Filename:  value.Filename,
-				Path:      value.Path,
-				Extension: value.Extension,
-				Size:      value.Size,
-				UpdatedAt: &timeNow,
-			}, tx)
-
-			if err != nil {
-				tx.Rollback()
-				asset.logger.Zap.Error(err)
-				return false, err
-			}
-
-			_, err = asset.assetImage.Store(&models.AssetImages{
-				ID:        image.ID,
-				AssetID:   dataAsset.ID,
-				ImageID:   image.ID,
-				UpdatedAt: &timeNow,
-			}, tx)
-
-			if err != nil {
-				tx.Rollback()
-				asset.logger.Zap.Error(err)
-				return false, err
-			}
 		}
-
+	} else {
+		tx.Rollback()
+		// asset.logger.Zap.Error(err)
+		return false, err
 	}
+
 	tx.Commit()
 	return true, err
 }

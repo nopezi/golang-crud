@@ -33,13 +33,13 @@ type AssetDefinition interface {
 	GetOne(id int64) (responses models.AssetsResponse, err error)
 	GetOneAsset(id int64) (responses models.AssetsResponse, err error)
 	Store(request *models.Assets, tx *gorm.DB) (responses *models.Assets, err error)
-	StoreElastic(request models.AssetsResponseGetOne, documentID string, tx *gorm.DB) (response bool, err error)
-	DeleteElastic(request models.AssetsResponseGetOne, tx *gorm.DB) (response bool, err error)
+	StoreElastic(request models.AssetsResponseGetOneString, documentID string, tx *gorm.DB) (response bool, err error)
+	DeleteElastic(request models.AssetsResponseGetOneString, tx *gorm.DB) (response bool, err error)
 	GetApproval(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	GetMaintain(request models.AssetsRequestMaintain) (responses []models.AssetsResponseMaintain, totalRows int, totalData int, err error)
 	UpdateApproval(request *models.AssetsUpdateApproval, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdatePublish(request *models.AssetsUpdatePublish, include []string, tx *gorm.DB) (responses bool, err error)
-	UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error)
+	UpdateMaintain(request *models.AssetsRequestUpdateMaintain, include []string, tx *gorm.DB) (responses *models.AssetsRequestUpdateMaintain, err error)
 	Delete(request *models.AssetsUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateDocumentID(request *models.AssetsRequestUpdateElastic, include []string, tx *gorm.DB) (responses bool, err error)
 	UpdateRemoveDocumentID(request *models.AssetsRequestUpdateElastic, include []string) (responses bool, err error)
@@ -203,14 +203,14 @@ func (asset AssetRepository) GetAssetElastic(request models.AssetRequestElastic)
 		}
 		// fmt.Println(AccessPlaces)
 
-		Contacts := contact.ContactsResponse{
-			ID:          int64(contacts.(map[string]interface{})["id"].(float64)),
-			AssetID:     int64(contacts.(map[string]interface{})["asset_id"].(float64)),
-			DebiturName: contacts.(map[string]interface{})["debitur_name"].(string),
-			PicName:     contacts.(map[string]interface{})["pic_name"].(string),
-			PicPhone:    contacts.(map[string]interface{})["pic_phone"].(string),
-			PicEmail:    contacts.(map[string]interface{})["pic_email"].(string),
-			Cif:         contacts.(map[string]interface{})["cif"].(string),
+		Contacts := contact.ContactsResponseElastic{
+			ID:      int64(contacts.(map[string]interface{})["id"].(float64)),
+			AssetID: int64(contacts.(map[string]interface{})["asset_id"].(float64)),
+			// DebiturName: contacts.(map[string]interface{})["debitur_name"].(string),
+			PicName:  contacts.(map[string]interface{})["pic_name"].(string),
+			PicPhone: contacts.(map[string]interface{})["pic_phone"].(string),
+			PicEmail: contacts.(map[string]interface{})["pic_email"].(string),
+			// Cif:         contacts.(map[string]interface{})["cif"].(string),
 		}
 
 		// fmt.Println(Contacts)
@@ -427,7 +427,7 @@ func (asset AssetRepository) UpdatePublish(request *models.AssetsUpdatePublish, 
 }
 
 // Update implements AssetDefinition
-func (asset AssetRepository) UpdateMaintain(request *models.Assets, include []string, tx *gorm.DB) (responses *models.Assets, err error) {
+func (asset AssetRepository) UpdateMaintain(request *models.AssetsRequestUpdateMaintain, include []string, tx *gorm.DB) (responses *models.AssetsRequestUpdateMaintain, err error) {
 	return request, tx.Save(&request).Error
 }
 
@@ -624,7 +624,7 @@ func (asset AssetRepository) GetMaintain(request models.AssetsRequestMaintain) (
 
 }
 
-func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne, documentID string, tx *gorm.DB) (response bool, err error) {
+func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOneString, documentID string, tx *gorm.DB) (response bool, err error) {
 	// documentID := lib.UUID(false)
 	// fmt.Println(request)
 	store, err := asset.elasticsearch.Store(lib.RequestElastic{
@@ -653,7 +653,7 @@ func (asset AssetRepository) StoreElastic(request models.AssetsResponseGetOne, d
 
 }
 
-func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOne, tx *gorm.DB) (response bool, err error) {
+func (asset AssetRepository) DeleteElastic(request models.AssetsResponseGetOneString, tx *gorm.DB) (response bool, err error) {
 	fmt.Println("Delete asset request.DocumentID", request.DocumentID)
 	store, err := asset.elastic.Delete(elastic.RequestElastic{
 		DocumentID: request.DocumentID,

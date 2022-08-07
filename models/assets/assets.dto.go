@@ -46,6 +46,34 @@ type AssetsRequest struct {
 	Approvals      approvals.ApprovalsRequest     `json:"approvals"`
 }
 
+type AssetsRequestUpdateMaintain struct {
+	ID int64 `json:"id"`
+	// FormType       string                         `json:"form_type"`
+	Type          string  `json:"type"`
+	KpknlID       int64   `json:"kpknl_id"`
+	AuctionDate   *string `json:"auction_date"`
+	AuctionTime   *string `json:"auction_time"`
+	AuctionLink   string  `json:"auction_link"`
+	CategoryID    int64   `json:"category_id"`
+	SubCategoryID int64   `json:"sub_category_id"`
+	Name          string  `json:"name"`
+	Price         float32 `json:"price"`
+	Description   string  `json:"description"`
+	Status        string  `json:"status"`
+	MakerID       string  `json:"maker_id"`
+	MakerDesc     string  `json:"maker_desc"`
+	MakerDate     *string `json:"maker_date"`
+	LastMakerID   string  `json:"last_maker_id"`
+	LastMakerDesc string  `json:"last_maker_desc"`
+	LastMakerDate *string `json:"last_maker_date"`
+	Published     bool    `json:"published"`
+	Deleted       bool    `json:"deleted"`
+	ExpiredDate   *string `json:"expired_date"`
+	Action        string  `json:"action"`
+	DocumentID    string  `json:"document_id"`
+	UpdatedAt     *string `json:"updated_at"`
+}
+
 type AssetsResponse struct {
 	ID              int64   `json:"id"`
 	FormType        string  `json:"form_type"`
@@ -130,30 +158,71 @@ type AssetsResponseGetOne struct {
 	CreatedAt       *string                         `json:"created_at"`
 }
 
+type AssetsResponseGetOneString struct {
+	ID              int64                           `json:"id"`
+	FormType        string                          `json:"form_type"`
+	Type            string                          `json:"type"`
+	KpknlID         int64                           `json:"kpknl_id"`
+	AuctionDate     string                          `json:"auction_date"`
+	AuctionTime     string                          `json:"auction_time"`
+	AuctionLink     string                          `json:"auction_link"`
+	CategoryID      int64                           `json:"category_id"`
+	SubCategoryID   int64                           `json:"sub_category_id"`
+	Name            string                          `json:"name"`
+	Price           float32                         `json:"price"`
+	Description     string                          `json:"description"`
+	Status          string                          `json:"status"`
+	MakerID         string                          `json:"maker_id"`
+	MakerDesc       string                          `json:"maker_desc"`
+	MakerDate       string                          `json:"maker_date"`
+	LastMakerID     string                          `json:"last_maker_id"`
+	LastMakerDesc   string                          `json:"last_maker_desc"`
+	LastMakerDate   string                          `json:"last_maker_date"`
+	Published       bool                            `json:"published"`
+	Deleted         bool                            `json:"deleted"`
+	ExpiredDate     string                          `json:"expired_date"`
+	Action          string                          `json:"action"`
+	KpknlName       string                          `json:"kpknl_name"`
+	CategoryName    string                          `json:"category_name"`
+	SubCategoryName string                          `json:"sub_category_name"`
+	StatusName      string                          `json:"status_name"`
+	Addresses       address.AddressesResponse       `json:"addresses"`
+	BuildingAssets  building.BuildingAssetsResponse `json:"building_assets"`
+	VehicleAssets   vehicle.VehicleAssetsResponse   `json:"vehicle_assets"`
+	Facilities      []facilities.FacilitiesResponse `json:"facilities"`
+	AccessPlaces    []access.AccessPlacesResponse   `json:"access_places"`
+	Contacts        contact.ContactsResponse        `json:"contacts"`
+	Images          []images.ImagesResponses        `json:"images"`
+	DocumentID      string                          `json:"document_id"`
+	Approvals       approvals.ApprovalsResponse     `json:"approvals"`
+	UpdatedAt       string                          `json:"updated_at"`
+	CreatedAt       string                          `json:"created_at"`
+}
+
 type AssetsResponseGetOneElastic struct {
-	ID              int64                                `json:"id"`
-	FormType        string                               `json:"form_type"`
-	Type            string                               `json:"type"`
-	KpknlID         int64                                `json:"kpknl_id"`
-	AuctionDate     string                               `json:"auction_date"`
-	AuctionTime     string                               `json:"auction_time"`
-	AuctionLink     string                               `json:"auction_link"`
-	CategoryID      int64                                `json:"category_id"`
-	SubCategoryID   int64                                `json:"sub_category_id"`
-	Name            string                               `json:"name"`
-	Price           float32                              `json:"price"`
-	Description     string                               `json:"description"`
-	Status          string                               `json:"status"`
-	MakerID         string                               `json:"maker_id"`
-	MakerDesc       string                               `json:"maker_desc"`
-	MakerDate       string                               `json:"maker_date"`
-	LastMakerID     string                               `json:"last_maker_id"`
-	LastMakerDesc   string                               `json:"last_maker_desc"`
-	LastMakerDate   string                               `json:"last_maker_date"`
-	Published       bool                                 `json:"published"`
-	Deleted         bool                                 `json:"deleted"`
-	ExpiredDate     string                               `json:"expired_date"`
-	Action          string                               `json:"action"`
+	ID            int64   `json:"id"`
+	FormType      string  `json:"form_type"`
+	Type          string  `json:"type"`
+	KpknlID       int64   `json:"kpknl_id"`
+	AuctionDate   string  `json:"auction_date"`
+	AuctionTime   string  `json:"auction_time"`
+	AuctionLink   string  `json:"auction_link"`
+	CategoryID    int64   `json:"category_id"`
+	SubCategoryID int64   `json:"sub_category_id"`
+	Name          string  `json:"name"`
+	Price         float32 `json:"price"`
+	Description   string  `json:"description"`
+	Status        string  `json:"status"`
+	// MakerID         string                               `json:"maker_id"`
+	// MakerDesc       string                               `json:"maker_desc"`
+	// MakerDate       string                               `json:"maker_date"`
+	// LastMakerID     string                               `json:"last_maker_id"`
+	// LastMakerDesc   string                               `json:"last_maker_desc"`
+	// LastMakerDate   string                               `json:"last_maker_date"`
+	Published bool `json:"published"`
+	// Deleted         bool                                 `json:"deleted"`
+	// ExpiredDate     string                               `json:"expired_date"`
+	// Action          string                               `json:"action"`
 	KpknlName       string                               `json:"kpknl_name"`
 	CategoryName    string                               `json:"category_name"`
 	SubCategoryName string                               `json:"sub_category_name"`
@@ -163,12 +232,12 @@ type AssetsResponseGetOneElastic struct {
 	VehicleAssets   vehicle.VehicleAssetsResponseElastic `json:"vehicle_assets"`
 	Facilities      []facilities.FacilitiesResponse      `json:"facilities"`
 	AccessPlaces    []access.AccessPlacesResponse        `json:"access_places"`
-	Contacts        contact.ContactsResponse             `json:"contacts"`
+	Contacts        contact.ContactsResponseElastic      `json:"contacts"`
 	Images          []images.ImagesResponses             `json:"images"`
 	DocumentID      string                               `json:"document_id"`
-	Approvals       approvals.ApprovalsResponse          `json:"approvals"`
-	UpdatedAt       *string                              `json:"updated_at"`
-	CreatedAt       *string                              `json:"created_at"`
+	// Approvals       approvals.ApprovalsResponse          `json:"approvals"`
+	// UpdatedAt *string `json:"updated_at"`
+	// CreatedAt *string `json:"created_at"`
 }
 
 type AssetsRequestMaintain struct {
@@ -317,5 +386,9 @@ func (a AssetsRequestMaintain) TableName() string {
 }
 
 func (a AssetsRequestUpdateElastic) TableName() string {
+	return "assets"
+}
+
+func (a AssetsRequestUpdateMaintain) TableName() string {
 	return "assets"
 }

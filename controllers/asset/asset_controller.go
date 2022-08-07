@@ -213,16 +213,16 @@ func (asset AssetController) UpdateMaintain(c *gin.Context) {
 	status, err := asset.service.UpdateMaintain(data)
 	if err != nil {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", nil)
 		return
 	}
 
 	if !status {
 		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Update data Gagal", data)
+		lib.ReturnToJson(c, 200, "500", "Update data Gagal", nil)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", nil)
 }
 
 func (asset AssetController) GetApproval(c *gin.Context) {

@@ -591,14 +591,14 @@ MINIO_SECRET_KEY="P@ssw0rd"
 - get user by onegate
 - get menu by jabatan
 
-update publish signer, status ilang di getall maintain
-dmin publish, unpublish, delete, update edit gaperlu cs, 
-maker publish, unpublish perlu cs, delete  perlu cs
+update publish signer, status ilang di getall maintain done
+dmin publish, unpublish, delete, update edit gaperlu cs, done
+maker publish, unpublish perlu cs, delete  perlu cs done
 
 ### prioritas 2
 updateMaintain
 - status hilang done
-- address ga ke update
+- address ga ke update done
 - buildingAsset ilang
 - vehicleAsset ilang
 - facilities
@@ -609,7 +609,7 @@ updateMaintain
 -  approvals ga ke update
 
 ## prioritas 1 done
-- getAllApproval
+- getAllApproval done | nanti abis ada user metrik dicek lg
  - published di by pn checker dan by pn signer = published dikosongin
  - pending checker by pn masing2,  pending signer by pn masing2 
  - deleted (engga jadi)
