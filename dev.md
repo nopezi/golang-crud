@@ -595,17 +595,17 @@ update publish signer, status ilang di getall maintain done
 dmin publish, unpublish, delete, update edit gaperlu cs, done
 maker publish, unpublish perlu cs, delete  perlu cs done
 
-### prioritas 2
-updateMaintain
+### prioritas 2 done
+updateMaintain done
 - status hilang done
 - address ga ke update done
-- buildingAsset ilang
-- vehicleAsset ilang
-- facilities
-- aksesPlace
-- contact
+- buildingAsset ilang done
+- vehicleAsset ilang done
+- facilities done
+- aksesPlace done
+- contact done
 - document_id done
-- images bisa
+- images bisa done
 -  approvals ga ke update
 
 ## prioritas 1 done
