@@ -1326,7 +1326,7 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 	// check apabila array image error return false
 	if len(request.Images) != 0 {
 		// Delete images where asset_id
-		err := asset.assetImage.DeleteAssetID(address.ID, tx)
+		err := asset.assetImage.DeleteAssetID(assets.ID, tx)
 		if err != nil {
 			tx.Rollback()
 			asset.logger.Zap.Error(err)

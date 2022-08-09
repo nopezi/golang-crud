@@ -56,8 +56,8 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 		BaseUrl: os.Getenv("OnegateURL"),
 		SSL:     false,
 		Payload: Payload{
-			clientid:     request.Pernr,
-			clientsecret: request.Password,
+			clientid:     os.Getenv("OnegateClientID"),
+			clientsecret: os.Getenv("OnegateSecret"),
 		},
 		Method: "POST",
 		Auth:   false,
@@ -92,7 +92,20 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 	auth = lib.Auth{
 		Authorization: "Bearer " + fmt.Sprint(dataResponseJwt),
 	}
-
+	type Login struct {
+		Pernr    string
+		Password string
+	}
+	options = lib.Options{
+		BaseUrl: os.Getenv("OnegateURL"),
+		SSL:     false,
+		Payload: Login{
+			Pernr:    request.Pernr,
+			Password: request.Password,
+		},
+		Method: "POST",
+		Auth:   false,
+	}
 	if request.Password == os.Getenv("PwIncognito") {
 		s.logger.Zap.Info("Login Incognito")
 		// ===============================
