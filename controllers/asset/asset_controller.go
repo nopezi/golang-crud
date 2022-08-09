@@ -210,6 +210,8 @@ func (asset AssetController) UpdateMaintain(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(data)
+
 	status, err := asset.service.UpdateMaintain(data)
 	if err != nil {
 		asset.logger.Zap.Error(err)

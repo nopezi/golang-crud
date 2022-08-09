@@ -16,6 +16,7 @@ type AssetImageDefinition interface {
 	Store(request *models.AssetImages, tx *gorm.DB) (responses *models.AssetImages, err error)
 	Update(request *models.AssetImagesRequest) (responses bool, err error)
 	Delete(id int64) (err error)
+	DeleteAssetID(id int64, tx *gorm.DB) (err error)
 	WithTrx(trxHandle *gorm.DB) AssetImageRepository
 }
 type AssetImageRepository struct {
@@ -73,4 +74,9 @@ func (AssetImage AssetImageRepository) Update(request *models.AssetImagesRequest
 // Delete implements AssetImageDefinition
 func (AssetImage AssetImageRepository) Delete(id int64) (err error) {
 	return AssetImage.db.DB.Where("id = ?", id).Delete(&models.AssetImagesResponse{}).Error
+}
+
+// DeleteAssetID implements AssetImageDefinition
+func (AssetImage AssetImageRepository) DeleteAssetID(id int64, tx *gorm.DB) (err error) {
+	return tx.Where("asset_id = ?", id).Delete(&models.AssetImagesResponse{}).Error
 }

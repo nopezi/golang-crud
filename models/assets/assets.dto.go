@@ -51,8 +51,8 @@ type AssetsRequestUpdateMaintain struct {
 	// FormType       string                         `json:"form_type"`
 	Type          string  `json:"type"`
 	KpknlID       int64   `json:"kpknl_id"`
-	AuctionDate   *string `json:"auction_date"`
-	AuctionTime   *string `json:"auction_time"`
+	AuctionDate   string  `json:"auction_date"`
+	AuctionTime   string  `json:"auction_time"`
 	AuctionLink   string  `json:"auction_link"`
 	CategoryID    int64   `json:"category_id"`
 	SubCategoryID int64   `json:"sub_category_id"`
@@ -79,8 +79,8 @@ type AssetsResponse struct {
 	FormType        string  `json:"form_type"`
 	Type            string  `json:"type"`
 	KpknlID         int64   `json:"kpknl_id"`
-	AuctionDate     *string `json:"auction_date"`
-	AuctionTime     *string `json:"auction_time"`
+	AuctionDate     string  `json:"auction_date"`
+	AuctionTime     string  `json:"auction_time"`
 	AuctionLink     string  `json:"auction_link"`
 	CategoryID      int64   `json:"category_id"`
 	SubCategoryID   int64   `json:"sub_category_id"`
@@ -89,18 +89,18 @@ type AssetsResponse struct {
 	Description     string  `json:"description"`
 	MakerID         string  `json:"maker_id"`
 	MakerDesc       string  `json:"maker_desc"`
-	MakerDate       *string `json:"maker_date"`
+	MakerDate       string  `json:"maker_date"`
 	LastMakerID     string  `json:"last_maker_id"`
 	LastMakerDesc   string  `json:"last_maker_desc"`
-	LastMakerDate   *string `json:"last_maker_date"`
+	LastMakerDate   string  `json:"last_maker_date"`
 	Published       bool    `json:"published"`
 	Deleted         bool    `json:"deleted"`
-	PublishDate     *string `json:"publish_date"`
-	ExpiredDate     *string `json:"expired_date"`
+	PublishDate     string  `json:"publish_date"`
+	ExpiredDate     string  `json:"expired_date"`
 	Status          string  `json:"status"`
 	Action          string  `json:"action"`
-	UpdatedAt       *string `json:"updated_at"`
-	CreatedAt       *string `json:"created_at"`
+	UpdatedAt       string  `json:"updated_at"`
+	CreatedAt       string  `json:"created_at"`
 	KpknlName       string  `json:"kpknl_name"`
 	CategoryName    string  `json:"category_name"`
 	SubCategoryName string  `json:"sub_category_name"`
@@ -122,8 +122,8 @@ type AssetsResponseGetOne struct {
 	FormType        string                          `json:"form_type"`
 	Type            string                          `json:"type"`
 	KpknlID         int64                           `json:"kpknl_id"`
-	AuctionDate     *string                         `json:"auction_date"`
-	AuctionTime     *string                         `json:"auction_time"`
+	AuctionDate     string                          `json:"auction_date"`
+	AuctionTime     string                          `json:"auction_time"`
 	AuctionLink     string                          `json:"auction_link"`
 	CategoryID      int64                           `json:"category_id"`
 	SubCategoryID   int64                           `json:"sub_category_id"`
@@ -180,6 +180,7 @@ type AssetsResponseGetOneString struct {
 	LastMakerDate   string                          `json:"last_maker_date"`
 	Published       bool                            `json:"published"`
 	Deleted         bool                            `json:"deleted"`
+	PublishDate     string                          `json:"publish_date"`
 	ExpiredDate     string                          `json:"expired_date"`
 	Action          string                          `json:"action"`
 	KpknlName       string                          `json:"kpknl_name"`

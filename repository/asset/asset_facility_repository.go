@@ -64,7 +64,7 @@ func (AssetFacility AssetFacilityRepository) GetOne(id int64) (responses models.
 			f.icon , af.status,
 			f.description , af.created_at, af.updated_at 
 			FROM asset_facilities af
-			LEFT JOIN facilities f 
+			JOIN facilities f 
 			on af.facility_id  = f.id 
 			WHERE af.asset_id = ? 
 			order by f.id  asc`, id).Find(&responses).Error
@@ -78,7 +78,7 @@ func (AssetFacility AssetFacilityRepository) GetOneAsset(id int64) (responses []
 			f.icon , af.status,
 			f.description , af.created_at, af.updated_at
 			FROM asset_facilities af 
-			LEFT JOIN facilities f 
+			JOIN facilities f 
 			on af.facility_id  = f.id 
 			WHERE af.asset_id = ? 
 			order by f.id  asc`, id).Rows()

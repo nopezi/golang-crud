@@ -180,14 +180,14 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 
 		// join table
 		approval, err := asset.approvalRepo.GetOneAsset(assets.ID)
-
+		fmt.Println("assets.AuctionTime=>", assets.AuctionTime)
 		responses = models.AssetsResponseGetOneString{
 			ID:              assets.ID,
 			FormType:        assets.FormType,
 			Type:            assets.Type,
 			KpknlID:         assets.KpknlID,
-			AuctionDate:     carbon.Parse(fmt.Sprint(assets.AuctionDate)).ToDateTimeString(),
-			AuctionTime:     carbon.Parse(fmt.Sprint(assets.AuctionTime)).ToDateTimeString(),
+			AuctionDate:     carbon.Parse(fmt.Sprint(assets.AuctionDate)).ToDateString(),
+			AuctionTime:     assets.AuctionTime,
 			AuctionLink:     assets.AuctionLink,
 			CategoryID:      assets.CategoryID,
 			SubCategoryID:   assets.SubCategoryID,
@@ -203,6 +203,7 @@ func (asset AssetService) GetOne(id int64) (responses models.AssetsResponseGetOn
 			LastMakerDate:   carbon.Parse(fmt.Sprint(assets.LastMakerDate)).ToDateTimeString(),
 			Published:       assets.Published,
 			Deleted:         assets.Deleted,
+			PublishDate:     carbon.Parse(fmt.Sprint(assets.PublishDate)).ToDateTimeString(),
 			ExpiredDate:     carbon.Parse(fmt.Sprint(assets.ExpiredDate)).ToDateTimeString(),
 			Action:          assets.Action,
 			KpknlName:       assets.KpknlName,
@@ -1142,8 +1143,8 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			ID:            request.ID,
 			Type:          request.Type,
 			KpknlID:       request.KpknlID,
-			AuctionDate:   nil,
-			AuctionTime:   nil,
+			AuctionDate:   "",
+			AuctionTime:   "",
 			AuctionLink:   "",
 			CategoryID:    request.CategoryID,
 			SubCategoryID: request.SubCategoryID,
@@ -1324,6 +1325,14 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 	// images
 	// check apabila array image error return false
 	if len(request.Images) != 0 {
+		// Delete images where asset_id
+		err := asset.assetImage.DeleteAssetID(address.ID, tx)
+		if err != nil {
+			tx.Rollback()
+			asset.logger.Zap.Error(err)
+			return false, err
+		}
+
 		for _, value := range request.Images {
 
 			var destinationPath string

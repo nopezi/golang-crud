@@ -623,3 +623,13 @@ updateMaintain done
  hilangkan:
    - data nasabah
    - data approval
+
+# jadwal lelang terdekat dri yg sekarang
+08 agustus
+ berarti lelang nya yg muncul tgl 9,10,11,12
+
+kalo ada jadwal lelang yg twelah lewat dari hari ini, jngn ditampilkan
+
+
+# data asset 
+depan filter barengan atau saling ter relasi mengkerucut
