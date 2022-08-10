@@ -1432,6 +1432,47 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 		return false, err
 	}
 
+	// update approval
+	_, err = asset.assetRepo.UpdateApproval(&models.AssetsUpdateApproval{
+		ID:        request.ID,
+		Status:    "01c", // pending signer
+		UpdatedAt: &timeNow,
+	},
+		[]string{"status", "updated_at"}, // define field to update
+		tx)
+
+	if err != nil {
+		tx.Rollback()
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
+	// approval
+	err = asset.approvalRepo.DeleteApprovals(request.ID, tx)
+	if err != nil {
+		tx.Rollback()
+		asset.logger.Zap.Error()
+		return false, err
+	}
+
+	_, err = asset.approvalRepo.Store(
+		&requestApprovals.Approvals{
+			AssetID:        request.ID,
+			CheckerID:      request.Approvals.CheckerID,
+			CheckerDesc:    request.Approvals.CheckerDesc,
+			CheckerComment: request.Approvals.CheckerComment,
+			CheckerDate:    request.Approvals.CheckerDate,
+			SignerID:       request.Approvals.SignerID,
+			SignerDesc:     request.Approvals.SignerDesc,
+			// SignerComment:  request.Approvals.SignerComment,
+			// SignerDate:     request.Approvals.SignerDate,
+			UpdatedAt: &timeNow}, tx)
+	if err != nil {
+		tx.Rollback()
+		asset.logger.Zap.Error(err)
+		return false, err
+	}
+
 	tx.Commit()
 	return true, err
 }

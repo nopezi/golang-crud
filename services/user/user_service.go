@@ -6,6 +6,7 @@ import (
 	models "infolelang/models/user"
 	repository "infolelang/repository/user"
 	"os"
+	"strconv"
 
 	// minio "gitlab.com/golang-package-library/minio"
 
@@ -52,9 +53,10 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 	}
 
 	jwt := ""
+	onegateSSL, _ := strconv.ParseBool(os.Getenv("OnegateSSL"))
 	options := lib.Options{
 		BaseUrl: os.Getenv("OnegateURL"),
-		SSL:     false,
+		SSL:     onegateSSL,
 		Payload: Payload{
 			clientid:     os.Getenv("OnegateClientID"),
 			clientsecret: os.Getenv("OnegateSecret"),

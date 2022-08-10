@@ -47,8 +47,8 @@ type (
 )
 
 func AuthBearer(options Options, auth Auth) (response Resp, err error) {
+	fmt.Println("options=> ", options.Payload)
 	resByte, _ := json.Marshal(options.Payload)
-	// fmt.Println(resByte)
 
 	options.Request = bytes.NewBuffer(resByte)
 	fmt.Println("request", options.Request)
@@ -88,6 +88,7 @@ func AuthBearer(options Options, auth Auth) (response Resp, err error) {
 		return
 	}
 	defer res.Body.Close()
+	fmt.Println("res=>", res)
 
 	// body := make(Response)
 	// if json.NewDecoder(res.Body).Decode(&body); err != nil {
