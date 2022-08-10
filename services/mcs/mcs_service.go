@@ -48,7 +48,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 		Authorization: "Bearer " + jwt,
 	}
 
-	options.BaseUrl = os.Getenv("OnegateURL") + "/api/v1/client_auth/request_token"
+	options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/client_auth/request_token"
 	responseObjectJwt, err := lib.AuthBearer(options, auth)
 	if err != nil {
 		mcs.logger.Zap.Error(err)
@@ -90,7 +90,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 		// Search Pekerja
 		mcs.logger.Zap.Info("Search Pekerja")
 
-		options.BaseUrl = os.Getenv("OnegateURL") + "/api/v1/pekerja/searchPekerja"
+		options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/pekerja/searchPekerja"
 		responseObjectSession, err := lib.AuthBearer(options, auth)
 		if err != nil {
 			mcs.logger.Zap.Error(err)

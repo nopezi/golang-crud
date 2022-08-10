@@ -1115,6 +1115,23 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 	// create assets
 	bucket := os.Getenv("BUCKET_NAME")
 	assets := &models.AssetsRequestUpdateMaintain{}
+	include := []string{
+		"type",
+		"kpknl_id",
+		"auction_date",
+		"auction_time",
+		"auction_link",
+		"category_id",
+		"sub_category_id",
+		"name",
+		"price",
+		"description",
+		"last_maker_id",
+		"last_maker_desc",
+		"last_maker_date",
+		"action",
+		"updated_at",
+	}
 	if request.Type == "Lelang" {
 
 		assets = &models.AssetsRequestUpdateMaintain{
@@ -1138,32 +1155,7 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			Action:        "UpdateMaintain",
 			UpdatedAt:     &timeNow,
 		}
-	} else {
-		assets = &models.AssetsRequestUpdateMaintain{
-			ID:            request.ID,
-			Type:          request.Type,
-			KpknlID:       request.KpknlID,
-			AuctionDate:   "",
-			AuctionTime:   "",
-			AuctionLink:   "",
-			CategoryID:    request.CategoryID,
-			SubCategoryID: request.SubCategoryID,
-			// Status:        request.Status,
-			Name:          request.Name,
-			Price:         request.Price,
-			Description:   request.Description,
-			LastMakerID:   request.LastMakerID,
-			LastMakerDesc: request.LastMakerDesc,
-			LastMakerDate: request.LastMakerDate,
-			DocumentID:    request.DocumentID,
-			Action:        "UpdateMaintain",
-			UpdatedAt:     &timeNow,
-		}
-	}
-
-	dataAsset, err := asset.assetRepo.UpdateMaintain(
-		assets,
-		[]string{
+		include = []string{
 			"type",
 			"kpknl_id",
 			"auction_date",
@@ -1179,7 +1171,50 @@ func (asset AssetService) UpdateMaintain(request models.AssetsResponseGetOne) (s
 			"last_maker_date",
 			"action",
 			"updated_at",
-		}, tx)
+		}
+	} else {
+		assets = &models.AssetsRequestUpdateMaintain{
+			ID:      request.ID,
+			Type:    request.Type,
+			KpknlID: request.KpknlID,
+			// AuctionDate:   "",
+			// AuctionTime:   "",
+			// AuctionLink:   "",
+			CategoryID:    request.CategoryID,
+			SubCategoryID: request.SubCategoryID,
+			// Status:        request.Status,
+			Name:          request.Name,
+			Price:         request.Price,
+			Description:   request.Description,
+			LastMakerID:   request.LastMakerID,
+			LastMakerDesc: request.LastMakerDesc,
+			LastMakerDate: request.LastMakerDate,
+			DocumentID:    request.DocumentID,
+			Action:        "UpdateMaintain",
+			UpdatedAt:     &timeNow,
+		}
+		include = []string{
+			"type",
+			"kpknl_id",
+			// "auction_date",
+			// "auction_time",
+			// "auction_link",
+			"category_id",
+			"sub_category_id",
+			"name",
+			"price",
+			"description",
+			"last_maker_id",
+			"last_maker_desc",
+			"last_maker_date",
+			"action",
+			"updated_at",
+		}
+	}
+
+	dataAsset, err := asset.assetRepo.UpdateMaintain(
+		assets,
+		include, tx)
 	if err != nil {
 		tx.Rollback()
 		asset.logger.Zap.Error(err)

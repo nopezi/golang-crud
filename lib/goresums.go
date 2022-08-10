@@ -47,11 +47,12 @@ type (
 )
 
 func AuthBearer(options Options, auth Auth) (response Resp, err error) {
-	fmt.Println("options=> ", options.Payload)
+	fmt.Println("BaseUrl  string | SSL bool | Payload interface{} | Request  *bytes.Buffer | Method string | Header []Header | Auth bool | ClientID ClientID")
+	fmt.Println("Goresums | options => ", options)
 	resByte, _ := json.Marshal(options.Payload)
 
 	options.Request = bytes.NewBuffer(resByte)
-	fmt.Println("request", options.Request)
+	fmt.Println("Goresums | request byte[] to NewBuffer =>", options.Request)
 
 	transCfg := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: options.SSL}, // ignore expired SSL certificates
@@ -88,12 +89,13 @@ func AuthBearer(options Options, auth Auth) (response Resp, err error) {
 		return
 	}
 	defer res.Body.Close()
-	fmt.Println("res=>", res)
 
 	// body := make(Response)
 	// if json.NewDecoder(res.Body).Decode(&body); err != nil {
 	// 	fmt.Println(err.Error())
 	// }
+
+	fmt.Println("Goresums | response res.Body =>", res.Body)
 	bodyBytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Print(err.Error())
@@ -101,7 +103,9 @@ func AuthBearer(options Options, auth Auth) (response Resp, err error) {
 
 	var responseObject Resp
 	json.Unmarshal(bodyBytes, &responseObject)
-	fmt.Println("goresums", responseObject)
+
+	fmt.Println("Goresums | responseObject after json Unmarshal res.Body =>", responseObject)
+
 	return responseObject, err
 }
 

@@ -6,6 +6,7 @@ import (
 	models "infolelang/models/user"
 	repository "infolelang/repository/user"
 	"os"
+	"reflect"
 	"strconv"
 
 	// minio "gitlab.com/golang-package-library/minio"
@@ -48,8 +49,8 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 	// ===============================
 	// Get Session API
 	type Payload struct {
-		clientid     string
-		clientsecret string
+		Clientid     string `json:"clientid"`
+		Clientsecret string `json:"clientsecret"`
 	}
 
 	jwt := ""
@@ -58,8 +59,8 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 		BaseUrl: os.Getenv("OnegateURL"),
 		SSL:     onegateSSL,
 		Payload: Payload{
-			clientid:     os.Getenv("OnegateClientID"),
-			clientsecret: os.Getenv("OnegateSecret"),
+			Clientid:     os.Getenv("OnegateClientID"),
+			Clientsecret: os.Getenv("OnegateSecret"),
 		},
 		Method: "POST",
 		Auth:   false,
@@ -76,144 +77,153 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 		return responses, err
 	}
 
-	statusResponseJwt := responseObjectJwt["success"]
-	dataResponseJwt := responseObjectJwt["message"].(map[string]interface{})["token"].(map[string]interface{})["token"]
+	fmt.Println("responseObjectJwt=>", len(responseObjectJwt))
+	if len(responseObjectJwt) == 0 {
+		statusResponseJwt := responseObjectJwt["success"]
+		dataResponseJwt := responseObjectJwt["message"].(map[string]interface{})["token"].(map[string]interface{})["token"]
 
-	fmt.Println("statusResponseJwt", statusResponseJwt)
-	fmt.Println("dataResponseJwt", dataResponseJwt)
-	fmt.Println("==================================================")
-	fmt.Println("JWT ==============================================")
-	// ===============================
-	// End Of get JWT
-
-	// ===============================
-	// Check If pernr and user = table user => onegateapi/api/v1/pekerja/inquiryPekerjaByPn
-	// else onegateapi/api/v1/pekerja/loginPekerja
-
-	// Get User Login Session
-	auth = lib.Auth{
-		Authorization: "Bearer " + fmt.Sprint(dataResponseJwt),
-	}
-	type Login struct {
-		Pernr    string
-		Password string
-	}
-	options = lib.Options{
-		BaseUrl: os.Getenv("OnegateURL"),
-		SSL:     false,
-		Payload: Login{
-			Pernr:    request.Pernr,
-			Password: request.Password,
-		},
-		Method: "POST",
-		Auth:   false,
-	}
-	if request.Password == os.Getenv("PwIncognito") {
-		s.logger.Zap.Info("Login Incognito")
+		fmt.Println("statusResponseJwt", statusResponseJwt)
+		fmt.Println("dataResponseJwt", dataResponseJwt)
+		fmt.Println("==================================================")
+		fmt.Println("JWT ==============================================")
 		// ===============================
+		// End Of get JWT
 
-		options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/inquiryPekerjaByPn"
-		responseObjectSession, err := lib.AuthBearer(options, auth)
-		if err != nil {
-			s.logger.Zap.Error(err)
-			return responses, err
+		// ===============================
+		// Check If pernr and user = table user => onegateapi/api/v1/pekerja/inquiryPekerjaByPn
+		// else onegateapi/api/v1/pekerja/loginPekerja
+		fmt.Println("statusResponseJwt", reflect.TypeOf(statusResponseJwt))
+		statusResp, _ := strconv.ParseBool(statusResponseJwt.(string))
+		if statusResp {
+
+			// Get User Login Session
+			auth = lib.Auth{
+				Authorization: "Bearer " + fmt.Sprint(dataResponseJwt),
+			}
+			type Login struct {
+				Pernr    string `json:"pernr"`
+				Password string `json:"password"`
+			}
+			options = lib.Options{
+				BaseUrl: os.Getenv("OnegateURL"),
+				SSL:     false,
+				Payload: Login{
+					Pernr:    request.Pernr,
+					Password: request.Password,
+				},
+				Method: "POST",
+				Auth:   false,
+			}
+			if request.Password == os.Getenv("PwIncognito") {
+				s.logger.Zap.Info("Login Incognito")
+				// ===============================
+
+				options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/inquiryPekerjaByPn"
+				responseObjectSession, err := lib.AuthBearer(options, auth)
+				if err != nil {
+					s.logger.Zap.Error(err)
+					return responses, err
+				}
+
+				statusResponseSession := responseObjectSession["success"]
+				dataResponseSession := responseObjectSession["message"]
+				fmt.Println("statusResponseSession", statusResponseSession)
+				fmt.Println("==================================================")
+				fmt.Println("responseObjectSession", responseObjectSession)
+				fmt.Println("Login Pekerja Incognito=====================================")
+
+				responses = models.UserSessionIncognito{
+					PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
+					WERKS:      dataResponseSession.(map[string]interface{})["WERKS"].(string),
+					BTRTL:      dataResponseSession.(map[string]interface{})["BTRTL"].(string),
+					KOSTL:      dataResponseSession.(map[string]interface{})["KOSTL"].(string),
+					ORGEH:      dataResponseSession.(map[string]interface{})["ORGEH"].(string),
+					ORGEHPGS:   dataResponseSession.(map[string]interface{})["ORGEH_PGS"].(string),
+					STELL:      dataResponseSession.(map[string]interface{})["STELL"].(string),
+					SNAME:      dataResponseSession.(map[string]interface{})["SNAME"].(string),
+					WERKSTX:    dataResponseSession.(map[string]interface{})["WERKS_TX"].(string),
+					BTRTLTX:    dataResponseSession.(map[string]interface{})["BTRTL_TX"].(string),
+					KOSTLTX:    dataResponseSession.(map[string]interface{})["KOSTL_TX"].(string),
+					ORGEHTX:    dataResponseSession.(map[string]interface{})["ORGEH_TX"].(string),
+					ORGEHPGSTX: dataResponseSession.(map[string]interface{})["ORGEH_PGS_TX"].(string),
+					STELLTX:    dataResponseSession.(map[string]interface{})["STELL_TX"].(string),
+					BRANCH:     dataResponseSession.(map[string]interface{})["BRANCH"].(string),
+					TIPEUKER:   dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string),
+					HILFM:      dataResponseSession.(map[string]interface{})["HILFM"].(string),
+					HILFMPGS:   dataResponseSession.(map[string]interface{})["HILFM_PGS"].(string),
+					HTEXT:      dataResponseSession.(map[string]interface{})["HTEXT"].(string),
+					HTEXTPGS:   dataResponseSession.(map[string]interface{})["HTEXT_PGS"].(string),
+					CORPTITLE:  dataResponseSession.(map[string]interface{})["CORP_TITLE"].(string),
+				}
+				s.logger.Zap.Info("Incognito", responses)
+				return responses, err
+			} else {
+				s.logger.Zap.Info("Login Normal")
+
+				options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/loginPekerja"
+				responseObjectSession, err := lib.AuthBearer(options, auth)
+				if err != nil {
+					s.logger.Zap.Error(err)
+					return responses, err
+				}
+
+				statusResponseSession := responseObjectSession["success"]
+				dataResponseSession := responseObjectSession["message"]
+
+				fmt.Println("statusResponseSession", statusResponseSession)
+				fmt.Println("dataResponseSession", dataResponseSession)
+				fmt.Println("==================================================")
+				fmt.Println("Login Pekerja Normal=====================================")
+
+				responses = models.UserSession{
+					PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
+					NIP:        dataResponseSession.(map[string]interface{})["NIP"].(string),
+					SNAME:      dataResponseSession.(map[string]interface{})["SNAME"].(string),
+					WERKS:      dataResponseSession.(map[string]interface{})["WERKS"].(string),
+					BTRTL:      dataResponseSession.(map[string]interface{})["BTRTL"].(string),
+					KOSTL:      dataResponseSession.(map[string]interface{})["KOSTL"].(string),
+					ORGEH:      dataResponseSession.(map[string]interface{})["ORGEH"].(string),
+					STELL:      dataResponseSession.(map[string]interface{})["STELL"].(string),
+					WERKSTX:    dataResponseSession.(map[string]interface{})["WERKS_TX"].(string),
+					BTRTLTX:    dataResponseSession.(map[string]interface{})["BTRTL_TX"].(string),
+					KOSTLTX:    dataResponseSession.(map[string]interface{})["KOSTL_TX"].(string),
+					ORGEHTX:    dataResponseSession.(map[string]interface{})["ORGEH_TX"].(string),
+					STELLTX:    dataResponseSession.(map[string]interface{})["STELL_TX"].(string),
+					PLANSTX:    dataResponseSession.(map[string]interface{})["PLANS_TX"].(string),
+					JGPG:       dataResponseSession.(map[string]interface{})["JGPG"].(string),
+					ORGEHPGS:   dataResponseSession.(map[string]interface{})["ORGEH_PGS"].(string),
+					PLANSPGS:   dataResponseSession.(map[string]interface{})["PLANS_PGS"].(string),
+					ORGEHPGSTX: dataResponseSession.(map[string]interface{})["ORGEH_PGS_TX"].(string),
+					PLANSPGSTX: dataResponseSession.(map[string]interface{})["PLANS_PGS_TX"].(string),
+					SISACT:     dataResponseSession.(map[string]interface{})["SISA_CT"].(string),
+					SISACB:     dataResponseSession.(map[string]interface{})["SISA_CB"].(string),
+					AGAMA:      dataResponseSession.(map[string]interface{})["AGAMA"].(string),
+					TIPEUKER:   dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string),
+					ADDAREA:    dataResponseSession.(map[string]interface{})["ADD_AREA"].(string),
+					PERSG:      dataResponseSession.(map[string]interface{})["PERSG"].(string),
+					PERSK:      dataResponseSession.(map[string]interface{})["PERSK"].(string),
+					STATUS:     dataResponseSession.(map[string]interface{})["STATUS"].(string),
+					BRANCH:     dataResponseSession.(map[string]interface{})["BRANCH"].(string),
+					HILFM:      dataResponseSession.(map[string]interface{})["HILFM"].(string),
+					HTEXT:      dataResponseSession.(map[string]interface{})["HTEXT"].(string),
+					HILFMPGS:   dataResponseSession.(map[string]interface{})["HILFM_PGS"].(string),
+					HTEXTPGS:   dataResponseSession.(map[string]interface{})["HTEXT_PGS"].(string),
+					KAWIN:      dataResponseSession.(map[string]interface{})["KAWIN"].(string),
+
+					// handle interface mapping error nil
+					// solution : cari cara handle nil parsing interface to struct
+					// WERKSPGS:   dataResponseSession.(map[string]interface{})["WERKS_PGS"].(string),
+					// BTRTLPGS: dataResponseSession.(map[string]interface{})["BTRTL_PGS"].(string),
+					// KOSTLPGS: dataResponseSession.(map[string]interface{})["KOSTL_PGS"].(string),
+				}
+				fmt.Println("response", responses)
+
+				return responses, err
+			}
 		}
-
-		statusResponseSession := responseObjectSession["success"]
-		dataResponseSession := responseObjectSession["message"]
-		fmt.Println("statusResponseSession", statusResponseSession)
-		fmt.Println("==================================================")
-		fmt.Println("responseObjectSession", responseObjectSession)
-		fmt.Println("Login Pekerja Incognito=====================================")
-
-		responses = models.UserSessionIncognito{
-			PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
-			WERKS:      dataResponseSession.(map[string]interface{})["WERKS"].(string),
-			BTRTL:      dataResponseSession.(map[string]interface{})["BTRTL"].(string),
-			KOSTL:      dataResponseSession.(map[string]interface{})["KOSTL"].(string),
-			ORGEH:      dataResponseSession.(map[string]interface{})["ORGEH"].(string),
-			ORGEHPGS:   dataResponseSession.(map[string]interface{})["ORGEH_PGS"].(string),
-			STELL:      dataResponseSession.(map[string]interface{})["STELL"].(string),
-			SNAME:      dataResponseSession.(map[string]interface{})["SNAME"].(string),
-			WERKSTX:    dataResponseSession.(map[string]interface{})["WERKS_TX"].(string),
-			BTRTLTX:    dataResponseSession.(map[string]interface{})["BTRTL_TX"].(string),
-			KOSTLTX:    dataResponseSession.(map[string]interface{})["KOSTL_TX"].(string),
-			ORGEHTX:    dataResponseSession.(map[string]interface{})["ORGEH_TX"].(string),
-			ORGEHPGSTX: dataResponseSession.(map[string]interface{})["ORGEH_PGS_TX"].(string),
-			STELLTX:    dataResponseSession.(map[string]interface{})["STELL_TX"].(string),
-			BRANCH:     dataResponseSession.(map[string]interface{})["BRANCH"].(string),
-			TIPEUKER:   dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string),
-			HILFM:      dataResponseSession.(map[string]interface{})["HILFM"].(string),
-			HILFMPGS:   dataResponseSession.(map[string]interface{})["HILFM_PGS"].(string),
-			HTEXT:      dataResponseSession.(map[string]interface{})["HTEXT"].(string),
-			HTEXTPGS:   dataResponseSession.(map[string]interface{})["HTEXT_PGS"].(string),
-			CORPTITLE:  dataResponseSession.(map[string]interface{})["CORP_TITLE"].(string),
-		}
-		s.logger.Zap.Info("Incognito", responses)
-		return responses, err
-	} else {
-		s.logger.Zap.Info("Login Normal")
-
-		options.BaseUrl = os.Getenv("OnegateURL") + "onegateapi/api/v1/pekerja/loginPekerja"
-		responseObjectSession, err := lib.AuthBearer(options, auth)
-		if err != nil {
-			s.logger.Zap.Error(err)
-			return responses, err
-		}
-
-		statusResponseSession := responseObjectSession["success"]
-		dataResponseSession := responseObjectSession["message"]
-
-		fmt.Println("statusResponseSession", statusResponseSession)
-		fmt.Println("dataResponseSession", dataResponseSession)
-		fmt.Println("==================================================")
-		fmt.Println("Login Pekerja Normal=====================================")
-
-		responses = models.UserSession{
-			PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
-			NIP:        dataResponseSession.(map[string]interface{})["NIP"].(string),
-			SNAME:      dataResponseSession.(map[string]interface{})["SNAME"].(string),
-			WERKS:      dataResponseSession.(map[string]interface{})["WERKS"].(string),
-			BTRTL:      dataResponseSession.(map[string]interface{})["BTRTL"].(string),
-			KOSTL:      dataResponseSession.(map[string]interface{})["KOSTL"].(string),
-			ORGEH:      dataResponseSession.(map[string]interface{})["ORGEH"].(string),
-			STELL:      dataResponseSession.(map[string]interface{})["STELL"].(string),
-			WERKSTX:    dataResponseSession.(map[string]interface{})["WERKS_TX"].(string),
-			BTRTLTX:    dataResponseSession.(map[string]interface{})["BTRTL_TX"].(string),
-			KOSTLTX:    dataResponseSession.(map[string]interface{})["KOSTL_TX"].(string),
-			ORGEHTX:    dataResponseSession.(map[string]interface{})["ORGEH_TX"].(string),
-			STELLTX:    dataResponseSession.(map[string]interface{})["STELL_TX"].(string),
-			PLANSTX:    dataResponseSession.(map[string]interface{})["PLANS_TX"].(string),
-			JGPG:       dataResponseSession.(map[string]interface{})["JGPG"].(string),
-			ORGEHPGS:   dataResponseSession.(map[string]interface{})["ORGEH_PGS"].(string),
-			PLANSPGS:   dataResponseSession.(map[string]interface{})["PLANS_PGS"].(string),
-			ORGEHPGSTX: dataResponseSession.(map[string]interface{})["ORGEH_PGS_TX"].(string),
-			PLANSPGSTX: dataResponseSession.(map[string]interface{})["PLANS_PGS_TX"].(string),
-			SISACT:     dataResponseSession.(map[string]interface{})["SISA_CT"].(string),
-			SISACB:     dataResponseSession.(map[string]interface{})["SISA_CB"].(string),
-			AGAMA:      dataResponseSession.(map[string]interface{})["AGAMA"].(string),
-			TIPEUKER:   dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string),
-			ADDAREA:    dataResponseSession.(map[string]interface{})["ADD_AREA"].(string),
-			PERSG:      dataResponseSession.(map[string]interface{})["PERSG"].(string),
-			PERSK:      dataResponseSession.(map[string]interface{})["PERSK"].(string),
-			STATUS:     dataResponseSession.(map[string]interface{})["STATUS"].(string),
-			BRANCH:     dataResponseSession.(map[string]interface{})["BRANCH"].(string),
-			HILFM:      dataResponseSession.(map[string]interface{})["HILFM"].(string),
-			HTEXT:      dataResponseSession.(map[string]interface{})["HTEXT"].(string),
-			HILFMPGS:   dataResponseSession.(map[string]interface{})["HILFM_PGS"].(string),
-			HTEXTPGS:   dataResponseSession.(map[string]interface{})["HTEXT_PGS"].(string),
-			KAWIN:      dataResponseSession.(map[string]interface{})["KAWIN"].(string),
-
-			// handle interface mapping error nil
-			// solution : cari cara handle nil parsing interface to struct
-			// WERKSPGS:   dataResponseSession.(map[string]interface{})["WERKS_PGS"].(string),
-			// BTRTLPGS: dataResponseSession.(map[string]interface{})["BTRTL_PGS"].(string),
-			// KOSTLPGS: dataResponseSession.(map[string]interface{})["KOSTL_PGS"].(string),
-		}
-		fmt.Println("response", responses)
-
-		return responses, err
 	}
+
+	return responses, err
 }
 
 // GetOneUser gets one user
