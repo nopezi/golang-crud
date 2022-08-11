@@ -19,6 +19,7 @@ type MenuRequest struct {
 	LevelUker string `json:"levelUker"`
 	LevelID   string `json:"levelId"`
 	Orgeh     string `json:"orgeh"`
+	Kostl     string `json:"kostl"`
 }
 
 type UserSession struct {

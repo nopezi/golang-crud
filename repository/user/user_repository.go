@@ -72,6 +72,7 @@ func (u UserRepository) GetMenu(request models.MenuRequest) (responses models.Me
 		OR (n.LevelUker='ALL' AND n.LevelID='ALL') 
 		OR (n.LevelUker='ALL' AND n.LevelID='` + request.LevelID + `') 
 		OR (n.LevelUker='` + request.LevelUker + `' AND n.LevelID='ALL')
+		OR (n.LevelUker='` + request.Kostl + `' AND n.LevelID='` + request.LevelID + `')
 		OR (n.LevelUker='` + request.Orgeh + `' AND n.LevelID='` + request.LevelID + `')
 	)`).Rows()
 
@@ -96,6 +97,7 @@ func (u UserRepository) GetChildMenu(menuID int64, request models.MenuRequest) (
 		(n.LevelUker='`+request.LevelUker+`' AND n.LevelID='`+request.LevelID+`') 
 		OR (n.LevelUker='ALL' AND n.LevelID='ALL') OR (n.LevelUker='ALL' AND n.LevelID='`+request.LevelID+`') 
 		OR (n.LevelUker='`+request.LevelUker+`' AND n.LevelID='ALL')
+		OR (n.LevelUker='`+request.Kostl+`' AND n.LevelID='`+request.LevelID+`')
 		OR (n.LevelUker='`+request.Orgeh+`' AND n.LevelID='`+request.LevelID+`')
 	)`, menuID).Rows()
 

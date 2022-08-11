@@ -56,6 +56,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 	LevelUker := ""
 	LevelID := ""
 	ORGEH := ""
+	KOSTL := ""
 
 	onegateSSL, _ := strconv.ParseBool(os.Getenv("OnegateSSL"))
 	options := lib.Options{
@@ -140,6 +141,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 						LevelUker = dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string)
 						LevelID = dataResponseSession.(map[string]interface{})["HILFM"].(string)
 						ORGEH = dataResponseSession.(map[string]interface{})["ORGEH"].(string)
+						KOSTL = dataResponseSession.(map[string]interface{})["KOSTL"].(string)
 
 						responses = models.UserSessionIncognito{
 							PERNR:      dataResponseSession.(map[string]interface{})["PERNR"].(string),
@@ -190,6 +192,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 					LevelUker = dataResponseSession.(map[string]interface{})["TIPE_UKER"].(string)
 					LevelID = dataResponseSession.(map[string]interface{})["HILFM"].(string)
 					ORGEH = dataResponseSession.(map[string]interface{})["ORGEH"].(string)
+					KOSTL = dataResponseSession.(map[string]interface{})["KOSTL"].(string)
 
 					if statusResponseSession.(bool) {
 						responses = models.UserSession{
@@ -240,6 +243,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 			LevelUker: LevelUker,
 			LevelID:   LevelID,
 			Orgeh:     ORGEH,
+			Kostl:     KOSTL,
 		}
 
 		menus, err := s.GetMenu(requestMenu)
