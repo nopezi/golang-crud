@@ -633,3 +633,118 @@ kalo ada jadwal lelang yg twelah lewat dari hari ini, jngn ditampilkan
 
 # data asset 
 depan filter barengan atau saling ter relasi mengkerucut
+
+
+## Login
+KC	014	6	Approver KC  Pinca
+KC	041	5	Maker KC RM SME
+KC	147	5	Maker KC RM CRR
+KC	159	6	Approver KC Asistant Manager
+KC	160	6	Approver KC Manager
+KCK	041	5	Maker KCK RM SME
+KCK	147	5	Maker KCK RM CRR
+KCK	157	5	Maker KCK Assistant
+KCK	158	5	Maker KCK Officer
+KCK	159	1	Maker KCK Assistant Manager
+KCK	160	6	Approver Maker KCK Manager
+KCK	161	1	Approver KCK Senior Manager
+KCK	162	6	Approver KCK AVP
+KCK	163	6	Approver KCK VP
+KCK	164	6	Approver KCK EVP
+KCK	166	6	Approver KCK SVP
+KW	041	5	Maker KW RM SME
+KW	147	5	Maker KW RM CRR
+KW	157	1	Maker KW Assistant
+KW	158	5	Maker KW Officer
+KW	159	1	Maker KW Assistant Manager
+KW	160	5	Maker KW Manager
+KW	171	6	Approver KW Dep Head
+KW	173	6	Approver KW Dep Head
+PS80000	157	7	Maker KP CRR Assistant
+PS80000	158	7	Maker KP CRR Officer
+PS80000	159	7	Maker KP CRR Assist Manager
+PS80000	160	7	Maker Approver  KP CRR
+PS80000	161	6	Approver KP CRR SM
+PS80000	162	6	Approver KP CRR AVP
+PS80000	163	6	Approver KP CRR VP
+PS80000	164	6	Approver KP CRR EVP
+PS80000	166	6	Approver KP CRR SVP
+PS98400	157	7	Maker KP Assistant
+PS98400	158	7	Maker KP Officer
+PS98400	159	1	Maker KP Assist Manager
+PS98400	160	1	Maker Approver  KP
+PS98400	161	6	Approver KP
+PS98400	162	6	Approver KP
+PS98400	163	6	Approver KP
+PS98400	164	6	Approver KP
+PS98400	166	6	Approver KP
+
+-- =================================================================================
+-- Jabatan 				        | HILFM			    | ORGEH
+-- =================================================================================
+-- RM CRR	/ npl				    | 147				| 70132331 ganti jd kostl CRR => PS80000, anak perusahaan kostl => PS98400
+-- RM SME / 					    | 041
+-- ADK	/ CRO now			    | 
+-- Assistant				      | 157
+-- Officer 				        | 158
+-- Asist Manager			    | 159
+-- Manager					      | 160
+-- Senior Manager			    | 161
+-- Pimpinan Cabang		    | 014
+-- Departement head		    | 173 
+-- Regional Risk Manager 	| 
+-- Regional CEO			      | 171
+-- AVP						        | 162
+-- VP						          | 163
+-- SVP						        | 166
+-- EVP						        | 164
+-- ================================================================================
+
+Maker KC
+  RM NPL/CRR
+    00248697
+  RM SME
+    00231096
+  RM ADK/CRO
+
+Approver KC
+  RM NPL/CRR
+    00149113
+    00054775
+  RM SME
+    00076274
+    00056848
+  RM ADK/CRO
+
+Maker KW
+  00288041
+
+Approver KW
+  00073802
+  00005843
+
+
+Maker KCK
+
+Approver KCK
+
+
+Maker KP-CRR
+00000807
+00073309
+00057741
+
+Approver KP-CRR
+00057741
+00067262
+00295086
+00001364
+
+Maker KP-PT ANAK
+00318734
+00062968
+Approver KP-PT ANAK
+00062968
+00008474
+00001373
+00313330
