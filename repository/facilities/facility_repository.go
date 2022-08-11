@@ -5,7 +5,6 @@ import (
 	models "infolelang/models/facilities"
 	"time"
 
-	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
@@ -22,7 +21,6 @@ type FacilitiesDefinition interface {
 type FacilitiesRepository struct {
 	db      lib.Database
 	dbRaw   lib.Databases
-	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
 }
@@ -30,12 +28,10 @@ type FacilitiesRepository struct {
 func NewFacilitiesReporitory(
 	db lib.Database,
 	dbRaw lib.Databases,
-	elastic elastic.Elasticsearch,
 	logger logger.Logger) FacilitiesDefinition {
 	return FacilitiesRepository{
 		db:      db,
 		dbRaw:   dbRaw,
-		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
 	}

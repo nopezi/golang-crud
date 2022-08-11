@@ -47,35 +47,6 @@ func (asset AssetController) GetAll(c *gin.Context) {
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
 }
 
-func (asset AssetController) GetAssetElastic(c *gin.Context) {
-	request := models.AssetRequestElastic{}
-
-	if err := c.Bind(&request); err != nil {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-		return
-	}
-
-	datas, err := asset.service.GetAssetElastic(request)
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
-		return
-	}
-	if datas == nil {
-		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
-		return
-	}
-
-	if len(datas) == 0 {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", "")
-		return
-	}
-
-	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", datas)
-}
-
 func (asset AssetController) GetAuctionSchedule(c *gin.Context) {
 	request := models.AuctionSchedule{}
 	// trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
@@ -149,31 +120,6 @@ func (asset AssetController) Store(c *gin.Context) {
 	}
 
 	lib.ReturnToJson(c, 200, "200", "Create data berhasil", true)
-}
-
-func (asset AssetController) UpdatePublish(c *gin.Context) {
-	data := models.AssetsRequestUpdate{}
-
-	if err := c.BindJSON(&data); err != nil {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
-		return
-	}
-
-	status, err := asset.service.UpdatePublish(&data)
-	if err != nil {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
-		return
-	}
-
-	if !status {
-		asset.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Update data Gagal", false)
-		return
-	}
-
-	lib.ReturnToJson(c, 200, "200", "Update data berhasil", status)
 }
 
 func (asset AssetController) UpdateApproval(c *gin.Context) {

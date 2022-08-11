@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"fmt"
 	"infolelang/lib"
-	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
@@ -33,14 +31,6 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 	lib.LogInfo("----------------------------------------")
 	_ = godotenv.Load()
 
-	url := os.Getenv("DBEHost")
-	username := os.Getenv("DBEUsername")
-	password := os.Getenv("DBEPassword")
-
-	_, err := lib.New([]string{url}, username, password)
-	if err != nil {
-		fmt.Println(err)
-	}
 	lib.LogInfo("----------------------------------------")
 	return nil
 }

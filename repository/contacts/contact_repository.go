@@ -5,7 +5,6 @@ import (
 	models "infolelang/models/contacts"
 	"time"
 
-	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
@@ -22,7 +21,6 @@ type ContactDefinition interface {
 type ContactRepository struct {
 	db      lib.Database
 	dbRaw   lib.Databases
-	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
 }
@@ -30,12 +28,10 @@ type ContactRepository struct {
 func NewContactReporitory(
 	db lib.Database,
 	dbRaw lib.Databases,
-	elastic elastic.Elasticsearch,
 	logger logger.Logger) ContactDefinition {
 	return ContactRepository{
 		db:      db,
 		dbRaw:   dbRaw,
-		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
 	}

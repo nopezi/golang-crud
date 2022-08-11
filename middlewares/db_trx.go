@@ -35,13 +35,11 @@ func NewDatabaseTrx(
 	handler lib.RequestHandler,
 	logger logger.Logger,
 	db lib.Database,
-	elastic elastic.Elasticsearch,
 ) DatabaseTrx {
 	return DatabaseTrx{
 		handler: handler,
 		logger:  logger,
 		db:      db,
-		elastic: elastic,
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	models "infolelang/models/assets"
 	"time"
 
-	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
@@ -23,7 +22,6 @@ type AssetAccessPlaceDefinition interface {
 type AssetAccessPlaceRepository struct {
 	db      lib.Database
 	dbRaw   lib.Databases
-	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
 }
@@ -31,12 +29,10 @@ type AssetAccessPlaceRepository struct {
 func NewAssetAccessPlaceReporitory(
 	db lib.Database,
 	dbRaw lib.Databases,
-	elastic elastic.Elasticsearch,
 	logger logger.Logger) AssetAccessPlaceDefinition {
 	return AssetAccessPlaceRepository{
 		db:      db,
 		dbRaw:   dbRaw,
-		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
 	}

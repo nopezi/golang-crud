@@ -32,13 +32,11 @@ type bodyLogWriter struct {
 func NewLogActivityMiddleware(
 	handler lib.RequestHandler,
 	logger logger.Logger, env env.Env,
-	elastic elastic.Elasticsearch,
 ) LogActivityMiddleware {
 	return LogActivityMiddleware{
 		handler: handler,
 		logger:  logger,
 		env:     env,
-		elastic: elastic,
 	}
 }
 

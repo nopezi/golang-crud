@@ -7,7 +7,6 @@ import (
 	banner "infolelang/controllers/banner"
 	category "infolelang/controllers/category"
 	certificate_type "infolelang/controllers/certificate_type"
-	cif "infolelang/controllers/cif"
 	facility "infolelang/controllers/facility"
 	faq "infolelang/controllers/faq"
 	file "infolelang/controllers/file_manager"
@@ -45,6 +44,5 @@ var Module = fx.Options(
 	fx.Provide(vehicle_category.NewVehicleCategoryController),
 	fx.Provide(vehicle_color.NewVehicleColorController),
 	fx.Provide(vehicle_transmission.NewVehicleTransmissionController),
-	fx.Provide(cif.NewCifController),
 	fx.Provide(banner.NewBannerController),
 )

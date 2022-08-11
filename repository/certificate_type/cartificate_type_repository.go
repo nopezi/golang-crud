@@ -5,7 +5,6 @@ import (
 	models "infolelang/models/certificate_type"
 	"time"
 
-	elastic "gitlab.com/golang-package-library/elasticsearch"
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
 )
@@ -21,7 +20,6 @@ type CertificateTypeDefinition interface {
 type CertificateTypeRepository struct {
 	db      lib.Database
 	dbRaw   lib.Databases
-	elastic elastic.Elasticsearch
 	logger  logger.Logger
 	timeout time.Duration
 }
@@ -29,12 +27,10 @@ type CertificateTypeRepository struct {
 func NewCertificateTypeReporitory(
 	db lib.Database,
 	dbRaw lib.Databases,
-	elastic elastic.Elasticsearch,
 	logger logger.Logger) CertificateTypeDefinition {
 	return CertificateTypeRepository{
 		db:      db,
 		dbRaw:   dbRaw,
-		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
 	}

@@ -30,12 +30,10 @@ type VehicleTransmissionRepository struct {
 func NewVehicleTransmissionReporitory(
 	db lib.Database,
 	dbRaw lib.Databases,
-	elastic elastic.Elasticsearch,
 	logger logger.Logger) VehicleTransmissionDefinition {
 	return VehicleTransmissionRepository{
 		db:      db,
 		dbRaw:   dbRaw,
-		elastic: elastic,
 		logger:  logger,
 		timeout: time.Second * 100,
 	}

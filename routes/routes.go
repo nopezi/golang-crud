@@ -23,7 +23,6 @@ var Module = fx.Options(
 	fx.Provide(NewVehicleCategoryRoutes),
 	fx.Provide(NewVehicleColorRoutes),
 	fx.Provide(NewVehicleTransmissionRoutes),
-	fx.Provide(NewCifRoutes),
 	fx.Provide(NewBannerRoutes),
 )
 
@@ -55,7 +54,6 @@ func NewRoutes(
 	vehicleCategory VehicleCategoryRoutes,
 	vehicleColor VehicleColorRoutes,
 	vehicleTransmission VehicleTransmissionRoutes,
-	cif CifRoutes,
 	banner BannerRoutes,
 ) Routes {
 	return Routes{
@@ -77,7 +75,6 @@ func NewRoutes(
 		vehicleCategory,
 		vehicleColor,
 		vehicleTransmission,
-		cif,
 		banner,
 	}
 }

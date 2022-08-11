@@ -2,16 +2,13 @@ package user
 
 import (
 	"fmt"
-	"infolelang/lib"
 	models "infolelang/models/user"
 	repository "infolelang/repository/user"
 	"os"
 	"strconv"
 
-	// minio "gitlab.com/golang-package-library/minio"
-
 	"github.com/jinzhu/copier"
-	// "gitlab.com/golang-package-library/goresums"
+	goresums "gitlab.com/golang-package-library/goresums"
 
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
@@ -19,18 +16,15 @@ import (
 
 // UserService service layer
 type UserService struct {
-	// minio      minio.Minio
 	logger     logger.Logger
 	repository repository.UserRepository
 }
 
 // NewUserService creates a new userservice
 func NewUserService(
-	// minio minio.Minio,
 	logger logger.Logger,
 	repository repository.UserRepository) UserService {
 	return UserService{
-		// minio:      minio,
 		logger:     logger,
 		repository: repository,
 	}
@@ -59,7 +53,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 	KOSTL := ""
 
 	onegateSSL, _ := strconv.ParseBool(os.Getenv("OnegateSSL"))
-	options := lib.Options{
+	options := goresums.Options{
 		BaseUrl: os.Getenv("OnegateURL"),
 		SSL:     onegateSSL,
 		Payload: Payload{
@@ -70,12 +64,12 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 		Auth:   false,
 	}
 
-	auth := lib.Auth{
+	auth := goresums.Auth{
 		Authorization: "Bearer " + jwt,
 	}
 
 	options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/client_auth/request_token"
-	responseObjectJwt, err := lib.AuthBearer(options, auth)
+	responseObjectJwt, err := goresums.AuthBearer(options, auth)
 	if err != nil {
 		s.logger.Zap.Error(err)
 		return responses, err
@@ -100,14 +94,14 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 		if statusResponseJwt.(bool) {
 
 			// Get User Login Session
-			auth = lib.Auth{
+			auth = goresums.Auth{
 				Authorization: "Bearer " + fmt.Sprint(dataResponseJwt),
 			}
 			type Login struct {
 				Pernr    string `json:"pernr"`
 				Password string `json:"password"`
 			}
-			options = lib.Options{
+			options = goresums.Options{
 				BaseUrl: os.Getenv("OnegateURL"),
 				SSL:     false,
 				Payload: Login{
@@ -123,7 +117,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 				// ===============================
 
 				options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/pekerja/inquiryPekerjaByPn"
-				responseObjectSession, err := lib.AuthBearer(options, auth)
+				responseObjectSession, err := goresums.AuthBearer(options, auth)
 				if err != nil {
 					s.logger.Zap.Error(err)
 					return responses, err
@@ -174,7 +168,7 @@ func (s UserService) Login(request models.LoginRequest) (responses interface{}, 
 				s.logger.Zap.Info("User Service | Login Normal")
 
 				options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/pekerja/loginPekerja"
-				responseObjectSession, err := lib.AuthBearer(options, auth)
+				responseObjectSession, err := goresums.AuthBearer(options, auth)
 				if err != nil {
 					s.logger.Zap.Error(err)
 					return responses, err

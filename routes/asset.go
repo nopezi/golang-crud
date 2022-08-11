@@ -26,13 +26,11 @@ func (s AssetRoutes) Setup() {
 		api.POST("/store", s.AssetController.Store)
 		api.POST("/getApproval", s.AssetController.GetApproval)
 		api.POST("/getMaintain", s.AssetController.GetMaintain)
-		api.POST("/updatePublish", s.AssetController.UpdatePublish)
 		api.POST("/updateApproval", s.AssetController.UpdateApproval)
 		api.POST("/updateMaintain", s.AssetController.UpdateMaintain)
 		api.POST("/delete", s.AssetController.Delete)
 		api.POST("/deleteAssetImage", s.AssetController.DeleteAssetImage)
 		api.POST("/getAuctionSchedule", s.AssetController.GetAuctionSchedule)
-		api.POST("/getAssetElastic", s.AssetController.GetAssetElastic)
 	}
 }
 

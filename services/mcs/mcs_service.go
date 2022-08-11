@@ -2,11 +2,11 @@ package repoMcs
 
 import (
 	"fmt"
-	"infolelang/lib"
 	models "infolelang/models/mcs"
 	"os"
 	"reflect"
 
+	goresums "gitlab.com/golang-package-library/goresums"
 	"gitlab.com/golang-package-library/logger"
 )
 
@@ -30,7 +30,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 	// Get Session API
 	fmt.Println("request", request)
 	jwt := ""
-	options := lib.Options{
+	options := goresums.Options{
 		BaseUrl: os.Getenv("OnegateURL"),
 		SSL:     false,
 		Payload: models.McsRequest{
@@ -44,12 +44,12 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 		Auth:   false,
 	}
 
-	auth := lib.Auth{
+	auth := goresums.Auth{
 		Authorization: "Bearer " + jwt,
 	}
 
 	options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/client_auth/request_token"
-	responseObjectJwt, err := lib.AuthBearer(options, auth)
+	responseObjectJwt, err := goresums.AuthBearer(options, auth)
 	if err != nil {
 		mcs.logger.Zap.Error(err)
 		return response, err
@@ -67,7 +67,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 
 	fmt.Println("request", request)
 	jwt = ""
-	options = lib.Options{
+	options = goresums.Options{
 		BaseUrl: os.Getenv("OnegateURL"),
 		SSL:     false,
 		Payload: models.McsRequest{
@@ -79,7 +79,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 		Auth:   true,
 	}
 
-	auth = lib.Auth{
+	auth = goresums.Auth{
 		Authorization: "Bearer " + dataResponseJwt,
 	}
 	dataResponse := []models.McsResponse{}
@@ -91,7 +91,7 @@ func (mcs McsService) GetMcs(request *models.McsRequest) (response []models.McsR
 		mcs.logger.Zap.Info("Search Pekerja")
 
 		options.BaseUrl = os.Getenv("OnegateURL") + "api/v1/pekerja/searchPekerja"
-		responseObjectSession, err := lib.AuthBearer(options, auth)
+		responseObjectSession, err := goresums.AuthBearer(options, auth)
 		if err != nil {
 			mcs.logger.Zap.Error(err)
 			return response, err
