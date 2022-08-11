@@ -65,11 +65,15 @@ func (r UserRepository) Delete(id uint) error {
 // GetOneAsset implements AssetAccessPlaceDefinition
 func (u UserRepository) GetMenu(request models.MenuRequest) (responses models.Menus, err error) {
 	rows, err := u.db.DB.Raw(`
-	SELECT DISTINCT m.* FROM mst_menu m INNER JOIN mst_access_menu n 
+	SELECT DISTINCT m.IDMenu, m.Title, m.Url, m.Deskripsi, m.Icon, m.svgIcon, m.fontIcon FROM mst_menu m INNER JOIN mst_access_menu n 
 	ON m.IDMenu=n.IDMenu WHERE m.RoleAccess=1 AND m.Status=1 AND m.IDParent = 0 
-	AND ((n.LevelUker='` + request.LevelUker + `' AND n.LevelID='` + request.LevelID + `') 
-	OR (n.LevelUker='ALL' AND n.LevelID='ALL') OR (n.LevelUker='ALL' 
-	AND n.LevelID='` + request.LevelID + `') OR (n.LevelUker='` + request.LevelUker + `' AND n.LevelID='ALL')) AND LOWER(m.Title)`).Rows()
+	AND (
+		(n.LevelUker='` + request.LevelUker + `' AND n.LevelID='` + request.LevelID + `') 
+		OR (n.LevelUker='ALL' AND n.LevelID='ALL') 
+		OR (n.LevelUker='ALL' AND n.LevelID='` + request.LevelID + `') 
+		OR (n.LevelUker='` + request.LevelUker + `' AND n.LevelID='ALL')
+		OR (n.LevelUker='` + request.Orgeh + `' AND n.LevelID='` + request.LevelID + `')
+	)`).Rows()
 
 	defer rows.Close()
 
@@ -84,14 +88,16 @@ func (u UserRepository) GetMenu(request models.MenuRequest) (responses models.Me
 // GetOneAsset implements AssetAccessPlaceDefinition
 func (u UserRepository) GetChildMenu(menuID int64, request models.MenuRequest) (responses []models.ChildMenuResponse, err error) {
 	rows, err := u.db.DB.Raw(`
-	SELECT Title, Url, Icon FROM mst_menu m 
-	INNER JOIN mst_access_menu n ON m.IDMenu=n.IDMenu 
+	SELECT m.IDMenu, m.Title, m.Url, m.Deskripsi, m.Icon, m.svgIcon, m.fontIcon 
+	FROM mst_menu m INNER JOIN mst_access_menu n ON m.IDMenu=n.IDMenu 
 	WHERE m.RoleAccess=1 AND m.Status=1 AND
-	m.IDParent = ? AND ((n.LevelUker='`+request.LevelUker+
-		`' AND n.LevelID='`+request.LevelID+`') OR (n.LevelUker='ALL' 
-	AND n.LevelID='ALL') OR (n.LevelUker='ALL' AND n.LevelID='`+
-		request.LevelID+`') OR (n.LevelUker='`+request.LevelUker+
-		`' AND n.LevelID='ALL'))`, menuID).Rows()
+	m.IDParent = ? 
+	AND (
+		(n.LevelUker='`+request.LevelUker+`' AND n.LevelID='`+request.LevelID+`') 
+		OR (n.LevelUker='ALL' AND n.LevelID='ALL') OR (n.LevelUker='ALL' AND n.LevelID='`+request.LevelID+`') 
+		OR (n.LevelUker='`+request.LevelUker+`' AND n.LevelID='ALL')
+		OR (n.LevelUker='`+request.Orgeh+`' AND n.LevelID='`+request.LevelID+`')
+	)`, menuID).Rows()
 
 	defer rows.Close()
 

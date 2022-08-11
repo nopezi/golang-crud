@@ -42,6 +42,12 @@ func (u UserController) Login(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai: "+err.Error(), "")
 		return
 	}
+
+	if login == nil {
+		lib.ReturnToJson(c, 200, "404", "User Cannot Access", nil)
+		return
+	}
+
 	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", login)
 }
 

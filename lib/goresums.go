@@ -47,7 +47,7 @@ type (
 )
 
 func AuthBearer(options Options, auth Auth) (response Resp, err error) {
-	fmt.Println("BaseUrl  string | SSL bool | Payload interface{} | Request  *bytes.Buffer | Method string | Header []Header | Auth bool | ClientID ClientID")
+	fmt.Println("Goresums | options => BaseUrl  string | SSL bool | Payload interface{} | Request  *bytes.Buffer | Method string | Header []Header | Auth bool | ClientID ClientID")
 	fmt.Println("Goresums | options => ", options)
 	resByte, _ := json.Marshal(options.Payload)
 
