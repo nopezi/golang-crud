@@ -4,6 +4,7 @@ import (
 	activity "riskmanagement/services/activity"
 	auth "riskmanagement/services/auth"
 	product "riskmanagement/services/product"
+	riskIssue "riskmanagement/services/riskissue"
 	subactivity "riskmanagement/services/subactivity"
 	user "riskmanagement/services/user"
 
@@ -17,4 +18,5 @@ var Module = fx.Options(
 	fx.Provide(activity.NewActivityService),
 	fx.Provide(subactivity.NewSubActivityService),
 	fx.Provide(product.NewProductService),
+	fx.Provide(riskIssue.NewRiskIssueService),
 )

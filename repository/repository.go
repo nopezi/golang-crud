@@ -3,6 +3,7 @@ package repository
 import (
 	activity "riskmanagement/repository/activity"
 	product "riskmanagement/repository/product"
+	riskIssue "riskmanagement/repository/riskissue"
 	subactivity "riskmanagement/repository/subactivity"
 	user "riskmanagement/repository/user"
 
@@ -15,4 +16,5 @@ var Module = fx.Options(
 	fx.Provide(activity.NewActivityRepository),
 	fx.Provide(subactivity.NewSubActivityRepository),
 	fx.Provide(product.NewProductRepository),
+	fx.Provide(riskIssue.NewRiskIssueRepository),
 )
