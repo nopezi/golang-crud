@@ -8,6 +8,7 @@ import (
 	riskIndicator "riskmanagement/controllers/riskindicator"
 	riskIssue "riskmanagement/controllers/riskissue"
 	subactivity "riskmanagement/controllers/subactivity"
+	subIncident "riskmanagement/controllers/subincident"
 	user "riskmanagement/controllers/user"
 
 	"go.uber.org/fx"
@@ -23,4 +24,5 @@ var Module = fx.Options(
 	fx.Provide(riskIssue.NewRiskIssueController),
 	fx.Provide(riskIndicator.NewRiskIndicatorController),
 	fx.Provide(incident.NewIncidentController),
+	fx.Provide(subIncident.NewSubIncidentController),
 )

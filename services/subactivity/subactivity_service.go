@@ -7,7 +7,7 @@ import (
 	"gitlab.com/golang-package-library/logger"
 )
 
-type SubAvtivityDefinition interface {
+type SubActivityDefinition interface {
 	GetAll() (responses []models.SubActivityResponse, err error)
 	GetOne(id int64) (responses models.SubActivityResponse, err error)
 	Store(request *models.SubActivityRequest) (err error)
@@ -20,7 +20,7 @@ type SubActivityService struct {
 	repository repository.SubActivityDefinition
 }
 
-func NewSubActivityService(logger logger.Logger, repository repository.SubActivityDefinition) SubAvtivityDefinition {
+func NewSubActivityService(logger logger.Logger, repository repository.SubActivityDefinition) SubActivityDefinition {
 	return SubActivityService{
 		logger:     logger,
 		repository: repository,

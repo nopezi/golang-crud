@@ -13,6 +13,7 @@ var Module = fx.Options(
 	fx.Provide(NewRiskIssueRoutes),
 	fx.Provide(NewRiskIndicatorRoutes),
 	fx.Provide(NewIncidentRoutes),
+	fx.Provide(NewSubIncidentRoutes),
 )
 
 // Routes contains multiple routes
@@ -33,6 +34,7 @@ func NewRoutes(
 	riskIssueRoutes RiskIssueRoutes,
 	riskIndicatorRoutes RiskIndicatorRoutes,
 	incidentRoutes IncidentRoutes,
+	subIncidentRoutes SubIncidentRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -43,6 +45,7 @@ func NewRoutes(
 		riskIssueRoutes,
 		riskIndicatorRoutes,
 		incidentRoutes,
+		subIncidentRoutes,
 	}
 }
 
