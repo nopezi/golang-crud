@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"infolelang/bootstrap"
+	"riskmanagement/bootstrap"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"

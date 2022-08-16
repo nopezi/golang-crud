@@ -2,11 +2,11 @@ package user
 
 import (
 	"fmt"
-	"infolelang/constants"
-	"infolelang/lib"
-	models "infolelang/models/user"
-	services "infolelang/services/user"
 	"net/http"
+	"riskmanagement/constants"
+	"riskmanagement/lib"
+	models "riskmanagement/models/user"
+	services "riskmanagement/services/user"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

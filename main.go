@@ -1,7 +1,7 @@
 package main
 
 import (
-	"infolelang/cmd"
+	"riskmanagement/cmd"
 )
 
 func main() {

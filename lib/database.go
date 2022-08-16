@@ -3,7 +3,7 @@ package lib
 import (
 	"database/sql"
 	"fmt"
-	env "infolelang/lib/env"
+	env "riskmanagement/lib/env"
 
 	zapLog "gitlab.com/golang-package-library/logger"
 )

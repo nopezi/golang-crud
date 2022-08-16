@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"infolelang/lib"
+	"riskmanagement/lib"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

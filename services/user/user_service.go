@@ -2,9 +2,9 @@ package user
 
 import (
 	"fmt"
-	models "infolelang/models/user"
-	repository "infolelang/repository/user"
 	"os"
+	models "riskmanagement/models/user"
+	repository "riskmanagement/repository/user"
 	"strconv"
 
 	"github.com/jinzhu/copier"

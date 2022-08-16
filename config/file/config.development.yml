@@ -3,11 +3,11 @@ server:
   enableswagger: true
   gracefultimeout: 10
   appurl: "http://localhost:5999"
-  appname: "Infolelang"
+  appname: "riskmanagement"
 
 database:
-  slavedsn: "root:P@ssw0rd@tcp(localhost:49155)/infolelang2?parseTime=true"
-  masterdsn: "root:P@ssw0rd@tcp(localhost:49155)/infolelang2?parseTime=true"
+  slavedsn: "root:P@ssw0rd@tcp(localhost:49155)/riskmanagement2?parseTime=true"
+  masterdsn: "root:P@ssw0rd@tcp(localhost:49155)/riskmanagement2?parseTime=true"
   retryinterval: 5
   maxidleconn: 10
   maxconn: 10

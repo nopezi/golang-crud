@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"infolelang/lib"
-	"infolelang/lib/env"
+	"riskmanagement/lib"
+	"riskmanagement/lib/env"
 
 	cors "github.com/rs/cors/wrapper/gin"
 	"gitlab.com/golang-package-library/logger"

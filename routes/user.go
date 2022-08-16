@@ -1,9 +1,9 @@
 package routes
 
 import (
-	controllers "infolelang/controllers/user"
-	"infolelang/lib"
-	"infolelang/middlewares"
+	controllers "riskmanagement/controllers/user"
+	"riskmanagement/lib"
+	"riskmanagement/middlewares"
 
 	"gitlab.com/golang-package-library/logger"
 )

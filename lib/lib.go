@@ -1,8 +1,8 @@
 package lib
 
 import (
-	env "infolelang/lib/env"
-	jobs "infolelang/lib/jobs"
+	env "riskmanagement/lib/env"
+	jobs "riskmanagement/lib/jobs"
 
 	minioEnv "gitlab.com/golang-package-library/env"
 	logger "gitlab.com/golang-package-library/logger"

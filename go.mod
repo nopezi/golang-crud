@@ -1,4 +1,4 @@
-module infolelang
+module riskmanagement
 
 go 1.17
 

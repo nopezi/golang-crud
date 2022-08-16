@@ -3,8 +3,8 @@ package jobs
 import (
 	"database/sql"
 	"fmt"
-	jobs "infolelang/lib/jobs"
 	"log"
+	jobs "riskmanagement/lib/jobs"
 	"time"
 
 	"github.com/robfig/cron/v3"

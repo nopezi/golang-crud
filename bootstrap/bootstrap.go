@@ -2,14 +2,14 @@ package bootstrap
 
 import (
 	"context"
-	"infolelang/controllers"
-	cronjob "infolelang/jobs"
-	"infolelang/lib"
-	env "infolelang/lib/env"
-	"infolelang/middlewares"
-	"infolelang/repository"
-	"infolelang/routes"
-	"infolelang/services"
+	"riskmanagement/controllers"
+	cronjob "riskmanagement/jobs"
+	"riskmanagement/lib"
+	env "riskmanagement/lib/env"
+	"riskmanagement/middlewares"
+	"riskmanagement/repository"
+	"riskmanagement/routes"
+	"riskmanagement/services"
 
 	minioEnv "gitlab.com/golang-package-library/env"
 	logger "gitlab.com/golang-package-library/logger"

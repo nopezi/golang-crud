@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"infolelang/lib"
-	models "infolelang/models/user"
+	"riskmanagement/lib"
+	models "riskmanagement/models/user"
 
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"

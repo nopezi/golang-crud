@@ -2,7 +2,7 @@ package jobs
 
 import (
 	"database/sql"
-	dio "infolelang/jobs/dio"
+	dio "riskmanagement/jobs/dio"
 )
 
 const (

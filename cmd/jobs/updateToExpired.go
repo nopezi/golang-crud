@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"infolelang/jobs"
+	"riskmanagement/jobs"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

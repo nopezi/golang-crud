@@ -3,7 +3,7 @@ bserver:
   enableswagger: true
   gracefultimeout: 10
   appurl: "http://localhost:5999"
-  appname: "Infolelang"
+  appname: "riskmanagement"
 
 database:
   slavedsn: "root:P@ssw0rd@tcp(localhost:49155)/micro_db?parseTime=true"

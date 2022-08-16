@@ -2,9 +2,9 @@ package lib
 
 import (
 	"fmt"
-	env "infolelang/lib/env"
 	"log"
 	"os"
+	env "riskmanagement/lib/env"
 	"time"
 
 	zapLog "gitlab.com/golang-package-library/logger"

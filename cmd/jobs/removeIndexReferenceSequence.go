@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"infolelang/jobs"
+	"riskmanagement/jobs"
 
-	"infolelang/lib"
+	"riskmanagement/lib"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

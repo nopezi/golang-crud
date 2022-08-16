@@ -1,7 +1,7 @@
 package lib
 
 import (
-	env "infolelang/lib/env"
+	env "riskmanagement/lib/env"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

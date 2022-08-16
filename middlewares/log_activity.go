@@ -3,11 +3,11 @@ package middlewares
 import (
 	"bytes"
 	"fmt"
-	"infolelang/constants"
-	"infolelang/lib"
-	"infolelang/lib/env"
 	"io/ioutil"
 	"net/http"
+	"riskmanagement/constants"
+	"riskmanagement/lib"
+	"riskmanagement/lib/env"
 	"text/template"
 
 	"github.com/gin-gonic/gin"

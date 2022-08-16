@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"infolelang/lib"
-	models "infolelang/models/user"
-	services "infolelang/services/auth"
-	user "infolelang/services/user"
 	"net/http"
+	"riskmanagement/lib"
+	models "riskmanagement/models/user"
+	services "riskmanagement/services/auth"
+	user "riskmanagement/services/user"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	controllers "infolelang/controllers/auth"
-	"infolelang/lib"
+	controllers "riskmanagement/controllers/auth"
+	"riskmanagement/lib"
 
 	"gitlab.com/golang-package-library/logger"
 )
