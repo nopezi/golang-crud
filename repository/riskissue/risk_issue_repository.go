@@ -64,7 +64,13 @@ func (riskIssue RiskIssueRepository) Update(request *models.RiskIssueRequest) (r
 
 // WithTrx implements RiskIssueDefinition
 func (riskIssue RiskIssueRepository) WithTrx(trxHandle *gorm.DB) RiskIssueRepository {
-	panic("unimplemented")
+	if trxHandle == nil {
+		riskIssue.logger.Zap.Error("transaction Database not found in gin context")
+		return riskIssue
+	}
+
+	riskIssue.db.DB = trxHandle
+	return riskIssue
 }
 
 func NewRiskIssueRepository(

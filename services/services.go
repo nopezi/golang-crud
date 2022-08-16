@@ -3,7 +3,9 @@ package services
 import (
 	activity "riskmanagement/services/activity"
 	auth "riskmanagement/services/auth"
+	incident "riskmanagement/services/incident"
 	product "riskmanagement/services/product"
+	riskIndicator "riskmanagement/services/riskindicator"
 	riskIssue "riskmanagement/services/riskissue"
 	subactivity "riskmanagement/services/subactivity"
 	user "riskmanagement/services/user"
@@ -19,4 +21,6 @@ var Module = fx.Options(
 	fx.Provide(subactivity.NewSubActivityService),
 	fx.Provide(product.NewProductService),
 	fx.Provide(riskIssue.NewRiskIssueService),
+	fx.Provide(riskIndicator.NewRiskIndicatorService),
+	fx.Provide(incident.NewIncidentService),
 )

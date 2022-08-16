@@ -3,7 +3,9 @@ package controllers
 import (
 	activity "riskmanagement/controllers/activity"
 	auth "riskmanagement/controllers/auth"
+	incident "riskmanagement/controllers/incident"
 	product "riskmanagement/controllers/product"
+	riskIndicator "riskmanagement/controllers/riskindicator"
 	riskIssue "riskmanagement/controllers/riskissue"
 	subactivity "riskmanagement/controllers/subactivity"
 	user "riskmanagement/controllers/user"
@@ -19,4 +21,6 @@ var Module = fx.Options(
 	fx.Provide(subactivity.NewSubActivityController),
 	fx.Provide(product.NewProductController),
 	fx.Provide(riskIssue.NewRiskIssueController),
+	fx.Provide(riskIndicator.NewRiskIndicatorController),
+	fx.Provide(incident.NewIncidentController),
 )
