@@ -7,6 +7,7 @@ import (
 	product "riskmanagement/services/product"
 	riskIndicator "riskmanagement/services/riskindicator"
 	riskIssue "riskmanagement/services/riskissue"
+	riskType "riskmanagement/services/risktype"
 	subactivity "riskmanagement/services/subactivity"
 	subincident "riskmanagement/services/subincident"
 	user "riskmanagement/services/user"
@@ -25,4 +26,5 @@ var Module = fx.Options(
 	fx.Provide(riskIndicator.NewRiskIndicatorService),
 	fx.Provide(incident.NewIncidentService),
 	fx.Provide(subincident.NewSubIncidentService),
+	fx.Provide(riskType.NewRiskTypeService),
 )
