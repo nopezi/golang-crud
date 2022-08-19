@@ -10,6 +10,7 @@ import (
 	riskType "riskmanagement/services/risktype"
 	subactivity "riskmanagement/services/subactivity"
 	subincident "riskmanagement/services/subincident"
+	unitKerja "riskmanagement/services/unitkerja"
 	user "riskmanagement/services/user"
 
 	"go.uber.org/fx"
@@ -27,4 +28,5 @@ var Module = fx.Options(
 	fx.Provide(incident.NewIncidentService),
 	fx.Provide(subincident.NewSubIncidentService),
 	fx.Provide(riskType.NewRiskTypeService),
+	fx.Provide(unitKerja.NewUnitKerjaService),
 )
