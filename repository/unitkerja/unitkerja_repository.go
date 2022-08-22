@@ -54,11 +54,13 @@ func (unitKerja UnitKerjaRepository) GetOne(id int64) (responses models.UnitKerj
 func (unitKerja UnitKerjaRepository) Store(request *models.UnitKerjaRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	fmt.Println("repo = ", models.UnitKerjaRequest{
+		KodeUker:  request.KodeUker,
 		NamaUker:  request.NamaUker,
 		Status:    request.Status,
 		CreatedAt: &timeNow,
 	})
 	err = unitKerja.db.DB.Save(&models.UnitKerjaRequest{
+		KodeUker:  request.KodeUker,
 		NamaUker:  request.NamaUker,
 		Status:    request.Status,
 		CreatedAt: &timeNow,
@@ -73,6 +75,7 @@ func (unitKerja UnitKerjaRepository) Update(request *models.UnitKerjaRequest) (r
 	timeNow := lib.GetTimeNow("timestime")
 	return true, unitKerja.db.DB.Save(&models.UnitKerjaRequest{
 		ID:        request.ID,
+		KodeUker:  request.KodeUker,
 		NamaUker:  request.NamaUker,
 		Status:    request.Status,
 		CreatedAt: request.CreatedAt,
