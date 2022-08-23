@@ -54,16 +54,26 @@ func (unitKerja UnitKerjaRepository) GetOne(id int64) (responses models.UnitKerj
 func (unitKerja UnitKerjaRepository) Store(request *models.UnitKerjaRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	fmt.Println("repo = ", models.UnitKerjaRequest{
-		KodeUker:  request.KodeUker,
-		NamaUker:  request.NamaUker,
-		Status:    request.Status,
-		CreatedAt: &timeNow,
+		KodeUker:   request.KodeUker,
+		NamaUker:   request.NamaUker,
+		KodeCabang: request.KodeCabang,
+		NamaCabang: request.NamaCabang,
+		KanwilID:   request.KanwilID,
+		KodeKanwil: request.KodeKanwil,
+		Kanwil:     request.Kanwil,
+		Status:     request.Status,
+		CreatedAt:  &timeNow,
 	})
 	err = unitKerja.db.DB.Save(&models.UnitKerjaRequest{
-		KodeUker:  request.KodeUker,
-		NamaUker:  request.NamaUker,
-		Status:    request.Status,
-		CreatedAt: &timeNow,
+		KodeUker:   request.KodeUker,
+		NamaUker:   request.NamaUker,
+		KodeCabang: request.KodeCabang,
+		NamaCabang: request.NamaCabang,
+		KanwilID:   request.KanwilID,
+		KodeKanwil: request.KodeKanwil,
+		Kanwil:     request.Kanwil,
+		Status:     request.Status,
+		CreatedAt:  &timeNow,
 	}).Error
 
 	fmt.Println(err)
@@ -74,12 +84,17 @@ func (unitKerja UnitKerjaRepository) Store(request *models.UnitKerjaRequest) (re
 func (unitKerja UnitKerjaRepository) Update(request *models.UnitKerjaRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return true, unitKerja.db.DB.Save(&models.UnitKerjaRequest{
-		ID:        request.ID,
-		KodeUker:  request.KodeUker,
-		NamaUker:  request.NamaUker,
-		Status:    request.Status,
-		CreatedAt: request.CreatedAt,
-		UpdatedAt: &timeNow,
+		ID:         request.ID,
+		KodeUker:   request.KodeUker,
+		NamaUker:   request.NamaUker,
+		KodeCabang: request.KodeCabang,
+		NamaCabang: request.NamaCabang,
+		KanwilID:   request.KanwilID,
+		KodeKanwil: request.KodeKanwil,
+		Kanwil:     request.Kanwil,
+		Status:     request.Status,
+		CreatedAt:  request.CreatedAt,
+		UpdatedAt:  &timeNow,
 	}).Error
 }
 
