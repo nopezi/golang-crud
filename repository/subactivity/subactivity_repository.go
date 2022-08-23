@@ -53,9 +53,10 @@ func (subactivity SubActivityRepository) GetOne(id int64) (responses models.SubA
 func (subactivity SubActivityRepository) Store(request *models.SubActivityRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return responses, subactivity.db.DB.Save(&models.SubActivityRequest{
-		ActivityID: request.ActivityID,
-		Name:       request.Name,
-		CreatedAt:  &timeNow,
+		ActivityID:      request.ActivityID,
+		KodeSubActivity: request.KodeSubActivity,
+		Name:            request.Name,
+		CreatedAt:       &timeNow,
 	}).Error
 }
 
@@ -63,11 +64,12 @@ func (subactivity SubActivityRepository) Store(request *models.SubActivityReques
 func (subactivity SubActivityRepository) Update(request *models.SubActivityRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return true, subactivity.db.DB.Save(&models.SubActivityRequest{
-		ID:         request.ID,
-		ActivityID: request.ActivityID,
-		Name:       request.Name,
-		CreatedAt:  request.CreatedAt,
-		UpdatedAt:  &timeNow,
+		ID:              request.ID,
+		KodeSubActivity: request.KodeSubActivity,
+		ActivityID:      request.ActivityID,
+		Name:            request.Name,
+		CreatedAt:       request.CreatedAt,
+		UpdatedAt:       &timeNow,
 	}).Error
 }
 

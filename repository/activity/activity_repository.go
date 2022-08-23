@@ -54,12 +54,14 @@ func (activity ActivityRepository) GetOne(id int64) (responses models.ActivityRe
 func (activity ActivityRepository) Store(request *models.ActivityRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	fmt.Println("repo = ", models.ActivityRequest{
-		Name:     request.Name,
-		CreateAt: &timeNow,
+		Name:         request.Name,
+		KodeActivity: request.KodeActivity,
+		CreateAt:     &timeNow,
 	})
 	err = activity.db.DB.Save(&models.ActivityRequest{
-		Name:     request.Name,
-		CreateAt: &timeNow,
+		Name:         request.Name,
+		KodeActivity: request.KodeActivity,
+		CreateAt:     &timeNow,
 	}).Error
 
 	fmt.Println(err)
@@ -70,10 +72,11 @@ func (activity ActivityRepository) Store(request *models.ActivityRequest) (respo
 func (activity ActivityRepository) Update(request *models.ActivityRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return true, activity.db.DB.Save(&models.ActivityRequest{
-		ID:       request.ID,
-		Name:     request.Name,
-		CreateAt: request.CreateAt,
-		UpdateAt: &timeNow,
+		ID:           request.ID,
+		KodeActivity: request.KodeActivity,
+		Name:         request.Name,
+		CreateAt:     request.CreateAt,
+		UpdateAt:     &timeNow,
 	}).Error
 }
 

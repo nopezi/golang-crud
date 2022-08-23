@@ -1,26 +1,29 @@
 package models
 
 type SubActivityRequest struct {
-	ID         int64   `json:"id"`
-	ActivityID int64   `json:"activity_id"`
-	Name       string  `json:"name"`
-	CreatedAt  *string `json:"created_at"`
-	UpdatedAt  *string `json:"updated_at"`
+	ID              int64   `json:"id"`
+	ActivityID      int64   `json:"activity_id"`
+	KodeSubActivity string  `json:"kode_sub_activity"`
+	Name            string  `json:"name"`
+	CreatedAt       *string `json:"created_at"`
+	UpdatedAt       *string `json:"updated_at"`
 }
 
 type SubActivityResponse struct {
-	ID         int64   `json:"id"`
-	ActivityID int64   `json:"activity_id"`
-	Name       string  `json:"name"`
-	CreatedAt  *string `json:"created_at"`
-	UpdatedAt  *string `json:"updated_at"`
+	ID              int64   `json:"id"`
+	ActivityID      int64   `json:"activity_id"`
+	KodeSubActivity string  `json:"kode_sub_activity"`
+	Name            string  `json:"name"`
+	CreatedAt       *string `json:"created_at"`
+	UpdatedAt       *string `json:"updated_at"`
 }
 
 func (p SubActivityRequest) ParseRequest() SubActivity {
 	return SubActivity{
-		ID:         p.ID,
-		ActivityID: p.ActivityID,
-		Name:       p.Name,
+		ID:              p.ID,
+		KodeSubActivity: p.KodeSubActivity,
+		ActivityID:      p.ActivityID,
+		Name:            p.Name,
 		// CreatedAt:  p.CreatedAt,
 		// UpdatedAt:  p.UpdatedAt,
 	}
@@ -28,11 +31,12 @@ func (p SubActivityRequest) ParseRequest() SubActivity {
 
 func (p SubActivityResponse) ParseResponse() SubActivity {
 	return SubActivity{
-		ID:         p.ID,
-		ActivityID: p.ActivityID,
-		Name:       p.Name,
-		CreatedAt:  p.CreatedAt,
-		UpdatedAt:  p.UpdatedAt,
+		ID:              p.ID,
+		KodeSubActivity: p.KodeSubActivity,
+		ActivityID:      p.ActivityID,
+		Name:            p.Name,
+		CreatedAt:       p.CreatedAt,
+		UpdatedAt:       p.UpdatedAt,
 	}
 }
 
