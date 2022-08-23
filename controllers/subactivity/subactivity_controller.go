@@ -62,7 +62,7 @@ func (subactivity SubActivityController) Store(c *gin.Context) {
 	fmt.Println(data)
 	if err := subactivity.service.Store(&data); err != nil {
 		subactivity.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "200", "Internal Error", false)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", false)
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inputs Data Berhasil", data)
