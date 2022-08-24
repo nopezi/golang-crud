@@ -3,6 +3,7 @@ package controllers
 import (
 	activity "riskmanagement/controllers/activity"
 	auth "riskmanagement/controllers/auth"
+	briefing "riskmanagement/controllers/briefing"
 	incident "riskmanagement/controllers/incident"
 	product "riskmanagement/controllers/product"
 	riskIndicator "riskmanagement/controllers/riskindicator"
@@ -29,4 +30,5 @@ var Module = fx.Options(
 	fx.Provide(subIncident.NewSubIncidentController),
 	fx.Provide(riskType.NewRiskTypeController),
 	fx.Provide(unitKerja.NewUnitKerjaController),
+	fx.Provide(briefing.NewBriefingController),
 )

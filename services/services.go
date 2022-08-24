@@ -3,6 +3,7 @@ package services
 import (
 	activity "riskmanagement/services/activity"
 	auth "riskmanagement/services/auth"
+	briefing "riskmanagement/services/briefing"
 	incident "riskmanagement/services/incident"
 	product "riskmanagement/services/product"
 	riskIndicator "riskmanagement/services/riskindicator"
@@ -29,4 +30,5 @@ var Module = fx.Options(
 	fx.Provide(subincident.NewSubIncidentService),
 	fx.Provide(riskType.NewRiskTypeService),
 	fx.Provide(unitKerja.NewUnitKerjaService),
+	fx.Provide(briefing.NewBriefingService),
 )
