@@ -18,6 +18,7 @@ func (s BriefingRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/briefing")
 	{
 		api.GET("/getAll", s.BriefingController.GetAll)
+		api.GET("/getOne/:id", s.BriefingController.GetOne)
 		api.POST("/store", s.BriefingController.Store)
 	}
 }

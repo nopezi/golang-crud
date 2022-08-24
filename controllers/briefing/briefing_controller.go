@@ -4,6 +4,7 @@ import (
 	"riskmanagement/lib"
 	models "riskmanagement/models/briefing"
 	services "riskmanagement/services/briefing"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"
@@ -38,6 +39,32 @@ func (briefing BriefingController) GetAll(c *gin.Context) {
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
+}
+
+func (briefing BriefingController) GetOne(c *gin.Context) {
+	paramID := c.Param("id")
+	id, err := strconv.Atoi(paramID)
+
+	if err != nil {
+		briefing.logger.Zap.Error()
+		lib.ReturnToJson(c, 200, "200", "Input tidak sesuai : "+err.Error(), "")
+		return
+	}
+
+	data, status, err := briefing.service.GetOne(int64(id))
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", data)
+		return
+	}
+
+	if !status {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", nil)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Inquiry data berhasil", data)
 }
 
 func (briefing BriefingController) Store(c *gin.Context) {

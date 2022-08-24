@@ -55,7 +55,26 @@ func (briefing BriefingRepository) GetAll() (responses []models.BriefingResponse
 
 // GetOne implements BriefingDefinition
 func (briefing BriefingRepository) GetOne(id int64) (responses models.BriefingResponse, err error) {
-	err = briefing.db.DB.Raw(`SELECT * FROM briefing brf WHERE brf.id = ?`, id).Find(&responses).Error
+	err = briefing.db.DB.Raw(`
+	SELECT 
+		brf.id,
+		brf.no_pelaporan,
+		brf.unit_kerja,
+		brf.peserta,
+		brf.jumlah_peserta,
+		brf.maker_id,
+		brf.maker_desc,
+		brf.maker_date,
+		brf.last_maker_id,
+		brf.last_maker_desc,
+		brf.last_maker_date,
+		brf.status,
+		brf.action,
+		brf.deleted,
+		brf.created_at,
+		brf.updated_at
+	FROM briefing brf
+	WHERE brf.id = ?`, id).Find(&responses).Error
 
 	if err != nil {
 		briefing.logger.Zap.Error(err)

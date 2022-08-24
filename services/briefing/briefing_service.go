@@ -65,7 +65,35 @@ func (briefing BriefingService) GetAll() (responses []models.BriefingResponse, e
 
 // GetOne implements BriefingDefinition
 func (briefing BriefingService) GetOne(id int64) (responses models.BriefingResponseGetOneString, status bool, err error) {
-	panic("unimplemented")
+	dataBriefing, err := briefing.briefingRepo.GetOne(id)
+	fmt.Println(dataBriefing)
+	if dataBriefing.ID != 0 {
+		fmt.Println("Bukan 0")
+
+		materi, err := briefing.briefingMateri.GetOneBriefing(dataBriefing.ID)
+
+		responses = models.BriefingResponseGetOneString{
+			ID:            dataBriefing.ID,
+			NoPelaporan:   dataBriefing.NoPelaporan,
+			UnitKerja:     dataBriefing.UnitKerja,
+			Peserta:       dataBriefing.Peserta,
+			JumlahPeserta: dataBriefing.JumlahPeserta,
+			MakerID:       dataBriefing.MakerID,
+			MakerDesc:     dataBriefing.MakerDesc,
+			MakerDate:     dataBriefing.MakerDate,
+			LastMakerID:   dataBriefing.LastMakerID,
+			LastMakerDesc: dataBriefing.LastMakerDesc,
+			LastMakerDate: dataBriefing.LastMakerDate,
+			Status:        dataBriefing.Status,
+			Action:        dataBriefing.Action,
+			Deleted:       dataBriefing.Deleted,
+			CreatedAt:     dataBriefing.CreatedAt,
+			UpdatedAt:     dataBriefing.UpdatedAt,
+			Materi:        materi,
+		}
+		return responses, true, err
+	}
+	return responses, false, err
 }
 
 // Store implements BriefingDefinition
@@ -99,15 +127,15 @@ func (briefing BriefingService) Store(request models.BriefingRequest) (status bo
 
 	//Input Briefing Materi
 	if len(request.Materi) != 0 {
-		for range request.Materi {
+		for _, value := range request.Materi {
 			_, err = briefing.briefingMateri.Store(&models.BriefingMateri{
 				BriefingID:        dataBriefing.ID,
-				ActivityID:        0,
-				SubActivityID:     0,
-				ProductID:         0,
-				JudulMateri:       "",
-				RekomendasiMateri: "",
-				MateriTambahan:    "",
+				ActivityID:        value.ActivityID,
+				SubActivityID:     value.SubActivityID,
+				ProductID:         value.ProductID,
+				JudulMateri:       value.JudulMateri,
+				RekomendasiMateri: value.RekomendasiMateri,
+				MateriTambahan:    value.MateriTambahan,
 				CreatedAt:         &timeNow,
 			}, tx)
 

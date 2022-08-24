@@ -12,6 +12,7 @@ import (
 type BriefingMateriDefinition interface {
 	GetAll() (responses []models.BriefingMateriResponse, err error)
 	GetOne(id int64) (responses models.BriefingMateriResponse, err error)
+	GetOneBriefing(id int64) (responses []models.BriefingMateriResponses, err error)
 	Store(request *models.BriefingMateri, tx *gorm.DB) (responses *models.BriefingMateri, err error)
 	Update(request *models.BriefingMateriRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -37,6 +38,23 @@ func NewBriefingMateriRepository(
 		logger:  logger,
 		timeout: time.Second * 100,
 	}
+}
+
+// GetOneBriefing implements BriefingMateriDefinition
+func (BriefingMateri BriefingMateriRepository) GetOneBriefing(id int64) (responses []models.BriefingMateriResponses, err error) {
+	rows, err := BriefingMateri.db.DB.Raw(`
+		SELECT bm.* 
+		FROM briefing_materis bm WHERE bm.briefing_id = ?`, id).Rows()
+
+	defer rows.Close()
+	var materi models.BriefingMateriResponses
+
+	for rows.Next() {
+		BriefingMateri.db.DB.ScanRows(rows, &materi)
+		responses = append(responses, materi)
+	}
+
+	return responses, err
 }
 
 // Delete implements BriefingMateriDefinition
