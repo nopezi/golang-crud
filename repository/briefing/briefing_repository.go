@@ -16,6 +16,7 @@ type BriefingDefinition interface {
 	Store(request *models.Briefing, tx *gorm.DB) (responses *models.Briefing, err error)
 	Delete(request *models.BriefingUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	DeleteBriefingMateri(id int64, tx *gorm.DB) (err error)
+	UpdateAllBrief(request *models.BriefingUpdateMateri, include []string, tx *gorm.DB) (responses bool, err error)
 }
 
 type BriefingRepository struct {
@@ -23,6 +24,11 @@ type BriefingRepository struct {
 	dbRaw   lib.Databases
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// UpdateAllBrief implements BriefingDefinition
+func (briefing BriefingRepository) UpdateAllBrief(request *models.BriefingUpdateMateri, include []string, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 func NewBriefingRepository(

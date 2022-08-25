@@ -22,6 +22,7 @@ func (s BriefingRoutes) Setup() {
 		api.POST("/store", s.BriefingController.Store)
 		api.POST("/deleteBriefingMateri", s.BriefingController.DeleteBriefingMateri)
 		api.POST("/delete", s.BriefingController.Delete)
+		api.POST("/update", s.BriefingController.UpdateAllBrief)
 	}
 }
 

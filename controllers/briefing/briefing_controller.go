@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"riskmanagement/lib"
 	models "riskmanagement/models/briefing"
 	services "riskmanagement/services/briefing"
@@ -137,4 +138,30 @@ func (briefing BriefingController) DeleteBriefingMateri(c *gin.Context) {
 	}
 
 	lib.ReturnToJson(c, 200, "200", "Delete data berhasil", true)
+}
+
+func (briefing BriefingController) UpdateAllBrief(c *gin.Context) {
+	data := models.BriefingResponseMaintain{}
+
+	if err := c.Bind(&data); err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input tidak sesuai : "+err.Error(), "")
+		return
+	}
+
+	fmt.Println(data)
+
+	status, err := briefing.service.UpdateAllBrief(&data)
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if !status {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal Dihapus", false)
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Update data berhasil", true)
 }

@@ -25,6 +25,7 @@ type BriefingDefinition interface {
 	Store(request models.BriefingRequest) (status bool, err error)
 	Delete(request *models.BriefingRequestUpdate) (responses bool, err error)
 	DeleteBriefingMateri(request *models.BriefMateriRequest) (status bool, err error)
+	UpdateAllBrief(request *models.BriefingResponseMaintain) (status bool, err error)
 }
 
 type BriefingService struct {
@@ -32,6 +33,90 @@ type BriefingService struct {
 	logger         logger.Logger
 	briefingRepo   briefingRepo.BriefingDefinition
 	briefingMateri briefingRepo.BriefingMateriDefinition
+}
+
+// UpdateAllBrief implements BriefingDefinition
+func (briefing BriefingService) UpdateAllBrief(request *models.BriefingResponseMaintain) (status bool, err error) {
+	tx := briefing.db.DB.Begin()
+
+	updateBriefing := &models.BriefingUpdateMateri{
+		ID:            request.ID,
+		UnitKerja:     request.UnitKerja,
+		Peserta:       request.Peserta,
+		JumlahPeserta: request.JumlahPeserta,
+		LastMakerID:   request.LastMakerID,
+		LastMakerDesc: request.LastMakerDesc,
+		LastMakerDate: &timeNow,
+		Deleted:       false,
+		Action:        "Update",
+		Status:        "02b",
+		UpdatedAt:     &timeNow,
+	}
+
+	include := []string{
+		"unit_kerja",
+		"peserta",
+		"jumlah_peserta",
+		"last_maker_id",
+		"last_maker_desc",
+		"last_maker_date",
+		"deleted",
+		"action",
+		"status",
+		"updated_at",
+	}
+
+	_, err = briefing.briefingRepo.UpdateAllBrief(updateBriefing, include, tx)
+
+	if err != nil {
+		tx.Rollback()
+		briefing.logger.Zap.Error(err)
+		return false, err
+	}
+
+	if len(request.Materi) != 0 {
+		for _, value := range request.Materi {
+			updateMateriBrief := &models.BriefingMateri{
+				ID:                value.ID,
+				BriefingID:        value.BriefingID,
+				ActivityID:        value.ActivityID,
+				SubActivityID:     value.SubActivityID,
+				ProductID:         value.ProductID,
+				JudulMateri:       value.JudulMateri,
+				RekomendasiMateri: value.RekomendasiMateri,
+				MateriTambahan:    value.MateriTambahan,
+				UpdatedAt:         &timeNow,
+			}
+			// include := []string{
+			// 	"id",
+			// 	"briefing_id",
+			// 	"activity_id",
+			// 	"sub_activity_id",
+			// 	"product_id",
+			// 	"judul_materi",
+			// 	"rekomendasi_mateir",
+			// 	"materi_tambahan",
+			// 	"updated_at",
+			// }
+
+			_, err = briefing.briefingMateri.Store(updateMateriBrief, tx)
+
+			if err != nil {
+				tx.Rollback()
+				briefing.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+	} else {
+		if err != nil {
+			tx.Rollback()
+			briefing.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+
+	tx.Commit()
+	return true, err
 }
 
 func NewBriefingService(

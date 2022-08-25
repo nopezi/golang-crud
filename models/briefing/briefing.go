@@ -30,6 +30,20 @@ type BriefingUpdateDelete struct {
 	UpdatedAt     *string
 }
 
+type BriefingUpdateMateri struct {
+	ID            int64
+	UnitKerja     string
+	Peserta       string
+	JumlahPeserta int64
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Deleted       bool
+	Action        string
+	Status        string
+	UpdatedAt     *string
+}
+
 type BriefMateriRequest struct {
 	ID         int64 `json:"id"`
 	BriefingID int64 `json:"briefing_id"`
@@ -40,5 +54,9 @@ func (b Briefing) TableName() string {
 }
 
 func (b BriefingUpdateDelete) TableName() string {
+	return "briefing"
+}
+
+func (b BriefingUpdateMateri) TableName() string {
 	return "briefing"
 }

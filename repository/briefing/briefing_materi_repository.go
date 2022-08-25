@@ -14,6 +14,7 @@ type BriefingMateriDefinition interface {
 	GetOne(id int64) (responses models.BriefingMateriResponse, err error)
 	GetOneBriefing(id int64) (responses []models.BriefingMateriResponses, err error)
 	Store(request *models.BriefingMateri, tx *gorm.DB) (responses *models.BriefingMateri, err error)
+	UpdatedIT(request *models.BriefingMateri, tx *gorm.DB) (responses bool, err error)
 	Update(request *models.BriefingMateriRequest) (responses bool, err error)
 	Delete(id int64) (err error)
 	DeleteBriefingID(id int64, tx *gorm.DB) (err error)
@@ -25,6 +26,11 @@ type BriefingMateriRepository struct {
 	dbRaw   lib.Databases
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// UpdatedIT implements BriefingMateriDefinition
+func (BriefingMateriRepository) UpdatedIT(request *models.BriefingMateri, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 func NewBriefingMateriRepository(

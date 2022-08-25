@@ -81,6 +81,22 @@ type BriefingRequestUpdate struct {
 	LastMakerDate *string `json:"last_maker_date"`
 }
 
+type BriefingResponseMaintain struct {
+	ID            int64                    `json:"id"`
+	NoPelaporan   string                   `json:"no_pelaporan"`
+	UnitKerja     string                   `json:"unit_kerja"`
+	Peserta       string                   `json:"peserta"`
+	JumlahPeserta int64                    `json:"jumlah_peserta"`
+	LastMakerID   string                   `json:"last_maker_id"`
+	LastMakerDesc string                   `json:"last_maker_desc"`
+	LastMakerDate *string                  `json:"last_maker_date"`
+	Status        string                   `json:"status"`
+	Action        string                   `json:"action"` // create, updateApproval, updateMaintain, delete, publish, unpublish
+	Deleted       bool                     `json:"deleted"`
+	Materi        []BriefingMateriResponse `json:"materi"`
+	UpdatedAt     *string                  `json:"updated_at"`
+}
+
 func (b BriefingRequest) TableName() string {
 	return "briefing"
 }
