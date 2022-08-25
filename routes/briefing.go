@@ -20,6 +20,8 @@ func (s BriefingRoutes) Setup() {
 		api.GET("/getAll", s.BriefingController.GetAll)
 		api.GET("/getOne/:id", s.BriefingController.GetOne)
 		api.POST("/store", s.BriefingController.Store)
+		api.POST("/deleteBriefingMateri", s.BriefingController.DeleteBriefingMateri)
+		api.POST("/delete", s.BriefingController.Delete)
 	}
 }
 

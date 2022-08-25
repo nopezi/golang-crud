@@ -27,7 +27,12 @@ type BriefingUpdateDelete struct {
 	Deleted       bool
 	Action        string
 	Status        string
-	UpdateAt      *string
+	UpdatedAt     *string
+}
+
+type BriefMateriRequest struct {
+	ID         int64 `json:"id"`
+	BriefingID int64 `json:"briefing_id"`
 }
 
 func (b Briefing) TableName() string {

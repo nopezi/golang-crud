@@ -89,3 +89,52 @@ func (briefing BriefingController) Store(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Input Data Berhasil", true)
 }
+
+func (briefing BriefingController) Delete(c *gin.Context) {
+	data := models.BriefingRequestUpdate{}
+
+	if err := c.Bind(&data); err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input tidak sesuai : "+err.Error(), "")
+		return
+	}
+
+	status, err := briefing.service.Delete(&data)
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if !status {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal Dihapus", false)
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Hapus data berhasil", true)
+}
+
+func (briefing BriefingController) DeleteBriefingMateri(c *gin.Context) {
+	data := models.BriefMateriRequest{}
+
+	if err := c.Bind(&data); err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input tidak sesuai : "+err.Error(), "")
+		return
+	}
+
+	status, err := briefing.service.DeleteBriefingMateri(&data)
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if !status {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal Disimpan", false)
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Delete data berhasil", true)
+}

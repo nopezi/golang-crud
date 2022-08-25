@@ -24,7 +24,7 @@ type BriefingDefinition interface {
 	GetOne(id int64) (responses models.BriefingResponseGetOneString, status bool, err error)
 	Store(request models.BriefingRequest) (status bool, err error)
 	Delete(request *models.BriefingRequestUpdate) (responses bool, err error)
-	DeleteBriefingMateri(request *models.BriefingMateriRequest) (status bool, err error)
+	DeleteBriefingMateri(request *models.BriefMateriRequest) (status bool, err error)
 }
 
 type BriefingService struct {
@@ -50,12 +50,63 @@ func NewBriefingService(
 
 // Delete implements BriefingDefinition
 func (briefing BriefingService) Delete(request *models.BriefingRequestUpdate) (responses bool, err error) {
-	panic("unimplemented")
+	tx := briefing.db.DB.Begin()
+
+	getOneBriefing, exist, err := briefing.GetOne(request.ID)
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		tx.Rollback()
+		return false, err
+	}
+
+	updateDataBriefing := &models.BriefingUpdateDelete{
+		ID:            request.ID,
+		LastMakerID:   request.LastMakerID,
+		LastMakerDesc: request.LastMakerDesc,
+		LastMakerDate: request.LastMakerDate,
+		Deleted:       true,
+		Action:        "updateDelete",
+		Status:        "02b", //selesai
+		UpdatedAt:     &timeNow,
+	}
+
+	_, err = briefing.briefingRepo.Delete(updateDataBriefing,
+		[]string{
+			"last_maker_id",
+			"last_maker_desc",
+			"last_maker_date",
+			"deleted",
+			"action",
+			"status",
+			"updated_at",
+		}, tx)
+
+	if err != nil {
+		tx.Rollback()
+		briefing.logger.Zap.Error(err)
+		return false, err
+	}
+
+	if exist {
+		fmt.Println("getOneBriefing", getOneBriefing)
+		tx.Commit()
+		return true, err
+	}
+	return false, err
 }
 
 // DeleteBriefingMateri implements BriefingDefinition
-func (briefing BriefingService) DeleteBriefingMateri(request *models.BriefingMateriRequest) (status bool, err error) {
-	panic("unimplemented")
+func (briefing BriefingService) DeleteBriefingMateri(request *models.BriefMateriRequest) (status bool, err error) {
+	tx := briefing.db.DB.Begin()
+	err = briefing.briefingRepo.DeleteBriefingMateri(request.ID, tx)
+
+	if err != nil {
+		tx.Rollback()
+		briefing.logger.Zap.Error(err)
+		return false, err
+	}
+	tx.Commit()
+	return true, err
 }
 
 // GetAll implements BriefingDefinition
