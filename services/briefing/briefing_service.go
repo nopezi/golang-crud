@@ -87,17 +87,6 @@ func (briefing BriefingService) UpdateAllBrief(request *models.BriefingResponseM
 				MateriTambahan:    value.MateriTambahan,
 				UpdatedAt:         &timeNow,
 			}
-			// include := []string{
-			// 	"id",
-			// 	"briefing_id",
-			// 	"activity_id",
-			// 	"sub_activity_id",
-			// 	"product_id",
-			// 	"judul_materi",
-			// 	"rekomendasi_mateir",
-			// 	"materi_tambahan",
-			// 	"updated_at",
-			// }
 
 			_, err = briefing.briefingMateri.Store(updateMateriBrief, tx)
 
