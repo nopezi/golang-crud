@@ -3,7 +3,9 @@ package repository
 import (
 	activity "riskmanagement/repository/activity"
 	briefing "riskmanagement/repository/briefing"
+	files "riskmanagement/repository/files"
 	incident "riskmanagement/repository/incident"
+	materi "riskmanagement/repository/materi"
 	product "riskmanagement/repository/product"
 	riskIndicator "riskmanagement/repository/riskindicator"
 	riskIssue "riskmanagement/repository/riskissue"
@@ -30,4 +32,6 @@ var Module = fx.Options(
 	fx.Provide(unitKerja.NewUnitKerjaRepository),
 	fx.Provide(briefing.NewBriefingRepository),
 	fx.Provide(briefing.NewBriefingMateriRepository),
+	fx.Provide(files.NewFilesRepository),
+	fx.Provide(materi.NewMateriRepository),
 )

@@ -5,6 +5,7 @@ import (
 	auth "riskmanagement/controllers/auth"
 	briefing "riskmanagement/controllers/briefing"
 	incident "riskmanagement/controllers/incident"
+	materi "riskmanagement/controllers/materi"
 	product "riskmanagement/controllers/product"
 	riskIndicator "riskmanagement/controllers/riskindicator"
 	riskIssue "riskmanagement/controllers/riskissue"
@@ -31,4 +32,5 @@ var Module = fx.Options(
 	fx.Provide(riskType.NewRiskTypeController),
 	fx.Provide(unitKerja.NewUnitKerjaController),
 	fx.Provide(briefing.NewBriefingController),
+	fx.Provide(materi.NewMateriController),
 )
