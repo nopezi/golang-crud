@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2022 at 05:36 AM
+-- Generation Time: Aug 30, 2022 at 06:51 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `activity` (
   `id` int(10) UNSIGNED NOT NULL,
+  `kode_activity` varchar(10) NOT NULL,
   `name` varchar(100) NOT NULL,
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL
@@ -38,21 +39,188 @@ CREATE TABLE `activity` (
 -- Dumping data for table `activity`
 --
 
-INSERT INTO `activity` (`id`, `name`, `create_at`, `update_at`) VALUES
-(1, 'MANAJEMEN RISIKO', '2022-08-15 07:53:04', NULL),
-(2, 'PERKREDITAN', '2022-08-15 07:59:22', NULL),
-(3, 'PENDANAAN', '2022-08-15 08:03:01', NULL),
-(4, 'JASA', '2022-08-15 08:04:52', NULL),
-(5, 'TRADE FINANCE', '2022-08-15 08:06:38', NULL),
-(6, 'OPERASIONAL', '2022-08-15 08:14:13', NULL),
-(7, 'PELAYANAN', '2022-08-15 08:14:22', NULL),
-(8, 'SUPPORT', '2022-08-15 08:14:36', NULL),
-(9, 'STRATEGIS', '2022-08-15 08:14:49', NULL),
-(10, 'TREASURY', '2022-08-15 08:15:18', NULL),
-(11, 'IT', '2022-08-15 08:15:34', NULL),
-(12, 'Invesment Service', '2022-08-15 08:15:46', NULL),
-(13, 'Culture', '2022-08-15 08:15:55', NULL),
-(15, 'Bangunan bubrah', '2022-08-15 08:15:55', '2022-08-15 09:06:48');
+INSERT INTO `activity` (`id`, `kode_activity`, `name`, `create_at`, `update_at`) VALUES
+(1, '01', 'MANAJEMEN RISIKO', '2022-08-15 07:53:04', NULL),
+(2, '02', 'PERKREDITAN', '2022-08-15 07:59:22', NULL),
+(3, '03', 'PENDANAAN', '2022-08-15 08:03:01', NULL),
+(4, '04', 'JASA', '2022-08-15 08:04:52', NULL),
+(5, '05', 'TRADE FINANCE', '2022-08-15 08:06:38', NULL),
+(6, '06', 'OPERASIONAL', '2022-08-15 08:14:13', NULL),
+(7, '07', 'PELAYANAN', '2022-08-15 08:14:22', NULL),
+(8, '08', 'SUPPORT', '2022-08-15 08:14:36', NULL),
+(9, '09', 'STRATEGIS', '2022-08-15 08:14:49', NULL),
+(10, '10', 'TREASURY', '2022-08-15 08:15:18', NULL),
+(11, '11', 'IT', '2022-08-15 08:15:34', NULL),
+(12, '12', 'Invesment Service', '2022-08-15 08:15:46', NULL),
+(13, '13', 'Culture', '2022-08-15 08:15:55', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `briefing`
+--
+
+CREATE TABLE `briefing` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `no_pelaporan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_kerja` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `peserta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jumlah_peserta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `maker_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maker_desc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maker_date` datetime DEFAULT NULL,
+  `last_maker_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_maker_desc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_maker_date` datetime DEFAULT NULL,
+  `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `briefing`
+--
+
+INSERT INTO `briefing` (`id`, `no_pelaporan`, `unit_kerja`, `peserta`, `jumlah_peserta`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'BR-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '02b', 'updateDelete', 1, '2022-08-24 12:06:36', '2022-08-25 08:25:23'),
+(2, 'BR-50046567-250822-0001', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-25 15:35:36', '02b', 'Update', 0, '2022-08-25 08:25:23', '2022-08-25 15:35:36'),
+(5, 'BR-50046567-100522-0003', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-25 15:35:36', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-25 15:35:36', '02b', 'Update', 0, '2022-08-25 15:35:36', '2022-08-25 15:35:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `briefing_materis`
+--
+
+CREATE TABLE `briefing_materis` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `briefing_id` int(10) NOT NULL,
+  `activity_id` int(10) UNSIGNED NOT NULL,
+  `sub_activity_id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
+  `judul_materi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rekomendasi_materi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `materi_tambahan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `briefing_materis`
+--
+
+INSERT INTO `briefing_materis` (`id`, `briefing_id`, `activity_id`, `sub_activity_id`, `product_id`, `judul_materi`, `rekomendasi_materi`, `materi_tambahan`, `created_at`, `updated_at`) VALUES
+(2, 1, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-24 12:06:36', NULL),
+(3, 2, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
+(4, 2, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
+(7, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness | JUKLAK', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
+(8, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'JUKLAK', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
+(9, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Juklak | Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-25 15:35:36', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `coaching`
+--
+
+CREATE TABLE `coaching` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `no_pelaporan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_kerja` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `peserta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jumlah_peserta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activity_id` int(10) UNSIGNED NOT NULL,
+  `sub_activity_id` int(10) UNSIGNED NOT NULL,
+  `maker_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maker_desc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maker_date` datetime DEFAULT NULL,
+  `last_maker_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_maker_desc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_maker_date` datetime DEFAULT NULL,
+  `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `coaching`
+--
+
+INSERT INTO `coaching` (`id`, `no_pelaporan`, `unit_kerja`, `peserta`, `jumlah_peserta`, `activity_id`, `sub_activity_id`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'CO-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-30 10:40:21', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', NULL, '01a', 'Create', 0, '0000-00-00 00:00:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `coaching_activity`
+--
+
+CREATE TABLE `coaching_activity` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `coaching_id` int(10) NOT NULL,
+  `risk_issue_id` int(10) UNSIGNED NOT NULL,
+  `judul_materi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rekomendasi_materi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `materi_tambahan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `coaching_activity`
+--
+
+INSERT INTO `coaching_activity` (`id`, `coaching_id`, `risk_issue_id`, `judul_materi`, `rekomendasi_materi`, `materi_tambahan`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-30 10:40:21', NULL),
+(2, 1, 1, 'PDP 2 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-30 10:40:21', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `files`
+--
+
+CREATE TABLE `files` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `filename` varchar(100) NOT NULL,
+  `path` varchar(100) NOT NULL,
+  `extension` varchar(100) NOT NULL,
+  `size` varchar(100) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `files`
+--
+
+INSERT INTO `files` (`id`, `filename`, `path`, `extension`, `size`, `created_at`, `updated_at`) VALUES
+(1, 'BRD RRM Tools fase 1', '/materi/2022/8/29/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 08:42:32', NULL),
+(2, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 09:00:56', NULL),
+(3, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 09:25:27', NULL),
+(4, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 09:30:41', NULL),
+(5, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:05:37', NULL),
+(6, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:05:37', NULL),
+(7, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:05:37', NULL),
+(8, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:08:49', NULL),
+(9, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:14:15', NULL),
+(10, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:16:22', NULL),
+(11, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:19:47', NULL),
+(12, 'BRD RRM Tools fase 1', 'D:/materi/2022/8/29/Dokumen BRS RRM/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 10:51:23', NULL),
+(13, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 11:05:47', NULL),
+(14, 'BRD RRM Tools fase 1', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1', 'application/pdf', '6748', '2022-08-29 11:21:12', NULL),
+(15, 'BRD RRM Tools fase 1.pdf', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:21:12', NULL),
+(16, 'BRD RRM Tools fase 1.pdf', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:24:17', NULL),
+(17, 'BRD RRM Tools fase 1.pdf', 'Dokumen BRS RRM/materi/2022/8/29/BRD RRM Tools fase 1.pdf/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:24:17', NULL),
+(18, 'BRD RRM Tools fase 1.pdf', 'riskmanagement/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:28:41', NULL),
+(19, 'BRS RRM Tools V.1.0.4.pdf', 'riskmanagement/BRS RRM Tools V.1.0.4.pdf', 'application/pdf', '6748', '2022-08-29 11:28:41', NULL),
+(20, 'BRD RRM Tools fase 1.pdf', 'riskmanagement/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:28:41', NULL),
+(21, 'BRD RRM Tools fase 1.pdf', 'riskmanagement/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-29 11:28:41', NULL),
+(22, 'timesheet project.jpg', 'riskmanagement/timesheet project.jpg', 'application/pdf', '151', '2022-08-29 11:28:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -77,6 +245,87 @@ INSERT INTO `incident_cause` (`id`, `kode_kejadian`, `penyebab_kejadian1`, `crea
 (2, 'PK1.MOP.0002', 'Proses Bisnis', '2022-08-16 11:41:36', NULL),
 (3, 'PK1.MOP.0003', 'Sistem IT atau Teknologi & Sistem', '2022-08-16 11:42:16', NULL),
 (4, 'PK1.MOP.0004', 'Gangguan Eksternal', '2022-08-16 11:42:36', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `materi`
+--
+
+CREATE TABLE `materi` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `materi`
+--
+
+INSERT INTO `materi` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Risk Awarness', '2022-08-29 08:42:32', NULL),
+(2, 'Risk Awarness', '2022-08-29 09:00:56', NULL),
+(3, 'Risk Awarness', '2022-08-29 09:25:27', NULL),
+(4, 'Risk Awarness', '2022-08-29 09:30:41', NULL),
+(5, 'Risk Awarness', '2022-08-29 10:05:37', NULL),
+(6, 'Risk Awarness', '2022-08-29 10:05:37', NULL),
+(7, 'Risk Awarness', '2022-08-29 10:05:37', NULL),
+(8, 'Risk Awarness', '2022-08-29 10:08:49', NULL),
+(9, 'Risk Awarness', '2022-08-29 10:14:15', NULL),
+(10, 'Risk Awarness', '2022-08-29 10:16:22', NULL),
+(11, 'Risk Awarness', '2022-08-29 10:19:47', NULL),
+(12, 'Risk Awarness', '2022-08-29 10:51:23', NULL),
+(13, 'Risk Awarness', '2022-08-29 11:05:47', NULL),
+(14, 'Risk Awarness', '2022-08-29 11:21:12', NULL),
+(15, 'Risk Awarness', '2022-08-29 11:21:12', NULL),
+(16, 'Risk Awarness', '2022-08-29 11:24:17', NULL),
+(17, 'Risk Awarness', '2022-08-29 11:24:17', NULL),
+(18, 'Risk Awarness', '2022-08-29 11:28:41', NULL),
+(19, 'Risk Awarness', '2022-08-29 11:28:41', NULL),
+(20, 'Juklak', '2022-08-29 11:28:41', NULL),
+(21, 'Juklak', '2022-08-29 11:28:41', NULL),
+(22, 'Juklak', '2022-08-29 11:28:41', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `materi_files`
+--
+
+CREATE TABLE `materi_files` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `materi_id` int(10) NOT NULL,
+  `files_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `materi_files`
+--
+
+INSERT INTO `materi_files` (`id`, `materi_id`, `files_id`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 7, 7),
+(8, 8, 8),
+(9, 9, 9),
+(10, 10, 10),
+(11, 11, 11),
+(12, 12, 12),
+(13, 13, 13),
+(14, 14, 14),
+(15, 15, 15),
+(16, 16, 16),
+(17, 17, 17),
+(18, 18, 18),
+(19, 19, 19),
+(20, 20, 20),
+(21, 21, 21),
+(22, 22, 22);
 
 -- --------------------------------------------------------
 
@@ -395,6 +644,7 @@ INSERT INTO `risk_type` (`id`, `risk_type_code`, `risk_type`, `created_at`, `upd
 
 CREATE TABLE `sub_activity` (
   `id` int(10) UNSIGNED NOT NULL,
+  `kode_sub_activity` varchar(10) NOT NULL,
   `activity_id` int(10) NOT NULL,
   `name` varchar(100) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -405,11 +655,11 @@ CREATE TABLE `sub_activity` (
 -- Dumping data for table `sub_activity`
 --
 
-INSERT INTO `sub_activity` (`id`, `activity_id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 1, 'MR PASAR & LIKUIDITAS', '2022-08-15 11:09:49', NULL),
-(2, 1, 'MR KREDIT', '2022-08-15 11:19:56', '2022-08-15 13:48:06'),
-(3, 1, 'MR OPERASIONAL & RISIKO LAIN', '2022-08-15 11:16:05', '2022-08-15 13:53:40'),
-(4, 1, 'ERM', '2022-08-15 11:16:05', '2022-08-15 13:54:15');
+INSERT INTO `sub_activity` (`id`, `kode_sub_activity`, `activity_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, '1.1', 1, 'MR PASAR & LIKUIDITAS', '2022-08-15 11:09:49', '2022-08-23 09:39:29'),
+(2, '1.2', 1, 'MR KREDIT', '2022-08-15 11:19:56', '2022-08-15 13:48:06'),
+(3, '1.3', 1, 'MR OPERASIONAL & RISIKO LAIN', '2022-08-15 11:16:05', '2022-08-15 13:53:40'),
+(4, '1.4', 1, 'ERM', '2022-08-15 11:16:05', '2022-08-15 13:54:15');
 
 -- --------------------------------------------------------
 
@@ -443,7 +693,13 @@ INSERT INTO `sub_incident_cause` (`id`, `kode_kejadian`, `kode_sub_kejadian`, `k
 
 CREATE TABLE `unit_kerja` (
   `id` int(10) UNSIGNED NOT NULL,
+  `kode_uker` int(11) NOT NULL,
   `nama_uker` varchar(100) NOT NULL,
+  `kode_cabang` int(11) NOT NULL,
+  `nama_cabang` varchar(200) NOT NULL,
+  `kanwil_id` int(11) NOT NULL,
+  `kode_kanwil` varchar(10) NOT NULL,
+  `kanwil` varchar(200) NOT NULL,
   `status` smallint(1) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -453,9 +709,9 @@ CREATE TABLE `unit_kerja` (
 -- Dumping data for table `unit_kerja`
 --
 
-INSERT INTO `unit_kerja` (`id`, `nama_uker`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BRI Unit Cinere', 1, '2022-08-19 08:57:36', NULL),
-(2, 'BRI UNIT CIBARUSAH', 2, '2022-08-19 09:13:21', '2022-08-19 09:15:01');
+INSERT INTO `unit_kerja` (`id`, `kode_uker`, `nama_uker`, `kode_cabang`, `nama_cabang`, `kanwil_id`, `kode_kanwil`, `kanwil`, `status`, `created_at`, `updated_at`) VALUES
+(1, 37, 'KC BANDA ACEH CUT MEUTIA', 201, 'KANWIL MEDAN', 13, 'B', 'MEDAN', 1, '2022-08-22 09:55:48', '2022-08-23 07:53:26'),
+(2, 42, 'KC LANGSA', 201, 'KANWIL MEDAN', 13, 'B', 'MEDAN', 1, '2022-08-23 07:54:41', NULL);
 
 --
 -- Indexes for dumped tables
@@ -468,9 +724,51 @@ ALTER TABLE `activity`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `briefing`
+--
+ALTER TABLE `briefing`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `briefing_materis`
+--
+ALTER TABLE `briefing_materis`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `coaching`
+--
+ALTER TABLE `coaching`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `coaching_activity`
+--
+ALTER TABLE `coaching_activity`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `incident_cause`
 --
 ALTER TABLE `incident_cause`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `materi`
+--
+ALTER TABLE `materi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `materi_files`
+--
+ALTER TABLE `materi_files`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -538,10 +836,52 @@ ALTER TABLE `activity`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `briefing`
+--
+ALTER TABLE `briefing`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `briefing_materis`
+--
+ALTER TABLE `briefing_materis`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `coaching`
+--
+ALTER TABLE `coaching`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `coaching_activity`
+--
+ALTER TABLE `coaching_activity`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
 -- AUTO_INCREMENT for table `incident_cause`
 --
 ALTER TABLE `incident_cause`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `materi`
+--
+ALTER TABLE `materi`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `materi_files`
+--
+ALTER TABLE `materi_files`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `mst_menu`
@@ -589,7 +929,7 @@ ALTER TABLE `sub_incident_cause`
 -- AUTO_INCREMENT for table `unit_kerja`
 --
 ALTER TABLE `unit_kerja`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

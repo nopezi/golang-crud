@@ -28,11 +28,6 @@ type BriefingMateriRepository struct {
 	timeout time.Duration
 }
 
-// UpdatedIT implements BriefingMateriDefinition
-func (BriefingMateriRepository) UpdatedIT(request *models.BriefingMateri, tx *gorm.DB) (responses bool, err error) {
-	return true, tx.Save(&request).Error
-}
-
 func NewBriefingMateriRepository(
 	db lib.Database,
 	dbRaw lib.Databases,
@@ -91,6 +86,11 @@ func (BriefingMateri BriefingMateriRepository) Store(request *models.BriefingMat
 // Update implements BriefingMateriDefinition
 func (BriefingMateri BriefingMateriRepository) Update(request *models.BriefingMateriRequest) (responses bool, err error) {
 	return true, BriefingMateri.db.DB.Save(&request).Error
+}
+
+// UpdatedIT implements BriefingMateriDefinition
+func (BriefingMateriRepository) UpdatedIT(request *models.BriefingMateri, tx *gorm.DB) (responses bool, err error) {
+	return true, tx.Save(&request).Error
 }
 
 // WithTrx implements BriefingMateriDefinition

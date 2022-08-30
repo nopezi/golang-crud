@@ -4,6 +4,7 @@ import (
 	activity "riskmanagement/services/activity"
 	auth "riskmanagement/services/auth"
 	briefing "riskmanagement/services/briefing"
+	coaching "riskmanagement/services/coaching"
 	incident "riskmanagement/services/incident"
 	materi "riskmanagement/services/materi"
 	product "riskmanagement/services/product"
@@ -33,4 +34,5 @@ var Module = fx.Options(
 	fx.Provide(unitKerja.NewUnitKerjaService),
 	fx.Provide(briefing.NewBriefingService),
 	fx.Provide(materi.NewMateriService),
+	fx.Provide(coaching.NewCoachingService),
 )

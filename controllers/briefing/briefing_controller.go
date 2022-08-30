@@ -160,7 +160,7 @@ func (briefing BriefingController) UpdateAllBrief(c *gin.Context) {
 
 	if !status {
 		briefing.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Data Gagal Dihapus", false)
+		lib.ReturnToJson(c, 200, "500", "Data Gagal diupdate", false)
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Update data berhasil", true)
