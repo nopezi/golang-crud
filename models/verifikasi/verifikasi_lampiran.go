@@ -1,7 +1,9 @@
 package models
 
 type VerifikasiFiles struct {
-	ID       int64
-	MateriID int64
-	FilesID  int64
+	ID           int64
+	VerifikasiID int64
+	FilesID      int64
+	UpdatedAt    *string
+	CreatedAt    *string
 }
