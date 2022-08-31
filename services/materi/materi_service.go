@@ -107,14 +107,12 @@ func (materi MateriService) Store(request *models.MateriRequest) (status bool, e
 
 		// pathSplit := strings.Split(value.Path, "/")
 		sourcePath := fmt.Sprint(value.Path)
-		// destinationPath = pathSplit[1] + "/materi/" +
-		// 	lib.GetTimeNow("year") + "/" +
-		// 	lib.GetTimeNow("month") + "/" +
-		// 	lib.GetTimeNow("day") + "/" +
-		// 	pathSplit[2] + "/" +
-		// 	value.Filename
+		destinationPath = "materi/" +
+			lib.GetTimeNow("year") + "/" +
+			lib.GetTimeNow("month") + "/" +
+			lib.GetTimeNow("day")
 
-		destinationPath = bucket + "/" + value.Filename
+		destinationPath = destinationPath + "/" + value.Filename
 
 		if bucketExist {
 			fmt.Println("Exist")
@@ -122,7 +120,9 @@ func (materi MateriService) Store(request *models.MateriRequest) (status bool, e
 			fmt.Println(sourcePath)
 			fmt.Println(destinationPath)
 			// uploaded := materi.minio.CopyObject(materi.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-			uploaded := materi.minio.PutObject(materi.minio.MinioClient, bucket, value.Filename, sourcePath)
+			// uploaded := materi.minio.PutObject(materi.minio.MinioClient, bucket, value.Filename, sourcePath)
+			uploaded := materi.minio.PutObject(materi.minio.MinioClient, bucket, destinationPath, sourcePath)
+
 			fmt.Println(uploaded)
 		} else {
 			fmt.Println("Not Exist")
@@ -131,7 +131,7 @@ func (materi MateriService) Store(request *models.MateriRequest) (status bool, e
 			fmt.Println(destinationPath)
 			materi.minio.MakeBucket(materi.minio.Client(), bucket, "")
 			// uploaded := materi.minio.CopyObject(materi.minio.Client(), bucket, sourcePath, bucket, destinationPath)
-			uploaded := materi.minio.PutObject(materi.minio.MinioClient, bucket, value.Filename, sourcePath)
+			uploaded := materi.minio.PutObject(materi.minio.MinioClient, bucket, destinationPath, sourcePath)
 			fmt.Println(uploaded)
 		}
 
