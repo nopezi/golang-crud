@@ -172,7 +172,7 @@ func (coaching CoachingService) Store(request models.CoachingRequest) (status bo
 		LastMakerDesc: request.LastMakerDesc,
 		LastMakerDate: request.LastMakerDate,
 		Status:        "01a",
-		Action:        "Create",
+		Action:        "Draft",
 		CreatedAt:     &timeNow,
 	}
 

@@ -4,7 +4,7 @@ type Verifikasi struct {
 	ID                        int64
 	NoPelaporan               string
 	UnitKerja                 string
-	ActivityID                string
+	ActivityID                int64
 	SubActivityID             int64
 	ProductID                 int64
 	RiskIssueID               int64
@@ -13,12 +13,13 @@ type Verifikasi struct {
 	SubIncidentCauseID        int64
 	ApplicationID             int64
 	HasilVerifikasi           string
-	KunjuganNasabah           bool
+	KunjunganNasabah          bool
 	IndikasiFraud             bool
 	JenisKerugianFinansial    bool
 	JumlahPerkiraanKerugian   int64
 	JenisKerugianNonFinansial string
 	RekomendasiTindakLanjut   string
+	RencanaTindakLanjut       string
 	RiskTypeID                int64
 	TanggalDitemukan          *string
 	TanggalMulaiRTL           *string
@@ -45,6 +46,21 @@ type VerifikasiUpdateDelete struct {
 	Action        string // create, updateApproval, updateMaintain, delete, publish, unpublish
 	Deleted       bool
 	UpdatedAt     *string
+}
+
+type VerifikasiUpdateMaintain struct {
+	ID            int64
+	LastMakerID   string
+	LastMakerDesc string
+	LastMakerDate *string
+	Status        string
+	Action        string // create, updateApproval, updateMaintain, delete, publish, unpublish
+	UpdatedAt     *string
+}
+
+type VerifyDataRequest struct {
+	ID           int64 `json:"id"`
+	VerifikasiID int64 `json:"verifikasi_id"`
 }
 
 func (v Verifikasi) TableName() string {

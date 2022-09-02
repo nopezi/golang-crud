@@ -10,3 +10,7 @@ type VerifikasiAnomaliData struct {
 	CreatedAt       *string
 	UpdatedAt       *string
 }
+
+func (vad VerifikasiAnomaliData) TableName() string {
+	return "verifikasi_data_anomali"
+}

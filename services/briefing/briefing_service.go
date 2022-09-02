@@ -237,7 +237,7 @@ func (briefing BriefingService) Store(request models.BriefingRequest) (status bo
 		LastMakerDesc: request.LastMakerDesc,
 		LastMakerDate: &timeNow,
 		Status:        "01a",
-		Action:        "Create",
+		Action:        "Draft",
 		CreatedAt:     &timeNow,
 	}
 

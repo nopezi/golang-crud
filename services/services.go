@@ -15,6 +15,7 @@ import (
 	subincident "riskmanagement/services/subincident"
 	unitKerja "riskmanagement/services/unitkerja"
 	user "riskmanagement/services/user"
+	verifikasi "riskmanagement/services/verifikasi"
 
 	"go.uber.org/fx"
 )
@@ -35,4 +36,5 @@ var Module = fx.Options(
 	fx.Provide(briefing.NewBriefingService),
 	fx.Provide(materi.NewMateriService),
 	fx.Provide(coaching.NewCoachingService),
+	fx.Provide(verifikasi.NewVerifikasiService),
 )

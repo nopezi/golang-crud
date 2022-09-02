@@ -15,6 +15,7 @@ import (
 	subIncident "riskmanagement/repository/subincident"
 	unitKerja "riskmanagement/repository/unitkerja"
 	user "riskmanagement/repository/user"
+	verifikasi "riskmanagement/repository/verifikasi"
 
 	"go.uber.org/fx"
 )
@@ -37,4 +38,8 @@ var Module = fx.Options(
 	fx.Provide(materi.NewMateriRepository),
 	fx.Provide(coaching.NewCoachingRepository),
 	fx.Provide(coaching.NewCoachingActivityRepository),
+	fx.Provide(verifikasi.NewVerfikasiRepository),
+	fx.Provide(verifikasi.NewVerifikasiAnomaliRepository),
+	fx.Provide(verifikasi.NewVerifikasiPICRepository),
+	fx.Provide(verifikasi.NewVerfikasiFilesRepository),
 )

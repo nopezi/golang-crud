@@ -6,7 +6,7 @@ type VerifikasiRequest struct {
 	ID                        int64                              `json:"id"`
 	NoPelaporan               string                             `json:"no_pelaporan"`
 	UnitKerja                 string                             `json:"unit_kerja"`
-	ActivityID                string                             `json:"activity_id"`
+	ActivityID                int64                              `json:"activity_id"`
 	SubActivityID             int64                              `json:"sub_activity_id"`
 	ProductID                 int64                              `json:"product_id"`
 	RiskIssueID               int64                              `json:"risk_issue_id"`
@@ -15,12 +15,13 @@ type VerifikasiRequest struct {
 	SubIncidentCauseID        int64                              `json:"sub_incident_cause_id"`
 	ApplicationID             int64                              `json:"application_id"`
 	HasilVerifikasi           string                             `json:"hasil_verifikasi"`
-	KunjuganNasabah           bool                               `json:"kunjungan_nasabah"`
+	KunjunganNasabah          bool                               `json:"kunjungan_nasabah"`
 	IndikasiFraud             bool                               `json:"indikasi_fraud"`
 	JenisKerugianFinansial    bool                               `json:"jenis_kerugian_finansial"`
 	JumlahPerkiraanKerugian   int64                              `json:"jumlah_perkiraan_kerugian"`
 	JenisKerugianNonFinansial string                             `json:"jenis_kerugian_non_finansial"`
 	RekomendasiTindakLanjut   string                             `json:"rekomendasi_tindak_lanjut"`
+	RencanaTindakLanjut       string                             `json:"rencana_tindak_lanjut"`
 	RiskTypeID                int64                              `json:"risk_type_id"`
 	TanggalDitemukan          *string                            `json:"tanggal_ditemukan"`
 	TanggalMulaiRTL           *string                            `json:"tanggal_mulai_rtl"`
@@ -45,7 +46,7 @@ type VerifikasiRequestUpdateMaintain struct {
 	ID                        int64   `json:"id"`
 	NoPelaporan               string  `json:"no_pelaporan"`
 	UnitKerja                 string  `json:"unit_kerja"`
-	ActivityID                string  `json:"activity_id"`
+	ActivityID                int64   `json:"activity_id"`
 	SubActivityID             int64   `json:"sub_activity_id"`
 	ProductID                 int64   `json:"product_id"`
 	RiskIssueID               int64   `json:"risk_issue_id"`
@@ -54,12 +55,13 @@ type VerifikasiRequestUpdateMaintain struct {
 	SubIncidentCauseID        int64   `json:"sub_incident_cause_id"`
 	ApplicationID             int64   `json:"application_id"`
 	HasilVerifikasi           string  `json:"hasil_verifikasi"`
-	KunjuganNasabah           bool    `json:"kunjungan_nasabah"`
+	KunjunganNasabah          bool    `json:"kunjungan_nasabah"`
 	IndikasiFraud             bool    `json:"indikasi_fraud"`
 	JenisKerugianFinansial    bool    `json:"jenis_kerugian_finansial"`
 	JumlahPerkiraanKerugian   int64   `json:"jumlah_perkiraan_kerugian"`
 	JenisKerugianNonFinansial string  `json:"jenis_kerugian_non_finansial"`
 	RekomendasiTindakLanjut   string  `json:"rekomendasi_tindak_lanjut"`
+	RencanaTindakLanjut       string  `json:"rencana_tindak_lanjut"`
 	RiskTypeID                int64   `json:"risk_type_id"`
 	TanggalDitemukan          *string `json:"tanggal_ditemukan"`
 	TanggalMulaiRTL           *string `json:"tanggal_mulai_rtl"`
@@ -80,7 +82,7 @@ type VerifikasiResponse struct {
 	ID                        int64   `json:"id"`
 	NoPelaporan               string  `json:"no_pelaporan"`
 	UnitKerja                 string  `json:"unit_kerja"`
-	ActivityID                string  `json:"activity_id"`
+	ActivityID                int64   `json:"activity_id"`
 	SubActivityID             int64   `json:"sub_activity_id"`
 	ProductID                 int64   `json:"product_id"`
 	RiskIssueID               int64   `json:"risk_issue_id"`
@@ -89,12 +91,13 @@ type VerifikasiResponse struct {
 	SubIncidentCauseID        int64   `json:"sub_incident_cause_id"`
 	ApplicationID             int64   `json:"application_id"`
 	HasilVerifikasi           string  `json:"hasil_verifikasi"`
-	KunjuganNasabah           bool    `json:"kunjungan_nasabah"`
+	KunjunganNasabah          bool    `json:"kunjungan_nasabah"`
 	IndikasiFraud             bool    `json:"indikasi_fraud"`
 	JenisKerugianFinansial    bool    `json:"jenis_kerugian_finansial"`
 	JumlahPerkiraanKerugian   int64   `json:"jumlah_perkiraan_kerugian"`
 	JenisKerugianNonFinansial string  `json:"jenis_kerugian_non_finansial"`
 	RekomendasiTindakLanjut   string  `json:"rekomendasi_tindak_lanjut"`
+	RencanaTindakLanjut       string  `json:"rencana_tindak_lanjut"`
 	RiskTypeID                int64   `json:"risk_type_id"`
 	TanggalDitemukan          *string `json:"tanggal_ditemukan"`
 	TanggalMulaiRTL           *string `json:"tanggal_mulai_rtl"`
@@ -116,7 +119,7 @@ type VerifikasiResponseGetOne struct {
 	ID                        int64                               `json:"id"`
 	NoPelaporan               string                              `json:"no_pelaporan"`
 	UnitKerja                 string                              `json:"unit_kerja"`
-	ActivityID                string                              `json:"activity_id"`
+	ActivityID                int64                               `json:"activity_id"`
 	SubActivityID             int64                               `json:"sub_activity_id"`
 	ProductID                 int64                               `json:"product_id"`
 	RiskIssueID               int64                               `json:"risk_issue_id"`
@@ -125,12 +128,13 @@ type VerifikasiResponseGetOne struct {
 	SubIncidentCauseID        int64                               `json:"sub_incident_cause_id"`
 	ApplicationID             int64                               `json:"application_id"`
 	HasilVerifikasi           string                              `json:"hasil_verifikasi"`
-	KunjuganNasabah           bool                                `json:"kunjungan_nasabah"`
+	KunjunganNasabah          bool                                `json:"kunjungan_nasabah"`
 	IndikasiFraud             bool                                `json:"indikasi_fraud"`
 	JenisKerugianFinansial    bool                                `json:"jenis_kerugian_finansial"`
 	JumlahPerkiraanKerugian   int64                               `json:"jumlah_perkiraan_kerugian"`
 	JenisKerugianNonFinansial string                              `json:"jenis_kerugian_non_finansial"`
 	RekomendasiTindakLanjut   string                              `json:"rekomendasi_tindak_lanjut"`
+	RencanaTindakLanjut       string                              `json:"rencana_tindak_lanjut"`
 	RiskTypeID                int64                               `json:"risk_type_id"`
 	TanggalDitemukan          *string                             `json:"tanggal_ditemukan"`
 	TanggalMulaiRTL           *string                             `json:"tanggal_mulai_rtl"`
