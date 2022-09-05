@@ -7,8 +7,8 @@ type VerifikasiAnomaliData struct {
 	NomorRekening   string
 	Nominal         int64
 	Keterangan      string
-	CreatedAt       *string
-	UpdatedAt       *string
+	// CreatedAt       *string
+	// UpdatedAt       *string
 }
 
 func (vad VerifikasiAnomaliData) TableName() string {

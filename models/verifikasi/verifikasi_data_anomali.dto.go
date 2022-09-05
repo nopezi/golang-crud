@@ -7,8 +7,8 @@ type VerifikasiAnomaliDataRequest struct {
 	NomorRekening   string  `json:"nomor_rekening"`
 	Nominal         int64   `json:"nominal"`
 	Keterangan      string  `json:"keterangan"`
-	CreatedAt       *string `json:"created_at"`
-	UpdatedAt       *string `json:"updated_at"`
+	// CreatedAt       *string `json:"created_at"`
+	// UpdatedAt       *string `json:"updated_at"`
 }
 
 type VerifikasiAnomaliDataResponse struct {
@@ -18,8 +18,8 @@ type VerifikasiAnomaliDataResponse struct {
 	NomorRekening   string  `json:"nomor_rekening"`
 	Nominal         int64   `json:"nominal"`
 	Keterangan      string  `json:"keterangan"`
-	CreatedAt       *string `json:"created_at"`
-	UpdatedAt       *string `json:"updated_at"`
+	// CreatedAt       *string `json:"created_at"`
+	// UpdatedAt       *string `json:"updated_at"`
 }
 
 type VerifikasiAnomaliDataResponses struct {

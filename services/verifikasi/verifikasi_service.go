@@ -2,12 +2,17 @@ package verifikasi
 
 import (
 	"fmt"
+	"os"
 	"riskmanagement/lib"
 	models "riskmanagement/models/verifikasi"
 	verifikasi "riskmanagement/repository/verifikasi"
 
+	requestFile "riskmanagement/models/files"
+	fileRepo "riskmanagement/repository/files"
+
 	"github.com/google/uuid"
 	"gitlab.com/golang-package-library/logger"
+	"gitlab.com/golang-package-library/minio"
 	"gorm.io/gorm"
 )
 
@@ -26,28 +31,34 @@ type VerifikasiDefinition interface {
 
 type VerifikasiService struct {
 	db                lib.Database
+	minio             minio.Minio
 	logger            logger.Logger
 	verifikasiRepo    verifikasi.VerifikasiDefinition
 	verifikasiAnomali verifikasi.VerifikasiAnomaliDefinition
 	verifikasiFile    verifikasi.VerifikasiFilesDefinition
 	verifikasiPIC     verifikasi.VerifikasiPICDefinition
+	fileRepo          fileRepo.FilesDefinition
 }
 
 func NewVerifikasiService(
 	db lib.Database,
+	minio minio.Minio,
 	logger logger.Logger,
 	verifikasiRepo verifikasi.VerifikasiDefinition,
 	verifikasiAnomali verifikasi.VerifikasiAnomaliDefinition,
 	verifikasiFile verifikasi.VerifikasiFilesDefinition,
 	verifikasiPIC verifikasi.VerifikasiPICDefinition,
+	fileRepo fileRepo.FilesDefinition,
 ) VerifikasiDefinition {
 	return VerifikasiService{
 		db:                db,
+		minio:             minio,
 		logger:            logger,
 		verifikasiRepo:    verifikasiRepo,
 		verifikasiAnomali: verifikasiAnomali,
 		verifikasiFile:    verifikasiFile,
 		verifikasiPIC:     verifikasiPIC,
+		fileRepo:          fileRepo,
 	}
 }
 
@@ -126,7 +137,7 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 				NomorRekening:   value.NomorRekening,
 				Nominal:         value.Nominal,
 				Keterangan:      value.Keterangan,
-				CreatedAt:       &timeNow,
+				// CreatedAt:       &timeNow,
 			}, tx)
 
 			if err != nil {
@@ -150,7 +161,7 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 				PICID:                 value.PICID,
 				TanggalTindakLanjut:   value.TanggalTindakLanjut,
 				DeskripsiTindakLanjut: value.DeskripsiTindakLanjut,
-				CreatedAt:             &timeNow,
+				// CreatedAt:             &timeNow,
 			}, tx)
 
 			if err != nil {
@@ -165,6 +176,76 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 		return false, err
 	}
 	//End Input data PIC
+
+	//Begin Input Lampiran
+	bucket := os.Getenv("BUCKET_NAME")
+
+	if len(request.Files) != 0 {
+
+		for _, value := range request.Files {
+			var destinationPath string
+			bucketExist := verifikasi.minio.BucketExist(verifikasi.minio.Client(), bucket)
+
+			sourcePath := fmt.Sprint(value.Path)
+			newPath := "verifikasi/" +
+				lib.GetTimeNow("year") + "/" +
+				lib.GetTimeNow("month") + "/" +
+				lib.GetTimeNow("day")
+
+			destinationPath = newPath + "/" + value.Filename
+
+			if bucketExist {
+				fmt.Println("Exist")
+				fmt.Println(bucket)
+				fmt.Println(sourcePath)
+				fmt.Println(destinationPath)
+				uploaded := verifikasi.minio.PutObject(verifikasi.minio.MinioClient, bucket, destinationPath, sourcePath)
+
+				fmt.Println(uploaded)
+			} else {
+				fmt.Println("Not Exist")
+				fmt.Println(bucket)
+				fmt.Println(sourcePath)
+				fmt.Println(destinationPath)
+				verifikasi.minio.MakeBucket(verifikasi.minio.Client(), bucket, "")
+				// uploaded := materi.minio.CopyObject(materi.minio.Client(), bucket, sourcePath, bucket, destinationPath)
+				uploaded := verifikasi.minio.PutObject(verifikasi.minio.MinioClient, bucket, destinationPath, sourcePath)
+				fmt.Println(uploaded)
+			}
+
+			files, err := verifikasi.fileRepo.Store(&requestFile.Files{
+				Filename:  value.Filename,
+				Path:      destinationPath,
+				Extension: value.Extension,
+				Size:      value.Size,
+				CreatedAt: &timeNow,
+			}, tx)
+
+			if err != nil {
+				tx.Rollback()
+				verifikasi.logger.Zap.Error(err)
+				return false, err
+			}
+
+			_, err = verifikasi.verifikasiFile.Store(&models.VerifikasiFiles{
+				VerifikasiID: dataVerif.ID,
+				FilesID:      files.ID,
+				// CreatedAt:    &timeNow,
+			}, tx)
+
+			if err != nil {
+				tx.Rollback()
+				verifikasi.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+	} else {
+		tx.Rollback()
+		verifikasi.logger.Zap.Error(err)
+		return false, err
+	}
+
+	//End Input Lampiran
 
 	tx.Commit()
 	return true, err

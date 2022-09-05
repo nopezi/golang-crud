@@ -78,7 +78,7 @@ func (briefing BriefingService) UpdateAllBrief(request *models.BriefingResponseM
 		for _, value := range request.Materi {
 			updateMateriBrief := &models.BriefingMateri{
 				ID:                value.ID,
-				BriefingID:        value.BriefingID,
+				BriefingID:        value.BriefingID, //updateBriefing.ID
 				ActivityID:        value.ActivityID,
 				SubActivityID:     value.SubActivityID,
 				ProductID:         value.ProductID,
