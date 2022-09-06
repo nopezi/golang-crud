@@ -16,6 +16,15 @@ type VerifikasiFilesResponse struct {
 	// CreatedAt    *string `json:"created_at"`
 }
 
+type VerifikasiFilesResponses struct {
+	IDLampiran   int64  `json:"id_lampiran"`
+	VerifikasiID int64  `json:"verifikasi_id"`
+	Filename     string `json:"filename"`
+	Path         string `json:"path"`
+	Ext          string `json:"ext"`
+	Size         string `json:"size"`
+}
+
 func (p VerifikasiFilesRequest) ParseRequest() VerifikasiFiles {
 	return VerifikasiFiles{
 		ID:           p.ID,
@@ -39,5 +48,9 @@ func (vf VerifikasiFilesRequest) TableName() string {
 }
 
 func (vf VerifikasiFilesResponse) TableName() string {
+	return "verifikasi_lampiran"
+}
+
+func (vf VerifikasiFilesResponses) TableName() string {
 	return "verifikasi_lampiran"
 }

@@ -226,10 +226,10 @@ func (coaching CoachingService) UpdateAllCoaching(request *models.CoachingRespon
 		LastMakerID:   request.LastMakerID,
 		LastMakerDesc: request.LastMakerDesc,
 		LastMakerDate: &timeNow,
-		Deleted:       false,
-		Action:        "Update",
-		Status:        "02b",
-		UpdatedAt:     &timeNow,
+		// Deleted:       false,
+		Action:    "Update",
+		Status:    "02b",
+		UpdatedAt: &timeNow,
 	}
 
 	include := []string{

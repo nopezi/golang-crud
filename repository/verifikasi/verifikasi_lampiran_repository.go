@@ -12,7 +12,7 @@ import (
 type VerifikasiFilesDefinition interface {
 	GetAll() (responses []models.VerifikasiFilesResponse, err error)
 	GetOne(id int64) (responses models.VerifikasiFilesResponse, err error)
-	GetOneFileByID(id int64) (responses []models.VerifikasiFilesResponse, err error)
+	GetOneFileByID(id int64) (responses []models.VerifikasiFilesResponses, err error)
 	Store(request *models.VerifikasiFiles, tx *gorm.DB) (responses *models.VerifikasiFiles, err error)
 	Update(request *models.VerifikasiFiles, tx *gorm.DB) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -61,13 +61,21 @@ func (lampiranFiles VerifikasiFilesRepository) GetOne(id int64) (responses model
 }
 
 // GetOneFileByID implements VerifikasiFilesDefinition
-func (lampiranFiles VerifikasiFilesRepository) GetOneFileByID(id int64) (responses []models.VerifikasiFilesResponse, err error) {
+func (lampiranFiles VerifikasiFilesRepository) GetOneFileByID(id int64) (responses []models.VerifikasiFilesResponses, err error) {
 	rows, err := lampiranFiles.db.DB.Raw(`
-		SELECT lam.* 
-		FROM verifikasi_lampiran lam WHERE lam.verifikasi_id = ?`, id).Rows()
+		SELECT 
+			lam.id 'id_lampiran',
+			lam.verifikasi_id 'verifikasi_id',
+			fl.filename 'filename',
+			fl.path 'path',
+			fl.extension 'ext',
+			fl.size 'size'
+		FROM verifikasi_lampiran lam 
+		JOIN files fl ON fl.id = lam.files_id
+		WHERE lam.verifikasi_id = ?`, id).Rows()
 
 	defer rows.Close()
-	var lampiran models.VerifikasiFilesResponse
+	var lampiran models.VerifikasiFilesResponses
 
 	for rows.Next() {
 		lampiranFiles.db.DB.ScanRows(rows, &lampiran)

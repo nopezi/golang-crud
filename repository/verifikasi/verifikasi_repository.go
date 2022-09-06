@@ -16,7 +16,9 @@ type VerifikasiDefinition interface {
 	Store(request *models.Verifikasi, tx *gorm.DB) (responses *models.Verifikasi, err error)
 	Delete(request *models.VerifikasiUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	DeleteAnomaliData(id int64, tx *gorm.DB) (err error)
-	UpdateAnomaliData(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (responses bool, err error)
+	DeleteLampiranVerifikasi(id int64, tx *gorm.DB) (err error)
+	KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error)
+	UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error)
 }
 
 type VerifikasiRepository struct {
@@ -74,11 +76,6 @@ func (verifikasi VerifikasiRepository) Store(request *models.Verifikasi, tx *gor
 	return request, tx.Save(&request).Error
 }
 
-// UpdateAnomaliData implements VerifikasiDefinition
-func (verifikasi VerifikasiRepository) UpdateAnomaliData(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (responses bool, err error) {
-	panic("unimplemented")
-}
-
 // WithTrx implements VerifikasiDefinition
 func (verifikasi VerifikasiRepository) WithTrx(trxHandle *gorm.DB) VerifikasiRepository {
 	if trxHandle == nil {
@@ -88,4 +85,19 @@ func (verifikasi VerifikasiRepository) WithTrx(trxHandle *gorm.DB) VerifikasiRep
 
 	verifikasi.db.DB = trxHandle
 	return verifikasi
+}
+
+// DeleteLampiranVerifikasi implements VerifikasiDefinition
+func (VerifikasiRepository) DeleteLampiranVerifikasi(id int64, tx *gorm.DB) (err error) {
+	return tx.Where("id = ?", id).Delete(&models.VerifikasiFilesRequest{}).Error
+}
+
+// KonfirmSave implements VerifikasiDefinition
+func (VerifikasiRepository) KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error) {
+	return true, tx.Save(&request).Error
+}
+
+// UpdateAllVerifikasi implements VerifikasiDefinition
+func (VerifikasiRepository) UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error) {
+	return true, tx.Save(&request).Error
 }

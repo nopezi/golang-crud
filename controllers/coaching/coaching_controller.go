@@ -90,7 +90,7 @@ func (coaching CoachingController) GetOne(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "404", "Data tidak ditemukan", nil)
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Input data berhasil", data)
+	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", data)
 }
 
 func (coaching CoachingController) DeleteCoachingActivity(c *gin.Context) {
