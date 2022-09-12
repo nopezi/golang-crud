@@ -10,6 +10,7 @@ import (
 type SubActivityDefinition interface {
 	GetAll() (responses []models.SubActivityResponse, err error)
 	GetOne(id int64) (responses models.SubActivityResponse, err error)
+	GetLastID(id int64) (responses []models.SubActivityResponse, err error)
 	Store(request *models.SubActivityRequest) (err error)
 	Update(request *models.SubActivityRequest) (err error)
 	Delete(id int64) (err error)
@@ -18,6 +19,11 @@ type SubActivityDefinition interface {
 type SubActivityService struct {
 	logger     logger.Logger
 	repository repository.SubActivityDefinition
+}
+
+// GetLastID implements SubActivityDefinition
+func (subactivity SubActivityService) GetLastID(id int64) (responses []models.SubActivityResponse, err error) {
+	return subactivity.repository.GetLastID(id)
 }
 
 func NewSubActivityService(logger logger.Logger, repository repository.SubActivityDefinition) SubActivityDefinition {

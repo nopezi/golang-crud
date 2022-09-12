@@ -18,6 +18,10 @@ type SubActivityResponse struct {
 	UpdatedAt       *string `json:"updated_at"`
 }
 
+type SubActivityLastId struct {
+	totalRows int64 `json:"total_rows"`
+}
+
 func (p SubActivityRequest) ParseRequest() SubActivity {
 	return SubActivity{
 		ID:              p.ID,
@@ -41,6 +45,10 @@ func (p SubActivityResponse) ParseResponse() SubActivity {
 }
 
 func (ar SubActivityRequest) TableName() string {
+	return "sub_activity"
+}
+
+func (ar SubActivityLastId) TableName() string {
 	return "sub_activity"
 }
 

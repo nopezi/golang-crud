@@ -23,6 +23,19 @@ func NewSubActivityController(SubActivityService services.SubActivityDefinition,
 	}
 }
 
+func (subactivity SubActivityController) GetLastID(c *gin.Context) {
+	paramID := c.Param("id")
+	id, err := strconv.Atoi(paramID)
+
+	data, err := subactivity.service.GetLastID(int64(id))
+
+	// fmt.Println(data)
+	if err != nil {
+		subactivity.logger.Zap.Error(err)
+	}
+	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", len(data))
+}
+
 func (subactivity SubActivityController) GetAll(c *gin.Context) {
 	datas, err := subactivity.service.GetAll()
 	if err != nil {

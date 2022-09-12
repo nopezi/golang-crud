@@ -12,6 +12,7 @@ import (
 type SubActivityDefinition interface {
 	GetAll() (responses []models.SubActivityResponse, err error)
 	GetOne(id int64) (responses models.SubActivityResponse, err error)
+	GetLastID(id int64) (responses []models.SubActivityResponse, err error)
 	Store(request *models.SubActivityRequest) (responses bool, err error)
 	Update(request *models.SubActivityRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -23,6 +24,30 @@ type SubActivityRepository struct {
 	dbRaw   lib.Database
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// GetLastID implements SubActivityDefinition
+func (subactivity SubActivityRepository) GetLastID(id int64) (responses []models.SubActivityResponse, err error) {
+
+	return responses, subactivity.db.DB.Where("activity_id = ?", id).Find(&responses).Error
+	// return responses, result
+	// return responses, subactivity.db.DB.Raw(`SELECT COUNT(*) 'total_rows' FROM sub_activity WHERE activity_id = ? `, id).Find(&responses).Error
+
+	/*rows, err := subactivity.db.DB.Raw(`
+		SELECT
+			COUNT(*) 'total_rows'
+		FROM sub_activity WHERE activity_id = ? `, id).Rows()
+
+	defer rows.Close()
+	var subAct models.SubActivityLastId
+
+	// for rows.Next() {
+	// 	subactivity.db.DB.ScanRows(rows, &subAct)
+	// 	responses = append(responses, subAct)
+	// }
+
+	responses = subAct
+	return responses, err*/
 }
 
 func NewSubActivityRepository(db lib.Database, dbRaw lib.Database, logger logger.Logger) SubActivityDefinition {

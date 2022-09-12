@@ -21,7 +21,7 @@ func (s ActivityRoutes) Setup() {
 		api.GET("/getOne/:id", s.ActivityController.GetOne)
 		api.POST("/store", s.ActivityController.Store)
 		api.POST("/update", s.ActivityController.Update)
-		api.DELETE("/delete/:id", s.ActivityController.Delete)
+		api.POST("/delete/:id", s.ActivityController.Delete)
 	}
 }
 
