@@ -67,6 +67,7 @@ func (riskIssue RiskIssueController) Store(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Input data berhasil", data)
 }
+
 func (riskIssue RiskIssueController) Update(c *gin.Context) {
 	data := models.RiskIssueRequest{}
 
@@ -83,6 +84,7 @@ func (riskIssue RiskIssueController) Update(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
 }
+
 func (riskIssue RiskIssueController) Delete(c *gin.Context) {
 	paramID := c.Param("id")
 	id, err := strconv.Atoi(paramID)

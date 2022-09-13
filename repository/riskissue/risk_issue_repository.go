@@ -44,21 +44,32 @@ func (riskIssue RiskIssueRepository) GetOne(id int64) (responses models.RiskIssu
 func (riskIssue RiskIssueRepository) Store(request *models.RiskIssueRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return responses, riskIssue.db.DB.Save(&models.RiskIssueRequest{
-		RiskCode:  request.RiskCode,
-		Name:      request.Name,
-		CreatedAt: &timeNow,
+		ID:             0,
+		RiskTypeID:     request.RiskTypeID,
+		RiskIssueCode:  request.RiskIssueCode,
+		RiskIssue:      request.RiskIssue,
+		Deskripsi:      request.Deskripsi,
+		KategoriRisiko: request.KategoriRisiko,
+		Status:         request.Status,
+		CreatedAt:      &timeNow,
+		UpdatedAt:      new(string),
 	}).Error
 }
 
 // Update implements RiskIssueDefinition
 func (riskIssue RiskIssueRepository) Update(request *models.RiskIssueRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
+
 	return true, riskIssue.db.DB.Save(&models.RiskIssueRequest{
-		ID:        request.ID,
-		RiskCode:  request.RiskCode,
-		Name:      request.Name,
-		CreatedAt: request.CreatedAt,
-		UpdatedAt: &timeNow,
+		ID:             request.ID,
+		RiskTypeID:     request.RiskTypeID,
+		RiskIssueCode:  request.RiskIssueCode,
+		RiskIssue:      request.RiskIssue,
+		Deskripsi:      request.Deskripsi,
+		KategoriRisiko: request.KategoriRisiko,
+		Status:         request.Status,
+		CreatedAt:      request.CreatedAt,
+		UpdatedAt:      &timeNow,
 	}).Error
 }
 

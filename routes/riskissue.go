@@ -21,7 +21,7 @@ func (s RiskIssueRoutes) Setup() {
 		api.GET("/getOne/:id", s.RiskIssueController.GetOne)
 		api.POST("/store", s.RiskIssueController.Store)
 		api.POST("/update", s.RiskIssueController.Update)
-		api.DELETE("/delete/:id", s.RiskIssueController.Delete)
+		api.POST("/delete/:id", s.RiskIssueController.Delete)
 	}
 }
 
