@@ -22,6 +22,16 @@ type SubActivityLastId struct {
 	totalRows int64 `json:"total_rows"`
 }
 
+type SubActivityResponses struct {
+	ID              int64   `json:"id"`
+	ActivityID      int64   `json:"activity_id"`
+	ActivityName    string  `json:"activity_name"`
+	KodeSubActivity string  `json:"kode_sub_activity"`
+	NameSubActivity string  `json:"name_sub_activity"`
+	CreatedAt       *string `json:"created_at"`
+	UpdatedAt       *string `json:"updated_at"`
+}
+
 func (p SubActivityRequest) ParseRequest() SubActivity {
 	return SubActivity{
 		ID:              p.ID,

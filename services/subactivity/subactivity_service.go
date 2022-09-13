@@ -8,7 +8,8 @@ import (
 )
 
 type SubActivityDefinition interface {
-	GetAll() (responses []models.SubActivityResponse, err error)
+	// GetAll() (responses []models.SubActivityResponse, err error)
+	GetAll() (responses []models.SubActivityResponses, err error)
 	GetOne(id int64) (responses models.SubActivityResponse, err error)
 	GetLastID(id int64) (responses []models.SubActivityResponse, err error)
 	Store(request *models.SubActivityRequest) (err error)
@@ -39,7 +40,10 @@ func (subactivity SubActivityService) Delete(id int64) (err error) {
 }
 
 // GetAll implements SubAvtivityDefinition
-func (subactivity SubActivityService) GetAll() (responses []models.SubActivityResponse, err error) {
+// func (subactivity SubActivityService) GetAll() (responses []models.SubActivityResponse, err error) {
+// 	return subactivity.repository.GetAll()
+// }
+func (subactivity SubActivityService) GetAll() (responses []models.SubActivityResponses, err error) {
 	return subactivity.repository.GetAll()
 }
 

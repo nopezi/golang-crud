@@ -38,6 +38,7 @@ func (subactivity SubActivityController) GetLastID(c *gin.Context) {
 
 func (subactivity SubActivityController) GetAll(c *gin.Context) {
 	datas, err := subactivity.service.GetAll()
+	// fmt.Println(datas)
 	if err != nil {
 		subactivity.logger.Zap.Error(err)
 	}
