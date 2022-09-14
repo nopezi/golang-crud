@@ -11,6 +11,7 @@ import (
 type RiskIssueDefinition interface {
 	GetAll() (responses []models.RiskIssueResponse, err error)
 	GetOne(id int64) (responses models.RiskIssueResponse, err error)
+	GetLastID(id int64) (response []models.RiskIssueResponse, err error)
 	Store(request *models.RiskIssueRequest) (err error)
 	Update(request *models.RiskIssueRequest) (err error)
 	Delete(id int64) (err error)
@@ -19,6 +20,11 @@ type RiskIssueDefinition interface {
 type RiskIssueService struct {
 	logger     logger.Logger
 	repository repository.RiskIssueDefinition
+}
+
+// GetLastID implements RiskIssueDefinition
+func (riskIssue RiskIssueService) GetLastID(id int64) (response []models.RiskIssueResponse, err error) {
+	return riskIssue.repository.GetLastID(id)
 }
 
 // Delete implements RiskIssueDefinition

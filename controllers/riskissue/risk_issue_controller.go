@@ -26,6 +26,19 @@ func NewRiskIssueController(
 	}
 }
 
+func (riskIssue RiskIssueController) GetLastID(c *gin.Context) {
+	paramID := c.Param("id")
+	id, err := strconv.Atoi(paramID)
+
+	data, err := riskIssue.service.GetLastID(int64(id))
+
+	// fmt.Println(data)
+	if err != nil {
+		riskIssue.logger.Zap.Error(err)
+	}
+	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", len(data))
+}
+
 func (riskIssue RiskIssueController) GetAll(c *gin.Context) {
 	datas, err := riskIssue.service.GetAll()
 	if err != nil {

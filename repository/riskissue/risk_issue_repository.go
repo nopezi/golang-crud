@@ -12,6 +12,7 @@ import (
 type RiskIssueDefinition interface {
 	GetAll() (responses []models.RiskIssueResponse, err error)
 	GetOne(id int64) (responses models.RiskIssueResponse, err error)
+	GetLastID(id int64) (responses []models.RiskIssueResponse, err error)
 	Store(request *models.RiskIssueRequest) (responses bool, err error)
 	Update(request *models.RiskIssueRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -23,6 +24,11 @@ type RiskIssueRepository struct {
 	dbRaw   lib.Database
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// GetLastID implements RiskIssueDefinition
+func (riskIssue RiskIssueRepository) GetLastID(id int64) (responses []models.RiskIssueResponse, err error) {
+	return responses, riskIssue.db.DB.Where("risk_type_id = ?", id).Find(&responses).Error
 }
 
 // Delete implements RiskIssueDefinition
