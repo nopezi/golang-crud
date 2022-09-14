@@ -33,6 +33,7 @@ func (riskIndicator RiskIndicatorController) GetAll(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
 }
+
 func (riskIndicator RiskIndicatorController) GetOne(c *gin.Context) {
 	paramID := c.Param("id")
 	id, err := strconv.Atoi(paramID)

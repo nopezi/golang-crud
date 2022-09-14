@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2022 at 05:59 AM
+-- Generation Time: Sep 14, 2022 at 11:13 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -52,7 +52,7 @@ INSERT INTO `activity` (`id`, `kode_activity`, `name`, `create_at`, `update_at`)
 (10, '10', 'TREASURY', '2022-08-15 08:15:18', NULL),
 (11, '11', 'IT', '2022-08-15 08:15:34', NULL),
 (12, '12', 'Invesment Service', '2022-08-15 08:15:46', NULL),
-(13, '13', 'Culture', '2022-08-15 08:15:55', NULL);
+(13, '13', 'Culture Habbit', '2022-08-15 08:15:55', '2022-09-09 16:07:39');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,8 @@ CREATE TABLE `briefing` (
 INSERT INTO `briefing` (`id`, `no_pelaporan`, `unit_kerja`, `peserta`, `jumlah_peserta`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
 (1, 'BR-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '02b', 'updateDelete', 1, '2022-08-24 12:06:36', '2022-08-25 08:25:23'),
 (2, 'BR-50046567-250822-0001', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-24 12:06:36', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-25 15:35:36', '02b', 'Update', 0, '2022-08-25 08:25:23', '2022-08-25 15:35:36'),
-(5, 'BR-50046567-100522-0003', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-25 15:35:36', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-25 15:35:36', '02b', 'Update', 0, '2022-08-25 15:35:36', '2022-08-25 15:35:36');
+(5, 'BR-50046567-100522-0003', 'Kantor Cabang Khusus', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-25 15:35:36', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-25 15:35:36', '02b', 'Update', 0, '2022-08-25 15:35:36', '2022-08-25 15:35:36'),
+(7, 'BR-50046567-100522-0004', 'Kantor Cabang Medan', 'Semua', '27', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 11:00:18', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 11:00:18', '02b', 'updateDelete', 1, '2022-09-05 11:00:18', '2022-09-05 11:00:18');
 
 -- --------------------------------------------------------
 
@@ -117,7 +118,10 @@ INSERT INTO `briefing_materis` (`id`, `briefing_id`, `activity_id`, `sub_activit
 (4, 2, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
 (7, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness | JUKLAK', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
 (8, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'JUKLAK', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-08-25 15:35:36'),
-(9, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Juklak | Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-25 15:35:36', NULL);
+(9, 5, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Juklak | Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-25 15:35:36', NULL),
+(12, 7, 1, 1, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-09-05 11:00:18'),
+(14, 7, 2, 1, 2, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-09-05 11:00:18'),
+(15, 7, 2, 1, 2, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-09-05 11:00:18');
 
 -- --------------------------------------------------------
 
@@ -152,7 +156,9 @@ CREATE TABLE `coaching` (
 
 INSERT INTO `coaching` (`id`, `no_pelaporan`, `unit_kerja`, `peserta`, `jumlah_peserta`, `activity_id`, `sub_activity_id`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
 (1, 'CO-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-30 10:40:21', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-30 13:47:23', '02b', 'updateDelete', 1, '0000-00-00 00:00:00', '2022-08-30 13:47:23'),
-(2, 'CO-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-30 13:17:42', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-30 14:27:36', '02b', 'Update', 0, '2022-08-30 13:17:42', '2022-08-30 14:27:36');
+(2, 'CO-50046567-100522-0001', 'Kantor Cabang Khusus', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-08-30 13:17:42', '00304155', '00304155 | NANA FEBRI | Teller', '2022-08-30 14:27:36', '02b', 'Update', 0, '2022-08-30 13:17:42', '2022-08-30 14:27:36'),
+(3, 'BR-50046567-100522-0003', 'Kantor Cabang Medan Utara', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 11:00:18', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 11:00:18', '02b', 'updateDelete', 1, '2022-09-05 11:00:18', '2022-09-05 11:00:18'),
+(4, 'BR-50046567-100522-0003', 'Kantor Cabang Medan', 'Semua', '27', 1, 1, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 11:00:18', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', NULL, '01a', 'Draft', 0, '2022-09-05 11:00:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -179,7 +185,11 @@ INSERT INTO `coaching_activity` (`id`, `coaching_id`, `risk_issue_id`, `judul_ma
 (2, 1, 1, 'PDP 2 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-08-30 10:40:21', NULL),
 (3, 2, 1, 'RISIKO STRATEGIS', 'Risk Awarness | Juklak', 'Materi yang disampaikan pada pertemuaan Coaching', '2022-08-30 10:40:21', '2022-08-30 14:27:36'),
 (4, 2, 1, 'RISIKO STRATEGIS', 'JUKLAK', 'Materi yang disampaikan pada pertemuaan Coaching', '2022-08-30 10:40:21', '2022-08-30 14:27:36'),
-(5, 2, 1, 'RISIKO STRATEGIS 3', 'JUKLAK JUNGKLIK', 'Materi yang disampaikan pada pertemuaan Coaching', '2022-08-30 10:40:21', '2022-08-30 14:27:36');
+(5, 2, 1, 'RISIKO STRATEGIS 3', 'JUKLAK JUNGKLIK', 'Materi yang disampaikan pada pertemuaan Coaching', '2022-08-30 10:40:21', '2022-08-30 14:27:36'),
+(6, 3, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-09-05 11:00:18'),
+(7, 3, 1, 'PDP 2 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', NULL, '2022-09-05 11:00:18'),
+(8, 4, 1, 'PDP 1 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-09-05 11:00:18', NULL),
+(9, 4, 1, 'PDP 2 - RISIKO STRATEGIS', 'Risk Awarness', 'Materi yang disampaikan pada pertemuaan briefing', '2022-09-05 11:00:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -202,7 +212,9 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `filename`, `path`, `extension`, `size`, `created_at`, `updated_at`) VALUES
-(1, 'BRD RRM Tools fase 1.pdf', 'materi/2022/8/31/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-31 09:22:13', NULL);
+(1, 'BRD RRM Tools fase 1.pdf', 'materi/2022/8/31/BRD RRM Tools fase 1.pdf', 'application/pdf', '6748', '2022-08-31 09:22:13', NULL),
+(2, 'timesheet.pdf', 'verifikasi/2022/9/6/timesheet.pdf', 'application/pdf', '6748', '2022-09-06 11:12:57', NULL),
+(3, 'Go get all.png', 'verifikasi/2022/9/6/Go get all.png', 'images/png', '50', NULL, '2022-09-06 14:52:54');
 
 -- --------------------------------------------------------
 
@@ -486,6 +498,14 @@ CREATE TABLE `product` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Operasional Kas', '2022-09-14 11:38:36', NULL),
+(2, 'Operasional ATM dan CRM', '2022-09-14 11:38:36', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -518,11 +538,21 @@ INSERT INTO `ref_cronjobs` (`time`, `method`, `action`, `flag`, `status`, `updat
 
 CREATE TABLE `risk_indicator` (
   `id` int(10) UNSIGNED NOT NULL,
-  `indicator_code` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `risk_indicator_code` varchar(100) NOT NULL,
+  `risk_indicator` varchar(100) NOT NULL,
+  `activity_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `risk_indicator`
+--
+
+INSERT INTO `risk_indicator` (`id`, `risk_indicator_code`, `risk_indicator`, `activity_id`, `product_id`, `created_at`, `updated_at`) VALUES
+(5, 'RNC1', 'Kas Kantor', 6, 1, '2022-09-14 16:08:43', NULL),
+(6, 'RNC2', 'Kas Dalam Perjalanan', 6, 1, '2022-09-14 16:09:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -532,8 +562,12 @@ CREATE TABLE `risk_indicator` (
 
 CREATE TABLE `risk_issue` (
   `id` int(10) UNSIGNED NOT NULL,
-  `risk_code` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `risk_type_id` int(11) NOT NULL,
+  `risk_issue_code` varchar(100) NOT NULL,
+  `risk_issue` varchar(100) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `kategori_risiko` varchar(100) NOT NULL,
+  `status` varchar(20) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -542,17 +576,9 @@ CREATE TABLE `risk_issue` (
 -- Dumping data for table `risk_issue`
 --
 
-INSERT INTO `risk_issue` (`id`, `risk_code`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'PDP1', 'Risiko Strategis', '2022-08-16 09:08:18', NULL),
-(2, 'PDP2', 'Risiko Strategis', '2022-08-16 09:08:47', NULL),
-(3, 'PDP3', 'Risiko Strategis', '2022-08-16 09:08:52', NULL),
-(4, 'PDP4', 'Risiko Strategis', '2022-08-16 09:08:56', NULL),
-(5, 'PDP5', 'Risiko Strategis', '2022-08-16 09:09:01', NULL),
-(6, 'PDP6', 'Risiko Strategis', '2022-08-16 09:09:06', NULL),
-(7, 'PDP7', 'Risiko Strategis', '2022-08-16 09:09:10', NULL),
-(8, 'PDP8', 'Risiko Strategis', '2022-08-16 09:09:14', NULL),
-(9, 'PDP9', 'Risiko Strategis', '2022-08-16 09:09:19', NULL),
-(10, 'PDP10', 'Risiko Strategis', '2022-08-16 09:09:24', NULL);
+INSERT INTO `risk_issue` (`id`, `risk_type_id`, `risk_issue_code`, `risk_issue`, `deskripsi`, `kategori_risiko`, `status`, `created_at`, `updated_at`) VALUES
+(3, 1, 'AHP1', 'Kontrak/perjanjian dengan pihak ketiga tidak sesuai dengan kaidah hukum dan/atau memperlemah posisi ', 'Kontrak/perjanjian dengan pihak ketiga tidak sesuai dengan kaidah hukum dan/atau memperlemah posisi BRI	\n', 'BCM', 'Aktif', NULL, '2022-09-14 10:14:28'),
+(4, 1, 'AHP2', 'Advise hukum yang diberikan belum memadai	\n', 'Advise hukum yang diberikan belum memadai	\n', 'BCM', 'Aktif', '2022-09-13 16:20:03', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -656,10 +682,10 @@ INSERT INTO `unit_kerja` (`id`, `kode_uker`, `nama_uker`, `kode_cabang`, `nama_c
 -- --------------------------------------------------------
 
 --
--- Table structure for table `varifikasi`
+-- Table structure for table `verifikasi`
 --
 
-CREATE TABLE `varifikasi` (
+CREATE TABLE `verifikasi` (
   `id` int(10) UNSIGNED NOT NULL,
   `no_pelaporan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_kerja` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -696,6 +722,15 @@ CREATE TABLE `varifikasi` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `verifikasi`
+--
+
+INSERT INTO `verifikasi` (`id`, `no_pelaporan`, `unit_kerja`, `activity_id`, `sub_activity_id`, `product_id`, `risk_issue_id`, `risk_indicator_id`, `incident_cause_id`, `sub_incident_cause_id`, `application_id`, `hasil_verifikasi`, `kunjungan_nasabah`, `indikasi_fraud`, `jenis_kerugian_finansial`, `jumlah_perkiraan_kerugian`, `jenis_kerugian_non_finansial`, `rekomendasi_tindak_lanjut`, `rencana_tindak_lanjut`, `risk_type_id`, `tanggal_ditemukan`, `tanggal_mulai_rtl`, `tanggal_target_selesai`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'VER-50046567-010922-0001', 'Kantor Cabang Khusus', 1, 1, 1, 1, 1, 1, 1, 1, 'Verifikasi ininih', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-05 14:19:28', '', '', '2022-09-06 11:07:54', '02b', 'Selesai', 0, '2022-09-05 14:19:28', '2022-09-06 11:07:54'),
+(2, 'VER-50046567-010922-0002', 'Kantor Cabang Khusus', 1, 1, 1, 1, 1, 1, 1, 1, 'Verifikasi ininih', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '', '', NULL, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-06 14:52:54', '02b', 'Update', 0, '2022-09-05 16:00:32', '2022-09-06 14:52:54'),
+(3, 'VER-50046567-010922-0003', 'Kantor Cabang Khusus', 1, 1, 1, 1, 1, 1, 1, 1, 'Verifikasi ininih', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '', '', NULL, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-06 14:52:54', '02b', 'Update', 0, '2022-09-06 11:12:57', '2022-09-06 14:52:54');
+
 -- --------------------------------------------------------
 
 --
@@ -708,10 +743,17 @@ CREATE TABLE `verifikasi_data_anomali` (
   `tanggal_kejadian` datetime DEFAULT NULL,
   `nomor_rekening` varchar(100) NOT NULL,
   `nominal` int(10) NOT NULL,
-  `keterangan` text DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
+  `keterangan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `verifikasi_data_anomali`
+--
+
+INSERT INTO `verifikasi_data_anomali` (`id`, `verifikasi_id`, `tanggal_kejadian`, `nomor_rekening`, `nominal`, `keterangan`) VALUES
+(1, 1, '2022-09-01 13:37:00', '54321123456', 200000000, 'Ini keterangan ya'),
+(2, 2, '2022-09-01 13:37:00', '54321123456', 200000000, 'Ini keterangan ya'),
+(3, 3, '2022-09-01 13:37:00', '54321123456', 200000000, 'Data transfer Tidak Normal');
 
 -- --------------------------------------------------------
 
@@ -722,26 +764,50 @@ CREATE TABLE `verifikasi_data_anomali` (
 CREATE TABLE `verifikasi_lampiran` (
   `id` int(10) UNSIGNED NOT NULL,
   `verifikasi_id` int(10) UNSIGNED NOT NULL,
-  `files_id` int(10) UNSIGNED NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
+  `files_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `verifikasi_lampiran`
+--
+
+INSERT INTO `verifikasi_lampiran` (`id`, `verifikasi_id`, `files_id`) VALUES
+(5, 3, 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `verivikasi_pic_tindak_lanjut`
+-- Table structure for table `verifikasi_pic_tindak_lanjut`
 --
 
-CREATE TABLE `verivikasi_pic_tindak_lanjut` (
+CREATE TABLE `verifikasi_pic_tindak_lanjut` (
   `id` int(10) UNSIGNED NOT NULL,
   `verifikasi_id` int(10) UNSIGNED NOT NULL,
   `pic_id` int(10) UNSIGNED NOT NULL,
   `tanggal_tindak_lanjut` datetime NOT NULL,
   `deskripsi_tindak_lanjut` text NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `status` varchar(100) NOT NULL,
-  `updated_at` datetime DEFAULT NULL
+  `status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `verifikasi_pic_tindak_lanjut`
+--
+
+INSERT INTO `verifikasi_pic_tindak_lanjut` (`id`, `verifikasi_id`, `pic_id`, `tanggal_tindak_lanjut`, `deskripsi_tindak_lanjut`, `status`) VALUES
+(1, 1, 1, '2022-09-30 00:00:00', 'ini deskripsi tindak lanjut', ''),
+(2, 2, 1, '2022-09-30 00:00:00', 'ini deskripsi tindak lanjut', ''),
+(3, 3, 2, '2022-09-30 00:00:00', 'Akan dilakukan coaching lanjutan', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verifikasi_risk_control`
+--
+
+CREATE TABLE `verifikasi_risk_control` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `verifikasi_id` int(10) UNSIGNED NOT NULL,
+  `risk_control_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -857,9 +923,9 @@ ALTER TABLE `unit_kerja`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `varifikasi`
+-- Indexes for table `verifikasi`
 --
-ALTER TABLE `varifikasi`
+ALTER TABLE `verifikasi`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -875,9 +941,15 @@ ALTER TABLE `verifikasi_lampiran`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `verivikasi_pic_tindak_lanjut`
+-- Indexes for table `verifikasi_pic_tindak_lanjut`
 --
-ALTER TABLE `verivikasi_pic_tindak_lanjut`
+ALTER TABLE `verifikasi_pic_tindak_lanjut`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `verifikasi_risk_control`
+--
+ALTER TABLE `verifikasi_risk_control`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -888,43 +960,43 @@ ALTER TABLE `verivikasi_pic_tindak_lanjut`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `briefing`
 --
 ALTER TABLE `briefing`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `briefing_materis`
 --
 ALTER TABLE `briefing_materis`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `coaching`
 --
 ALTER TABLE `coaching`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `coaching_activity`
 --
 ALTER TABLE `coaching_activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `incident_cause`
 --
 ALTER TABLE `incident_cause`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `materi`
@@ -948,19 +1020,19 @@ ALTER TABLE `mst_menu`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `risk_indicator`
 --
 ALTER TABLE `risk_indicator`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `risk_issue`
 --
 ALTER TABLE `risk_issue`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `risk_type`
@@ -972,42 +1044,48 @@ ALTER TABLE `risk_type`
 -- AUTO_INCREMENT for table `sub_activity`
 --
 ALTER TABLE `sub_activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sub_incident_cause`
 --
 ALTER TABLE `sub_incident_cause`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `unit_kerja`
 --
 ALTER TABLE `unit_kerja`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `varifikasi`
+-- AUTO_INCREMENT for table `verifikasi`
 --
-ALTER TABLE `varifikasi`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `verifikasi`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_data_anomali`
 --
 ALTER TABLE `verifikasi_data_anomali`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_lampiran`
 --
 ALTER TABLE `verifikasi_lampiran`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `verivikasi_pic_tindak_lanjut`
+-- AUTO_INCREMENT for table `verifikasi_pic_tindak_lanjut`
 --
-ALTER TABLE `verivikasi_pic_tindak_lanjut`
+ALTER TABLE `verifikasi_pic_tindak_lanjut`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `verifikasi_risk_control`
+--
+ALTER TABLE `verifikasi_risk_control`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

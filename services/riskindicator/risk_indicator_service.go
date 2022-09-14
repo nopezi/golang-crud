@@ -9,7 +9,8 @@ import (
 )
 
 type RiskIndicatorDefinition interface {
-	GetAll() (responses []models.RiskIndicatorResponse, err error)
+	// GetAll() (responses []models.RiskIndicatorResponse, err error)
+	GetAll() (responses []models.RiskIndicatorResponses, err error)
 	GetOne(id int64) (responses models.RiskIndicatorResponse, err error)
 	Store(request *models.RiskIndicatorRequest) (err error)
 	Update(request *models.RiskIndicatorRequest) (err error)
@@ -27,7 +28,11 @@ func (riskIndicator RiskIndicatorService) Delete(id int64) (err error) {
 }
 
 // GetAll implements RiskIndicatorDefinition
-func (riskIndicator RiskIndicatorService) GetAll() (responses []models.RiskIndicatorResponse, err error) {
+// func (riskIndicator RiskIndicatorService) GetAll() (responses []models.RiskIndicatorResponse, err error) {
+// 	return riskIndicator.repository.GetAll()
+// }
+
+func (riskIndicator RiskIndicatorService) GetAll() (responses []models.RiskIndicatorResponses, err error) {
 	return riskIndicator.repository.GetAll()
 }
 
