@@ -45,7 +45,7 @@ func (riskIndicator RiskIndicatorRepository) GetAll() (responses []models.RiskIn
 			riskInd.activity_id 'activity_id',
 			act.name 'activity',
 			riskInd.product_id 'product_id',
-			prod.name 'product',
+			prod.product 'product',
 			riskInd.created_at 'created_at',
 			riskInd.updated_at 'updated_at'
 		FROM risk_indicator riskInd
