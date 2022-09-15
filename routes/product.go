@@ -21,7 +21,7 @@ func (s ProductRoutes) Setup() {
 		api.GET("/getOne/:id", s.ProductController.GetOne)
 		api.POST("/store", s.ProductController.Store)
 		api.POST("/update", s.ProductController.Update)
-		api.DELETE("/delete/:id", s.ProductController.Delete)
+		api.POST("/delete/:id", s.ProductController.Delete)
 	}
 }
 

@@ -44,8 +44,10 @@ func (product ProductRepository) GetOne(id int64) (responses models.ProductRespo
 func (product ProductRepository) Store(request *models.ProductRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return responses, product.db.DB.Save(&models.ProductRequest{
-		Name:      request.Name,
-		CreatedAt: &timeNow,
+		KodeProduct: request.KodeProduct,
+		Product:     request.Product,
+		CreatedAt:   &timeNow,
+		UpdatedAt:   new(string),
 	}).Error
 }
 
@@ -53,10 +55,11 @@ func (product ProductRepository) Store(request *models.ProductRequest) (response
 func (product ProductRepository) Update(request *models.ProductRequest) (responese bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return true, product.db.DB.Save(&models.ProductRequest{
-		ID:        request.ID,
-		Name:      request.Name,
-		CreatedAt: request.CreatedAt,
-		UpdatedAt: &timeNow,
+		ID:          request.ID,
+		KodeProduct: request.KodeProduct,
+		Product:     request.Product,
+		CreatedAt:   request.CreatedAt,
+		UpdatedAt:   &timeNow,
 	}).Error
 }
 

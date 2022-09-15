@@ -1,32 +1,36 @@
 package models
 
 type ProductRequest struct {
-	ID        int64   `json:"id"`
-	Name      string  `json:"name"`
-	CreatedAt *string `json:"created_at"`
-	UpdatedAt *string `json:"update_at"`
+	ID          int64   `json:"id"`
+	KodeProduct string  `json:"kode_product"`
+	Product     string  `json:"product"`
+	CreatedAt   *string `json:"created_at"`
+	UpdatedAt   *string `json:"update_at"`
 }
 
 type ProductResponse struct {
-	ID        int64   `json:"id"`
-	Name      string  `json:"name"`
-	CreatedAt *string `json:"created_at"`
-	UpdatedAt *string `json:"update_at"`
+	ID          int64   `json:"id"`
+	KodeProduct string  `json:"kode_product"`
+	Product     string  `json:"product"`
+	CreatedAt   *string `json:"created_at"`
+	UpdatedAt   *string `json:"update_at"`
 }
 
 func (p ProductRequest) ParseRequest() Product {
 	return Product{
-		ID:   p.ID,
-		Name: p.Name,
+		ID:          p.ID,
+		KodeProduct: p.KodeProduct,
+		Product:     p.Product,
 	}
 }
 
 func (p ProductResponse) ParseRequest() Product {
 	return Product{
-		ID:        p.ID,
-		Name:      p.Name,
-		CreatedAt: p.CreatedAt,
-		UpdatedAt: p.UpdatedAt,
+		ID:          p.ID,
+		KodeProduct: p.KodeProduct,
+		Product:     p.Product,
+		CreatedAt:   p.CreatedAt,
+		UpdatedAt:   p.UpdatedAt,
 	}
 }
 
