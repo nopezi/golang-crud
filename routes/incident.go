@@ -21,7 +21,7 @@ func (s IncidentRoutes) Setup() {
 		api.GET("/getOne/:id", s.IncidentController.GetOne)
 		api.POST("/store", s.IncidentController.Store)
 		api.POST("/update", s.IncidentController.Update)
-		api.DELETE("/delete/:id", s.IncidentController.Delete)
+		api.POST("/delete/:id", s.IncidentController.Delete)
 	}
 }
 
