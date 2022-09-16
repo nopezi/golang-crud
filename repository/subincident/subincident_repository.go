@@ -10,7 +10,8 @@ import (
 )
 
 type SubIncidentDefinition interface {
-	GetAll() (responses []models.SubIncidentResponse, err error)
+	// GetAll() (responses []models.SubIncidentResponse, err error)
+	GetAll() (responses []models.SubIncidentResponses, err error)
 	GetOne(id int64) (responses models.SubIncidentResponse, err error)
 	Store(request *models.SubIncidentRequest) (responses bool, err error)
 	Update(request *models.SubIncidentRequest) (responses bool, err error)
@@ -31,9 +32,33 @@ func (subIncident SubIncidentRepository) Delete(id int64) (err error) {
 }
 
 // GetAll implements SubIncidentDefinition
-func (subIncident SubIncidentRepository) GetAll() (responses []models.SubIncidentResponse, err error) {
-	return responses, subIncident.db.DB.Find(&responses).Error
+// func (subIncident SubIncidentRepository) GetAll() (responses []models.SubIncidentResponse, err error) {
+// 	return responses, subIncident.db.DB.Find(&responses).Error
+// }
+func (subIncident SubIncidentRepository) GetAll() (responses []models.SubIncidentResponses, err error) {
+	rows, err := subIncident.db.DB.Raw(`
+		SELECT
+			sub.id 'id',
+			sub.kode_kejadian 'kode_kejadian',
+			inc.penyebab_kejadian1 'penyebab_kejadian',
+			sub.kode_sub_kejadian 'kode_sub_kejadian',
+			sub.kriteria_penyebab_kejadian 'kriteria_penyebab_kejadian',
+			sub.created_at 'created_at',
+			sub.updated_at 'updated_at'
+		FROM sub_incident_cause sub
+		JOIN incident_cause inc ON inc.kode_kejadian = sub.kode_kejadian 
+	`).Rows()
 
+	defer rows.Close()
+
+	var subInci models.SubIncidentResponses
+
+	for rows.Next() {
+		subIncident.db.DB.ScanRows(rows, &subInci)
+		responses = append(responses, subInci)
+	}
+
+	return responses, err
 }
 
 // GetOne implements SubIncidentDefinition

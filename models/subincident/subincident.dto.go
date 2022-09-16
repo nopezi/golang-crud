@@ -18,6 +18,16 @@ type SubIncidentResponse struct {
 	UpdatedAt                *string `json:"updated_at"`
 }
 
+type SubIncidentResponses struct {
+	ID                       int64   `json:"id"`
+	KodeKejadian             string  `json:"kode_kejadian"`
+	PenyebabKejadian         string  `json:"penyebab_kejadian"`
+	KodeSubKejadian          string  `json:"kode_sub_kejadian"`
+	KriteriaPenyebabKejadian string  `json:"kriteria_penyebab_kejadian"`
+	CreatedAt                *string `json:"created_at"`
+	UpdatedAt                *string `json:"updated_at"`
+}
+
 func (p SubIncidentRequest) ParseRequest() SubIncident {
 	return SubIncident{
 		ID:                       p.ID,
