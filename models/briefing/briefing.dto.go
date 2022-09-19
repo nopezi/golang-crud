@@ -54,6 +54,15 @@ type BriefingResponses struct {
 	Deleted       bool    `json:"deleted"`
 }
 
+type BriefingResponseData struct {
+	ID          int64  `json:"id"`
+	NoPelaporan string `json:"no_pelaporan"`
+	UnitKerja   string `json:"unit_kerja"`
+	JudulMateri string `json:"judul_materi"`
+	Aktifitas   string `json:"aktifitas"`
+	StatusBrf   string `json:"status_brf"`
+}
+
 type BriefingResponseGetOneString struct {
 	ID            int64                     `json:"id"`
 	NoPelaporan   string                    `json:"no_pelaporan"`

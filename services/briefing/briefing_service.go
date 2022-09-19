@@ -21,6 +21,7 @@ var (
 type BriefingDefinition interface {
 	WithTrx(trxHandle *gorm.DB) BriefingService
 	GetAll() (responses []models.BriefingResponse, err error)
+	GetData() (responses []models.BriefingResponseData, err error)
 	GetOne(id int64) (responses models.BriefingResponseGetOneString, status bool, err error)
 	Store(request models.BriefingRequest) (status bool, err error)
 	Delete(request *models.BriefingRequestUpdate) (responses bool, err error)
@@ -33,6 +34,11 @@ type BriefingService struct {
 	logger         logger.Logger
 	briefingRepo   briefingRepo.BriefingDefinition
 	briefingMateri briefingRepo.BriefingMateriDefinition
+}
+
+// GetData implements BriefingDefinition
+func (briefing BriefingService) GetData() (responses []models.BriefingResponseData, err error) {
+	return briefing.briefingRepo.GetData()
 }
 
 // UpdateAllBrief implements BriefingDefinition
