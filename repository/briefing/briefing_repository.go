@@ -12,6 +12,7 @@ import (
 type BriefingDefinition interface {
 	WithTrx(trxHandle *gorm.DB) BriefingRepository
 	GetAll() (responses []models.BriefingResponse, err error)
+	GetData() (responses []models.BriefingResponseData, err error)
 	GetOne(id int64) (responses models.BriefingResponse, err error)
 	Store(request *models.Briefing, tx *gorm.DB) (responses *models.Briefing, err error)
 	Delete(request *models.BriefingUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
@@ -24,6 +25,37 @@ type BriefingRepository struct {
 	dbRaw   lib.Databases
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// GetData implements BriefingDefinition
+func (briefing BriefingRepository) GetData() (responses []models.BriefingResponseData, err error) {
+	rows, err := briefing.db.DB.Raw(`
+		SELECT 
+			brf.id 'id',
+			brf.no_pelaporan 'no_pelaporan',
+			brf.unit_kerja 'unit_kerja',
+			bm.judul_materi 'judul_materi',
+			act.name 'aktifitas',
+			CASE
+				WHEN brf.status = "01a" && brf.action = "Draft" THEN "Draft"
+				WHEN brf.status = "02b" && (brf.action = "Update" || brf.action ="Selesai")   THEN "Selesai"
+				ELSE "Delete"
+			END 'status_brf'
+		FROM briefing brf 
+		JOIN briefing_materis bm ON bm.briefing_id = brf.id
+		JOIN activity act ON bm.activity_id = act.id
+		WHERE brf.deleted != 1
+		GROUP BY brf.id
+	`).Rows()
+
+	defer rows.Close()
+
+	var brief models.BriefingResponseData
+	for rows.Next() {
+		briefing.db.DB.ScanRows(rows, &brief)
+		responses = append(responses, brief)
+	}
+	return responses, err
 }
 
 // UpdateAllBrief implements BriefingDefinition

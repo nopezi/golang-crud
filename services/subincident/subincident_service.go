@@ -8,7 +8,8 @@ import (
 )
 
 type SubIncidentDefinition interface {
-	GetAll() (responses []models.SubIncidentResponse, err error)
+	// GetAll() (responses []models.SubIncidentResponse, err error)
+	GetAll() (responses []models.SubIncidentResponses, err error)
 	GetOne(id int64) (responses models.SubIncidentResponse, err error)
 	Store(request *models.SubIncidentRequest) (err error)
 	Update(request *models.SubIncidentRequest) (err error)
@@ -33,7 +34,11 @@ func (subIncident SubIncidentService) Delete(id int64) (err error) {
 }
 
 // GetAll implements SubIncidentDefinition
-func (subIncident SubIncidentService) GetAll() (responses []models.SubIncidentResponse, err error) {
+// func (subIncident SubIncidentService) GetAll() (responses []models.SubIncidentResponse, err error) {
+// 	return subIncident.repository.GetAll()
+// }
+
+func (subIncident SubIncidentService) GetAll() (responses []models.SubIncidentResponses, err error) {
 	return subIncident.repository.GetAll()
 }
 

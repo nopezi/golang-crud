@@ -42,6 +42,22 @@ func (briefing BriefingController) GetAll(c *gin.Context) {
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
 }
 
+func (briefing BriefingController) GetData(c *gin.Context) {
+	datas, err := briefing.service.GetData()
+	if err != nil {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	if len(datas) == 0 {
+		briefing.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak ditemukan !", "")
+		return
+	}
+	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
+}
+
 func (briefing BriefingController) GetOne(c *gin.Context) {
 	paramID := c.Param("id")
 	id, err := strconv.Atoi(paramID)

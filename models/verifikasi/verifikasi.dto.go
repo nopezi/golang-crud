@@ -38,6 +38,7 @@ type VerifikasiRequest struct {
 	DataAnomali               []VerifikasiAnomaliDataRequest     `json:"data_anomali"`
 	PICTindakLanjut           []VerifikasiPICTindakLanjutRequest `json:"pic_tindak_lanjut"`
 	Files                     []files.FilesRequest               `json:"files"`
+	RiskControl               []VerifikasiRiskControlRequest     `json:"risk_control"`
 	UpdatedAt                 *string                            `json:"updated_at"`
 	CreatedAt                 *string                            `json:"created_at"`
 }
@@ -151,6 +152,7 @@ type VerifikasiResponseGetOne struct {
 	DataAnomali               []VerifikasiAnomaliDataResponses     `json:"data_anomali"`
 	PICTindakLanjut           []VerifikasiPICTindakLanjutResponses `json:"pic_tindak_lanjut"`
 	Files                     []VerifikasiFilesResponses           `json:"files"` // Files                     []files.FilesResponses               `json:"files"`
+	RiskControl               []VerifikasiRiskControlResponses     `json:"risk_control"`
 	UpdatedAt                 *string                              `json:"updated_at"`
 	CreatedAt                 *string                              `json:"created_at"`
 }
@@ -191,6 +193,7 @@ type VerifikasiRequestMaintain struct {
 	DataAnomali               []VerifikasiAnomaliDataRequest     `json:"data_anomali"`
 	PICTindakLanjut           []VerifikasiPICTindakLanjutRequest `json:"pic_tindak_lanjut"`
 	Files                     []files.FilesRequest               `json:"files"`
+	RiskControl               []VerifikasiRiskControlRequest     `json:"risk_control"`
 	UpdatedAt                 *string                            `json:"updated_at"`
 	CreatedAt                 *string                            `json:"created_at"`
 }

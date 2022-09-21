@@ -8,6 +8,7 @@ import (
 	incident "riskmanagement/services/incident"
 	materi "riskmanagement/services/materi"
 	product "riskmanagement/services/product"
+	riskControl "riskmanagement/services/riskcontrol"
 	riskIndicator "riskmanagement/services/riskindicator"
 	riskIssue "riskmanagement/services/riskissue"
 	riskType "riskmanagement/services/risktype"
@@ -37,4 +38,5 @@ var Module = fx.Options(
 	fx.Provide(materi.NewMateriService),
 	fx.Provide(coaching.NewCoachingService),
 	fx.Provide(verifikasi.NewVerifikasiService),
+	fx.Provide(riskControl.NewRiskControService),
 )

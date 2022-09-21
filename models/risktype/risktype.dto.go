@@ -24,7 +24,7 @@ func (p RiskTypeRequest) ParseRequest() RiskType {
 	}
 }
 
-func (p RiskTypeResponse) ParseRequest() RiskType {
+func (p RiskTypeResponse) ParseResponse() RiskType {
 	return RiskType{
 		ID:           p.ID,
 		RiskTypeCode: p.RiskTypeCode,

@@ -20,6 +20,7 @@ var Module = fx.Options(
 	fx.Provide(NewMateriRoutes),
 	fx.Provide(NewCoachingRoutes),
 	fx.Provide(NewVerifikasiRoutes),
+	fx.Provide(NewRiskControlRoutes),
 )
 
 // Routes contains multiple routes
@@ -47,6 +48,7 @@ func NewRoutes(
 	materiRoutes MateriRoutes,
 	coachingRoutes CoachingRoutes,
 	verifikasiRoutes VerifikasiRoutes,
+	riskControlRoutes RiskControlRoutes,
 ) Routes {
 	return Routes{
 		userRoutes,
@@ -64,6 +66,7 @@ func NewRoutes(
 		materiRoutes,
 		coachingRoutes,
 		verifikasiRoutes,
+		riskControlRoutes,
 	}
 }
 

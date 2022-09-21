@@ -42,7 +42,7 @@ func (p RiskIndicatorRequest) ParseRequest() RiskIndicator {
 	}
 }
 
-func (p RiskIndicatorResponse) ParseRequest() RiskIndicator {
+func (p RiskIndicatorResponse) ParseResponse() RiskIndicator {
 	return RiskIndicator{
 		ID:                p.ID,
 		RiskIndicatorCode: p.RiskIndicatorCode,

@@ -24,7 +24,7 @@ func (p IncidentRequest) ParseRequest() Incident {
 	}
 }
 
-func (p IncidentResponse) ParseRequest() Incident {
+func (p IncidentResponse) ParseResponse() Incident {
 	return Incident{
 		ID:                p.ID,
 		KodeKejadian:      p.KodeKejadian,

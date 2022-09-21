@@ -20,6 +20,7 @@ func (s SubActivityRoutes) Setup() {
 		api.GET("/getAll", s.SubActivityController.GetAll)
 		api.GET("/getOne/:id", s.SubActivityController.GetOne)
 		api.GET("/getLastID/:id", s.SubActivityController.GetLastID)
+		api.GET("/getSubactivity/:id", s.SubActivityController.GetSubactivity)
 		api.POST("/store", s.SubActivityController.Store)
 		api.POST("/update", s.SubActivityController.Update)
 		api.POST("/delete/:id", s.SubActivityController.Delete)

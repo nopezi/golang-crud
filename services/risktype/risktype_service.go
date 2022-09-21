@@ -1,7 +1,6 @@
 package risktype
 
 import (
-	"fmt"
 	models "riskmanagement/models/risktype"
 	repository "riskmanagement/repository/risktype"
 
@@ -38,7 +37,7 @@ func (riskType RiskTypeService) GetOne(id int64) (responses models.RiskTypeRespo
 
 // Store implements RiskIssueDefinition
 func (riskType RiskTypeService) Store(request *models.RiskTypeRequest) (err error) {
-	fmt.Println("service = ", request)
+	// fmt.Println("service = ", request)
 	_, err = riskType.repository.Store(request)
 	return err
 }
