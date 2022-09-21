@@ -43,5 +43,6 @@ var Module = fx.Options(
 	fx.Provide(verifikasi.NewVerifikasiAnomaliRepository),
 	fx.Provide(verifikasi.NewVerifikasiPICRepository),
 	fx.Provide(verifikasi.NewVerfikasiFilesRepository),
+	fx.Provide(verifikasi.NewVerifikasiRiskControlRepository),
 	fx.Provide(riskcontrol.NewRiskControlRepository),
 )

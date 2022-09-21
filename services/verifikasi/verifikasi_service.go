@@ -33,14 +33,15 @@ type VerifikasiDefinition interface {
 }
 
 type VerifikasiService struct {
-	db                lib.Database
-	minio             minio.Minio
-	logger            logger.Logger
-	verifikasiRepo    verifikasi.VerifikasiDefinition
-	verifikasiAnomali verifikasi.VerifikasiAnomaliDefinition
-	verifikasiFile    verifikasi.VerifikasiFilesDefinition
-	verifikasiPIC     verifikasi.VerifikasiPICDefinition
-	fileRepo          fileRepo.FilesDefinition
+	db                    lib.Database
+	minio                 minio.Minio
+	logger                logger.Logger
+	verifikasiRepo        verifikasi.VerifikasiDefinition
+	verifikasiAnomali     verifikasi.VerifikasiAnomaliDefinition
+	verifikasiFile        verifikasi.VerifikasiFilesDefinition
+	verifikasiPIC         verifikasi.VerifikasiPICDefinition
+	verifikasiRiskControl verifikasi.VerifikasiRiskControlDefinition
+	fileRepo              fileRepo.FilesDefinition
 }
 
 func NewVerifikasiService(
@@ -51,17 +52,19 @@ func NewVerifikasiService(
 	verifikasiAnomali verifikasi.VerifikasiAnomaliDefinition,
 	verifikasiFile verifikasi.VerifikasiFilesDefinition,
 	verifikasiPIC verifikasi.VerifikasiPICDefinition,
+	verifikasiRiskControl verifikasi.VerifikasiRiskControlDefinition,
 	fileRepo fileRepo.FilesDefinition,
 ) VerifikasiDefinition {
 	return VerifikasiService{
-		db:                db,
-		minio:             minio,
-		logger:            logger,
-		verifikasiRepo:    verifikasiRepo,
-		verifikasiAnomali: verifikasiAnomali,
-		verifikasiFile:    verifikasiFile,
-		verifikasiPIC:     verifikasiPIC,
-		fileRepo:          fileRepo,
+		db:                    db,
+		minio:                 minio,
+		logger:                logger,
+		verifikasiRepo:        verifikasiRepo,
+		verifikasiAnomali:     verifikasiAnomali,
+		verifikasiFile:        verifikasiFile,
+		verifikasiPIC:         verifikasiPIC,
+		verifikasiRiskControl: verifikasiRiskControl,
+		fileRepo:              fileRepo,
 	}
 }
 
@@ -129,6 +132,7 @@ func (verifikasi VerifikasiService) GetOne(id int64) (responses models.Verifikas
 		data_anomali, err := verifikasi.verifikasiAnomali.GetOneByVerifikasi(dataVerif.ID)
 		files, err := verifikasi.verifikasiFile.GetOneFileByID(dataVerif.ID)
 		pic_tindak_lanjut, err := verifikasi.verifikasiPIC.GetOneByPIC(dataVerif.ID)
+		risk_control, err := verifikasi.verifikasiRiskControl.GetOneDataByID(dataVerif.ID)
 
 		responses = models.VerifikasiResponseGetOne{
 			ID:                        dataVerif.ID,
@@ -166,6 +170,7 @@ func (verifikasi VerifikasiService) GetOne(id int64) (responses models.Verifikas
 			DataAnomali:               data_anomali,
 			PICTindakLanjut:           pic_tindak_lanjut,
 			Files:                     files,
+			RiskControl:               risk_control,
 			UpdatedAt:                 dataVerif.UpdatedAt,
 			CreatedAt:                 dataVerif.CreatedAt,
 		}
@@ -252,6 +257,27 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 		return false, err
 	}
 	//End Input data anomali
+
+	//Begin Input Kelemahan Kontrol
+	if len(request.RiskControl) != 0 {
+		for _, value := range request.RiskControl {
+			_, err = verifikasi.verifikasiRiskControl.Store(&models.VerifikasiRiskControl{
+				VerifikasiId:  dataVerif.ID,
+				RiskControlID: value.RiskControlID,
+			}, tx)
+
+			if err != nil {
+				tx.Rollback()
+				verifikasi.logger.Zap.Error(err)
+				return false, err
+			}
+		}
+	} else {
+		tx.Rollback()
+		verifikasi.logger.Zap.Error(err)
+		return false, err
+	}
+	//End Input Kelemahan Kontrol
 
 	//Begin Input data PIC
 	if len(request.PICTindakLanjut) != 0 {
@@ -536,6 +562,35 @@ func (verifikasi VerifikasiService) UpdateAllVerifikasi(request *models.Verifika
 		}
 	}
 	//#update & add Anomali
+
+	//Update & add Risk Control
+	if len(request.RiskControl) != 0 {
+		for _, value := range request.RiskControl {
+			updateRiskControl := &models.VerifikasiRiskControl{
+				ID:            value.ID,
+				VerifikasiId:  request.ID,
+				RiskControlID: value.RiskControlID,
+			}
+
+			// fmt.Println(updateRiskControl)
+
+			_, err = verifikasi.verifikasiRiskControl.Store(updateRiskControl, tx)
+
+			if err != nil {
+				tx.Rollback()
+				verifikasi.logger.Zap.Error(err)
+				return false, err
+			}
+
+		}
+	} else {
+		if err != nil {
+			tx.Rollback()
+			verifikasi.logger.Zap.Error(err)
+			return false, err
+		}
+	}
+	//#Update & add Risk Control
 
 	//Update & add Data PIC Tindak Lanjut
 	if len(request.PICTindakLanjut) != 0 {
