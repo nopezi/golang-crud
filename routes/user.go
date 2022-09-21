@@ -25,7 +25,7 @@ func (s UserRoutes) Setup() {
 		api.POST("/login", s.userController.Login)
 		// api.GET("/getAll", s.userController.GetUser)
 		// api.GET("/getOne/:id", s.userController.GetOneUser)
-		// api.POST("/store", s.userController.SaveUser)
+		api.POST("/store", s.userController.SaveUser)
 		// api.POST("/store-no-trx", s.userController.SaveUserWOTrx)
 		// api.POST("/update/:id", s.userController.UpdateUser)
 		// api.DELETE("/delete/:id", s.userController.DeleteUser)

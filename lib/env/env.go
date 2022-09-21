@@ -1,6 +1,9 @@
 package env
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 // Env has environment stored
 type Env struct {
@@ -31,6 +34,7 @@ func NewEnv() Env {
 
 // LoadEnv loads environment
 func (env *Env) LoadEnv() {
+	fmt.Println("cek load env >> ", os.Getenv("DBUsername"))
 	env.ServerPort = os.Getenv("ServerPort")
 	env.Environment = os.Getenv("Environment")
 	env.LogOutput = os.Getenv("LogOutput")
