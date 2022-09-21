@@ -8,6 +8,7 @@ import (
 	incident "riskmanagement/repository/incident"
 	materi "riskmanagement/repository/materi"
 	product "riskmanagement/repository/product"
+	riskcontrol "riskmanagement/repository/riskcontrol"
 	riskIndicator "riskmanagement/repository/riskindicator"
 	riskIssue "riskmanagement/repository/riskissue"
 	riskType "riskmanagement/repository/risktype"
@@ -42,4 +43,5 @@ var Module = fx.Options(
 	fx.Provide(verifikasi.NewVerifikasiAnomaliRepository),
 	fx.Provide(verifikasi.NewVerifikasiPICRepository),
 	fx.Provide(verifikasi.NewVerfikasiFilesRepository),
+	fx.Provide(riskcontrol.NewRiskControlRepository),
 )

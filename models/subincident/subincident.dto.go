@@ -37,7 +37,7 @@ func (p SubIncidentRequest) ParseRequest() SubIncident {
 	}
 }
 
-func (p SubIncidentResponse) ParseRequest() SubIncident {
+func (p SubIncidentResponse) ParseResponse() SubIncident {
 	return SubIncident{
 		ID:                       p.ID,
 		KodeKejadian:             p.KodeKejadian,

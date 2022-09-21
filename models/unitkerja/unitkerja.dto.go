@@ -42,7 +42,7 @@ func (p UnitKerjaRequest) ParseRequest() UnitKerja {
 	}
 }
 
-func (p UnitKerjaResponse) ParseRequest() UnitKerja {
+func (p UnitKerjaResponse) ParseResponse() UnitKerja {
 	return UnitKerja{
 		ID:         p.ID,
 		KodeUker:   p.KodeUker,
