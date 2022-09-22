@@ -22,6 +22,7 @@ func (s VerifikasiRoutes) Setup() {
 		api.POST("/store", s.VerifikasiController.Store)
 		api.GET("/getOne/:id", s.VerifikasiController.GetOne)
 		api.POST("/deleteLampiran", s.VerifikasiController.DeleteLampiranVerifikasi)
+		api.POST("/filterVerifikasi", s.VerifikasiController.FilterVerifikasi)
 		api.POST("/delete", s.VerifikasiController.Delete)
 		api.POST("/konfirm", s.VerifikasiController.KonfirmSave)
 		api.POST("/update", s.VerifikasiController.UpdateAllVerifikasi)

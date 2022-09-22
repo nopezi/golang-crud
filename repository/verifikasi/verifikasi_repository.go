@@ -14,6 +14,7 @@ type VerifikasiDefinition interface {
 	GetAll() (responses []models.VerifikasiResponse, err error)
 	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponse, err error)
+	FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, err error)
 	Store(request *models.Verifikasi, tx *gorm.DB) (responses *models.Verifikasi, err error)
 	Delete(request *models.VerifikasiUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	DeleteAnomaliData(id int64, tx *gorm.DB) (err error)
@@ -118,16 +119,100 @@ func (verifikasi VerifikasiRepository) WithTrx(trxHandle *gorm.DB) VerifikasiRep
 }
 
 // DeleteLampiranVerifikasi implements VerifikasiDefinition
-func (VerifikasiRepository) DeleteLampiranVerifikasi(id int64, tx *gorm.DB) (err error) {
+func (verifikasi VerifikasiRepository) DeleteLampiranVerifikasi(id int64, tx *gorm.DB) (err error) {
 	return tx.Where("id = ?", id).Delete(&models.VerifikasiFilesRequest{}).Error
 }
 
 // KonfirmSave implements VerifikasiDefinition
-func (VerifikasiRepository) KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error) {
+func (verifikasi VerifikasiRepository) KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error) {
 	return true, tx.Save(&request).Error
 }
 
 // UpdateAllVerifikasi implements VerifikasiDefinition
-func (VerifikasiRepository) UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error) {
+func (verifikasi VerifikasiRepository) UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error) {
 	return true, tx.Save(&request).Error
+}
+
+// FilterVerifikasi implements VerifikasiDefinition
+func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, err error) {
+	where := " WHERE verif.deleted != 1"
+	whereCount := " WHERE verif.deleted != 1"
+
+	if request.NoPelaporan != "" {
+		where += " AND verif.no_pelaporan = '" + request.NoPelaporan + "'"
+		whereCount += " AND verif.no_pelaporan = '" + request.NoPelaporan + "'"
+	}
+
+	if request.UnitKerja != "" {
+		where += " AND verif.unit_kerja = '" + request.UnitKerja + "'"
+		whereCount += " AND verif.unit_kerja = '" + request.UnitKerja + "'"
+	}
+
+	if request.ActivityID != "" {
+		where += " AND verif.activity_id = '" + request.ActivityID + "'"
+		whereCount += " AND verif.activity_id = '" + request.ActivityID + "'"
+	}
+
+	if request.RiskIssueID != "" {
+		where += " AND verif.risk_issue_id = '" + request.RiskIssueID + "'"
+		whereCount += " AND verif.risk_issue_id = '" + request.RiskIssueID + "'"
+	}
+
+	if request.Status != "" && request.Status != "Semua" && request.Status != "Selesai" {
+		where += " AND verif.action = '" + request.Status + "'"
+		whereCount += " AND verif.action = '" + request.Status + "'"
+	}
+
+	if request.Status == "Selesai" {
+		where += " AND verif.status = '02b' AND (verif.action = 'Update' || verif.action = 'Selesai')"
+	}
+
+	if request.TglAwal != "" && request.TglAkhir != "" {
+		where += " AND CAST(created_at as date) BETWEEN '" + request.TglAwal + "' AND '" + request.TglAkhir + "'"
+		whereCount += " AND CAST(created_at as date) BETWEEN '" + request.TglAwal + "' AND '" + request.TglAkhir + "'"
+
+		// where += " AND CAST(created_at as date) >= '" + request.TglAwal + "' AND AND CAST(created_at as date) <= '" + request.TglAkhir + "'"
+		// whereCount += " AND CAST(created_at as date) >= '" + request.TglAwal + "' AND AND CAST(created_at as date) <= '" + request.TglAkhir + "'"
+	}
+
+	query := `SELECT
+				verif.id 'id',
+				verif.no_pelaporan 'no_pelaporan',
+				verif.unit_kerja 'unit_kerja',
+				act.name 'aktifitas',
+				CASE
+					WHEN verif.status = "01a" && verif.action = "Draft" THEN "Draft"
+					WHEN verif.status = "02b" && (verif.action = "Update" || verif.action ="Selesai")   THEN "Selesai"
+					ELSE "Delete"
+				END 'status_verif'
+			FROM verifikasi verif
+			JOIN activity act on verif.activity_id = act.id
+			` + where + ` GROUP BY verif.id`
+
+	verifikasi.logger.Zap.Info(query)
+	rows, err := verifikasi.dbRaw.DB.Query(query)
+
+	verifikasi.logger.Zap.Info("rows ", rows)
+	if err != nil {
+		return responses, err
+	}
+
+	response := models.VerifikasiListFilter{}
+	for rows.Next() {
+		_ = rows.Scan(
+			&response.ID,
+			&response.NoPelaporan,
+			&response.UnitKerja,
+			&response.Aktifitas,
+			&response.StatusVerif,
+		)
+		responses = append(responses, response)
+	}
+
+	if err = rows.Err(); err != nil {
+		return responses, err
+	}
+
+	return responses, err
+
 }

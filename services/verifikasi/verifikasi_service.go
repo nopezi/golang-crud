@@ -26,6 +26,7 @@ type VerifikasiDefinition interface {
 	GetAll() (responses []models.VerifikasiResponse, err error)
 	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponseGetOne, status bool, err error)
+	FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, err error)
 	Store(request models.VerifikasiRequest) (status bool, err error)
 	Delete(request *models.VerifikasiRequestUpdateMaintain) (response bool, err error)
 	KonfirmSave(request *models.VerifikasiUpdateMaintain) (response bool, err error)
@@ -627,6 +628,7 @@ func (verifikasi VerifikasiService) UpdateAllVerifikasi(request *models.Verifika
 	}
 	//#Update & add Data PIC Tindak Lanjut
 
+	//#Update Lampiran
 	bucket := os.Getenv("BUCKET_NAME")
 
 	if len(request.Files) != 0 {
@@ -694,7 +696,29 @@ func (verifikasi VerifikasiService) UpdateAllVerifikasi(request *models.Verifika
 		verifikasi.logger.Zap.Error(err)
 		return false, err
 	}
+	//#UpdateLampiran
 
 	tx.Commit()
 	return true, err
+}
+
+// FilterVerifikasi implements VerifikasiDefinition
+func (verifikasi VerifikasiService) FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, err error) {
+	dataVerif, err := verifikasi.verifikasiRepo.FilterVerifikasi(&request)
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+		return responses, err
+	}
+
+	for _, response := range dataVerif {
+		responses = append(responses, models.VerifikasiList{
+			ID:          response.ID.Int64,
+			NoPelaporan: response.NoPelaporan.String,
+			UnitKerja:   response.UnitKerja.String,
+			Aktifitas:   response.Aktifitas.String,
+			StatusVerif: response.StatusVerif.String,
+		})
+	}
+
+	return responses, err
 }

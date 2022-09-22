@@ -1,6 +1,9 @@
 package models
 
-import files "riskmanagement/models/files"
+import (
+	"riskmanagement/lib"
+	files "riskmanagement/models/files"
+)
 
 type VerifikasiRequest struct {
 	ID                        int64                              `json:"id"`
@@ -124,6 +127,14 @@ type VerifikasiList struct {
 	StatusVerif string `json:"status_verif"`
 }
 
+type VerifikasiListFilter struct {
+	ID          lib.NullInt64  `json:"id"`
+	NoPelaporan lib.NullString `json:"no_pelaporan"`
+	UnitKerja   lib.NullString `json:"unit_kerja"`
+	Aktifitas   lib.NullString `json:"aktifitas"`
+	StatusVerif lib.NullString `json:"status_verif"`
+}
+
 type VerifikasiResponseGetOne struct {
 	ID                        int64                                `json:"id"`
 	NoPelaporan               string                               `json:"no_pelaporan"`
@@ -210,6 +221,16 @@ type VerifikasiFileRequest struct {
 	FilesID              int64  `json:"files_id"`
 	VerifikasiLampiranID int64  `json:"verifikasi_lampiran_id"`
 	Path                 string `json:"path"`
+}
+
+type VerifikasiFilterRequest struct {
+	NoPelaporan string `json:"no_pelaporan"`
+	UnitKerja   string `json:"unit_kerja"`
+	ActivityID  string `json:"activity_id"`
+	RiskIssueID string `json:"risk_issue_id"`
+	Status      string `json:"status"`
+	TglAwal     string `json:"tgl_awal"`
+	TglAkhir    string `json:"tgl_akhir"`
 }
 
 func (v VerifikasiRequest) TableName() string {
