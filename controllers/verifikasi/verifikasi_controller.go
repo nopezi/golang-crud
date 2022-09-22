@@ -82,7 +82,7 @@ func (verifikasi VerifikasiController) Store(c *gin.Context) {
 
 	if !status {
 		verifikasi.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "500", "Internal Error status", false)
+		lib.ReturnToJson(c, 200, "500", "Internal Error status", err.Error())
 		return
 	}
 	lib.ReturnToJson(c, 200, "200", "Input data berhasil", true)

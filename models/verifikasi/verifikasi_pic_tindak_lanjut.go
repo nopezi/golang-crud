@@ -6,6 +6,7 @@ type VerifikasiPICTindakLanjut struct {
 	PICID                 int64
 	TanggalTindakLanjut   string
 	DeskripsiTindakLanjut string
+	Status                string
 	// CreatedAt             *string
 	// UpdatedAt             *string
 }

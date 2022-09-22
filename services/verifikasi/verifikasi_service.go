@@ -237,7 +237,7 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 		verifikasi.logger.Zap.Error(err)
 		return false, err
 	}
-	fmt.Println("data verifikasi : ", dataVerif)
+	// fmt.Println("data verifikasi : ", dataVerif)
 	//end data verifikasi
 
 	//Begin Input data anomali
@@ -294,7 +294,7 @@ func (verifikasi VerifikasiService) Store(request models.VerifikasiRequest) (sta
 				PICID:                 value.PICID,
 				TanggalTindakLanjut:   value.TanggalTindakLanjut,
 				DeskripsiTindakLanjut: value.DeskripsiTindakLanjut,
-				// CreatedAt:             &timeNow,
+				Status:                "01a",
 			}, tx)
 
 			if err != nil {
@@ -578,9 +578,6 @@ func (verifikasi VerifikasiService) UpdateAllVerifikasi(request *models.Verifika
 				VerifikasiId:  request.ID,
 				RiskControlID: value.RiskControlID,
 			}
-
-			// fmt.Println(updateRiskControl)
-
 			_, err = verifikasi.verifikasiRiskControl.Store(updateRiskControl, tx)
 
 			if err != nil {
