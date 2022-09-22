@@ -24,6 +24,7 @@ var (
 type VerifikasiDefinition interface {
 	WithTrx(trxHandle *gorm.DB) VerifikasiService
 	GetAll() (responses []models.VerifikasiResponse, err error)
+	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponseGetOne, status bool, err error)
 	Store(request models.VerifikasiRequest) (status bool, err error)
 	Delete(request *models.VerifikasiRequestUpdateMaintain) (response bool, err error)
@@ -119,6 +120,11 @@ func (verifikasi VerifikasiService) Delete(request *models.VerifikasiRequestUpda
 // GetAll implements VerifikasiDefinition
 func (verifikasi VerifikasiService) GetAll() (responses []models.VerifikasiResponse, err error) {
 	return verifikasi.verifikasiRepo.GetAll()
+}
+
+// GetListData implements VerifikasiDefinition
+func (verifikasi VerifikasiService) GetListData() (responses []models.VerifikasiList, err error) {
+	return verifikasi.verifikasiRepo.GetListData()
 }
 
 // GetOne implements VerifikasiDefinition
