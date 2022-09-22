@@ -116,6 +116,14 @@ type VerifikasiResponse struct {
 	CreatedAt                 *string `json:"created_at"`
 }
 
+type VerifikasiList struct {
+	ID          int64  `json:"id"`
+	NoPelaporan string `json:"no_pelaporan"`
+	UnitKerja   string `json:"unit_kerja"`
+	Aktifitas   string `json:"aktifitas"`
+	StatusVerif string `json:"status_verif"`
+}
+
 type VerifikasiResponseGetOne struct {
 	ID                        int64                                `json:"id"`
 	NoPelaporan               string                               `json:"no_pelaporan"`

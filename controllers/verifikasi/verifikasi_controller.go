@@ -44,6 +44,24 @@ func (verifikasi VerifikasiController) GetAll(c *gin.Context) {
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
 }
 
+func (verifikasi VerifikasiController) GetListData(c *gin.Context) {
+	datas, err := verifikasi.service.GetListData()
+
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "200", "Internal Error", "")
+		return
+	}
+
+	if len(datas) == 0 {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "500", "Data tidak ditemukan", "")
+		return
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
+}
+
 func (verifikasi VerifikasiController) Store(c *gin.Context) {
 	data := models.VerifikasiRequest{}
 

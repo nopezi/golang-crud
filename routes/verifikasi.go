@@ -18,6 +18,7 @@ func (s VerifikasiRoutes) Setup() {
 	api := s.handler.Gin.Group("/api/v1/verifikasi")
 	{
 		api.GET("/getAll", s.VerifikasiController.GetAll)
+		api.GET("/getListData", s.VerifikasiController.GetListData)
 		api.POST("/store", s.VerifikasiController.Store)
 		api.GET("/getOne/:id", s.VerifikasiController.GetOne)
 		api.POST("/deleteLampiran", s.VerifikasiController.DeleteLampiranVerifikasi)

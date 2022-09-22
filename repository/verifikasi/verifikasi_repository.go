@@ -12,6 +12,7 @@ import (
 type VerifikasiDefinition interface {
 	WithTrx(trxHandle *gorm.DB) VerifikasiRepository
 	GetAll() (responses []models.VerifikasiResponse, err error)
+	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponse, err error)
 	Store(request *models.Verifikasi, tx *gorm.DB) (responses *models.Verifikasi, err error)
 	Delete(request *models.VerifikasiUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
@@ -54,6 +55,35 @@ func (verifikasi VerifikasiRepository) DeleteAnomaliData(id int64, tx *gorm.DB) 
 // GetAll implements VerifikasiDefinition
 func (verifikasi VerifikasiRepository) GetAll() (responses []models.VerifikasiResponse, err error) {
 	return responses, verifikasi.db.DB.Find(&responses).Error
+}
+
+// GetListData implements VerifikasiDefinition
+func (verifikasi VerifikasiRepository) GetListData() (responses []models.VerifikasiList, err error) {
+	rows, err := verifikasi.db.DB.Raw(`
+		SELECT
+			verif.id 'id',
+			verif.no_pelaporan 'no_pelaporan',
+			verif.unit_kerja 'unit_kerja',
+			act.name 'aktifitas',
+			CASE
+				WHEN verif.status = "01a" && verif.action = "Draft" THEN "Draft"
+				WHEN verif.status = "02b" && (verif.action = "Update" || verif.action ="Selesai")   THEN "Selesai"
+				ELSE "Delete"
+			END 'status_verif'
+		FROM verifikasi verif
+		JOIN activity act on verif.activity_id = act.id
+		WHERE verif.deleted != 1
+		GROUP BY verif.id
+	`).Rows()
+
+	defer rows.Close()
+	var verif models.VerifikasiList
+	for rows.Next() {
+		verifikasi.db.DB.ScanRows(rows, &verif)
+		responses = append(responses, verif)
+	}
+
+	return responses, err
 }
 
 // GetOne implements VerifikasiDefinition
