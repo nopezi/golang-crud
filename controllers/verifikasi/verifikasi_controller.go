@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"database/sql"
+	"fmt"
 	"riskmanagement/lib"
 	models "riskmanagement/models/verifikasi"
 	services "riskmanagement/services/verifikasi"
@@ -211,4 +213,33 @@ func (verifikasi VerifikasiController) UpdateAllVerifikasi(c *gin.Context) {
 	}
 
 	lib.ReturnToJson(c, 200, "200", "Update data berhasil", true)
+}
+
+func (verifikasi VerifikasiController) FilterVerifikasi(c *gin.Context) {
+	requests := models.VerifikasiFilterRequest{}
+
+	if err := c.Bind(&requests); err != nil {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai : "+err.Error(), "")
+		return
+	}
+
+	datas, err := verifikasi.service.FilterVerifikasi(requests)
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+	}
+
+	if len(datas) == 0 {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", datas)
+		return
+	}
+
+	if err == sql.ErrNoRows {
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	fmt.Println("Filter Data =>", datas)
+	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", datas)
 }
