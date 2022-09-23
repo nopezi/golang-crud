@@ -2,6 +2,7 @@ package repository
 
 import (
 	activity "riskmanagement/repository/activity"
+	aplikasi "riskmanagement/repository/aplikasi"
 	briefing "riskmanagement/repository/briefing"
 	coaching "riskmanagement/repository/coaching"
 	files "riskmanagement/repository/files"
@@ -45,4 +46,5 @@ var Module = fx.Options(
 	fx.Provide(verifikasi.NewVerfikasiFilesRepository),
 	fx.Provide(verifikasi.NewVerifikasiRiskControlRepository),
 	fx.Provide(riskcontrol.NewRiskControlRepository),
+	fx.Provide(aplikasi.NewAplikasiRepository),
 )

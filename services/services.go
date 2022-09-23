@@ -2,6 +2,7 @@ package services
 
 import (
 	activity "riskmanagement/services/activity"
+	aplikasi "riskmanagement/services/aplikasi"
 	auth "riskmanagement/services/auth"
 	briefing "riskmanagement/services/briefing"
 	coaching "riskmanagement/services/coaching"
@@ -39,4 +40,5 @@ var Module = fx.Options(
 	fx.Provide(coaching.NewCoachingService),
 	fx.Provide(verifikasi.NewVerifikasiService),
 	fx.Provide(riskControl.NewRiskControService),
+	fx.Provide(aplikasi.NewAplikasiService),
 )

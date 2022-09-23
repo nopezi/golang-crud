@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2022 at 03:52 AM
+-- Generation Time: Sep 23, 2022 at 05:50 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -52,6 +52,32 @@ INSERT INTO `activity` (`id`, `kode_activity`, `name`, `create_at`, `update_at`)
 (10, '10', 'TREASURY', '2022-08-15 08:15:18', NULL),
 (11, '11', 'IT', '2022-08-15 08:15:34', NULL),
 (12, '12', 'Invesment Service', '2022-08-15 08:15:46', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `aplikasi`
+--
+
+CREATE TABLE `aplikasi` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(20) NOT NULL,
+  `application_name` varchar(200) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `aplikasi`
+--
+
+INSERT INTO `aplikasi` (`id`, `kode`, `application_name`, `created_at`, `updated_at`) VALUES
+(1, 'APP-1', 'Brispot', '2022-09-23 09:49:53', NULL),
+(2, 'APP-2', 'NDS', '2022-09-23 09:50:06', NULL),
+(3, 'APP-3', 'WBS', '2022-09-23 09:50:23', NULL),
+(4, 'APP-4', 'Brinet Express', '2022-09-23 09:51:15', NULL),
+(5, 'APP-5', 'Web Brinet', '2022-09-23 09:52:42', NULL),
+(6, 'APP-6', 'Mass Debet', '2022-09-23 09:53:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -222,8 +248,13 @@ CREATE TABLE `files` (
 
 INSERT INTO `files` (`id`, `filename`, `path`, `extension`, `size`, `created_at`, `updated_at`) VALUES
 (1, 'Risk Awarness.txt', 'verifikasi/2022/9/21/Risk Awarness.txt', 'plain/text', '50', NULL, '2022-09-21 14:34:12'),
-(2, 'Risk Awarness.txt', 'materi/2022/9/20/Risk Awarness.txt', 'text document', '6748', '2022-09-20 09:09:45', NULL),
-(3, 'Risk Awarness.txt', 'verifikasi/2022/9/21/Risk Awarness.txt', 'plain/text', '6748', '2022-09-21 14:04:40', NULL);
+(2, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '50', NULL, '2022-09-22 11:49:08'),
+(3, 'Risk Awarness.txt', 'verifikasi/2022/9/21/Risk Awarness.txt', 'plain/text', '6748', '2022-09-21 14:04:40', NULL),
+(4, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '6748', '2022-09-22 11:49:08', NULL),
+(5, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '6748', '2022-09-22 11:49:08', NULL),
+(6, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '6748', '2022-09-22 13:42:16', NULL),
+(7, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '6748', '2022-09-22 14:41:34', NULL),
+(8, 'Risk Awarness.txt', 'verifikasi/2022/9/22/Risk Awarness.txt', 'plain/text', '6748', '2022-09-22 15:12:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -234,7 +265,7 @@ INSERT INTO `files` (`id`, `filename`, `path`, `extension`, `size`, `created_at`
 CREATE TABLE `incident_cause` (
   `id` int(10) UNSIGNED NOT NULL,
   `kode_kejadian` varchar(100) NOT NULL,
-  `penyebab_kejadian1` varchar(100) NOT NULL,
+  `penyebab_kejadian` varchar(100) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -243,7 +274,7 @@ CREATE TABLE `incident_cause` (
 -- Dumping data for table `incident_cause`
 --
 
-INSERT INTO `incident_cause` (`id`, `kode_kejadian`, `penyebab_kejadian1`, `created_at`, `updated_at`) VALUES
+INSERT INTO `incident_cause` (`id`, `kode_kejadian`, `penyebab_kejadian`, `created_at`, `updated_at`) VALUES
 (1, 'PK1.MOP.0001', 'Sumber Daya Manusia', '2022-08-16 11:41:02', NULL),
 (2, 'PK1.MOP.0002', 'Proses Bisnis', '2022-08-16 11:41:36', NULL),
 (3, 'PK1.MOP.0003', 'Sistem IT atau Teknologi & Sistem', '2022-08-16 11:42:16', NULL),
@@ -765,7 +796,12 @@ CREATE TABLE `verifikasi` (
 --
 
 INSERT INTO `verifikasi` (`id`, `no_pelaporan`, `unit_kerja`, `activity_id`, `sub_activity_id`, `product_id`, `risk_issue_id`, `risk_indicator_id`, `incident_cause_id`, `sub_incident_cause_id`, `application_id`, `hasil_verifikasi`, `kunjungan_nasabah`, `indikasi_fraud`, `jenis_kerugian_finansial`, `jumlah_perkiraan_kerugian`, `jenis_kerugian_non_finansial`, `rekomendasi_tindak_lanjut`, `rencana_tindak_lanjut`, `risk_type_id`, `tanggal_ditemukan`, `tanggal_mulai_rtl`, `tanggal_target_selesai`, `maker_id`, `maker_desc`, `maker_date`, `last_maker_id`, `last_maker_desc`, `last_maker_date`, `status`, `action`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 'VER-50046567-010922-0001', 'Kantor Cabang Khusus', 1, 1, 1, 1, 1, 1, 1, 1, 'Verifikasi ininih', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '', '', NULL, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-21 14:34:12', '02b', 'Update', 0, '2022-09-21 14:04:40', '2022-09-21 14:34:12');
+(1, 'VER-50046567-010922-0001', 'Kantor Cabang Khusus', 1, 1, 1, 1, 1, 1, 1, 1, 'Verifikasi ininih', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '', '', NULL, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-21 14:34:12', '02b', 'Update', 0, '2022-09-21 14:04:40', '2022-09-21 14:34:12'),
+(2, 'VER-50046567-010922-0002', 'Kantor Cabang Khusus', 1, 2, 2, 2, 1, 1, 1, 1, 'ini hasil dari verifikasi', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '', '', NULL, '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 11:49:08', '02b', 'Update', 0, '2022-09-22 11:49:08', '2022-09-22 11:49:08'),
+(3, 'VER-50046567-010922-0003', 'Kantor Cabang Medan', 1, 2, 2, 2, 1, 1, 1, 1, 'ini hasil dari verifikasi', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 11:49:08', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 11:49:08', '01a', 'Draft', 0, '2022-09-22 11:49:08', NULL),
+(4, 'VER-50046567-010922-0004', 'Kantor Cabang Medan', 2, 2, 2, 2, 2, 2, 2, 1, 'ini hasil dari verifikasi', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 13:42:16', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 13:42:16', '01a', 'Draft', 0, '2022-09-22 13:42:16', NULL),
+(5, 'VER-50046567-010922-0004', 'Kantor Cabang Medan', 2, 2, 2, 2, 2, 2, 2, 1, 'ini hasil dari verifikasi', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 14:41:34', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 14:41:34', '01a', 'Draft', 0, '2022-09-22 14:41:34', NULL),
+(6, 'VER-50046567-010922-0004', 'Kantor Cabang Medan', 2, 2, 2, 2, 2, 2, 2, 1, 'ini hasil dari verifikasi', 1, 1, 1, 200000000, 'ada deh', 'apaan ya', 'apaan ya', 1, '2022-09-01 13:37:00', '2022-09-01 13:37:00', '2022-09-30 00:00:00', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 15:12:06', '00304155', '00304155 | Feb\'hana Faradilla Bimantari | Teller', '2022-09-22 15:12:06', '01a', 'Draft', 0, '2022-09-22 15:12:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -787,7 +823,14 @@ CREATE TABLE `verifikasi_data_anomali` (
 --
 
 INSERT INTO `verifikasi_data_anomali` (`id`, `verifikasi_id`, `tanggal_kejadian`, `nomor_rekening`, `nominal`, `keterangan`) VALUES
-(1, 1, '2022-09-01 13:37:00', '54321123456', 200000000, 'Data transfer Tidak Normal');
+(1, 1, '2022-09-01 13:37:00', '54321123456', 200000000, 'Data transfer Tidak Normal'),
+(2, 2, '2022-09-01 13:37:00', '54321123456', 200000000, 'SCAMMING'),
+(3, 2, '2022-09-01 13:37:00', '54321123123', 50000000, 'FRAUD INTERNAL'),
+(4, 3, '2022-09-01 13:37:00', '54321123456', 200000000, 'SCAMMING'),
+(5, 3, '2022-09-01 13:37:00', '54321123123', 50000000, 'FRAUD INTERNAL'),
+(6, 4, '2022-09-01 13:37:00', '54321123456', 200000000, 'SCAMMING'),
+(7, 5, '2022-09-01 13:37:00', '54321123456', 200000000, 'SCAMMING'),
+(8, 6, '2022-09-01 13:37:00', '54321123456', 200000000, 'SCAMMING');
 
 -- --------------------------------------------------------
 
@@ -806,7 +849,12 @@ CREATE TABLE `verifikasi_lampiran` (
 --
 
 INSERT INTO `verifikasi_lampiran` (`id`, `verifikasi_id`, `files_id`) VALUES
-(5, 1, 1);
+(5, 1, 1),
+(9, 2, 2),
+(10, 3, 5),
+(11, 4, 6),
+(12, 5, 7),
+(13, 6, 8);
 
 -- --------------------------------------------------------
 
@@ -828,7 +876,12 @@ CREATE TABLE `verifikasi_pic_tindak_lanjut` (
 --
 
 INSERT INTO `verifikasi_pic_tindak_lanjut` (`id`, `verifikasi_id`, `pic_id`, `tanggal_tindak_lanjut`, `deskripsi_tindak_lanjut`, `status`) VALUES
-(1, 1, 1, '2022-09-30 00:00:00', 'Akan dilakukan coaching lanjutan', '');
+(1, 1, 1, '2022-09-30 00:00:00', 'Akan dilakukan coaching lanjutan', '01a'),
+(2, 2, 2, '2022-09-30 00:00:00', 'Akan dilakukan coaching lanjutan', '01a'),
+(3, 3, 1, '2022-09-30 00:00:00', 'Akan ditindak lanjuti', '01a'),
+(4, 4, 1, '2022-09-30 00:00:00', 'Akan ditindak lanjuti', '01a'),
+(5, 5, 1, '2022-09-30 00:00:00', 'Akan ditindak lanjuti', '01a'),
+(6, 6, 1, '2022-09-30 00:00:00', 'Akan ditindak lanjuti', '01a');
 
 -- --------------------------------------------------------
 
@@ -847,7 +900,12 @@ CREATE TABLE `verifikasi_risk_control` (
 --
 
 INSERT INTO `verifikasi_risk_control` (`id`, `verifikasi_id`, `risk_control_id`) VALUES
-(1, 1, 2);
+(1, 1, 2),
+(2, 2, 2),
+(3, 3, 2),
+(4, 4, 2),
+(5, 5, 2),
+(6, 6, 2);
 
 --
 -- Indexes for dumped tables
@@ -857,6 +915,12 @@ INSERT INTO `verifikasi_risk_control` (`id`, `verifikasi_id`, `risk_control_id`)
 -- Indexes for table `activity`
 --
 ALTER TABLE `activity`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `aplikasi`
+--
+ALTER TABLE `aplikasi`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1008,6 +1072,12 @@ ALTER TABLE `activity`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- AUTO_INCREMENT for table `aplikasi`
+--
+ALTER TABLE `aplikasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `briefing`
 --
 ALTER TABLE `briefing`
@@ -1035,7 +1105,7 @@ ALTER TABLE `coaching_activity`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `incident_cause`
@@ -1113,31 +1183,31 @@ ALTER TABLE `unit_kerja`
 -- AUTO_INCREMENT for table `verifikasi`
 --
 ALTER TABLE `verifikasi`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_data_anomali`
 --
 ALTER TABLE `verifikasi_data_anomali`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_lampiran`
 --
 ALTER TABLE `verifikasi_lampiran`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_pic_tindak_lanjut`
 --
 ALTER TABLE `verifikasi_pic_tindak_lanjut`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_risk_control`
 --
 ALTER TABLE `verifikasi_risk_control`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

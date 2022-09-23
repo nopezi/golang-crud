@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"fmt"
 	"riskmanagement/lib"
 	models "riskmanagement/models/subincident"
@@ -51,6 +52,35 @@ func (subIncident SubIncidentController) GetOne(c *gin.Context) {
 	}
 
 	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhsil", data)
+}
+
+func (subIncident SubIncidentController) GetSubIncidentByID(c *gin.Context) {
+	requests := models.SubIncidentFilterRequest{}
+
+	if err := c.Bind(&requests); err != nil {
+		subIncident.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input tidak sesuai :"+err.Error(), "")
+		return
+	}
+
+	datas, err := subIncident.service.GetSubIncidentByID(requests)
+	if err != nil {
+		subIncident.logger.Zap.Error(err)
+	}
+
+	if len(datas) == 0 {
+		subIncident.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data tidak ditemukan", datas)
+		return
+	}
+
+	if err == sql.ErrNoRows {
+		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
+		return
+	}
+
+	fmt.Println("SubIncident =>", datas)
+	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
 }
 
 func (subIncident SubIncidentController) Store(c *gin.Context) {

@@ -1,36 +1,36 @@
 package models
 
 type IncidentRequest struct {
-	ID                int64   `json:"id"`
-	KodeKejadian      string  `json:"kode_kejadian"`
-	PenyebabKejadian1 string  `json:"penyebab_kejadian1"`
-	CreatedAt         *string `json:"created_at"`
-	UpdatedAt         *string `json:"updated_at"`
+	ID               int64   `json:"id"`
+	KodeKejadian     string  `json:"kode_kejadian"`
+	PenyebabKejadian string  `json:"penyebab_kejadian"`
+	CreatedAt        *string `json:"created_at"`
+	UpdatedAt        *string `json:"updated_at"`
 }
 
 type IncidentResponse struct {
-	ID                int64   `json:"id"`
-	KodeKejadian      string  `json:"kode_kejadian"`
-	PenyebabKejadian1 string  `json:"penyebab_kejadian1"`
-	CreatedAt         *string `json:"created_at"`
-	UpdatedAt         *string `json:"updated_at"`
+	ID               int64   `json:"id"`
+	KodeKejadian     string  `json:"kode_kejadian"`
+	PenyebabKejadian string  `json:"penyebab_kejadian"`
+	CreatedAt        *string `json:"created_at"`
+	UpdatedAt        *string `json:"updated_at"`
 }
 
 func (p IncidentRequest) ParseRequest() Incident {
 	return Incident{
-		ID:                p.ID,
-		KodeKejadian:      p.KodeKejadian,
-		PenyebabKejadian1: p.PenyebabKejadian1,
+		ID:               p.ID,
+		KodeKejadian:     p.KodeKejadian,
+		PenyebabKejadian: p.PenyebabKejadian,
 	}
 }
 
 func (p IncidentResponse) ParseResponse() Incident {
 	return Incident{
-		ID:                p.ID,
-		KodeKejadian:      p.KodeKejadian,
-		PenyebabKejadian1: p.PenyebabKejadian1,
-		CreatedAt:         p.CreatedAt,
-		UpdatedAt:         p.UpdatedAt,
+		ID:               p.ID,
+		KodeKejadian:     p.KodeKejadian,
+		PenyebabKejadian: p.PenyebabKejadian,
+		CreatedAt:        p.CreatedAt,
+		UpdatedAt:        p.UpdatedAt,
 	}
 }
 

@@ -13,6 +13,7 @@ type SubIncidentDefinition interface {
 	// GetAll() (responses []models.SubIncidentResponse, err error)
 	GetAll() (responses []models.SubIncidentResponses, err error)
 	GetOne(id int64) (responses models.SubIncidentResponse, err error)
+	GetSubIncidentByID(requests *models.SubIncidentFilterRequest) (responses []models.SubIncidentListFilter, err error)
 	Store(request *models.SubIncidentRequest) (responses bool, err error)
 	Update(request *models.SubIncidentRequest) (responses bool, err error)
 	Delete(id int64) (err error)
@@ -21,9 +22,54 @@ type SubIncidentDefinition interface {
 
 type SubIncidentRepository struct {
 	db      lib.Database
-	dbRaw   lib.Database
+	dbRaw   lib.Databases
 	logger  logger.Logger
 	timeout time.Duration
+}
+
+// GetSubIncidentByID implements SubIncidentDefinition
+func (subIncident SubIncidentRepository) GetSubIncidentByID(requests *models.SubIncidentFilterRequest) (responses []models.SubIncidentListFilter, err error) {
+	if requests.KodeKejadian != "" {
+		where := " WHERE sub.kode_kejadian = '" + requests.KodeKejadian + "'"
+		query := `SELECT
+				sub.id 'id',
+				sub.kode_kejadian 'kode_kejadian',
+				inc.penyebab_kejadian 'penyebab_kejadian',
+				sub.kode_sub_kejadian 'kode_sub_kejadian',
+				sub.kriteria_penyebab_kejadian 'kriteria_penyebab_kejadian',
+				sub.created_at 'created_at',
+				sub.updated_at 'updated_at'
+			FROM sub_incident_cause sub
+			JOIN incident_cause inc ON inc.kode_kejadian = sub.kode_kejadian` + where
+
+		subIncident.logger.Zap.Info(query)
+		rows, err := subIncident.dbRaw.DB.Query(query)
+
+		subIncident.logger.Zap.Info("rows =>", rows)
+		if err != nil {
+			return responses, err
+		}
+
+		response := models.SubIncidentListFilter{}
+		for rows.Next() {
+			_ = rows.Scan(
+				&response.ID,
+				&response.KodeKejadian,
+				&response.PenyebabKejadian,
+				&response.KodeSubKejadian,
+				&response.KriteriaPenyebabKejadian,
+				&response.CreatedAt,
+				&response.UpdatedAt,
+			)
+			responses = append(responses, response)
+		}
+
+		if err = rows.Err(); err != nil {
+			return responses, err
+		}
+	}
+
+	return responses, err
 }
 
 // Delete implements SubIncidentDefinition
@@ -40,7 +86,7 @@ func (subIncident SubIncidentRepository) GetAll() (responses []models.SubInciden
 		SELECT
 			sub.id 'id',
 			sub.kode_kejadian 'kode_kejadian',
-			inc.penyebab_kejadian1 'penyebab_kejadian',
+			inc.penyebab_kejadian 'penyebab_kejadian',
 			sub.kode_sub_kejadian 'kode_sub_kejadian',
 			sub.kriteria_penyebab_kejadian 'kriteria_penyebab_kejadian',
 			sub.created_at 'created_at',
@@ -103,7 +149,7 @@ func (subIncident SubIncidentRepository) WithTrx(trxHandle *gorm.DB) SubIncident
 
 func NewSubIncidentRepository(
 	db lib.Database,
-	dbRaw lib.Database,
+	dbRaw lib.Databases,
 	logger logger.Logger,
 ) SubIncidentDefinition {
 	return SubIncidentRepository{
