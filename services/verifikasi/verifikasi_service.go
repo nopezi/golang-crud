@@ -26,7 +26,7 @@ type VerifikasiDefinition interface {
 	GetAll() (responses []models.VerifikasiResponse, err error)
 	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponseGetOne, status bool, err error)
-	FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, err error)
+	FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, pangination lib.Pagination, err error)
 	Store(request models.VerifikasiRequest) (status bool, err error)
 	Delete(request *models.VerifikasiRequestUpdateMaintain) (response bool, err error)
 	KonfirmSave(request *models.VerifikasiUpdateMaintain) (response bool, err error)
@@ -700,11 +700,15 @@ func (verifikasi VerifikasiService) UpdateAllVerifikasi(request *models.Verifika
 }
 
 // FilterVerifikasi implements VerifikasiDefinition
-func (verifikasi VerifikasiService) FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, err error) {
-	dataVerif, err := verifikasi.verifikasiRepo.FilterVerifikasi(&request)
+func (verifikasi VerifikasiService) FilterVerifikasi(request models.VerifikasiFilterRequest) (responses []models.VerifikasiList, pangination lib.Pagination, err error) {
+	offset, page, limit, order, sort := lib.SetPaginationParameter(request.Page, request.Limit, request.Order, request.Sort)
+	request.Offset = offset
+	request.Order = order
+	request.Sort = sort
+	dataVerif, totalRows, totalData, err := verifikasi.verifikasiRepo.FilterVerifikasi(&request)
 	if err != nil {
 		verifikasi.logger.Zap.Error(err)
-		return responses, err
+		return responses, pangination, err
 	}
 
 	for _, response := range dataVerif {
@@ -717,5 +721,7 @@ func (verifikasi VerifikasiService) FilterVerifikasi(request models.VerifikasiFi
 		})
 	}
 
-	return responses, err
+	pangination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
+
+	return responses, pangination, err
 }

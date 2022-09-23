@@ -1,6 +1,7 @@
 package verifikasi
 
 import (
+	"math"
 	"riskmanagement/lib"
 	models "riskmanagement/models/verifikasi"
 	"time"
@@ -14,7 +15,7 @@ type VerifikasiDefinition interface {
 	GetAll() (responses []models.VerifikasiResponse, err error)
 	GetListData() (responses []models.VerifikasiList, err error)
 	GetOne(id int64) (responses models.VerifikasiResponse, err error)
-	FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, err error)
+	FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, totalRows int, totalData int, err error)
 	Store(request *models.Verifikasi, tx *gorm.DB) (responses *models.Verifikasi, err error)
 	Delete(request *models.VerifikasiUpdateDelete, include []string, tx *gorm.DB) (responses bool, err error)
 	DeleteAnomaliData(id int64, tx *gorm.DB) (err error)
@@ -134,7 +135,7 @@ func (verifikasi VerifikasiRepository) UpdateAllVerifikasi(request *models.Verif
 }
 
 // FilterVerifikasi implements VerifikasiDefinition
-func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, err error) {
+func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.VerifikasiFilterRequest) (responses []models.VerifikasiListFilter, totalRows int, totalData int, err error) {
 	where := " WHERE verif.deleted != 1"
 	whereCount := " WHERE verif.deleted != 1"
 
@@ -187,14 +188,14 @@ func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.Verifika
 				END 'status_verif'
 			FROM verifikasi verif
 			JOIN activity act on verif.activity_id = act.id
-			` + where + ` GROUP BY verif.id`
+			` + where + ` ORDER BY id desc LIMIT ? OFFSET ?`
 
 	verifikasi.logger.Zap.Info(query)
-	rows, err := verifikasi.dbRaw.DB.Query(query)
+	rows, err := verifikasi.dbRaw.DB.Query(query, request.Limit, request.Offset)
 
 	verifikasi.logger.Zap.Info("rows ", rows)
 	if err != nil {
-		return responses, err
+		return responses, totalRows, totalData, err
 	}
 
 	response := models.VerifikasiListFilter{}
@@ -210,9 +211,17 @@ func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.Verifika
 	}
 
 	if err = rows.Err(); err != nil {
-		return responses, err
+		return responses, totalRows, totalData, err
 	}
 
-	return responses, err
+	paginateQuery := `SELECT count(*) FROM verifikasi verif
+					JOIN activity act on verif.activity_id = act.id` + whereCount + ` GROUP BY verif.id`
+
+	err = verifikasi.dbRaw.DB.QueryRow(paginateQuery).Scan(&totalRows)
+
+	result := float64(totalRows) / float64(request.Limit)
+	resultFinal := int(math.Ceil(result))
+
+	return responses, resultFinal, totalRows, err
 
 }
