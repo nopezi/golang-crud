@@ -224,16 +224,21 @@ func (verifikasi VerifikasiController) FilterVerifikasi(c *gin.Context) {
 		return
 	}
 
-	datas, err := verifikasi.service.FilterVerifikasi(requests)
+	datas, pagination, err := verifikasi.service.FilterVerifikasi(requests)
 	if err != nil {
 		verifikasi.logger.Zap.Error(err)
 	}
 
-	if len(datas) == 0 {
-		verifikasi.logger.Zap.Error(err)
-		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", datas)
+	if pagination.Total == 0 {
+		lib.ReturnToJson(c, 200, "404", "Data Kosong", datas)
 		return
 	}
+
+	// if len(datas) == 0 {
+	// 	verifikasi.logger.Zap.Error(err)
+	// 	lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", datas)
+	// 	return
+	// }
 
 	if err == sql.ErrNoRows {
 		lib.ReturnToJson(c, 200, "500", "Internal Error", "")
@@ -241,5 +246,6 @@ func (verifikasi VerifikasiController) FilterVerifikasi(c *gin.Context) {
 	}
 
 	fmt.Println("Filter Data =>", datas)
-	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", datas)
+	// lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", datas)
+	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquery Data Berhasil", datas, pagination)
 }

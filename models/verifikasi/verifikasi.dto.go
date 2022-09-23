@@ -224,6 +224,11 @@ type VerifikasiFileRequest struct {
 }
 
 type VerifikasiFilterRequest struct {
+	Order       string `json:"order"`
+	Sort        string `json:"sort"`
+	Offset      int    `json:"offset"`
+	Limit       int    `json:"limit"`
+	Page        int    `json:"page"`
 	NoPelaporan string `json:"no_pelaporan"`
 	UnitKerja   string `json:"unit_kerja"`
 	ActivityID  string `json:"activity_id"`
