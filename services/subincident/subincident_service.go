@@ -11,6 +11,7 @@ type SubIncidentDefinition interface {
 	// GetAll() (responses []models.SubIncidentResponse, err error)
 	GetAll() (responses []models.SubIncidentResponses, err error)
 	GetOne(id int64) (responses models.SubIncidentResponse, err error)
+	GetSubIncidentByID(requests models.SubIncidentFilterRequest) (responses []models.SubIncidentResponses, err error)
 	Store(request *models.SubIncidentRequest) (err error)
 	Update(request *models.SubIncidentRequest) (err error)
 	Delete(id int64) (err error)
@@ -37,6 +38,29 @@ func (subIncident SubIncidentService) Delete(id int64) (err error) {
 // func (subIncident SubIncidentService) GetAll() (responses []models.SubIncidentResponse, err error) {
 // 	return subIncident.repository.GetAll()
 // }
+
+// GetSubIncidentByID implements SubIncidentDefinition
+func (subIncident SubIncidentService) GetSubIncidentByID(request models.SubIncidentFilterRequest) (responses []models.SubIncidentResponses, err error) {
+	dataSubIncident, err := subIncident.repository.GetSubIncidentByID(&request)
+	if err != nil {
+		subIncident.logger.Zap.Error(err)
+		return responses, err
+	}
+
+	for _, response := range dataSubIncident {
+		responses = append(responses, models.SubIncidentResponses{
+			ID:                       response.ID.Int64,
+			KodeKejadian:             response.KodeKejadian.String,
+			PenyebabKejadian:         response.PenyebabKejadian.String,
+			KodeSubKejadian:          response.KodeSubKejadian.String,
+			KriteriaPenyebabKejadian: response.KriteriaPenyebabKejadian.String,
+			CreatedAt:                &response.CreatedAt.String,
+			UpdatedAt:                &response.UpdatedAt.String,
+		})
+	}
+
+	return responses, err
+}
 
 func (subIncident SubIncidentService) GetAll() (responses []models.SubIncidentResponses, err error) {
 	return subIncident.repository.GetAll()

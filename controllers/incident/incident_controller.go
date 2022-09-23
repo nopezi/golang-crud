@@ -33,6 +33,7 @@ func (incident IncidentController) GetAll(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", datas)
 }
+
 func (incident IncidentController) GetOne(c *gin.Context) {
 	paramID := c.Param("id")
 	id, err := strconv.Atoi(paramID)
@@ -50,6 +51,7 @@ func (incident IncidentController) GetOne(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Inquery data berhasil", data)
 }
+
 func (incident IncidentController) Store(c *gin.Context) {
 	data := models.IncidentRequest{}
 
@@ -67,6 +69,7 @@ func (incident IncidentController) Store(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Input data berhasil", data)
 }
+
 func (incident IncidentController) Update(c *gin.Context) {
 	data := models.IncidentRequest{}
 
@@ -83,6 +86,7 @@ func (incident IncidentController) Update(c *gin.Context) {
 	}
 	lib.ReturnToJson(c, 200, "200", "Update data berhasil", data)
 }
+
 func (incident IncidentController) Delete(c *gin.Context) {
 	paramID := c.Param("id")
 	id, err := strconv.Atoi(paramID)

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	activity "riskmanagement/controllers/activity"
+	aplikasi "riskmanagement/controllers/aplikasi"
 	auth "riskmanagement/controllers/auth"
 	briefing "riskmanagement/controllers/briefing"
 	coaching "riskmanagement/controllers/coaching"
@@ -39,4 +40,5 @@ var Module = fx.Options(
 	fx.Provide(coaching.NewCoachingController),
 	fx.Provide(verifikasi.NewVerifikasiController),
 	fx.Provide(riskControl.NewRiskControlController),
+	fx.Provide(aplikasi.NewAplikasiController),
 )

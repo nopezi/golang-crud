@@ -19,6 +19,7 @@ func (s SubIncidentRoutes) Setup() {
 	{
 		api.GET("/getAll", s.SubIncidentController.GetAll)
 		api.GET("/getOne/:id", s.SubIncidentController.GetOne)
+		api.POST("/getSubIncidentByID", s.SubIncidentController.GetSubIncidentByID)
 		api.POST("/store", s.SubIncidentController.Store)
 		api.POST("/update", s.SubIncidentController.Update)
 		api.DELETE("/delete/:id", s.SubIncidentController.Delete)

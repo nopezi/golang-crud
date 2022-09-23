@@ -44,9 +44,9 @@ func (incident IncidentRepository) GetOne(id int64) (responses models.IncidentRe
 func (incident IncidentRepository) Store(request *models.IncidentRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return responses, incident.db.DB.Save(&models.IncidentRequest{
-		KodeKejadian:      request.KodeKejadian,
-		PenyebabKejadian1: request.PenyebabKejadian1,
-		CreatedAt:         &timeNow,
+		KodeKejadian:     request.KodeKejadian,
+		PenyebabKejadian: request.PenyebabKejadian,
+		CreatedAt:        &timeNow,
 	}).Error
 }
 
@@ -54,11 +54,11 @@ func (incident IncidentRepository) Store(request *models.IncidentRequest) (respo
 func (incident IncidentRepository) Update(request *models.IncidentRequest) (responses bool, err error) {
 	timeNow := lib.GetTimeNow("timestime")
 	return true, incident.db.DB.Save(&models.IncidentRequest{
-		ID:                request.ID,
-		KodeKejadian:      request.KodeKejadian,
-		PenyebabKejadian1: request.PenyebabKejadian1,
-		CreatedAt:         request.CreatedAt,
-		UpdatedAt:         &timeNow,
+		ID:               request.ID,
+		KodeKejadian:     request.KodeKejadian,
+		PenyebabKejadian: request.PenyebabKejadian,
+		CreatedAt:        request.CreatedAt,
+		UpdatedAt:        &timeNow,
 	}).Error
 }
 
