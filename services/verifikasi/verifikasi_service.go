@@ -32,6 +32,7 @@ type VerifikasiDefinition interface {
 	KonfirmSave(request *models.VerifikasiUpdateMaintain) (response bool, err error)
 	DeleteLampiranVerifikasi(request *models.VerifikasiFileRequest) (status bool, err error)
 	UpdateAllVerifikasi(request *models.VerifikasiRequestMaintain) (status bool, err error)
+	GetNoPelaporan(request models.NoPalaporanRequest) (responses []models.NoPelaporanResponse, err error)
 }
 
 type VerifikasiService struct {
@@ -724,4 +725,23 @@ func (verifikasi VerifikasiService) FilterVerifikasi(request models.VerifikasiFi
 	pangination = lib.SetPaginationResponse(page, limit, totalRows, totalData)
 
 	return responses, pangination, err
+}
+
+// GetNoPelaporan implements VerifikasiDefinition
+func (verifikasi VerifikasiService) GetNoPelaporan(request models.NoPalaporanRequest) (responses []models.NoPelaporanResponse, err error) {
+	dataVerif, err := verifikasi.verifikasiRepo.GetNoPelaporan(&request)
+
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+		return responses, err
+	}
+
+	for _, response := range dataVerif {
+		responses = append(responses, models.NoPelaporanResponse{
+			PERNR:       request.PERNR,
+			NoPelaporan: response.NoPelaporan.String,
+		})
+	}
+
+	return responses, err
 }
