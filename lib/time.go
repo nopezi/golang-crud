@@ -15,6 +15,8 @@ func GetTimeNow(param string) string {
 		return currentTime.Format("2006-01-02 15:04:05")
 	case "date":
 		return currentTime.Format("2006-01-02")
+	case "date2":
+		return currentTime.Format("020106")
 	case "year":
 		return fmt.Sprint(currentTime.Year())
 	case "month":

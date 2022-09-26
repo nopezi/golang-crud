@@ -22,6 +22,7 @@ type VerifikasiDefinition interface {
 	DeleteLampiranVerifikasi(id int64, tx *gorm.DB) (err error)
 	KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error)
 	UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error)
+	GetNoPelaporan(request *models.NoPalaporanRequest) (responses []models.NoPelaporanNullResponse, err error)
 }
 
 type VerifikasiRepository struct {
@@ -224,4 +225,38 @@ func (verifikasi VerifikasiRepository) FilterVerifikasi(request *models.Verifika
 
 	return responses, resultFinal, totalRows, err
 
+}
+
+// GetNoPelaporan implements VerifikasiDefinition
+func (verifikasi VerifikasiRepository) GetNoPelaporan(request *models.NoPalaporanRequest) (responses []models.NoPelaporanNullResponse, err error) {
+	kode := "VER-"
+	today := lib.GetTimeNow("date2")
+
+	if request.PERNR != "" {
+		kode += request.PERNR + "-" + today
+	}
+
+	query := `SELECT RIGHT(CONCAT("0000",(count(*) + 1)), 4) 'no_pelaporan' FROM verifikasi WHERE no_pelaporan like '%` + kode + `%'`
+
+	verifikasi.logger.Zap.Info(query)
+	rows, err := verifikasi.dbRaw.DB.Query(query)
+
+	verifikasi.logger.Zap.Info("rows ", rows)
+	if err != nil {
+		return responses, err
+	}
+
+	response := models.NoPelaporanNullResponse{}
+	for rows.Next() {
+		_ = rows.Scan(
+			&response.NoPelaporan,
+		)
+		responses = append(responses, response)
+	}
+
+	if err = rows.Err(); err != nil {
+		return responses, err
+	}
+
+	return responses, err
 }

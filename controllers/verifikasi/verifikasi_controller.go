@@ -249,3 +249,35 @@ func (verifikasi VerifikasiController) FilterVerifikasi(c *gin.Context) {
 	// lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", datas)
 	lib.ReturnToJsonWithPaginate(c, 200, "200", "Inquery Data Berhasil", datas, pagination)
 }
+
+func (verifikasi VerifikasiController) GetNoPelaporan(c *gin.Context) {
+	requests := models.NoPalaporanRequest{}
+	today := lib.GetTimeNow("date2")
+
+	if err := c.Bind(&requests); err != nil {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "400", "Input Tidak Sesuai : "+err.Error(), "")
+		return
+	}
+
+	datas, err := verifikasi.service.GetNoPelaporan(requests)
+
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+	}
+
+	if len(datas) == 0 {
+		verifikasi.logger.Zap.Error(err)
+		lib.ReturnToJson(c, 200, "404", "Data Tidak Ditemukan", datas)
+		return
+	}
+
+	counter := datas[0].NoPelaporan
+	fmt.Println("PERNR", datas[0].PERNR)
+	fmt.Println("DATE", today)
+	fmt.Println("Counter", counter)
+
+	NoPelaporan := "VER-" + datas[0].PERNR + "-" + today + "-" + counter
+
+	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", NoPelaporan)
+}

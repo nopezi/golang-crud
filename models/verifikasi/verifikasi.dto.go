@@ -238,6 +238,19 @@ type VerifikasiFilterRequest struct {
 	TglAkhir    string `json:"tgl_akhir"`
 }
 
+type NoPalaporanRequest struct {
+	PERNR string `json:"PERNR"`
+}
+
+type NoPelaporanNullResponse struct {
+	NoPelaporan lib.NullString `json:"no_pelaporan"`
+}
+
+type NoPelaporanResponse struct {
+	PERNR       string `json:"PERNR"`
+	NoPelaporan string `json:"no_pelaporan"`
+}
+
 func (v VerifikasiRequest) TableName() string {
 	return "verifikasi"
 }
