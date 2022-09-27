@@ -33,6 +33,7 @@ type VerifikasiDefinition interface {
 	DeleteLampiranVerifikasi(request *models.VerifikasiFileRequest) (status bool, err error)
 	UpdateAllVerifikasi(request *models.VerifikasiRequestMaintain) (status bool, err error)
 	GetNoPelaporan(request models.NoPalaporanRequest) (responses []models.NoPelaporanResponse, err error)
+	GetLastID() (responses []models.VerifikasiLastIDResponse, err error)
 }
 
 type VerifikasiService struct {
@@ -740,6 +741,23 @@ func (verifikasi VerifikasiService) GetNoPelaporan(request models.NoPalaporanReq
 		responses = append(responses, models.NoPelaporanResponse{
 			PERNR:       request.PERNR,
 			NoPelaporan: response.NoPelaporan.String,
+		})
+	}
+
+	return responses, err
+}
+
+// GetLastID implements VerifikasiDefinition
+func (verifikasi VerifikasiService) GetLastID() (responses []models.VerifikasiLastIDResponse, err error) {
+	dataVerif, err := verifikasi.verifikasiRepo.GetLastID()
+	if err != nil {
+		verifikasi.logger.Zap.Error(err)
+		return responses, err
+	}
+
+	for _, response := range dataVerif {
+		responses = append(responses, models.VerifikasiLastIDResponse{
+			ID: response.ID.Int64,
 		})
 	}
 

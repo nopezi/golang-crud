@@ -23,6 +23,7 @@ type VerifikasiDefinition interface {
 	KonfirmSave(request *models.VerifikasiUpdateMaintain, include []string, tx *gorm.DB) (response bool, err error)
 	UpdateAllVerifikasi(request *models.VerifikasiUpdateAll, include []string, tx *gorm.DB) (response bool, err error)
 	GetNoPelaporan(request *models.NoPalaporanRequest) (responses []models.NoPelaporanNullResponse, err error)
+	GetLastID() (responses []models.VerifikasiLastID, err error)
 }
 
 type VerifikasiRepository struct {
@@ -251,6 +252,33 @@ func (verifikasi VerifikasiRepository) GetNoPelaporan(request *models.NoPalapora
 		_ = rows.Scan(
 			&response.NoPelaporan,
 		)
+		responses = append(responses, response)
+	}
+
+	if err = rows.Err(); err != nil {
+		return responses, err
+	}
+
+	return responses, err
+}
+
+// GetLastID implements VerifikasiDefinition
+func (verifikasi VerifikasiRepository) GetLastID() (responses []models.VerifikasiLastID, err error) {
+	query := "SELECT id FROM verifikasi ORDER BY id DESC LIMIT 1"
+	verifikasi.logger.Zap.Info(query)
+	rows, err := verifikasi.dbRaw.DB.Query(query)
+
+	verifikasi.logger.Zap.Info("rows ", rows)
+	if err != nil {
+		return responses, err
+	}
+
+	response := models.VerifikasiLastID{}
+	for rows.Next() {
+		_ = rows.Scan(
+			&response.ID,
+		)
+
 		responses = append(responses, response)
 	}
 

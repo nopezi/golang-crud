@@ -85,7 +85,10 @@ func (verifikasi VerifikasiController) Store(c *gin.Context) {
 		lib.ReturnToJson(c, 200, "500", "Internal Error status", err.Error())
 		return
 	}
-	lib.ReturnToJson(c, 200, "200", "Input data berhasil", true)
+
+	getLastData, err := verifikasi.service.GetLastID()
+
+	lib.ReturnToJson(c, 200, "200", "Input data berhasil", getLastData[0].ID)
 }
 
 func (verifikasi VerifikasiController) GetOne(c *gin.Context) {

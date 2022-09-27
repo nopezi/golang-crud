@@ -8,6 +8,7 @@ import (
 	coaching "riskmanagement/controllers/coaching"
 	incident "riskmanagement/controllers/incident"
 	materi "riskmanagement/controllers/materi"
+	mcs "riskmanagement/controllers/mcs"
 	product "riskmanagement/controllers/product"
 	riskControl "riskmanagement/controllers/riskcontrol"
 	riskIndicator "riskmanagement/controllers/riskindicator"
@@ -41,4 +42,5 @@ var Module = fx.Options(
 	fx.Provide(verifikasi.NewVerifikasiController),
 	fx.Provide(riskControl.NewRiskControlController),
 	fx.Provide(aplikasi.NewAplikasiController),
+	fx.Provide(mcs.NewMcsController),
 )

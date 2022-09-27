@@ -238,6 +238,23 @@ type VerifikasiFilterRequest struct {
 	TglAkhir    string `json:"tgl_akhir"`
 }
 
+type VerifikasiFilterReport struct {
+	Order         string `json:"order"`
+	Sort          string `json:"sort"`
+	NoPelaporan   string `json:"no_pelaporan"`
+	UnitKerja     string `json:"unit_kerja"`
+	ActivityID    string `json:"activity_id"`
+	ProductID     string `json:"product_id"`
+	RiskIssueID   string `json:"risk_issue_id"`
+	JudulMater    string `json:"judul_materi"`
+	Kelemahan     bool   `json:"kelemahan"`
+	IndikasiFraud bool   `json:"indikasi_fraud"`
+	Status        string `json:"status"`
+	Periode       string `json:"periode"`
+	TglAwal       string `json:"tgl_awal"`
+	TglAkhir      string `json:"tgl_akhir"`
+}
+
 type NoPalaporanRequest struct {
 	PERNR string `json:"PERNR"`
 }
@@ -249,6 +266,14 @@ type NoPelaporanNullResponse struct {
 type NoPelaporanResponse struct {
 	PERNR       string `json:"PERNR"`
 	NoPelaporan string `json:"no_pelaporan"`
+}
+
+type VerifikasiLastID struct {
+	ID lib.NullInt64 `json:"id"`
+}
+
+type VerifikasiLastIDResponse struct {
+	ID int64 `json:"id"`
 }
 
 func (v VerifikasiRequest) TableName() string {
