@@ -276,11 +276,11 @@ func (verifikasi VerifikasiController) GetNoPelaporan(c *gin.Context) {
 	}
 
 	counter := datas[0].NoPelaporan
-	fmt.Println("PERNR", datas[0].PERNR)
+	fmt.Println("ORGEH", datas[0].ORGEH)
 	fmt.Println("DATE", today)
 	fmt.Println("Counter", counter)
 
-	NoPelaporan := "VER-" + datas[0].PERNR + "-" + today + "-" + counter
+	NoPelaporan := "VER-" + datas[0].ORGEH + "-" + today + "-" + counter
 
 	lib.ReturnToJson(c, 200, "200", "Inquery Data Berhasil", NoPelaporan)
 }

@@ -233,8 +233,8 @@ func (verifikasi VerifikasiRepository) GetNoPelaporan(request *models.NoPalapora
 	kode := "VER-"
 	today := lib.GetTimeNow("date2")
 
-	if request.PERNR != "" {
-		kode += request.PERNR + "-" + today
+	if request.ORGEH != "" {
+		kode += request.ORGEH + "-" + today
 	}
 
 	query := `SELECT RIGHT(CONCAT("0000",(count(*) + 1)), 4) 'no_pelaporan' FROM verifikasi WHERE no_pelaporan like '%` + kode + `%'`

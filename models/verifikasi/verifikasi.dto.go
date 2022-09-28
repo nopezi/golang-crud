@@ -256,7 +256,7 @@ type VerifikasiFilterReport struct {
 }
 
 type NoPalaporanRequest struct {
-	PERNR string `json:"PERNR"`
+	ORGEH string `json:"ORGEH"`
 }
 
 type NoPelaporanNullResponse struct {
@@ -264,7 +264,7 @@ type NoPelaporanNullResponse struct {
 }
 
 type NoPelaporanResponse struct {
-	PERNR       string `json:"PERNR"`
+	ORGEH       string `json:"ORGEH"`
 	NoPelaporan string `json:"no_pelaporan"`
 }
 
