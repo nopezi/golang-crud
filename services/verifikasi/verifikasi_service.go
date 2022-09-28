@@ -739,7 +739,7 @@ func (verifikasi VerifikasiService) GetNoPelaporan(request models.NoPalaporanReq
 
 	for _, response := range dataVerif {
 		responses = append(responses, models.NoPelaporanResponse{
-			PERNR:       request.PERNR,
+			ORGEH:       request.ORGEH,
 			NoPelaporan: response.NoPelaporan.String,
 		})
 	}
