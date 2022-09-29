@@ -47,11 +47,19 @@ func (jwt JWTAuthController) SignIn(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error bind JSON": err.Error(),
 		})
+		return
 	}
 
 	// Currently not checking for username and password
 	// Can add the logic later if necessary.
 	result, err := jwt.userService.GetOneUserEmail(user.Email)
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	// Compare the stored hashed password, with the hashed version of the password that was received
 	if err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(user.Password)); err != nil {
@@ -59,6 +67,7 @@ func (jwt JWTAuthController) SignIn(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	token := jwt.service.CreateToken(result)

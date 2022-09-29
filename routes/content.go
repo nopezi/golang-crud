@@ -1,0 +1,39 @@
+package routes
+
+import (
+	controllers "riskmanagement/controllers/content"
+	"riskmanagement/lib"
+
+	"gitlab.com/golang-package-library/logger"
+)
+
+// AuthRoutes struct
+type ContentRoutes struct {
+	logger            logger.Logger
+	handler           lib.RequestHandler
+	contentController controllers.ContentController
+}
+
+// Setup user routes
+func (s ContentRoutes) Setup() {
+	s.logger.Zap.Info("Setting up routes")
+	auth := s.handler.Gin.Group("/contents")
+	{
+		auth.GET("/getAll", s.contentController.GetAll)
+		auth.POST("/store", s.contentController.Store)
+		auth.POST("/update", s.contentController.Update)
+	}
+}
+
+// NewAuthRoutes creates new user controller
+func NewContentRoutes(
+	handler lib.RequestHandler,
+	contentController controllers.ContentController,
+	logger logger.Logger,
+) ContentRoutes {
+	return ContentRoutes{
+		handler:           handler,
+		logger:            logger,
+		contentController: contentController,
+	}
+}
