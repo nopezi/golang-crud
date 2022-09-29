@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"riskmanagement/lib"
-	"riskmanagement/lib/env"
+	"crud/lib"
+	"crud/lib/env"
 
 	cors "github.com/rs/cors/wrapper/gin"
 	"gitlab.com/golang-package-library/logger"

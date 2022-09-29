@@ -1,8 +1,8 @@
 package contents
 
 import (
-	models "riskmanagement/models/content"
-	repository "riskmanagement/repository/content"
+	models "crud/models/content"
+	repository "crud/repository/content"
 
 	"gitlab.com/golang-package-library/logger"
 )

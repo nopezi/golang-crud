@@ -2,12 +2,12 @@ package middlewares
 
 import (
 	"bytes"
+	"crud/constants"
+	"crud/lib"
+	"crud/lib/env"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"riskmanagement/constants"
-	"riskmanagement/lib"
-	"riskmanagement/lib/env"
 	"text/template"
 
 	"github.com/gin-gonic/gin"

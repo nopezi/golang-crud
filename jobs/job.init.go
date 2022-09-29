@@ -1,10 +1,10 @@
 package jobs
 
 import (
+	jobs "crud/lib/jobs"
 	"database/sql"
 	"fmt"
 	"log"
-	jobs "riskmanagement/lib/jobs"
 	"time"
 
 	"github.com/robfig/cron/v3"

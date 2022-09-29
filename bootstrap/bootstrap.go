@@ -2,14 +2,14 @@ package bootstrap
 
 import (
 	"context"
-	"riskmanagement/controllers"
-	cronjob "riskmanagement/jobs"
-	"riskmanagement/lib"
-	env "riskmanagement/lib/env"
-	"riskmanagement/middlewares"
-	"riskmanagement/repository"
-	"riskmanagement/routes"
-	"riskmanagement/services"
+	"crud/controllers"
+	cronjob "crud/jobs"
+	"crud/lib"
+	env "crud/lib/env"
+	"crud/middlewares"
+	"crud/repository"
+	"crud/routes"
+	"crud/services"
 
 	minioEnv "gitlab.com/golang-package-library/env"
 	logger "gitlab.com/golang-package-library/logger"

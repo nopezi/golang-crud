@@ -1,8 +1,8 @@
 package lib
 
 import (
-	env "riskmanagement/lib/env"
-	jobs "riskmanagement/lib/jobs"
+	env "crud/lib/env"
+	jobs "crud/lib/jobs"
 
 	minioEnv "gitlab.com/golang-package-library/env"
 	logger "gitlab.com/golang-package-library/logger"

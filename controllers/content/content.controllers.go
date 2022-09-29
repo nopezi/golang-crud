@@ -1,9 +1,9 @@
 package content
 
 import (
-	"riskmanagement/lib"
-	models "riskmanagement/models/content"
-	services "riskmanagement/services/contents"
+	"crud/lib"
+	models "crud/models/content"
+	services "crud/services/contents"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"

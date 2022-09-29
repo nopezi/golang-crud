@@ -1,8 +1,8 @@
 package repository
 
 import (
-	content "riskmanagement/repository/content"
-	user "riskmanagement/repository/user"
+	content "crud/repository/content"
+	user "crud/repository/user"
 
 	"go.uber.org/fx"
 )

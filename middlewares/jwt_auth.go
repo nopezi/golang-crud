@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	services "riskmanagement/services/auth"
+	services "crud/services/auth"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"

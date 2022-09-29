@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"riskmanagement/bootstrap"
+	"crud/bootstrap"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"riskmanagement/jobs"
+	"crud/jobs"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

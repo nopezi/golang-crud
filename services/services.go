@@ -1,9 +1,9 @@
 package services
 
 import (
-	auth "riskmanagement/services/auth"
-	contents "riskmanagement/services/contents"
-	user "riskmanagement/services/user"
+	auth "crud/services/auth"
+	contents "crud/services/contents"
+	user "crud/services/user"
 
 	"go.uber.org/fx"
 )

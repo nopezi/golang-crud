@@ -1,10 +1,10 @@
 package lib
 
 import (
+	env "crud/lib/env"
 	"fmt"
 	"log"
 	"os"
-	env "riskmanagement/lib/env"
 	"time"
 
 	zapLog "gitlab.com/golang-package-library/logger"

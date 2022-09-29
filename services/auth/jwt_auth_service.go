@@ -1,9 +1,9 @@
 package services
 
 import (
+	env "crud/lib/env"
+	models "crud/models/user"
 	"errors"
-	env "riskmanagement/lib/env"
-	models "riskmanagement/models/user"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -63,7 +63,7 @@ func (s JWTAuthService) CreateToken(user models.User) string {
 func (s JWTAuthService) CreateTokenGlobal() string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"appID":   "v2",
-		"appName": "riskmanagement",
+		"appName": "crud",
 		"exp":     time.Now().Add(time.Minute * 60).Unix(),
 	})
 

@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"riskmanagement/jobs"
+	"crud/jobs"
 
-	"riskmanagement/lib"
+	"crud/lib"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

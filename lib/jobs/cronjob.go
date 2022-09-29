@@ -1,8 +1,8 @@
 package jobs
 
 import (
+	dio "crud/jobs/dio"
 	"database/sql"
-	dio "riskmanagement/jobs/dio"
 )
 
 const (

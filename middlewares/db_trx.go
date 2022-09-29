@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	"riskmanagement/constants"
-	"riskmanagement/lib"
+	"crud/constants"
+	"crud/lib"
 
 	"github.com/gin-gonic/gin"
 	elastic "gitlab.com/golang-package-library/elasticsearch"

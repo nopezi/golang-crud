@@ -12,3 +12,5 @@ services/user/*
 controllers/user/*
 config/database/
 config/file/*
+
+crud.sql

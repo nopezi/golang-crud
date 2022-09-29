@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"crud/lib"
+	models "crud/models/user"
+	services "crud/services/auth"
+	user "crud/services/user"
 	"net/http"
-	"riskmanagement/lib"
-	models "riskmanagement/models/user"
-	services "riskmanagement/services/auth"
-	user "riskmanagement/services/user"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/golang-package-library/logger"

@@ -3,6 +3,8 @@ package jobs
 import (
 	"bytes"
 	"context"
+	"crud/lib"
+	"crud/models"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
@@ -10,8 +12,6 @@ import (
 	"net/http"
 	"os"
 	"reflect"
-	"riskmanagement/lib"
-	"riskmanagement/models"
 	"strings"
 	"time"
 

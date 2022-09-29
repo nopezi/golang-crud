@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"riskmanagement/lib"
+	"crud/lib"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

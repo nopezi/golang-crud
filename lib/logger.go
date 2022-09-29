@@ -1,7 +1,7 @@
 package lib
 
 import (
-	env "riskmanagement/lib/env"
+	env "crud/lib/env"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

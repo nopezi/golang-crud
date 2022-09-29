@@ -6,10 +6,10 @@ import (
 
 	// migration "pab-admin/cmd/database/migration"
 	// seeder "pab-admin/cmd/database/seeder"
-	doctor "riskmanagement/cmd/doctor"
-	http "riskmanagement/cmd/http"
-	jobs "riskmanagement/cmd/jobs"
-	counter "riskmanagement/cmd/test-counter"
+	doctor "crud/cmd/doctor"
+	http "crud/cmd/http"
+	jobs "crud/cmd/jobs"
+	counter "crud/cmd/test-counter"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

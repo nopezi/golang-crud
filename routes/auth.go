@@ -1,8 +1,8 @@
 package routes
 
 import (
-	controllers "riskmanagement/controllers/auth"
-	"riskmanagement/lib"
+	controllers "crud/controllers/auth"
+	"crud/lib"
 
 	"gitlab.com/golang-package-library/logger"
 )

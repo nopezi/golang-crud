@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	auth "riskmanagement/controllers/auth"
-	content "riskmanagement/controllers/content"
-	user "riskmanagement/controllers/user"
+	auth "crud/controllers/auth"
+	content "crud/controllers/content"
+	user "crud/controllers/user"
 
 	"go.uber.org/fx"
 )

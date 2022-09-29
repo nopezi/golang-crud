@@ -1,9 +1,9 @@
 package lib
 
 import (
+	env "crud/lib/env"
 	"database/sql"
 	"fmt"
-	env "riskmanagement/lib/env"
 
 	zapLog "gitlab.com/golang-package-library/logger"
 )

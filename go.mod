@@ -1,4 +1,4 @@
-module riskmanagement
+module crud
 
 go 1.17
 

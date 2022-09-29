@@ -1,9 +1,9 @@
 package content
 
 import (
+	"crud/lib"
+	models "crud/models/content"
 	"fmt"
-	"riskmanagement/lib"
-	models "riskmanagement/models/content"
 
 	"gitlab.com/golang-package-library/logger"
 	// "gorm.io/gorm"

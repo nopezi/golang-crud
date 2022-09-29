@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"riskmanagement/lib"
-	models "riskmanagement/models/user"
+	"crud/lib"
+	models "crud/models/user"
 
 	"gitlab.com/golang-package-library/logger"
 	"gorm.io/gorm"
