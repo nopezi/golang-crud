@@ -13,4 +13,4 @@ controllers/user/*
 config/database/
 config/file/*
 
-crud.sql
+riskmanagement.sql
