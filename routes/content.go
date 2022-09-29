@@ -3,6 +3,7 @@ package routes
 import (
 	controllers "riskmanagement/controllers/content"
 	"riskmanagement/lib"
+	"riskmanagement/middlewares"
 
 	"gitlab.com/golang-package-library/logger"
 )
@@ -12,6 +13,7 @@ type ContentRoutes struct {
 	logger            logger.Logger
 	handler           lib.RequestHandler
 	contentController controllers.ContentController
+	authMiddleware    middlewares.JWTAuthMiddleware
 }
 
 // Setup user routes
