@@ -36,3 +36,7 @@ func (r ContentRepository) Save(content models.Content) (models.Content, error) 
 func (r ContentRepository) Update(content models.Content) (models.Content, error) {
 	return content, r.db.DB.Save(&content).Error
 }
+
+func (r ContentRepository) Delete(id uint) error {
+	return r.db.DB.Where("id = ?", id).Delete(&models.Content{}).Error
+}

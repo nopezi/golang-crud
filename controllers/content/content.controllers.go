@@ -83,3 +83,37 @@ func (cs ContentController) Update(c *gin.Context) {
 		"message": "data updated",
 	})
 }
+
+func (cs ContentController) Delete(c *gin.Context) {
+	content := models.Content{}
+
+	if err := c.Bind(&content); err != nil {
+		c.JSON(200, gin.H{
+			"status":  "400",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if content.ID == 0 {
+		c.JSON(200, gin.H{
+			"status":  "400",
+			"message": "id content not found",
+		})
+		return
+	}
+
+	err := cs.service.DeleteContent(content.ID)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"status":  "400",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status":  "200",
+		"message": "data deleted",
+	})
+}

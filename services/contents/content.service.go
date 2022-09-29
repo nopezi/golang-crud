@@ -36,3 +36,7 @@ func (s ContentService) UpdateContent(content models.Content) error {
 	_, err := s.repository.Update(content)
 	return err
 }
+
+func (s ContentService) DeleteContent(id uint) error {
+	return s.repository.Delete(id)
+}

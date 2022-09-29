@@ -18,10 +18,12 @@ type ContentRoutes struct {
 func (s ContentRoutes) Setup() {
 	s.logger.Zap.Info("Setting up routes")
 	auth := s.handler.Gin.Group("/contents")
+	auth.Use(s.authMiddleware.Handler())
 	{
 		auth.GET("/getAll", s.contentController.GetAll)
 		auth.POST("/store", s.contentController.Store)
 		auth.POST("/update", s.contentController.Update)
+		auth.POST("/delete", s.contentController.Delete)
 	}
 }
 
