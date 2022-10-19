@@ -9,6 +9,3 @@
 ## setup
 - gunakan file database.sql untuk import ke mysql database
 - setting config koneksi database ada di file .env
-
-
-# selamat mencoba
