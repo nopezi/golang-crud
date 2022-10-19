@@ -117,3 +117,27 @@ func (cs ContentController) Delete(c *gin.Context) {
 		"message": "data deleted",
 	})
 }
+
+func (cs ContentController) GetCar(c *gin.Context) {
+
+	request := models.RequestCar{}
+
+	// var data [][]string
+	data := [][]string{{"Ford", "Fiesta", "Manual", "165000000"}}
+	// data[0] = []string{"Ford", "Fiesta", "Manual", "175000000"}
+	// data[0] = []string{"Ford", "Fiesta", "Automatic", "18000000"}
+	// data[0] = []string{"Ford", "Fiesta", "Manual", "155000000"}
+	// data[0] = []string{"VW", "Polo", "Manual", "170000000"}
+	data[2] = []string{"VW", "Polo", "Manual", "170000000"}
+
+	// data[0] = append(data, dua[])
+
+	for i := 0; i < len(data[0]); i++ {
+		if request.Brand != "" {
+
+		}
+	}
+
+	lib.ReturnToJson(c, 200, "200", "Inquiry data success", data)
+
+}
