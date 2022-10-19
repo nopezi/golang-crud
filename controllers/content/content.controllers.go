@@ -121,8 +121,9 @@ func (cs ContentController) Delete(c *gin.Context) {
 
 func (cs ContentController) GetCar(c *gin.Context) {
 
-	request := models.RequestCar{}
-	// brand := c.GetPostForm("brand")
+	brand := c.Query("brand")
+	Type := c.Query("type")
+	transmission := c.Query("transmission")
 
 	data := [][]string{
 		{"Ford", "Fiesta", "Manual", "165000000"},
@@ -134,16 +135,34 @@ func (cs ContentController) GetCar(c *gin.Context) {
 		{"VW", "Polo", "Automatic", "165000000"},
 	}
 
-	// var result [][]string
+	var result [][]string
 
-	for i := 0; i < len(data[0]); i++ {
-		if request.Brand != "" {
+	for y := 0; y < len(data); y++ {
+		fmt.Println("loop data ", data[y])
+		// for i := 0; i < len(data[y]); i++ {
+		var subData []string
+		if y > 0 && brand != "" && brand == data[y][0] {
 			// result[0] = append(result, data[0][i])
+			subData = append(subData, "")
+		} else {
+			subData = append(subData, data[y][0])
 		}
+		if y > 0 && Type != "" && Type == data[y][1] {
+			subData = append(subData, "")
+		} else {
+			subData = append(subData, data[y][1])
+		}
+		if y > 0 && transmission != "" && transmission == data[y][2] {
+			subData = append(subData, "")
+		} else {
+			subData = append(subData, data[y][2])
+		}
+		subData = append(subData, data[y][3])
+		fmt.Println("cek data subdata >>> ", subData)
+		result = append(result, subData)
+		// }
 	}
 
-	fmt.Println(request)
-
-	lib.ReturnToJson(c, 200, "200", "Inquiry data success", data)
+	lib.ReturnToJson(c, 200, "200", "Inquiry data success", result)
 
 }
